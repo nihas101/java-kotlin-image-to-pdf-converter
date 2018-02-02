@@ -5,9 +5,9 @@ import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
 import de.nihas101.imagesToPdfConverter.fileReader.ImageDirectoriesIterator
 import de.nihas101.imagesToPdfConverter.pdf.ImagePdfBuilder.PdfBuilderFactory.createPdfImageBuilder
 
-class ImageDirectoriesBuilder {
+class ImageDirectoriesPdfBuilder {
     companion object PdfBuilderFactory {
-        fun createPdfBuilderFactory() = ImagePdfBuilder()
+        fun createPdfBuilderFactory() = ImageDirectoriesPdfBuilder()
     }
 
     fun build(imageDirectoriesIterator: ImageDirectoriesIterator){
