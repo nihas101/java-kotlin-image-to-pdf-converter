@@ -1,0 +1,7 @@
+.idea/
+out/
+.gradle/
+build/
+gradle.properties
+sonar-project.properties
+.scannerwork/

@@ -1,0 +1,47 @@
+group 'nihas101'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: "maven"
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+/* Application */
+mainClassName = "de.nihas101.imagesToPdfConverter.Main"
+archivesBaseName = 'ImagesToPdfConverter'
+version = '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.2.21'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+    compile group: 'com.itextpdf', name: 'itextpdf', version: '5.5.12'
+    // https://mvnrepository.com/artifact/com.itextpdf/kernel
+    compile group: 'com.itextpdf', name: 'kernel', version: '7.1.0'
+    // https://mvnrepository.com/artifact/com.itextpdf/layout
+    compile group: 'com.itextpdf', name: 'layout', version: '7.1.0'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
