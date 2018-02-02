@@ -1,5 +1,5 @@
 group 'nihas101'
-version '1.0-SNAPSHOT'
+version '0.6-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
@@ -8,10 +8,12 @@ apply plugin: 'application'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
 /* Application */
+applicationName = "image2PdfConverter"
 mainClassName = "de.nihas101.imagesToPdfConverter.Main"
 archivesBaseName = 'ImagesToPdfConverter'
-version = '1.0-SNAPSHOT'
+version = '0.6-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.2.21'
@@ -44,4 +46,8 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+jar {
+    baseName = "Image2PdfConverter"
 }
