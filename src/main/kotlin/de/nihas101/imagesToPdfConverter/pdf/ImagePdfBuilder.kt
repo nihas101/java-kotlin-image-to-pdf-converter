@@ -27,7 +27,7 @@ class ImagePdfBuilder: PdfBuilder() {
 
         for (i in 0 until nrOfFiles){
             addNextFileToPDF(directoryIterator, imagePdf)
-            progressUpdater.updateProgress(nrOfFiles.toDouble() / i.toDouble())
+            progressUpdater.updateProgress(i)
         }
 
         imagePdf.close()
