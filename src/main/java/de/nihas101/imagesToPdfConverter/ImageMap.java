@@ -11,44 +11,73 @@ import java.util.Map;
 
 import static de.nihas101.imagesToPdfConverter.Constants.DIRECTORY_IMAGE_PATH;
 
+/**
+ * A class for holding {@link Image}s
+ */
 public class ImageMap {
+    /**
+     * The {@link Map} mapping an absolute path to the corresponding {@link Image}
+     */
     private final Map<String, Image> imageMap;
 
     private ImageMap(Map<String, Image> imageMap) {
         this.imageMap = imageMap;
     }
 
+    /**
+     * The Factory method creating {@link ImageMap} instances
+     * @param imageMap The {@link Map} that will hold the {@link Image}
+     * @return The created {@link ImageMap} instance
+     */
     public static ImageMap createImageMap(Map<String, Image> imageMap){
         return new ImageMap(imageMap);
     }
 
-    public void setupImageMap(List<File> files, ProgressUpdater progressUpdater) {
+    /**
+     * Loads {@link Image}s from the {@link List} and puts them into the {@link ImageMap#imageMap}
+     * @param files The files to load {@link Image}s from
+     * @param progressUpdater The {@link ProgressUpdater} to deliver updates
+     */
+    public void loadImages(List<File> files, ProgressUpdater progressUpdater) {
         imageMap.clear();
         if(files.size() == 0) return;
 
         putImagesIntoMap(files, progressUpdater);
     }
 
-    public void setupImageMap(List<File> files) {
+    /**
+     * Loads {@link Image}s from the {@link List} and puts them into the {@link ImageMap#imageMap}
+     * @param files The files to load {@link Image}s from
+     */
+    public void loadImages(List<File> files) {
         imageMap.clear();
         if(files.size() == 0) return;
 
         putImagesIntoMap(files, null);
     }
 
+    /**
+     * Puts {@link Image}s into the map
+     * @param files The {@link File}s to load the {@link Image}s from
+     * @param progressUpdater The {@link ProgressUpdater} to deliver updates
+     */
     private void putImagesIntoMap(List<File> files, ProgressUpdater progressUpdater){
         for (int index = 0; index < files.size(); index++) {
             if(files.get(index).isDirectory()) {
                 File directoryImage = new File(DIRECTORY_IMAGE_PATH);
-                putImageIntoMap(imageMap, directoryImage);
+                putImageIntoMap(directoryImage);
             }else{
                 if(progressUpdater != null) progressUpdater.updateProgress(index);
-                putImageIntoMap(imageMap, files.get(index));
+                putImageIntoMap(files.get(index));
             }
         }
     }
 
-    private void putImageIntoMap(Map<String, Image> imageMap, File file){
+    /**
+     * Puts an {@link Image} into the map
+     * @param file The {@link File} to load the {@link Image} from
+     */
+    private void putImageIntoMap(File file){
         try {
             String url = file.toURI().toURL().toString();
             /*
@@ -61,12 +90,20 @@ public class ImageMap {
         }
     }
 
+    /**
+     * @param absolutePathToImage The absolute Path to the {@link Image}
+     * @return The {@link Image} found under the given absolute path
+     */
     @Nullable
-    public Image get(@NotNull String directoryImageString) {
-        return imageMap.get(directoryImageString);
+    public Image get(@NotNull String absolutePathToImage) {
+        return imageMap.get(absolutePathToImage);
     }
 
-    public void remove(String directoryImageString){
-        imageMap.remove(directoryImageString);
+    /**
+     * Removes the {@link Image} found under the given absolute path
+     * @param absolutePathToImage The absolute Path to the {@link Image}
+     */
+    public void remove(String absolutePathToImage){
+        imageMap.remove(absolutePathToImage);
     }
 }

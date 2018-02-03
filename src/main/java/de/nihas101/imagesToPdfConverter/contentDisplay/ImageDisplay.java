@@ -8,19 +8,36 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * An Application for displaying {@link Image}s
+ */
 public class ImageDisplay extends Application {
+    /**
+     * The {@link Image} to display
+     */
     private Image image;
-    private String imageLocation;
+    /**
+     * The name of the {@link Image}
+     */
+    private String imageName;
 
-    private ImageDisplay(Image image, String imageLocation){
+    private ImageDisplay(Image image, String imageName){
         this.image = image;
-        this.imageLocation = imageLocation;
+        this.imageName = imageName;
     }
 
-    static ImageDisplay createImageDisplay(Image image, String imageLocation){
-        return new ImageDisplay(image, imageLocation);
+    /**
+     * The factory method for creating {@link ImageDisplay}s
+     * @param image The {@link Image} to display
+     * @param imageName The name of the {@link Image}
+     */
+    static ImageDisplay createImageDisplay(Image image, String imageName){
+        return new ImageDisplay(image, imageName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         /* Load root-node */
@@ -32,7 +49,7 @@ public class ImageDisplay extends Application {
         /* Create Scene */
         Scene scene = new Scene(root);
 
-        primaryStage.setTitle("ImageDisplay - " + imageLocation);
+        primaryStage.setTitle("ImageDisplay - " + imageName);
         primaryStage.setScene(scene);
         primaryStage.setHeight(image.getHeight()*.2);
         primaryStage.setWidth(image.getWidth()*.2);

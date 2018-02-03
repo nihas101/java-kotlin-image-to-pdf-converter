@@ -17,6 +17,9 @@ import java.io.IOException;
 public class Main extends Application{
     private DirectoryIterator directoryIterator;
 
+    /**
+     * {@inheritDoc}
+     */
     public void start(Stage primaryStage) throws IOException {
         /* Load root-node */
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
