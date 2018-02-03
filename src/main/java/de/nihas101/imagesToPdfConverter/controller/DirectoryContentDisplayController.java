@@ -4,6 +4,7 @@ import de.nihas101.imagesToPdfConverter.ImageMap;
 import de.nihas101.imagesToPdfConverter.fileReader.ImageFilesIterator;
 import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -26,8 +27,9 @@ public class DirectoryContentDisplayController {
             imageMap.setupImageMap(imageFilesIterator.getFiles());
 
             Platform.runLater(() -> {
-                imageListView.setItems(observableArrayList(imageFilesIterator.getFiles()));
-                imageListView.setCellFactory(param -> new ImageListCell(imageMap));
+                ObservableList<File> observableList = observableArrayList(imageFilesIterator.getFiles());
+                imageListView.setItems(observableList);
+                imageListView.setCellFactory(param -> new ImageListCell(imageMap, imageFilesIterator.getFiles(), observableList));
             });
         }).start();
     }

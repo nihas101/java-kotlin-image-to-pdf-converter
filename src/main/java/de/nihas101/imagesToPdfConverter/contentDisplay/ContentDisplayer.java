@@ -28,10 +28,10 @@ public class ContentDisplayer {
     }
 
     private void displayDirectory(int index) {
-        DirectoryContentDisplay directoryContentDisplay;
-
-        directoryContentDisplay = createDirectoryContentDisplay(
-                ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesLoader(directoryIterator.getFile(index))
+        /* TODO: Add a build button on this scene, so single pdfs can be changed and build
+         * TODO: -> If this is done, remove it from the main scene list! */
+        DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
+                ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(directoryIterator.getFile(index))
         );
 
         try { directoryContentDisplay.start(new Stage()); }

@@ -10,7 +10,7 @@ class ImageFilesIteratorTest {
     @Test
     fun imagesLoaderDirTest(){
         val file = File("src/test/resources")
-        val imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesLoader(file)
+        val imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator(file)
 
         for (i in 1..imageFilesIterator.nrOfFiles()) imageFilesIterator.nextFile()
 
@@ -26,7 +26,7 @@ class ImageFilesIteratorTest {
     @Test
     fun imagesLoaderSingleImageTest(){
         val file = File("src/test/resources/3.png")
-        val imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesLoader(file)
+        val imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator(file)
 
         imageFilesIterator.nextFile()
 
