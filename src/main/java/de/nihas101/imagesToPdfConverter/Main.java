@@ -38,7 +38,7 @@ public class Main extends Application{
     }
 
     public void setupIterator(File file) {
-        directoryIterator = ImageFilesIterator.ImageFilesIteratorFactory.createImagesDirLoader(file);
+        directoryIterator = ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesLoader(file);
     }
 
     public void setupDirectoriesIterator(File file){

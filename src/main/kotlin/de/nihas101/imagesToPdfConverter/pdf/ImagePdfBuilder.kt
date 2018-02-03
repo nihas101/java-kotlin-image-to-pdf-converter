@@ -6,12 +6,12 @@ import de.nihas101.imagesToPdfConverter.ProgressUpdater
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
 import java.io.File
 
-class ImagePdfBuilder {
+class ImagePdfBuilder: PdfBuilder() {
     companion object PdfBuilderFactory{
         fun createPdfImageBuilder() = ImagePdfBuilder()
     }
 
-    fun build(directoryIterator: DirectoryIterator, saveFile: File){
+    override fun build(directoryIterator: DirectoryIterator, saveFile: File){
         val imagePdf = ImagePdf.createPdf(saveFile.absolutePath)
         val nrOfFiles = directoryIterator.nrOfFiles()
 
@@ -21,7 +21,7 @@ class ImagePdfBuilder {
         imagePdf.close()
     }
 
-    fun build(directoryIterator: DirectoryIterator, saveFile: File, progressUpdater: ProgressUpdater){
+    override fun build(directoryIterator: DirectoryIterator, saveFile: File, progressUpdater: ProgressUpdater){
         val imagePdf = ImagePdf.createPdf(saveFile.absolutePath)
         val nrOfFiles = directoryIterator.nrOfFiles()
 

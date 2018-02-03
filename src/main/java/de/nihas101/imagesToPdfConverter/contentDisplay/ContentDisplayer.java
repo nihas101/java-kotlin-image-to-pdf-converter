@@ -1,7 +1,7 @@
 package de.nihas101.imagesToPdfConverter.contentDisplay;
 
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
-import de.nihas101.imagesToPdfConverter.fileReader.ImageDirectoriesIterator;
+import de.nihas101.imagesToPdfConverter.fileReader.ImageFilesIterator;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -31,7 +31,7 @@ public class ContentDisplayer {
         DirectoryContentDisplay directoryContentDisplay;
 
         directoryContentDisplay = createDirectoryContentDisplay(
-                ((ImageDirectoriesIterator) directoryIterator).getImageFilesIterator(index)
+                ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesLoader(directoryIterator.getFile(index))
         );
 
         try { directoryContentDisplay.start(new Stage()); }

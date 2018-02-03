@@ -122,19 +122,27 @@ public class MainController {
             imagePdfBuilder.build(
                     main.getDirectoryIterator(),
                     saveFile,
-                    (progress) -> buildProgressBar.setProgress(progress)
+                    progress -> buildProgressBar.setProgress(progress)
             );
             notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
         }
     }
 
     private void buildMultiplePdf() {
-        ImageDirectoriesPdfBuilder imageDirectoriesPdfBuilder = ImageDirectoriesPdfBuilder.PdfBuilderFactory.createPdfBuilderFactory();
-        imageDirectoriesPdfBuilder.build(
-                (ImageDirectoriesIterator) main.getDirectoryIterator(),
-                (progress) -> buildProgressBar.setProgress(progress)
-        );
-        notifyUser("Finished building: " + main.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
+        directoryChooser.setInitialDirectory(main.getDirectoryIterator().getParentDirectory());
+        directoryChooser.setTitle("Choose a folder to save the PDFs in");
+        //saveFileChooser.setInitialDirectory(chosenDirectory.getParentFile());
+        File saveFile = directoryChooser.showDialog(buildButton.getScene().getWindow());
+
+        if(saveFile != null) {
+            ImageDirectoriesPdfBuilder imageDirectoriesPdfBuilder = ImageDirectoriesPdfBuilder.PdfBuilderFactory.createPdfBuilderFactory();
+            imageDirectoriesPdfBuilder.build(
+                    main.getDirectoryIterator(),
+                    saveFile,
+                    progress -> buildProgressBar.setProgress(progress)
+            );
+            notifyUser("Finished building: " + main.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
+        }
     }
 
     private boolean valuesSet() {
