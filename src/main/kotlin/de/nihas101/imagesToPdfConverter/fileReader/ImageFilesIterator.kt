@@ -10,7 +10,7 @@ class ImageFilesIterator private constructor(private val directory: File): Direc
     private var currentIndex = 0
 
     companion object ImageFilesIteratorFactory {
-         fun createImageFilesLoader(directory: File): ImageFilesIterator = ImageFilesIterator(directory)
+         fun createImageFilesIterator(directory: File): ImageFilesIterator = ImageFilesIterator(directory)
     }
 
     override fun getFile(index: Int): File = files[index]
