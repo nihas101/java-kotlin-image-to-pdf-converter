@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class DirectoryContentDisplay extends Application {
-    ImageFilesIterator imageFilesIterator;
+    private ImageFilesIterator imageFilesIterator;
 
     private DirectoryContentDisplay(ImageFilesIterator imageFilesIterator) {
         this.imageFilesIterator = imageFilesIterator;

@@ -26,11 +26,9 @@ class ImageDirectoriesPdfBuilder: PdfBuilder() {
         val nrOfFiles = directoryIterator.nrOfFiles()
         if(nrOfFiles == 0) return
 
-        /* TODO: Maybe build them in multiple Threads? */
-
         for (i in 0 until nrOfFiles){
             buildNextPDF(createImageFilesIterator(directoryIterator.nextFile()), saveFile)
-            progressUpdater.updateProgress(i)
+            progressUpdater.updateProgress(i.toDouble()/nrOfFiles.toDouble())
         }
     }
 

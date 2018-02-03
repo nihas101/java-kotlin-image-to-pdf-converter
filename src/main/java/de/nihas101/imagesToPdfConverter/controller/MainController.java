@@ -3,7 +3,6 @@ package de.nihas101.imagesToPdfConverter.controller;
 import de.nihas101.imagesToPdfConverter.ImageMap;
 import de.nihas101.imagesToPdfConverter.Main;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
-import de.nihas101.imagesToPdfConverter.fileReader.ImageDirectoriesIterator;
 import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imagesToPdfConverter.pdf.ImageDirectoriesPdfBuilder;
 import de.nihas101.imagesToPdfConverter.pdf.ImagePdfBuilder;
@@ -76,11 +75,16 @@ public class MainController {
         chosenDirectory = directoryChooser.showDialog(directoryButton.getScene().getWindow());
 
         if (chosenDirectory != null) {
-            if(multipleDirectoriesCheckBox.isSelected())
-                main.setupDirectoriesIterator(chosenDirectory);
-            else
-                main.setupIterator(chosenDirectory);
-            setListView(main.getDirectoryIterator());
+            new Thread(() -> {
+                setDisableInput(true);
+                notifyUser("Loading files...", BLACK);
+                if (multipleDirectoriesCheckBox.isSelected())
+                    main.setupDirectoriesIterator(chosenDirectory);
+                else
+                    main.setupIterator(chosenDirectory);
+                setListView(main.getDirectoryIterator());
+                setDisableInput(false);
+            }).start();
         }
 
         actionEvent.consume();
@@ -92,32 +96,47 @@ public class MainController {
         new Thread(() -> {
             imageMap.setupImageMap(directoryIterator.getFiles(),
                     (loadedFiles) ->
-                    notifyUser("Loading files... (" + loadedFiles + "/" + nrOfFiles + ")", BLACK)
-            );
+                            notifyUser("Loading files... (" + (int)loadedFiles + "/" + nrOfFiles + ")", BLACK));
 
-            Platform.runLater(() -> {
-                ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
-                observableFiles.addListener((ListChangeListener<File>) c -> {
-                    while(c.next()) {
-                        if (c.wasRemoved()) directoryIterator.getFiles().remove(c.getRemoved().get(0));
-                        if (c.wasAdded()) directoryIterator.getFiles().add(c.getFrom(), c.getAddedSubList().get(0));
-                        notifyUser("Files: " + observableFiles.size(), BLACK);
-                    }
-                });
-                imageListView.setItems(observableFiles);
-                imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
-                notifyUser("Files: " + nrOfFiles, BLACK);
-            });
+            Platform.runLater(() -> setupObservableList(directoryIterator, nrOfFiles));
         }).start();
+    }
+
+    private void setupObservableList(DirectoryIterator directoryIterator, int nrOfFiles) {
+        ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
+        observableFiles.addListener(setupListChangeListener(directoryIterator, observableFiles));
+        imageListView.setItems(observableFiles);
+        imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
+        notifyUser("Files: " + nrOfFiles, BLACK);
+    }
+
+    private ListChangeListener<File> setupListChangeListener(DirectoryIterator directoryIterator , ObservableList<File> observableFiles){
+        return change -> {
+            while (change.next()) {
+                if (change.wasRemoved()) directoryIterator.getFiles().remove(change.getRemoved().get(0));
+                if (change.wasAdded()) directoryIterator.getFiles().add(change.getFrom(), change.getAddedSubList().get(0));
+                notifyUser("Files: " + observableFiles.size(), BLACK); }
+        };
     }
 
     public void buildPdf(ActionEvent actionEvent) {
         if(!valuesSet()) return;
 
+        notifyUser("Building PDF...", BLACK);
+
+        setDisableInput(true);
         if(multipleDirectoriesCheckBox.isSelected()) buildMultiplePdf();
         else buildSinglePdf();
+        setDisableInput(false);
 
         actionEvent.consume();
+    }
+
+    private void setDisableInput(boolean isDisabled) {
+        imageListView.setDisable(isDisabled);
+        buildButton.setDisable(isDisabled);
+        directoryButton.setDisable(isDisabled);
+        multipleDirectoriesCheckBox.setDisable(isDisabled);
     }
 
     private void buildSinglePdf(){
@@ -126,14 +145,14 @@ public class MainController {
         File saveFile = saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
 
         if(saveFile != null) {
-            /* TODO: Turn this into a Thread, so the progressbar is updated */
-            ImagePdfBuilder imagePdfBuilder = ImagePdfBuilder.PdfBuilderFactory.createPdfImageBuilder();
-            imagePdfBuilder.build(
-                    main.getDirectoryIterator(),
-                    saveFile,
-                    progress -> buildProgressBar.setProgress(progress)
-            );
-            notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
+            new Thread(() -> {
+                ImagePdfBuilder.PdfBuilderFactory.createPdfImageBuilder().build(
+                        main.getDirectoryIterator(),
+                        saveFile,
+                        progress -> buildProgressBar.setProgress(progress)
+                );
+                notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
+            }).start();
         }
     }
 
@@ -143,13 +162,14 @@ public class MainController {
         File saveFile = directoryChooser.showDialog(buildButton.getScene().getWindow());
 
         if(saveFile != null) {
-            ImageDirectoriesPdfBuilder imageDirectoriesPdfBuilder = ImageDirectoriesPdfBuilder.PdfBuilderFactory.createPdfBuilderFactory();
-            imageDirectoriesPdfBuilder.build(
-                    main.getDirectoryIterator(),
-                    saveFile,
-                    progress -> buildProgressBar.setProgress(progress)
-            );
-            notifyUser("Finished building: " + main.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
+            new Thread(() -> {
+                ImageDirectoriesPdfBuilder.PdfBuilderFactory.createPdfBuilderFactory().build(
+                        main.getDirectoryIterator(),
+                        saveFile,
+                        progress -> buildProgressBar.setProgress(progress)
+                );
+                notifyUser("Finished building: " + main.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
+            }).start();
         }
     }
 

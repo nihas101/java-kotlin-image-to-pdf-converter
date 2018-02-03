@@ -59,9 +59,9 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
     }
 
     private fun setOnDragOver() = setOnDragOver { event ->
-        if (event.gestureSource !== this && event.dragboard.hasString()) event.acceptTransferModes(TransferMode.MOVE)
-        event.consume()
-    }
+            if (event.gestureSource !== this && event.dragboard.hasString()) event.acceptTransferModes(TransferMode.MOVE)
+            event.consume()
+        }
 
     private fun setOnDragEntered() = setOnDragEntered { event ->
         if (event.gestureSource !== this && event.dragboard.hasString()) opacity = 0.3
