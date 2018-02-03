@@ -65,4 +65,8 @@ public class ImageMap {
     public Image get(@NotNull String directoryImageString) {
         return imageMap.get(directoryImageString);
     }
+
+    public void remove(String directoryImageString){
+        imageMap.remove(directoryImageString);
+    }
 }
