@@ -1,10 +1,8 @@
 package de.nihas101.imagesToPdfConverter.controller;
 
-import de.nihas101.imagesToPdfConverter.DirectoryContentDisplay;
-import de.nihas101.imagesToPdfConverter.ImageDisplay;
+import de.nihas101.imagesToPdfConverter.ImageMap;
 import de.nihas101.imagesToPdfConverter.Main;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
-import de.nihas101.imagesToPdfConverter.fileReader.ImageDirectoriesIterator;
 import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imagesToPdfConverter.pdf.ImagePdfBuilder;
 import javafx.application.Platform;
@@ -13,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -21,18 +18,13 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import static de.nihas101.imagesToPdfConverter.Constants.DIRECTORY_IMAGE_PATH;
 import static de.nihas101.imagesToPdfConverter.Constants.NOTIFICATION_MAX_STRING_LENGTH;
-import static de.nihas101.imagesToPdfConverter.DirectoryContentDisplay.createDirectoryContentDisplay;
-import static de.nihas101.imagesToPdfConverter.ImageDisplay.createImageDisplay;
+import static de.nihas101.imagesToPdfConverter.ContentDisplayer.createContentDisplayer;
+import static de.nihas101.imagesToPdfConverter.ImageMap.createImageMap;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.*;
 
@@ -47,16 +39,18 @@ public class MainController {
 
     private Main main;
     private File chosenDirectory;
-    private Map<String, Image> imageMap;
+    private ImageMap imageMap;
 
     private DirectoryChooser directoryChooser;
     private FileChooser saveFileChooser;
+
+    /* TODO: Empty directory leads to crash! */
 
     public void setup(Main main){
         this.main = main;
         setupDirectoryChooser();
         setupSaveFileChooser();
-        imageMap = new HashMap<>();
+        imageMap = createImageMap(new HashMap<>());
     }
 
     private void setupDirectoryChooser() {
@@ -95,7 +89,10 @@ public class MainController {
         int nrOfFiles = directoryIterator.nrOfFiles();
 
         new Thread(() -> {
-            setupImageMap(imageMap, directoryIterator.getFiles());
+            imageMap.setupImageMap(directoryIterator.getFiles(),
+                    (loadedFiles) ->
+                    notifyUser("Loading images... (" + loadedFiles + "/" + nrOfFiles + ")", BLACK)
+            );
 
             Platform.runLater(() -> {
                 imageListView.setItems(observableArrayList(directoryIterator.getFiles()));
@@ -103,35 +100,6 @@ public class MainController {
                 notifyUser("Images: " + nrOfFiles, BLACK);
             });
         }).start();
-    }
-
-    private void setupImageMap(Map<String, Image> imageMap, List<File> files) {
-        imageMap.clear();
-
-        if(files.size() == 0) return;
-
-        for (int index = 0; index < files.size(); index++) {
-            if(files.get(index).isDirectory()) {
-                File directoryImage = new File(DIRECTORY_IMAGE_PATH);
-                putIntoImageMap(imageMap, directoryImage);
-            }else{
-                notifyUser("Loading images... (" + index + "/" + files.size() + ")", BLACK);
-                putIntoImageMap(imageMap, files.get(index));
-            }
-        }
-    }
-
-    private void putIntoImageMap(Map<String, Image> imageMap, File file){
-        try {
-            String url = file.toURI().toURL().toString();
-            /*
-             * Scale images for a smaller memory print.
-             * Thanks: stackoverflow.com/questions/15088271/javafx-loading-images-and-memory-problems
-             */
-            imageMap.putIfAbsent(url, new Image(url, 100, 100, true, false));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
     }
 
     public void buildPdf(ActionEvent actionEvent) {
@@ -171,7 +139,8 @@ public class MainController {
     }
 
     private void notifyUser(String message, Color color){
-        if(message.length() > NOTIFICATION_MAX_STRING_LENGTH) message = message.substring(0, NOTIFICATION_MAX_STRING_LENGTH) + "...";
+        if(message.length() > NOTIFICATION_MAX_STRING_LENGTH)
+            message = message.substring(0, NOTIFICATION_MAX_STRING_LENGTH) + "...";
 
         notificationText.setText(message);
         notificationText.setFill(color);
@@ -181,40 +150,8 @@ public class MainController {
         if(imageListView.getItems().size() == 0) return;
 
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
-            int index =imageListView.getSelectionModel().getSelectedIndex();
-            //File file = imageListView.getSelectionModel().getSelectedItem();
-
-            if(multipleDirectoriesCheckBox.isSelected()) displayDirectory(index);
-            else displayImage(index);
+            int index = imageListView.getSelectionModel().getSelectedIndex();
+            createContentDisplayer(main.getDirectoryIterator()).displayContent(index);
         }
-    }
-
-    private void displayDirectory(int index) {
-        DirectoryContentDisplay directoryContentDisplay;
-
-        directoryContentDisplay = createDirectoryContentDisplay(
-                ((ImageDirectoriesIterator) main.getDirectoryIterator()).getImageFilesIterator(index)
-        );
-
-        try { directoryContentDisplay.start(new Stage()); }
-        catch (Exception e) { e.printStackTrace(); }
-    }
-
-    private void displayImage(int index) {
-        ImageDisplay imageDisplay;
-        File file = main.getDirectoryIterator().getFile(index);
-
-        try {
-            imageDisplay = createImageDisplay(
-                    new Image(String.valueOf(file.toURI().toURL())),
-                    file.getAbsolutePath()
-            );
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        try { imageDisplay.start(new Stage()); }
-        catch (Exception e) { e.printStackTrace(); }
     }
 }
