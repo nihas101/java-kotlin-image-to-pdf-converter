@@ -26,9 +26,9 @@ class FullPageImageCropper : ImagePdfPageFormatter(){
         pdfPage.pdfObject.put(PdfName.CropBox, cropBoxArray)
     }
 
-    private fun createCropBoxArray(lowerLeftX: Float, lowerLeftY: Float, upperRightX: Float, upperRightY: Float): PdfArray {
-        return PdfArray(floatArrayOf(lowerLeftX,lowerLeftY,upperRightX,upperRightY))
-    }
+    private fun createCropBoxArray(lowerLeftX: Float, lowerLeftY: Float, upperRightX: Float, upperRightY: Float): PdfArray
+        = PdfArray(floatArrayOf(lowerLeftX,lowerLeftY,upperRightX,upperRightY))
+
 
     private fun calculateBottomCrop(height: Float, scale: Float): Float = Math.abs(height - (height * scale))
 
