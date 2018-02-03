@@ -8,4 +8,5 @@ interface DirectoryIterator {
     fun getFiles(): List<File>
     fun nrOfFiles(): Int
     fun getParentDirectory(): File
+    fun resetIndex()
 }

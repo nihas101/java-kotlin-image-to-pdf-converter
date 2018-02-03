@@ -22,6 +22,10 @@ class ImageFilesIterator private constructor(private val directory: File): Direc
         throw NoMoreImagesException(directory)
     }
 
+    override fun resetIndex() {
+        currentIndex = 0
+    }
+
     override fun nrOfFiles(): Int = files.size
 
     override fun getParentDirectory(): File = directory

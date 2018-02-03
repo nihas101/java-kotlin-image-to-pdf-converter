@@ -33,5 +33,9 @@ class ImageDirectoriesIterator(private val directory: File): DirectoryIterator{
         throw NoMoreDirectoriesException(directory)
     }
 
+    override fun resetIndex() {
+        currentIndex = 0
+    }
+
     override fun getFile(index: Int): File = directories[index]
 }
