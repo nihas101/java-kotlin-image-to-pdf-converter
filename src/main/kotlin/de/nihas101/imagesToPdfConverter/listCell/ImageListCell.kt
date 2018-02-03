@@ -3,6 +3,7 @@ package de.nihas101.imagesToPdfConverter.listCell
 import de.nihas101.imagesToPdfConverter.Constants.*
 import de.nihas101.imagesToPdfConverter.ImageMap
 import javafx.collections.ObservableList
+import javafx.event.Event
 import javafx.event.EventHandler
 import javafx.geometry.Pos
 import javafx.scene.control.ContextMenu
@@ -27,7 +28,7 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
             graphic = null
         } else {
             loadImage(file)
-            setupImageListCellContextMenu(file, files, observableFiles)
+            setupImageListCellContextMenu(file)
             setupDragAndDrop()
         }
     }
@@ -93,13 +94,6 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
         }
     }
 
-    private fun reorder(from: Int, to: Int){
-        val file = files.removeAt(from)
-        observableFiles.removeAt(from)
-        files.add(to,file)
-        observableFiles.add(to,file)
-    }
-
     private fun loadImage(file: File?) {
         if(file!!.isDirectory)
             imageView.image = imageMap[directoryImageString]
@@ -131,21 +125,61 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
             Text(text)
     }
 
-    private fun setupImageListCellContextMenu(file: File, files: MutableList<File>, observableFiles: ObservableList<File>){
+    private fun setupImageListCellContextMenu(file: File){
         contextMenu = ContextMenu()
 
-        val deleteItem = setupMenuItem(file, files, observableFiles)
-        contextMenu.items.add(deleteItem)
+        val deleteItem = setupMenuItem(
+                "Remove ${file.name}",
+                { event ->
+                    removeFromLists()
+                    imageMap.remove(file.toURI().toURL().toString())
+                    event.consume()
+                })
+
+        val moveUpItem = setupMenuItem(
+                "Move ${file.name} up",
+                {_ -> if(index > 0) moveTo(index-1) }
+        )
+
+        val moveDownItem = setupMenuItem("Move ${file.name} down",
+                {_ -> if(index < files.size) moveTo(index+1) }
+        )
+
+        val moveToFrontItem = setupMenuItem(
+                "Move ${file.name} to the front",
+                {_ -> if(index > 0) moveTo(0) }
+        )
+
+        val moveToBackItem = setupMenuItem("Move ${file.name} to the back",
+                {_ -> if(index < files.size) moveTo(files.size-1) }
+        )
+
+        if(index == 0) moveUpItem.disableProperty().set(false)
+        if(index == files.size-1) moveDownItem.disableProperty().set(false)
+        if(index == 0) moveToFrontItem.disableProperty().set(false)
+        if(index == files.size-1) moveToBackItem.disableProperty().set(false)
+
+        contextMenu.items.addAll(moveUpItem, moveToFrontItem, moveDownItem, moveToBackItem, deleteItem)
     }
 
-    private fun setupMenuItem(file: File, files: MutableList<File>, observableFiles: ObservableList<File>): MenuItem{
+    private fun reorder(from: Int, to: Int){
+        observableFiles.add(to, observableFiles.removeAt(from))
+    }
+
+    private fun moveTo(index: Int){
+        addToLists(index, removeFromLists())
+    }
+
+    private fun addToLists(index: Int, file: File){
+        observableFiles.add(index, file)
+    }
+
+    private fun removeFromLists(): File = observableFiles.removeAt(index)
+
+    private fun setupMenuItem(text: String, onAction: (Event) -> Unit): MenuItem{
         val menuItem = MenuItem()
-        menuItem.textProperty().set("Remove ${file.name}")
-        menuItem.setOnAction({ _ ->
-            files.removeAt(this.index)
-            observableFiles.removeAt(this.index)
-            imageMap.remove(file.toURI().toURL().toString())
-        })
+        menuItem.textProperty().set(text)
+        menuItem.setOnAction(onAction)
 
         return menuItem
     }

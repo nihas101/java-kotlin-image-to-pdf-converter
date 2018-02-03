@@ -97,9 +97,13 @@ public class MainController {
 
             Platform.runLater(() -> {
                 ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
-                observableFiles.addListener((ListChangeListener<File>) c ->
-                        notifyUser("Files: " + observableFiles.size(), BLACK)
-                );
+                observableFiles.addListener((ListChangeListener<File>) c -> {
+                    while(c.next()) {
+                        if (c.wasRemoved()) directoryIterator.getFiles().remove(c.getRemoved().get(0));
+                        if (c.wasAdded()) directoryIterator.getFiles().add(c.getFrom(), c.getAddedSubList().get(0));
+                        notifyUser("Files: " + observableFiles.size(), BLACK);
+                    }
+                });
                 imageListView.setItems(observableFiles);
                 imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
                 notifyUser("Files: " + nrOfFiles, BLACK);
