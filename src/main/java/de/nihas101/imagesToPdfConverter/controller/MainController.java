@@ -3,7 +3,9 @@ package de.nihas101.imagesToPdfConverter.controller;
 import de.nihas101.imagesToPdfConverter.ImageMap;
 import de.nihas101.imagesToPdfConverter.Main;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
+import de.nihas101.imagesToPdfConverter.fileReader.ImageDirectoriesIterator;
 import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
+import de.nihas101.imagesToPdfConverter.pdf.ImageDirectoriesPdfBuilder;
 import de.nihas101.imagesToPdfConverter.pdf.ImagePdfBuilder;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -23,7 +25,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import static de.nihas101.imagesToPdfConverter.Constants.NOTIFICATION_MAX_STRING_LENGTH;
-import static de.nihas101.imagesToPdfConverter.ContentDisplayer.createContentDisplayer;
+import static de.nihas101.imagesToPdfConverter.contentDisplay.ContentDisplayer.createContentDisplayer;
 import static de.nihas101.imagesToPdfConverter.ImageMap.createImageMap;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.*;
@@ -105,11 +107,8 @@ public class MainController {
     public void buildPdf(ActionEvent actionEvent) {
         if(!valuesSet()) return;
 
-        if(!multipleDirectoriesCheckBox.isSelected()) {
-            buildSinglePdf();
-        }else{
-            buildMultiplePdf();
-        }
+        if(multipleDirectoriesCheckBox.isSelected()) buildMultiplePdf();
+        else buildSinglePdf();
     }
 
     private void buildSinglePdf(){
@@ -118,20 +117,32 @@ public class MainController {
         File saveFile = saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
 
         if(saveFile != null) {
+            /* TODO: Turn this into a Thread, so the progressbar is updated */
             ImagePdfBuilder imagePdfBuilder = ImagePdfBuilder.PdfBuilderFactory.createPdfImageBuilder();
-            imagePdfBuilder.build(main.getDirectoryIterator(), saveFile, (progress) -> buildProgressBar.setProgress(progress));
+            imagePdfBuilder.build(
+                    main.getDirectoryIterator(),
+                    saveFile,
+                    (progress) -> buildProgressBar.setProgress(progress)
+            );
             notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
         }
     }
 
     private void buildMultiplePdf() {
-        System.out.println("Not implemented yet");
-        /* TODO */
+        ImageDirectoriesPdfBuilder imageDirectoriesPdfBuilder = ImageDirectoriesPdfBuilder.PdfBuilderFactory.createPdfBuilderFactory();
+        imageDirectoriesPdfBuilder.build(
+                (ImageDirectoriesIterator) main.getDirectoryIterator(),
+                (progress) -> buildProgressBar.setProgress(progress)
+        );
+        notifyUser("Finished building: " + main.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
     }
 
     private boolean valuesSet() {
         if(main.getDirectoryIterator() == null){
             notifyUser("Please choose a directory", RED);
+            return false;
+        }else if(main.getDirectoryIterator().nrOfFiles() == 0){
+            notifyUser("There are no images to turn into a PDF", RED);
             return false;
         }
 

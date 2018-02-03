@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 import java.io.File;
 import java.util.HashMap;
 
-import static de.nihas101.imagesToPdfConverter.ContentDisplayer.createContentDisplayer;
+import static de.nihas101.imagesToPdfConverter.contentDisplay.ContentDisplayer.createContentDisplayer;
 import static javafx.collections.FXCollections.observableArrayList;
 
 public class DirectoryContentDisplayController {
