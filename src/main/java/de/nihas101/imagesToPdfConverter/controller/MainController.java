@@ -8,6 +8,8 @@ import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imagesToPdfConverter.pdf.ImageDirectoriesPdfBuilder;
 import de.nihas101.imagesToPdfConverter.pdf.ImagePdfBuilder;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -46,8 +48,6 @@ public class MainController {
     private DirectoryChooser directoryChooser;
     private FileChooser saveFileChooser;
 
-    /* TODO: Empty directory leads to crash! */
-
     public void setup(Main main){
         this.main = main;
         setupDirectoryChooser();
@@ -67,9 +67,6 @@ public class MainController {
         saveFileChooser.getExtensionFilters().add(extFilter);
     }
 
-    /* TODO: Implement Drag and Drop on Listview to allow for changing of order
-    *  TODO: - Change order in directoryIterator.getFiles()... */
-
     public void chooseDirectory(ActionEvent actionEvent) {
         if(multipleDirectoriesCheckBox.isSelected())
             directoryChooser.setTitle("Choose a directory of directories to turn into a PDF");
@@ -85,6 +82,8 @@ public class MainController {
                 main.setupIterator(chosenDirectory);
             setListView(main.getDirectoryIterator());
         }
+
+        actionEvent.consume();
     }
 
     private void setListView(DirectoryIterator directoryIterator) {
@@ -93,13 +92,17 @@ public class MainController {
         new Thread(() -> {
             imageMap.setupImageMap(directoryIterator.getFiles(),
                     (loadedFiles) ->
-                    notifyUser("Loading images... (" + loadedFiles + "/" + nrOfFiles + ")", BLACK)
+                    notifyUser("Loading files... (" + loadedFiles + "/" + nrOfFiles + ")", BLACK)
             );
 
             Platform.runLater(() -> {
-                imageListView.setItems(observableArrayList(directoryIterator.getFiles()));
-                imageListView.setCellFactory(param -> new ImageListCell(imageMap));
-                notifyUser("Images: " + nrOfFiles, BLACK);
+                ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
+                observableFiles.addListener((ListChangeListener<File>) c ->
+                        notifyUser("Files: " + observableFiles.size(), BLACK)
+                );
+                imageListView.setItems(observableFiles);
+                imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
+                notifyUser("Files: " + nrOfFiles, BLACK);
             });
         }).start();
     }
@@ -109,6 +112,8 @@ public class MainController {
 
         if(multipleDirectoriesCheckBox.isSelected()) buildMultiplePdf();
         else buildSinglePdf();
+
+        actionEvent.consume();
     }
 
     private void buildSinglePdf(){
@@ -131,7 +136,6 @@ public class MainController {
     private void buildMultiplePdf() {
         directoryChooser.setInitialDirectory(main.getDirectoryIterator().getParentDirectory());
         directoryChooser.setTitle("Choose a folder to save the PDFs in");
-        //saveFileChooser.setInitialDirectory(chosenDirectory.getParentFile());
         File saveFile = directoryChooser.showDialog(buildButton.getScene().getWindow());
 
         if(saveFile != null) {
@@ -150,7 +154,7 @@ public class MainController {
             notifyUser("Please choose a directory", RED);
             return false;
         }else if(main.getDirectoryIterator().nrOfFiles() == 0){
-            notifyUser("There are no images to turn into a PDF", RED);
+            notifyUser("There are no files to turn into a PDF", RED);
             return false;
         }
 

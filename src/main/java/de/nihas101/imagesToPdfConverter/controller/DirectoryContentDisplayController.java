@@ -42,5 +42,7 @@ public class DirectoryContentDisplayController {
             int index = imageListView.getSelectionModel().getSelectedIndex();
             createContentDisplayer(imageFilesIterator).displayContent(index);
         }
+
+        mouseEvent.consume();
     }
 }
