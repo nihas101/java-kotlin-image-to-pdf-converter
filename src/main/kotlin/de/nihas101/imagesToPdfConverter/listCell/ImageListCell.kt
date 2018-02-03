@@ -1,15 +1,15 @@
 package de.nihas101.imagesToPdfConverter.listCell
 
 import de.nihas101.imagesToPdfConverter.Constants.*
+import de.nihas101.imagesToPdfConverter.ImageMap
 import javafx.geometry.Pos
 import javafx.scene.control.ListCell
-import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.VBox
 import javafx.scene.text.Text
 import java.io.File
 
-class ImageListCell(private val imageMap: Map<String, Image>) : ListCell<File>(){
+class ImageListCell(private val imageMap: ImageMap) : ListCell<File>(){
     private val imageView: ImageView = ImageView()
     private val directoryImageString = File(DIRECTORY_IMAGE_PATH).toURI().toURL().toString()
 
