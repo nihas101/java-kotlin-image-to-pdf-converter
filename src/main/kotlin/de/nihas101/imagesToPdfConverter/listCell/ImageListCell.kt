@@ -58,23 +58,17 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
         }
     }
 
-    private fun setOnDragOver() {
-        setOnDragOver { event ->
-            if (event.gestureSource !== this && event.dragboard.hasString()) event.acceptTransferModes(TransferMode.MOVE)
-            event.consume()
-        }
+    private fun setOnDragOver() = setOnDragOver { event ->
+        if (event.gestureSource !== this && event.dragboard.hasString()) event.acceptTransferModes(TransferMode.MOVE)
+        event.consume()
     }
 
-    private fun setOnDragEntered() {
-        setOnDragEntered { event ->
-            if (event.gestureSource !== this && event.dragboard.hasString()) opacity = 0.3
-        }
+    private fun setOnDragEntered() = setOnDragEntered { event ->
+        if (event.gestureSource !== this && event.dragboard.hasString()) opacity = 0.3
     }
 
-    private fun setOnDragExited(){
-        setOnDragExited { event ->
-            if (event.gestureSource !== this && event.dragboard.hasString()) opacity = 1.0
-        }
+    private fun setOnDragExited() = setOnDragExited { event ->
+        if (event.gestureSource !== this && event.dragboard.hasString()) opacity = 1.0
     }
 
     private fun setOnDragDone() {
@@ -162,17 +156,11 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
         contextMenu.items.addAll(moveUpItem, moveToFrontItem, moveDownItem, moveToBackItem, deleteItem)
     }
 
-    private fun reorder(from: Int, to: Int){
-        observableFiles.add(to, observableFiles.removeAt(from))
-    }
+    private fun reorder(from: Int, to: Int) = observableFiles.add(to, observableFiles.removeAt(from))
 
-    private fun moveTo(index: Int){
-        addToLists(index, removeFromLists())
-    }
+    private fun moveTo(index: Int) = addToLists(index, removeFromLists())
 
-    private fun addToLists(index: Int, file: File){
-        observableFiles.add(index, file)
-    }
+    private fun addToLists(index: Int, file: File) = observableFiles.add(index, file)
 
     private fun removeFromLists(): File = observableFiles.removeAt(index)
 
