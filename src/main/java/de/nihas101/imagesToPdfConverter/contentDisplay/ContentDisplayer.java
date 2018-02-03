@@ -1,16 +1,15 @@
-package de.nihas101.imagesToPdfConverter;
+package de.nihas101.imagesToPdfConverter.contentDisplay;
 
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.fileReader.ImageDirectoriesIterator;
-import de.nihas101.imagesToPdfConverter.fileReader.ImageFilesIterator;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
-import static de.nihas101.imagesToPdfConverter.DirectoryContentDisplay.createDirectoryContentDisplay;
-import static de.nihas101.imagesToPdfConverter.ImageDisplay.createImageDisplay;
+import static de.nihas101.imagesToPdfConverter.contentDisplay.DirectoryContentDisplay.createDirectoryContentDisplay;
+import static de.nihas101.imagesToPdfConverter.contentDisplay.ImageDisplay.createImageDisplay;
 
 public class ContentDisplayer {
     private final DirectoryIterator directoryIterator;

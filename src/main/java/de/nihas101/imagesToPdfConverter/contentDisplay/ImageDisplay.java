@@ -1,4 +1,4 @@
-package de.nihas101.imagesToPdfConverter;
+package de.nihas101.imagesToPdfConverter.contentDisplay;
 
 import de.nihas101.imagesToPdfConverter.controller.ImageDisplayController;
 import javafx.application.Application;
@@ -17,7 +17,7 @@ public class ImageDisplay extends Application {
         this.imageLocation = imageLocation;
     }
 
-    public static ImageDisplay createImageDisplay(Image image, String imageLocation){
+    static ImageDisplay createImageDisplay(Image image, String imageLocation){
         return new ImageDisplay(image, imageLocation);
     }
 

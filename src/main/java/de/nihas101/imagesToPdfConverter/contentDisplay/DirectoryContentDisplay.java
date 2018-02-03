@@ -1,7 +1,6 @@
-package de.nihas101.imagesToPdfConverter;
+package de.nihas101.imagesToPdfConverter.contentDisplay;
 
 import de.nihas101.imagesToPdfConverter.controller.DirectoryContentDisplayController;
-import de.nihas101.imagesToPdfConverter.controller.ImageDisplayController;
 import de.nihas101.imagesToPdfConverter.fileReader.ImageFilesIterator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +15,7 @@ public class DirectoryContentDisplay extends Application {
         this.imageFilesIterator = imageFilesIterator;
     }
 
-    public static DirectoryContentDisplay createDirectoryContentDisplay(ImageFilesIterator imageFilesIterator){
+    static DirectoryContentDisplay createDirectoryContentDisplay(ImageFilesIterator imageFilesIterator){
         return new DirectoryContentDisplay(imageFilesIterator);
     }
 
