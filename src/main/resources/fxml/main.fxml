@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -21,7 +22,7 @@
         <items>
             <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="680.0">
                <children>
-                <Button fx:id="directoryButton" layoutX="-7.0" layoutY="2.0" mnemonicParsing="false" onAction="#chooseDirectory" text="Choose dir" AnchorPane.leftAnchor="10.0">
+                <Button fx:id="directoryButton" layoutX="66.0" layoutY="2.0" mnemonicParsing="false" onAction="#chooseDirectory" text="Choose dir" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="0.0">
                      <tooltip>
                         <Tooltip text="Choose a directory to load images from" />
                      </tooltip>
@@ -31,11 +32,23 @@
                         <Tooltip text="Build the PDF" />
                      </tooltip>
                   </Button>
-                  <CheckBox fx:id="multipleDirectoriesCheckBox" layoutX="44.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="25.0" text="Directoy of directories" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="0.0">
+                  <CheckBox fx:id="multipleDirectoriesCheckBox" layoutX="157.0" layoutY="1.0" mnemonicParsing="false" prefHeight="25.0" text="Directoy of directories" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="157.0" AnchorPane.topAnchor="0.0">
                      <tooltip>
                         <Tooltip text="Load images from subdirectories of the directory instead" />
                      </tooltip>
                   </CheckBox>
+                  <Button fx:id="optionsButton" layoutX="7.0" layoutY="4.0" mnemonicParsing="false" onAction="#openOptionsMenu" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <graphic>
+                        <ImageView fitHeight="10.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="2.25" scaleY="2.25" scaleZ="2.25">
+                           <image>
+                              <Image url="@../icons8-gear-96.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D />
+                           </viewport>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </AnchorPane>
         </items>

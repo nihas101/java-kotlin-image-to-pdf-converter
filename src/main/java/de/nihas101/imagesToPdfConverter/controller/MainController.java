@@ -48,6 +48,8 @@ public class MainController {
     public Text notificationText;
     @FXML
     public TextFlow notificationTextFlow;
+    @FXML
+    public Button optionsButton;
 
     /**
      * The {@link Main} belonging to this Controller
@@ -271,5 +273,9 @@ public class MainController {
             int index = imageListView.getSelectionModel().getSelectedIndex();
             createContentDisplayer(main.getDirectoryIterator()).displayContent(index);
         }
+    }
+
+    public void openOptionsMenu(ActionEvent actionEvent) {
+        /* TODO */
     }
 }
