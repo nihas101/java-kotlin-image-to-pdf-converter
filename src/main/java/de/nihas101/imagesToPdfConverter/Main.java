@@ -13,9 +13,12 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
+import static javafx.scene.input.KeyEvent.KEY_PRESSED;
+
 
 public class Main extends Application{
     private DirectoryIterator directoryIterator;
+    private MainController mainController;
 
     /**
      * {@inheritDoc}
@@ -24,11 +27,12 @@ public class Main extends Application{
         /* Load root-node */
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
         GridPane root = loader.load();
-        MainController mainController = loader.getController();
+        mainController = loader.getController();
         mainController.setup(this);
 
         /* Create Scene */
         Scene scene = new Scene(root);
+        setupKeyEvents(scene);
 
         primaryStage.setTitle("Images 2 PDF Converter");
         primaryStage.setScene(scene);
@@ -42,6 +46,18 @@ public class Main extends Application{
 
     public void setupIterator(File file) {
         directoryIterator = ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(file);
+    }
+
+    private void setupKeyEvents(Scene scene){
+        scene.addEventHandler(KEY_PRESSED, (event) -> {
+            switch(event.getCode()){
+                case DELETE: {
+                    if(mainController.imageListView.getSelectionModel().getSelectedIndex() > -1)
+                        mainController.imageListView.getItems().remove(mainController.imageListView.getSelectionModel().getSelectedIndex());
+                } break;
+                default: /* NOP */
+            }
+        });
     }
 
     public void setupDirectoriesIterator(File file){
