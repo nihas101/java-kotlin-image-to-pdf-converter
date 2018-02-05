@@ -1,0 +1,59 @@
+/* fxexperience.com/2011/12/styling-fx-buttons-with-css/ */
+.button{
+     -fx-background-color:
+             linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
+             linear-gradient(#020b02, #3a3a3a),
+             linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),
+             linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%);
+     -fx-text-fill: #333333;
+     -fx-border-width: 1.5;
+}
+
+.button:focused{
+    -fx-border-color: black;
+    -fx-background-color: linear-gradient(grey, white);
+    -fx-text-fill: #333333;
+}
+
+.check-box{
+    -fx-background-color:
+             linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
+             linear-gradient(#020b02, #3a3a3a),
+             linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),
+             linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%);
+     -fx-text-fill: #333333;
+}
+
+.menu-button{
+    -fx-background-color:
+             linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
+             linear-gradient(#020b02, #3a3a3a),
+             linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),
+             linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%);
+     -fx-background-radius: 2, 2, 2, 2;
+     -fx-text-fill: #333333;
+}
+
+.toolbar-text{
+     -fx-background-color: white;
+     -fx-text-fill: #333333;
+     -fx-border-color: black;
+     -fx-border-radius: 0, 0, 0, 0;
+     -fx-text-fill: #333333;
+}
+
+.tool-bar{
+    -fx-background-color:
+                 linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
+                 linear-gradient(#020b02, #3a3a3a),
+                 linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),
+                 linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%);
+}
+
+.background{
+    -fx-background-color:
+                 linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
+                 linear-gradient(#020b02, #3a3a3a),
+                 linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),
+                 linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%);
+}

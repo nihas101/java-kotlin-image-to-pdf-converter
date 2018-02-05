@@ -1,11 +1,14 @@
 package de.nihas101.imagesToPdfConverter.controller;
 
+import com.itextpdf.kernel.pdf.CompressionConstants;
+import com.itextpdf.kernel.pdf.PdfVersion;
 import de.nihas101.imagesToPdfConverter.ImageMap;
 import de.nihas101.imagesToPdfConverter.Main;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imagesToPdfConverter.pdf.ImageDirectoriesPdfBuilder;
 import de.nihas101.imagesToPdfConverter.pdf.ImagePdfBuilder;
+import de.nihas101.imagesToPdfConverter.pdf.Options;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -13,7 +16,6 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -28,9 +30,12 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.HashMap;
 
+import static com.itextpdf.kernel.pdf.CompressionConstants.DEFAULT_COMPRESSION;
+import static com.itextpdf.kernel.pdf.PdfVersion.PDF_1_7;
 import static de.nihas101.imagesToPdfConverter.Constants.NOTIFICATION_MAX_STRING_LENGTH;
-import static de.nihas101.imagesToPdfConverter.contentDisplay.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imagesToPdfConverter.ImageMap.createImageMap;
+import static de.nihas101.imagesToPdfConverter.OptionsMenu.createOptionsMenu;
+import static de.nihas101.imagesToPdfConverter.contentDisplay.DirectoryIteratorDisplayer.createContentDisplayer;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.*;
 
@@ -38,7 +43,6 @@ public class MainController {
     @FXML
     public Button directoryButton;
     @FXML
-    public CheckBox multipleDirectoriesCheckBox;
     public Button buildButton;
     @FXML
     public ProgressBar buildProgressBar;
@@ -64,6 +68,11 @@ public class MainController {
      */
     private ImageMap imageMap;
 
+    /**
+     * The selected {@link Options} for building the PDF(s)
+     */
+    private Options options;
+
     private DirectoryChooser directoryChooser;
     private FileChooser saveFileChooser;
 
@@ -76,6 +85,7 @@ public class MainController {
         setupDirectoryChooser();
         setupSaveFileChooser();
         imageMap = createImageMap(new HashMap<>());
+        options = Options.OptionsFactory.createOptions(false, DEFAULT_COMPRESSION, PDF_1_7);
     }
 
     /**
@@ -101,7 +111,7 @@ public class MainController {
      * @param actionEvent The delivered {@link Event}
      */
     public void chooseDirectory(ActionEvent actionEvent) {
-        if(multipleDirectoriesCheckBox.isSelected())
+        if(options.getMultipleDirectories())
             directoryChooser.setTitle("Choose a directory of directories to turn into a PDF");
         else
             directoryChooser.setTitle("Choose a directory or file to turn into a PDF");
@@ -112,7 +122,7 @@ public class MainController {
             new Thread(() -> {
                 setDisableInput(true);
                 notifyUser("Loading files...", BLACK);
-                if (multipleDirectoriesCheckBox.isSelected())
+                if (options.getMultipleDirectories())
                     main.setupDirectoriesIterator(chosenDirectory);
                 else
                     main.setupIterator(chosenDirectory);
@@ -149,7 +159,7 @@ public class MainController {
         observableFiles.addListener(setupListChangeListener(directoryIterator, observableFiles));
         imageListView.setItems(observableFiles);
         imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
-        notifyUser("Files: " + directoryIterator.getFiles(), BLACK);
+        notifyUser("Files: " + directoryIterator.nrOfFiles(), BLACK);
     }
 
     /**
@@ -176,7 +186,7 @@ public class MainController {
         notifyUser("Building PDF...", BLACK);
 
         setDisableInput(true);
-        if(multipleDirectoriesCheckBox.isSelected()) buildMultiplePdf();
+        if(options.getMultipleDirectories()) buildMultiplePdf();
         else buildSinglePdf();
         setDisableInput(false);
 
@@ -191,7 +201,8 @@ public class MainController {
         imageListView.setDisable(isDisabled);
         buildButton.setDisable(isDisabled);
         directoryButton.setDisable(isDisabled);
-        multipleDirectoriesCheckBox.setDisable(isDisabled);
+        //multipleDirectoriesCheckBox.setDisable(isDisabled);
+        optionsButton.setDisable(isDisabled);
     }
 
     /**
@@ -276,6 +287,8 @@ public class MainController {
     }
 
     public void openOptionsMenu(ActionEvent actionEvent) {
-        /* TODO */
+        try { options = createOptionsMenu(options).setOptions(); }
+        catch (Exception e) { e.printStackTrace(); }
+        actionEvent.consume();
     }
 }

@@ -27,7 +27,7 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
             text = null
             graphic = null
         } else {
-            loadImage(file)
+            setGraphic(file)
             setupImageListCellContextMenu(file)
             setupDragAndDrop()
         }
@@ -88,7 +88,7 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
         }
     }
 
-    private fun loadImage(file: File?) {
+    private fun setGraphic(file: File?) {
         if(file!!.isDirectory)
             imageView.image = imageMap[directoryImageString]
         else

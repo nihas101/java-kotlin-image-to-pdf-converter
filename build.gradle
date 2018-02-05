@@ -13,7 +13,7 @@ targetCompatibility = 1.8
 applicationName = "image2PdfConverter"
 mainClassName = "de.nihas101.imagesToPdfConverter.Main"
 archivesBaseName = 'ImagesToPdfConverter'
-version = '0.7-SNAPSHOT'
+version = '0.9-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.2.21'
