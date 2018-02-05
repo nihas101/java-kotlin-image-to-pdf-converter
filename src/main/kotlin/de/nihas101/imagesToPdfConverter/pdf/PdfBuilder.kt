@@ -5,6 +5,6 @@ import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
 import java.io.File
 
 abstract class PdfBuilder{
-    abstract fun build(directoryIterator: DirectoryIterator, saveFile: File)
-    abstract fun build(directoryIterator: DirectoryIterator, saveFile: File, progressUpdater: ProgressUpdater)
+    abstract fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions)
+    abstract fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions, progressUpdater: ProgressUpdater)
 }

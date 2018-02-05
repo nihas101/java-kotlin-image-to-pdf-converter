@@ -116,6 +116,7 @@ public class DirectoryContentDisplayController {
                 ImagePdfBuilder.PdfBuilderFactory.createPdfImageBuilder().build(
                         directoryIterator,
                         saveFile,
+                        mainController.pdfWriterOptions,
                         progress -> mainController.buildProgressBar.setProgress(progress)
                 );
                 mainController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);

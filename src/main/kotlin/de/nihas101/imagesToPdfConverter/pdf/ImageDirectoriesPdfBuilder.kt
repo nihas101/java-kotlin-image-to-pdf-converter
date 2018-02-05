@@ -12,30 +12,30 @@ class ImageDirectoriesPdfBuilder: PdfBuilder() {
         fun createPdfBuilderFactory() = ImageDirectoriesPdfBuilder()
     }
 
-    override fun build(directoryIterator: DirectoryIterator, saveFile: File){
+    override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions){
         directoryIterator.resetIndex()
         val nrOfFiles = directoryIterator.nrOfFiles()
         if(nrOfFiles == 0) return
 
-        for (i in 0 until nrOfFiles)
-            buildNextPDF(createImageFilesIterator(directoryIterator.nextFile()), saveFile)
+        for (i in 1..nrOfFiles)
+            buildNextPDF(createImageFilesIterator(directoryIterator.nextFile()), saveFile, pdfWriterOptions)
     }
 
-    override fun build(directoryIterator: DirectoryIterator, saveFile: File, progressUpdater: ProgressUpdater){
+    override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions, progressUpdater: ProgressUpdater){
         directoryIterator.resetIndex()
         val nrOfFiles = directoryIterator.nrOfFiles()
         if(nrOfFiles == 0) return
 
-        for (i in 0 until nrOfFiles){
-            buildNextPDF(createImageFilesIterator(directoryIterator.nextFile()), saveFile)
+        for (i in 1..nrOfFiles){
+            buildNextPDF(createImageFilesIterator(directoryIterator.nextFile()), saveFile, pdfWriterOptions)
             progressUpdater.updateProgress(i.toDouble()/nrOfFiles.toDouble())
         }
     }
 
-    private fun buildNextPDF(directoryIterator: DirectoryIterator, saveFile: File){
+    private fun buildNextPDF(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions){
         if(directoryIterator.nrOfFiles() != 0) {
             val file = Paths.get(saveFile.absolutePath + "/" + directoryIterator.getParentDirectory().name + ".pdf").toFile()
-            createPdfImageBuilder().build(directoryIterator, file)
+            createPdfImageBuilder().build(directoryIterator, file, pdfWriterOptions = pdfWriterOptions)
         }
     }
 }

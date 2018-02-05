@@ -20,11 +20,11 @@ class ImagePdf internal constructor(
                 pathName: String,
                 imagePdfPageFormatter: ImagePdfPageFormatter = createFullPageCropper(),
                 outputStream: OutputStream = createFileOutputStream(pathName),
-                options: Options = Options.createOptions()
+                pdfWriterOptions: PdfWriterOptions = PdfWriterOptions.createOptions()
         ): ImagePdf {
             val writerProperties = WriterProperties()
-            writerProperties.setPdfVersion(options.pdfVersion)
-            writerProperties.setCompressionLevel(options.compressionLevel)
+            writerProperties.setPdfVersion(pdfWriterOptions.pdfVersion)
+            writerProperties.setCompressionLevel(pdfWriterOptions.compressionLevel)
             val pdf = PdfDocument(PdfWriter(outputStream, writerProperties))
             val document = Document(pdf)
             document.setMargins(NO_MARGIN, NO_MARGIN, NO_MARGIN, NO_MARGIN)

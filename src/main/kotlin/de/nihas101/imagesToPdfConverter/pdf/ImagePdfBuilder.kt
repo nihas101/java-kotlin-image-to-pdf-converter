@@ -11,23 +11,23 @@ class ImagePdfBuilder: PdfBuilder() {
         fun createPdfImageBuilder() = ImagePdfBuilder()
     }
 
-    override fun build(directoryIterator: DirectoryIterator, saveFile: File){
+    override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions){
         directoryIterator.resetIndex()
-        val imagePdf = ImagePdf.createPdf(saveFile.absolutePath)
+        val imagePdf = ImagePdf.createPdf(saveFile.absolutePath, pdfWriterOptions = pdfWriterOptions)
         val nrOfFiles = directoryIterator.nrOfFiles()
 
-        for (i in 0 until nrOfFiles)
+        for (i in 1..nrOfFiles)
             addNextFileToPDF(directoryIterator,imagePdf)
 
         imagePdf.close()
     }
 
-    override fun build(directoryIterator: DirectoryIterator, saveFile: File, progressUpdater: ProgressUpdater){
+    override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions, progressUpdater: ProgressUpdater){
         directoryIterator.resetIndex()
-        val imagePdf = ImagePdf.createPdf(saveFile.absolutePath)
+        val imagePdf = ImagePdf.createPdf(saveFile.absolutePath, pdfWriterOptions = pdfWriterOptions)
         val nrOfFiles = directoryIterator.nrOfFiles()
 
-        for (i in 0 until nrOfFiles){
+        for (i in 1..nrOfFiles){
             addNextFileToPDF(directoryIterator, imagePdf)
             progressUpdater.updateProgress(i.toDouble()/nrOfFiles.toDouble())
         }

@@ -1,7 +1,7 @@
 package de.nihas101.imagesToPdfConverter.subStages;
 
 import de.nihas101.imagesToPdfConverter.controller.OptionsMenuController;
-import de.nihas101.imagesToPdfConverter.pdf.Options;
+import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,11 +9,11 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class OptionsMenu extends Application {
-    private final Options options;
+    private final PdfWriterOptions pdfWriterOptions;
     private OptionsMenuController optionsMenuController;
 
-    private OptionsMenu(Options options){
-        this.options = options;
+    private OptionsMenu(PdfWriterOptions pdfWriterOptions){
+        this.pdfWriterOptions = pdfWriterOptions;
     }
 
     @Override
@@ -22,30 +22,30 @@ public class OptionsMenu extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/options.fxml"));
         GridPane root = loader.load();
         optionsMenuController = loader.getController();
-        optionsMenuController.setup(options);
+        optionsMenuController.setup(pdfWriterOptions);
 
         /* Create Scene */
         Scene scene = new Scene(root);
 
-        primaryStage.setTitle("Options");
+        primaryStage.setTitle("PdfWriterOptions");
         primaryStage.setScene(scene);
         primaryStage.showAndWait();
         primaryStage.setResizable(false);
     }
 
-    public static OptionsMenu createOptionsMenu(Options options) {
-        return new OptionsMenu(options);
+    public static OptionsMenu createOptionsMenu(PdfWriterOptions pdfWriterOptions) {
+        return new OptionsMenu(pdfWriterOptions);
     }
 
     /**
-     * Returns the set options by the user
+     * Returns the set pdfWriterOptions by the user
      * The method doesn't return until the displayed dialog is dismissed.
-     * @return A new {@link Options} instance holding the options the user
+     * @return A new {@link PdfWriterOptions} instance holding the pdfWriterOptions the user
      * has set
      */
-    public Options setOptions() {
+    public PdfWriterOptions setOptions() {
         try { start(new Stage()); }
         catch (Exception e) { e.printStackTrace(); }
-        return optionsMenuController.getOptions();
+        return optionsMenuController.getPdfWriterOptions();
     }
 }

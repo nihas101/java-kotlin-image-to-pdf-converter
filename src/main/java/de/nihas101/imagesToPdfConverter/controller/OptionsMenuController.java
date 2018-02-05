@@ -1,7 +1,7 @@
 package de.nihas101.imagesToPdfConverter.controller;
 
 import com.itextpdf.kernel.pdf.PdfVersion;
-import de.nihas101.imagesToPdfConverter.pdf.Options;
+import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -18,16 +18,16 @@ public class OptionsMenuController {
     public CheckBox multipleDirectoriesCheckBox;
     public ToggleGroup pdfCompressionToggle;
     public ToggleGroup pdfVersionToggle;
-    private Options options;
+    private PdfWriterOptions pdfWriterOptions;
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
-        options = options.copy(multipleDirectoriesCheckBox.isSelected(), options.getCompressionLevel(), options.getPdfVersion());
+        pdfWriterOptions = pdfWriterOptions.copy(multipleDirectoriesCheckBox.isSelected(), pdfWriterOptions.getCompressionLevel(), pdfWriterOptions.getPdfVersion());
         actionEvent.consume();
     }
 
-    public void setup(Options options) {
-        this.options = options;
-        multipleDirectoriesCheckBox.setSelected(options.getMultipleDirectories());
+    public void setup(PdfWriterOptions pdfWriterOptions) {
+        this.pdfWriterOptions = pdfWriterOptions;
+        multipleDirectoriesCheckBox.setSelected(pdfWriterOptions.getMultipleDirectories());
         setupPdfVersionUserData(pdfVersionToggle);
         setSelectedPdfVersion(pdfVersionToggle);
         setupCompressionUserData(pdfCompressionToggle);
@@ -49,7 +49,7 @@ public class OptionsMenuController {
     }
 
     private void setSelectedPdfVersion(ToggleGroup pdfVersionToggle) {
-        PdfVersion pdfVersion = options.getPdfVersion();
+        PdfVersion pdfVersion = pdfWriterOptions.getPdfVersion();
 
         if(pdfVersion.equals(PDF_1_0))
             pdfVersionToggle.getToggles().get(0).setSelected(true);
@@ -81,7 +81,7 @@ public class OptionsMenuController {
     }
 
     private void setSelectedCompression(ToggleGroup pdfCompressionToggle) {
-        switch (options.getCompressionLevel()){
+        switch (pdfWriterOptions.getCompressionLevel()){
             case NO_COMPRESSION: pdfCompressionToggle.getToggles().get(0).setSelected(true); break;
             case BEST_COMPRESSION: pdfCompressionToggle.getToggles().get(2).setSelected(true); break;
             case BEST_SPEED: pdfCompressionToggle.getToggles().get(3).setSelected(true); break;
@@ -89,17 +89,17 @@ public class OptionsMenuController {
         }
     }
 
-    public Options getOptions() {
-        return options;
+    public PdfWriterOptions getPdfWriterOptions() {
+        return pdfWriterOptions;
     }
 
     public void setPdfVersion(ActionEvent actionEvent) {
-        options = options.copy(options.getMultipleDirectories(), options.getCompressionLevel(), (PdfVersion) pdfVersionToggle.getSelectedToggle().getUserData());
+        pdfWriterOptions = pdfWriterOptions.copy(pdfWriterOptions.getMultipleDirectories(), pdfWriterOptions.getCompressionLevel(), (PdfVersion) pdfVersionToggle.getSelectedToggle().getUserData());
         actionEvent.consume();
     }
 
     public void setCompression(ActionEvent actionEvent) {
-        options = options.copy(options.getMultipleDirectories(), (Integer) pdfCompressionToggle.getSelectedToggle().getUserData(), options.getPdfVersion());
+        pdfWriterOptions = pdfWriterOptions.copy(pdfWriterOptions.getMultipleDirectories(), (Integer) pdfCompressionToggle.getSelectedToggle().getUserData(), pdfWriterOptions.getPdfVersion());
         actionEvent.consume();
     }
 }

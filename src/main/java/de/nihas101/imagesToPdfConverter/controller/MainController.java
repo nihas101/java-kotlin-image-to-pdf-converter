@@ -6,7 +6,7 @@ import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imagesToPdfConverter.pdf.ImageDirectoriesPdfBuilder;
 import de.nihas101.imagesToPdfConverter.pdf.ImagePdfBuilder;
-import de.nihas101.imagesToPdfConverter.pdf.Options;
+import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -67,9 +67,9 @@ public class MainController {
     private ImageMap imageMap;
 
     /**
-     * The selected {@link Options} for building the PDF(s)
+     * The selected {@link PdfWriterOptions} for building the PDF(s)
      */
-    private Options options;
+     public PdfWriterOptions pdfWriterOptions;
 
     private DirectoryChooser directoryChooser;
     FileChooser saveFileChooser;
@@ -83,7 +83,7 @@ public class MainController {
         setupDirectoryChooser();
         setupSaveFileChooser();
         imageMap = createImageMap(new HashMap<>());
-        options = Options.OptionsFactory.createOptions(false, DEFAULT_COMPRESSION, PDF_1_7);
+        pdfWriterOptions = PdfWriterOptions.OptionsFactory.createOptions(false, DEFAULT_COMPRESSION, PDF_1_7);
     }
 
     /**
@@ -109,7 +109,7 @@ public class MainController {
      * @param actionEvent The delivered {@link Event}
      */
     public void chooseDirectory(ActionEvent actionEvent) {
-        if(options.getMultipleDirectories())
+        if(pdfWriterOptions.getMultipleDirectories())
             directoryChooser.setTitle("Choose a directory of directories to turn into a PDF");
         else
             directoryChooser.setTitle("Choose a directory or file to turn into a PDF");
@@ -120,7 +120,7 @@ public class MainController {
             new Thread(() -> {
                 setDisableInput(true);
                 notifyUser("Loading files...", BLACK);
-                if (options.getMultipleDirectories())
+                if (pdfWriterOptions.getMultipleDirectories())
                     main.setupDirectoriesIterator(chosenDirectory);
                 else
                     main.setupIterator(chosenDirectory);
@@ -184,7 +184,7 @@ public class MainController {
         notifyUser("Building PDF...", BLACK);
 
         setDisableInput(true);
-        if(options.getMultipleDirectories()) buildMultiplePdf();
+        if(pdfWriterOptions.getMultipleDirectories()) buildMultiplePdf();
         else buildSinglePdf();
         setDisableInput(false);
 
@@ -215,6 +215,7 @@ public class MainController {
                 ImagePdfBuilder.PdfBuilderFactory.createPdfImageBuilder().build(
                         main.getDirectoryIterator(),
                         saveFile,
+                        pdfWriterOptions,
                         progress -> buildProgressBar.setProgress(progress)
                 );
                 notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
@@ -235,6 +236,7 @@ public class MainController {
                 ImageDirectoriesPdfBuilder.PdfBuilderFactory.createPdfBuilderFactory().build(
                         main.getDirectoryIterator(),
                         saveFile,
+                        pdfWriterOptions,
                         progress -> buildProgressBar.setProgress(progress)
                 );
                 notifyUser("Finished building: " + main.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
@@ -286,7 +288,7 @@ public class MainController {
     }
 
     public void openOptionsMenu(ActionEvent actionEvent) {
-        try { options = createOptionsMenu(options).setOptions(); }
+        try { pdfWriterOptions = createOptionsMenu(pdfWriterOptions).setOptions(); }
         catch (Exception e) { e.printStackTrace(); }
         actionEvent.consume();
     }
