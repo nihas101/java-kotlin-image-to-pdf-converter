@@ -1,6 +1,7 @@
-package de.nihas101.imagesToPdfConverter.contentDisplay;
+package de.nihas101.imagesToPdfConverter.subStages;
 
 import de.nihas101.imagesToPdfConverter.controller.DirectoryContentDisplayController;
+import de.nihas101.imagesToPdfConverter.controller.MainController;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.fileReader.ImageFilesIterator;
 import javafx.application.Application;
@@ -17,9 +18,14 @@ public class DirectoryContentDisplay extends Application {
      * The {@link DirectoryIterator} of which to display the content
      */
     private DirectoryIterator directoryIterator;
+    private final int directoryIteratorIndex;
+    private final MainController mainController;
 
-    private DirectoryContentDisplay(DirectoryIterator directoryIterator) {
+
+    private DirectoryContentDisplay(DirectoryIterator directoryIterator, int directoryIteratorIndex, MainController mainController) {
         this.directoryIterator = directoryIterator;
+        this.directoryIteratorIndex = directoryIteratorIndex;
+        this.mainController = mainController;
     }
 
     /**
@@ -27,8 +33,13 @@ public class DirectoryContentDisplay extends Application {
      * @param imageFilesIterator The {@link DirectoryIterator} of which to display the content
      * @return The created {@link ImageFilesIterator} instance
      */
-    static DirectoryContentDisplay createDirectoryContentDisplay(DirectoryIterator imageFilesIterator){
-        return new DirectoryContentDisplay(imageFilesIterator);
+    static DirectoryContentDisplay createDirectoryContentDisplay(DirectoryIterator imageFilesIterator, int directoryIteratorIndex, MainController mainController){
+        return new DirectoryContentDisplay(imageFilesIterator, directoryIteratorIndex, mainController);
+    }
+
+    public void displayContent(){
+        try { start(new Stage()); }
+        catch (Exception e) { e.printStackTrace(); }
     }
 
     /**
@@ -40,14 +51,14 @@ public class DirectoryContentDisplay extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/directoryContentDisplay.fxml"));
         Pane root = loader.load();
         DirectoryContentDisplayController directoryContentDisplayController = loader.getController();
-        directoryContentDisplayController.setup(directoryIterator);
+        directoryContentDisplayController.setup(directoryIterator, directoryIteratorIndex, primaryStage, mainController);
 
         /* Create Scene */
         Scene scene = new Scene(root);
 
         primaryStage.setTitle("ContentDisplay - " + directoryIterator.getParentDirectory().getAbsolutePath());
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.showAndWait();
         primaryStage.setResizable(false);
     }
 }

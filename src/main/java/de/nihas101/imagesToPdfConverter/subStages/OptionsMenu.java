@@ -1,4 +1,4 @@
-package de.nihas101.imagesToPdfConverter;
+package de.nihas101.imagesToPdfConverter.subStages;
 
 import de.nihas101.imagesToPdfConverter.controller.OptionsMenuController;
 import de.nihas101.imagesToPdfConverter.pdf.Options;

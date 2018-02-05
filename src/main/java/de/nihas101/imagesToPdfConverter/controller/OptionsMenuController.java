@@ -1,6 +1,5 @@
 package de.nihas101.imagesToPdfConverter.controller;
 
-import com.itextpdf.kernel.pdf.CompressionConstants;
 import com.itextpdf.kernel.pdf.PdfVersion;
 import de.nihas101.imagesToPdfConverter.pdf.Options;
 import javafx.event.ActionEvent;

@@ -1,4 +1,4 @@
-package de.nihas101.imagesToPdfConverter.contentDisplay;
+package de.nihas101.imagesToPdfConverter.subStages;
 
 import de.nihas101.imagesToPdfConverter.controller.ImageDisplayController;
 import javafx.application.Application;
@@ -35,6 +35,11 @@ public class ImageDisplay extends Application {
         return new ImageDisplay(image, imageName);
     }
 
+    public void displayImage(){
+        try { start(new Stage()); }
+        catch (Exception e) { e.printStackTrace(); }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -53,6 +58,6 @@ public class ImageDisplay extends Application {
         primaryStage.setScene(scene);
         primaryStage.setHeight(image.getHeight()*.2);
         primaryStage.setWidth(image.getWidth()*.2);
-        primaryStage.show();
+        primaryStage.showAndWait();
     }
 }

@@ -1,7 +1,5 @@
 package de.nihas101.imagesToPdfConverter.controller;
 
-import com.itextpdf.kernel.pdf.CompressionConstants;
-import com.itextpdf.kernel.pdf.PdfVersion;
 import de.nihas101.imagesToPdfConverter.ImageMap;
 import de.nihas101.imagesToPdfConverter.Main;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
@@ -34,8 +32,8 @@ import static com.itextpdf.kernel.pdf.CompressionConstants.DEFAULT_COMPRESSION;
 import static com.itextpdf.kernel.pdf.PdfVersion.PDF_1_7;
 import static de.nihas101.imagesToPdfConverter.Constants.NOTIFICATION_MAX_STRING_LENGTH;
 import static de.nihas101.imagesToPdfConverter.ImageMap.createImageMap;
-import static de.nihas101.imagesToPdfConverter.OptionsMenu.createOptionsMenu;
-import static de.nihas101.imagesToPdfConverter.contentDisplay.DirectoryIteratorDisplayer.createContentDisplayer;
+import static de.nihas101.imagesToPdfConverter.subStages.OptionsMenu.createOptionsMenu;
+import static de.nihas101.imagesToPdfConverter.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.*;
 
@@ -74,7 +72,7 @@ public class MainController {
     private Options options;
 
     private DirectoryChooser directoryChooser;
-    private FileChooser saveFileChooser;
+    FileChooser saveFileChooser;
 
     /**
      * Sets up the {@link MainController}
@@ -201,7 +199,6 @@ public class MainController {
         imageListView.setDisable(isDisabled);
         buildButton.setDisable(isDisabled);
         directoryButton.setDisable(isDisabled);
-        //multipleDirectoriesCheckBox.setDisable(isDisabled);
         optionsButton.setDisable(isDisabled);
     }
 
@@ -265,7 +262,7 @@ public class MainController {
      * @param message The message of the  notification
      * @param color The color with which the message should be displayed
      */
-    private void notifyUser(String message, Color color){
+    public void notifyUser(String message, Color color){
         if(message.length() > NOTIFICATION_MAX_STRING_LENGTH)
             message = message.substring(0, NOTIFICATION_MAX_STRING_LENGTH) + "...";
 
@@ -281,8 +278,10 @@ public class MainController {
         if(imageListView.getItems().size() == 0) return;
 
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
+            setDisableInput(true);
             int index = imageListView.getSelectionModel().getSelectedIndex();
-            createContentDisplayer(main.getDirectoryIterator()).displayContent(index);
+            createContentDisplayer(main.getDirectoryIterator()).displayContent(index, this);
+            setDisableInput(false);
         }
     }
 

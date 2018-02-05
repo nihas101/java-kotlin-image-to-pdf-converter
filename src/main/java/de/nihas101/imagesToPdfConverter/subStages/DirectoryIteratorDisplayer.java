@@ -1,15 +1,15 @@
-package de.nihas101.imagesToPdfConverter.contentDisplay;
+package de.nihas101.imagesToPdfConverter.subStages;
 
+import de.nihas101.imagesToPdfConverter.controller.MainController;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.fileReader.ImageFilesIterator;
 import javafx.scene.image.Image;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
-import static de.nihas101.imagesToPdfConverter.contentDisplay.DirectoryContentDisplay.createDirectoryContentDisplay;
-import static de.nihas101.imagesToPdfConverter.contentDisplay.ImageDisplay.createImageDisplay;
+import static de.nihas101.imagesToPdfConverter.subStages.DirectoryContentDisplay.createDirectoryContentDisplay;
+import static de.nihas101.imagesToPdfConverter.subStages.ImageDisplay.createImageDisplay;
 
 /**
  * A class for displaying the content of a {@link DirectoryIterator}
@@ -37,8 +37,8 @@ public class DirectoryIteratorDisplayer {
      * Displays the content found at the given index of the {@link DirectoryIterator} instance
      * @param index The index of the content to display
      */
-    public void displayContent(int index){
-        if(directoryIterator.getFile(index).isDirectory()) displayDirectory(index);
+    public void displayContent(int index, MainController mainController){
+        if(directoryIterator.getFile(index).isDirectory()) displayDirectory(index, mainController);
         else displayImage(index);
     }
 
@@ -46,15 +46,14 @@ public class DirectoryIteratorDisplayer {
      * Displays the content of the directory found at the given index of the {@link DirectoryIterator}
      * @param index The index of the directory to display
      */
-    private void displayDirectory(int index) {
-        /* TODO: Add a build button on this scene, so single pdfs can be changed and build
-         * TODO: -> If this is done, remove it from the main scene list! */
+    private void displayDirectory(int index, MainController mainController) {
         DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
-                ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(directoryIterator.getFile(index))
+                ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(directoryIterator.getFile(index)),
+                index,
+                mainController
         );
 
-        try { directoryContentDisplay.start(new Stage()); }
-        catch (Exception e) { e.printStackTrace(); }
+        directoryContentDisplay.displayContent();
     }
 
     /**
@@ -75,7 +74,6 @@ public class DirectoryIteratorDisplayer {
             return;
         }
 
-        try { imageDisplay.start(new Stage()); }
-        catch (Exception e) { e.printStackTrace(); }
+        imageDisplay.displayImage();
     }
 }

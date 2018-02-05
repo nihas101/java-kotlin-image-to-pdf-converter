@@ -1,62 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="700.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.nihas101.imagesToPdfConverter.controller.MainController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="434.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="ALWAYS" />
-    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="150.0" prefHeight="150.0" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="15.0" prefHeight="15.0" vgrow="ALWAYS" />
-  </rowConstraints>
-   <children>
-      <ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" styleClass="toolBar" stylesheets="@../main.css" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-        <items>
-            <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="680.0">
-               <children>
-                <Button fx:id="directoryButton" layoutX="66.0" layoutY="2.0" mnemonicParsing="false" onAction="#chooseDirectory" style="-fx-border: ;" stylesheets="@../main.css" text="Choose dir" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="5.0">
-                     <tooltip>
-                        <Tooltip text="Choose a directory to load images from" />
-                     </tooltip>
-                  </Button>
-                  <Button fx:id="buildButton" layoutX="402.0" layoutY="2.0" mnemonicParsing="false" onAction="#buildPdf" prefHeight="25.0" stylesheets="@../main.css" text="Build" textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="-5.0" AnchorPane.topAnchor="5.0">
-                     <tooltip>
-                        <Tooltip text="Build the PDF" />
-                     </tooltip>
-                  </Button>
-                  <Button fx:id="optionsButton" layoutX="7.0" layoutY="4.0" mnemonicParsing="false" onAction="#openOptionsMenu" stylesheets="@../main.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
-                     <graphic>
-                        <ImageView fitHeight="10.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true" scaleX="2.25" scaleY="2.25" scaleZ="2.25">
-                           <image>
-                              <Image url="@../icons8-gear-96.png" />
-                           </image>
-                           <viewport>
-                              <Rectangle2D />
-                           </viewport>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </AnchorPane>
-        </items>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </ToolBar>
-      <ProgressBar fx:id="buildProgressBar" prefHeight="15.0" prefWidth="200.0" progress="0.0" stylesheets="@../main.css" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
-      <ListView fx:id="imageListView" onMouseClicked="#displayListCell" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="700.0" stylesheets="@../main.css" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
-      <TextFlow fx:id="notificationTextFlow" prefHeight="15.0" prefWidth="200.0" stylesheets="@../main.css" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
-         <children>
-            <Text fx:id="notificationText" strokeType="OUTSIDE" strokeWidth="0.0" />
-         </children>
-      </TextFlow>
-   </children>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+          minWidth="-Infinity" prefHeight="200.0" prefWidth="700.0" stylesheets="@../main.css"
+          xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.nihas101.imagesToPdfConverter.controller.MainController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="434.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="150.0" prefHeight="150.0" vgrow="NEVER"/>
+        <RowConstraints maxHeight="-Infinity" minHeight="15.0" prefHeight="15.0" vgrow="ALWAYS"/>
+    </rowConstraints>
+    <ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" styleClass="toolBar"
+             stylesheets="@../main.css" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
+             GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+        <opaqueInsets>
+            <Insets/>
+        </opaqueInsets>
+        <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="680.0">
+            <Button fx:id="directoryButton" layoutX="66.0" layoutY="2.0" mnemonicParsing="false"
+                    onAction="#chooseDirectory" stylesheets="@../main.css" text="Choose dir"
+                    AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="5.0">
+                <tooltip>
+                    <Tooltip text="Choose a directory to load images from"/>
+                </tooltip>
+            </Button>
+            <Button fx:id="buildButton" layoutX="402.0" layoutY="2.0" mnemonicParsing="false"
+                    onAction="#buildPdf" prefHeight="25.0" stylesheets="@../main.css" text="Build"
+                    textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="-5.0"
+                    AnchorPane.topAnchor="5.0">
+                <tooltip>
+                    <Tooltip text="Build the PDF"/>
+                </tooltip>
+            </Button>
+            <Button fx:id="optionsButton" layoutX="7.0" layoutY="4.0" mnemonicParsing="false"
+                    onAction="#openOptionsMenu" stylesheets="@../main.css" AnchorPane.bottomAnchor="5.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
+                <graphic>
+                    <ImageView fitHeight="10.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true"
+                               scaleX="2.25" scaleY="2.25" scaleZ="2.25">
+                        <viewport>
+                            <Rectangle2D/>
+                        </viewport>
+                        <Image url="@../icons8-gear-96.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </AnchorPane>
+    </ToolBar>
+    <ProgressBar fx:id="buildProgressBar" prefHeight="15.0" prefWidth="200.0" progress="0.0" stylesheets="@../main.css"
+                 GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS"/>
+    <ListView fx:id="imageListView" onMouseClicked="#displayListCell" orientation="HORIZONTAL" prefHeight="200.0"
+              prefWidth="700.0" stylesheets="@../main.css" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS"
+              GridPane.rowIndex="1" GridPane.vgrow="ALWAYS"/>
+    <TextFlow fx:id="notificationTextFlow" prefHeight="15.0" prefWidth="200.0" stylesheets="@../main.css"
+              GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+        <Text fx:id="notificationText" strokeType="OUTSIDE" strokeWidth="0.0"/>
+    </TextFlow>
 </GridPane>
