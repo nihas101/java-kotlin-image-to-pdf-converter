@@ -39,6 +39,8 @@ dependencies {
     compile group: 'com.itextpdf', name: 'kernel', version: '7.1.0'
     // https://mvnrepository.com/artifact/com.itextpdf/layout
     compile group: 'com.itextpdf', name: 'layout', version: '7.1.0'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-nop
+    compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.25'
 }
 
 compileKotlin {
