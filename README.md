@@ -26,3 +26,7 @@ To run the program from the distribution, extract the zip or tar file, and run t
 ./imagesToPdfConverter
 ```
 in the command-line interface.
+
+## Features
+
+TODO
