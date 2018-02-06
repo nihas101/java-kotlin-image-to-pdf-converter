@@ -38,7 +38,7 @@ in the command-line interface.
 1. Run the program
 2. Click on ![choosedirectorybutton](https://user-images.githubusercontent.com/19901622/35849256-453993be-0b21-11e8-924c-b04b2e69e1b3.PNG) and choose the source-directory of images you want to convert into a PDF.
 3. Reorder images and remove unwanted ones
-4. Click on ![buildbutton](https://user-images.githubusercontent.com/19901622/35849742-e93f197e-0b22-11e8-8dab-4185c43171eb.PNG). After picking a directory the PDF will be build and placed at that location
+4. Click on ![buildbutton](https://user-images.githubusercontent.com/19901622/35849742-e93f197e-0b22-11e8-8dab-4185c43171eb.PNG). After picking a target-directory the PDF will be build and placed at that location
 
 ## How to build multiple PDFs at once
 
