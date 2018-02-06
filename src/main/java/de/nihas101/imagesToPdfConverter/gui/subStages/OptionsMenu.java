@@ -1,6 +1,6 @@
-package de.nihas101.imagesToPdfConverter.subStages;
+package de.nihas101.imagesToPdfConverter.gui.subStages;
 
-import de.nihas101.imagesToPdfConverter.controller.OptionsMenuController;
+import de.nihas101.imagesToPdfConverter.gui.controller.OptionsMenuController;
 import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class OptionsMenu extends Application {
+public final class OptionsMenu extends Application {
     private final PdfWriterOptions pdfWriterOptions;
     private OptionsMenuController optionsMenuController;
 

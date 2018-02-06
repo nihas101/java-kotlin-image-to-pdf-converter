@@ -1,4 +1,4 @@
-package de.nihas101.imagesToPdfConverter;
+package de.nihas101.imagesToPdfConverter.util;
 
 import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +9,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
 
-import static de.nihas101.imagesToPdfConverter.Constants.DIRECTORY_IMAGE_PATH;
+import static de.nihas101.imagesToPdfConverter.util.Constants.DIRECTORY_IMAGE_PATH;
 
 /**
  * A class for holding {@link Image}s

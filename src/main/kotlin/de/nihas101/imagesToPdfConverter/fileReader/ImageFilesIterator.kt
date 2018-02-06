@@ -1,12 +1,13 @@
 package de.nihas101.imagesToPdfConverter.fileReader
 
+import de.nihas101.imagesToPdfConverter.fileReader.exceptions.NoMoreImagesException
 import java.io.File
 import javax.imageio.ImageIO
 
 class ImageFilesIterator private constructor(private val directory: File): DirectoryIterator {
-    private var files: List<File> =
-                        if(directory.isDirectory) directory.listFiles().filter { file -> isImage(file) }
-                        else List(1, { _ -> directory }).filter { file -> isImage(file) }
+    private var files: MutableList<File> =
+                        if(directory.isDirectory) directory.listFiles().filter { file -> isImage(file) }.toMutableList()
+                        else List(1, { _ -> directory }).filter { file -> isImage(file) }.toMutableList()
     private var currentIndex = 0
 
     companion object ImageFilesIteratorFactory {
@@ -15,7 +16,7 @@ class ImageFilesIterator private constructor(private val directory: File): Direc
 
     override fun getFile(index: Int): File = files[index]
 
-    override fun getFiles(): List<File> = files
+    override fun getFiles(): MutableList<File> = files
 
     override fun nextFile(): File{
         if(currentIndex < files.size) return files[currentIndex++]

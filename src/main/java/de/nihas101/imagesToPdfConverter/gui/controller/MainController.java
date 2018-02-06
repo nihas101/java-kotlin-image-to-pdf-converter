@@ -1,11 +1,11 @@
-package de.nihas101.imagesToPdfConverter.controller;
+package de.nihas101.imagesToPdfConverter.gui.controller;
 
-import de.nihas101.imagesToPdfConverter.ImageMap;
-import de.nihas101.imagesToPdfConverter.Main;
+import de.nihas101.imagesToPdfConverter.util.ImageMap;
+import de.nihas101.imagesToPdfConverter.gui.MainWindow;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
-import de.nihas101.imagesToPdfConverter.pdf.ImageDirectoriesPdfBuilder;
-import de.nihas101.imagesToPdfConverter.pdf.ImagePdfBuilder;
+import de.nihas101.imagesToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
+import de.nihas101.imagesToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -30,10 +30,11 @@ import java.util.HashMap;
 
 import static com.itextpdf.kernel.pdf.CompressionConstants.DEFAULT_COMPRESSION;
 import static com.itextpdf.kernel.pdf.PdfVersion.PDF_1_7;
-import static de.nihas101.imagesToPdfConverter.Constants.NOTIFICATION_MAX_STRING_LENGTH;
-import static de.nihas101.imagesToPdfConverter.ImageMap.createImageMap;
-import static de.nihas101.imagesToPdfConverter.subStages.OptionsMenu.createOptionsMenu;
-import static de.nihas101.imagesToPdfConverter.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
+import static de.nihas101.imagesToPdfConverter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
+import static de.nihas101.imagesToPdfConverter.util.ImageMap.createImageMap;
+import static de.nihas101.imagesToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
+import static de.nihas101.imagesToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
+import static javafx.application.Platform.runLater;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.*;
 
@@ -54,9 +55,9 @@ public class MainController {
     public Button optionsButton;
 
     /**
-     * The {@link Main} belonging to this Controller
+     * The {@link MainWindow} belonging to this Controller
      */
-    private Main main;
+    private MainWindow mainWindow;
     /**
      * The directory from which to load more {@link File}s
      */
@@ -76,10 +77,10 @@ public class MainController {
 
     /**
      * Sets up the {@link MainController}
-     * @param main The {@link Main} belonging to this Controller
+     * @param mainWindow The {@link MainWindow} belonging to this Controller
      */
-    public void setup(Main main){
-        this.main = main;
+    public void setup(MainWindow mainWindow){
+        this.mainWindow = mainWindow;
         setupDirectoryChooser();
         setupSaveFileChooser();
         imageMap = createImageMap(new HashMap<>());
@@ -112,7 +113,7 @@ public class MainController {
         if(pdfWriterOptions.getMultipleDirectories())
             directoryChooser.setTitle("Choose a directory of directories to turn into a PDF");
         else
-            directoryChooser.setTitle("Choose a directory or file to turn into a PDF");
+            directoryChooser.setTitle("Choose a directory or sourceFile to turn into a PDF");
 
         chosenDirectory = directoryChooser.showDialog(directoryButton.getScene().getWindow());
 
@@ -121,10 +122,10 @@ public class MainController {
                 setDisableInput(true);
                 notifyUser("Loading files...", BLACK);
                 if (pdfWriterOptions.getMultipleDirectories())
-                    main.setupDirectoriesIterator(chosenDirectory);
+                    mainWindow.setupDirectoriesIterator(chosenDirectory);
                 else
-                    main.setupIterator(chosenDirectory);
-                setupListView(main.getDirectoryIterator());
+                    mainWindow.setupIterator(chosenDirectory);
+                setupListView(mainWindow.getDirectoryIterator());
                 setDisableInput(false);
             }).start();
         }
@@ -144,7 +145,7 @@ public class MainController {
                     (loadedFiles) ->
                             notifyUser("Loading files... (" + (int)loadedFiles + "/" + nrOfFiles + ")", BLACK));
 
-            Platform.runLater(() -> setupObservableList(directoryIterator));
+            runLater(() -> setupObservableList(directoryIterator));
         }).start();
     }
 
@@ -206,14 +207,14 @@ public class MainController {
      * Builds a single {@link de.nihas101.imagesToPdfConverter.pdf.ImagePdf}s
      */
     private void buildSinglePdf(){
-        saveFileChooser.setInitialFileName(main.getDirectoryIterator().getParentDirectory().getName() + ".pdf");
+        saveFileChooser.setInitialFileName(mainWindow.getDirectoryIterator().getParentDirectory().getName() + ".pdf");
         saveFileChooser.setInitialDirectory(chosenDirectory.getParentFile());
         File saveFile = saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
 
         if(saveFile != null) {
             new Thread(() -> {
-                ImagePdfBuilder.PdfBuilderFactory.createPdfImageBuilder().build(
-                        main.getDirectoryIterator(),
+                ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
+                        mainWindow.getDirectoryIterator(),
                         saveFile,
                         pdfWriterOptions,
                         progress -> buildProgressBar.setProgress(progress)
@@ -227,19 +228,19 @@ public class MainController {
      * Builds multiple {@link de.nihas101.imagesToPdfConverter.pdf.ImagePdf}s
      */
     private void buildMultiplePdf() {
-        directoryChooser.setInitialDirectory(main.getDirectoryIterator().getParentDirectory());
+        directoryChooser.setInitialDirectory(mainWindow.getDirectoryIterator().getParentDirectory());
         directoryChooser.setTitle("Choose a folder to save the PDFs in");
         File saveFile = directoryChooser.showDialog(buildButton.getScene().getWindow());
 
         if(saveFile != null) {
             new Thread(() -> {
-                ImageDirectoriesPdfBuilder.PdfBuilderFactory.createPdfBuilderFactory().build(
-                        main.getDirectoryIterator(),
+                ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder().build(
+                        mainWindow.getDirectoryIterator(),
                         saveFile,
                         pdfWriterOptions,
                         progress -> buildProgressBar.setProgress(progress)
                 );
-                notifyUser("Finished building: " + main.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
+                notifyUser("Finished building: " + mainWindow.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
             }).start();
         }
     }
@@ -248,10 +249,10 @@ public class MainController {
      * @return True if a all necessary values for building the PDF are set, false otherwise
      */
     private boolean valuesSetForBuilding() {
-        if(main.getDirectoryIterator() == null){
+        if(mainWindow.getDirectoryIterator() == null){
             notifyUser("Please choose a directory", RED);
             return false;
-        }else if(main.getDirectoryIterator().nrOfFiles() == 0){
+        }else if(mainWindow.getDirectoryIterator().nrOfFiles() == 0){
             notifyUser("There are no files to turn into a PDF", RED);
             return false;
         }
@@ -282,7 +283,7 @@ public class MainController {
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
             setDisableInput(true);
             int index = imageListView.getSelectionModel().getSelectedIndex();
-            createContentDisplayer(main.getDirectoryIterator()).displayContent(index, this);
+            createContentDisplayer(mainWindow.getDirectoryIterator()).displayContent(index, this);
             setDisableInput(false);
         }
     }

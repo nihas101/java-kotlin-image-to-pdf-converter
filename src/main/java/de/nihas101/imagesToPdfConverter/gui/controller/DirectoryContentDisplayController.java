@@ -1,10 +1,10 @@
-package de.nihas101.imagesToPdfConverter.controller;
+package de.nihas101.imagesToPdfConverter.gui.controller;
 
-import de.nihas101.imagesToPdfConverter.ImageMap;
-import de.nihas101.imagesToPdfConverter.subStages.DirectoryContentDisplay;
+import de.nihas101.imagesToPdfConverter.util.ImageMap;
+import de.nihas101.imagesToPdfConverter.gui.subStages.DirectoryContentDisplay;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
-import de.nihas101.imagesToPdfConverter.pdf.ImagePdfBuilder;
+import de.nihas101.imagesToPdfConverter.pdf.builders.ImagePdfBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -22,8 +22,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static de.nihas101.imagesToPdfConverter.ImageMap.createImageMap;
-import static de.nihas101.imagesToPdfConverter.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
+import static de.nihas101.imagesToPdfConverter.util.ImageMap.createImageMap;
+import static de.nihas101.imagesToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
+import static javafx.application.Platform.runLater;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.GREEN;
 
@@ -60,7 +61,7 @@ public class DirectoryContentDisplayController {
             ImageMap imageMap = createImageMap(new HashMap<>());
             imageMap.loadImages(directoryIterator.getFiles());
 
-            Platform.runLater(() -> setupObservableList(directoryIterator, imageMap));
+            runLater(() -> setupObservableList(directoryIterator, imageMap));
         }).start();
     }
 
@@ -113,7 +114,7 @@ public class DirectoryContentDisplayController {
 
         if(saveFile != null) {
             new Thread(() -> {
-                ImagePdfBuilder.PdfBuilderFactory.createPdfImageBuilder().build(
+                ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         directoryIterator,
                         saveFile,
                         mainController.pdfWriterOptions,

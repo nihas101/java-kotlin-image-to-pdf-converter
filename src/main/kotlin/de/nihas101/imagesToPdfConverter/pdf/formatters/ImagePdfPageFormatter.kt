@@ -1,4 +1,4 @@
-package de.nihas101.imagesToPdfConverter.pdf
+package de.nihas101.imagesToPdfConverter.pdf.formatters
 
 import com.itextpdf.kernel.pdf.PdfPage
 import com.itextpdf.layout.element.Image

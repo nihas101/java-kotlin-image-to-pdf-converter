@@ -5,7 +5,7 @@ import java.io.File
 interface DirectoryIterator {
     fun nextFile(): File
     fun getFile(index: Int): File
-    fun getFiles(): List<File>
+    fun getFiles(): MutableList<File>
     fun nrOfFiles(): Int
     fun getParentDirectory(): File
     fun resetIndex()

@@ -1,6 +1,6 @@
-package de.nihas101.imagesToPdfConverter.controller;
+package de.nihas101.imagesToPdfConverter.gui.controller;
 
-import de.nihas101.imagesToPdfConverter.subStages.ImageDisplay;
+import de.nihas101.imagesToPdfConverter.gui.subStages.ImageDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;

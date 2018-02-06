@@ -1,6 +1,6 @@
-package de.nihas101.imagesToPdfConverter.subStages;
+package de.nihas101.imagesToPdfConverter.gui.subStages;
 
-import de.nihas101.imagesToPdfConverter.controller.ImageDisplayController;
+import de.nihas101.imagesToPdfConverter.gui.controller.ImageDisplayController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 /**
  * An Application for displaying {@link Image}s
  */
-public class ImageDisplay extends Application {
+public final class ImageDisplay extends Application {
     /**
      * The {@link Image} to display
      */
@@ -31,7 +31,7 @@ public class ImageDisplay extends Application {
      * @param image The {@link Image} to display
      * @param imageName The name of the {@link Image}
      */
-    static ImageDisplay createImageDisplay(Image image, String imageName){
+    public static ImageDisplay createImageDisplay(Image image, String imageName){
         return new ImageDisplay(image, imageName);
     }
 

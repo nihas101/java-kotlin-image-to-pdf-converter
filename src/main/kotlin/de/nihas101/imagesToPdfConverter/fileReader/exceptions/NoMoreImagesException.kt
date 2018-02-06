@@ -1,4 +1,4 @@
-package de.nihas101.imagesToPdfConverter.fileReader
+package de.nihas101.imagesToPdfConverter.fileReader.exceptions
 
 import java.io.File
 

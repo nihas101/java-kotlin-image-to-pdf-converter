@@ -1,4 +1,4 @@
-package de.nihas101.imagesToPdfConverter.controller;
+package de.nihas101.imagesToPdfConverter.gui.controller;
 
 import com.itextpdf.kernel.pdf.PdfVersion;
 import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions;

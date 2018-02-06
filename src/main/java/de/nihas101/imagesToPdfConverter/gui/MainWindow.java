@@ -1,6 +1,6 @@
-package de.nihas101.imagesToPdfConverter;
+package de.nihas101.imagesToPdfConverter.gui;
 
-import de.nihas101.imagesToPdfConverter.controller.MainController;
+import de.nihas101.imagesToPdfConverter.gui.controller.MainController;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.fileReader.ImageDirectoriesIterator;
 import de.nihas101.imagesToPdfConverter.fileReader.ImageFilesIterator;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import static javafx.scene.input.KeyEvent.KEY_PRESSED;
 
 
-public class Main extends Application{
+public final class MainWindow extends Application{
     private DirectoryIterator directoryIterator;
     private MainController mainController;
 
@@ -66,5 +66,9 @@ public class Main extends Application{
 
     public DirectoryIterator getDirectoryIterator() {
         return directoryIterator;
+    }
+
+    public void show() {
+        launch();
     }
 }

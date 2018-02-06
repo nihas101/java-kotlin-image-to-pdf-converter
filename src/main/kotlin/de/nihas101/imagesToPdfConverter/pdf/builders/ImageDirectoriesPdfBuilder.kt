@@ -1,15 +1,16 @@
-package de.nihas101.imagesToPdfConverter.pdf
+package de.nihas101.imagesToPdfConverter.pdf.builders
 
-import de.nihas101.imagesToPdfConverter.ProgressUpdater
+import de.nihas101.imagesToPdfConverter.util.ProgressUpdater
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
 import de.nihas101.imagesToPdfConverter.fileReader.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
-import de.nihas101.imagesToPdfConverter.pdf.ImagePdfBuilder.PdfBuilderFactory.createPdfImageBuilder
+import de.nihas101.imagesToPdfConverter.pdf.builders.ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder
+import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions
 import java.io.File
 import java.nio.file.Paths
 
 class ImageDirectoriesPdfBuilder: PdfBuilder() {
     companion object PdfBuilderFactory {
-        fun createPdfBuilderFactory() = ImageDirectoriesPdfBuilder()
+        fun createImageDirectoriesPdfBuilder() = ImageDirectoriesPdfBuilder()
     }
 
     override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions){
@@ -35,7 +36,7 @@ class ImageDirectoriesPdfBuilder: PdfBuilder() {
     private fun buildNextPDF(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions){
         if(directoryIterator.nrOfFiles() != 0) {
             val file = Paths.get(saveFile.absolutePath + "/" + directoryIterator.getParentDirectory().name + ".pdf").toFile()
-            createPdfImageBuilder().build(directoryIterator, file, pdfWriterOptions = pdfWriterOptions)
+            createImagePdfBuilder().build(directoryIterator, file, pdfWriterOptions = pdfWriterOptions)
         }
     }
 }

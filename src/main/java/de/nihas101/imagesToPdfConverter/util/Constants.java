@@ -1,4 +1,4 @@
-package de.nihas101.imagesToPdfConverter;
+package de.nihas101.imagesToPdfConverter.util;
 
 public class Constants{
     public final static Double CELL_SIZE = 100.0;

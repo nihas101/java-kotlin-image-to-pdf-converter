@@ -1,7 +1,7 @@
 package de.nihas101.imagesToPdfConverter.listCell
 
-import de.nihas101.imagesToPdfConverter.Constants.*
-import de.nihas101.imagesToPdfConverter.ImageMap
+import de.nihas101.imagesToPdfConverter.util.Constants.*
+import de.nihas101.imagesToPdfConverter.util.ImageMap
 import javafx.collections.ObservableList
 import javafx.event.Event
 import javafx.event.EventHandler

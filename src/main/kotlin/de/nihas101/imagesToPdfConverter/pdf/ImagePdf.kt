@@ -3,8 +3,9 @@ package de.nihas101.imagesToPdfConverter.pdf
 import com.itextpdf.kernel.pdf.*
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Image
-import de.nihas101.imagesToPdfConverter.Constants.NO_MARGIN
-import de.nihas101.imagesToPdfConverter.pdf.FullPageImageCropper.FullPageCropperFactory.createFullPageCropper
+import de.nihas101.imagesToPdfConverter.util.Constants.NO_MARGIN
+import de.nihas101.imagesToPdfConverter.pdf.formatters.FullPageImageCropper.FullPageCropperFactory.createFullPageCropper
+import de.nihas101.imagesToPdfConverter.pdf.formatters.ImagePdfPageFormatter
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.nio.file.Paths

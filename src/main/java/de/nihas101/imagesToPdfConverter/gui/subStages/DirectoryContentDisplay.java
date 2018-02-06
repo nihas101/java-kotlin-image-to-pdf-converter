@@ -1,7 +1,7 @@
-package de.nihas101.imagesToPdfConverter.subStages;
+package de.nihas101.imagesToPdfConverter.gui.subStages;
 
-import de.nihas101.imagesToPdfConverter.controller.DirectoryContentDisplayController;
-import de.nihas101.imagesToPdfConverter.controller.MainController;
+import de.nihas101.imagesToPdfConverter.gui.controller.DirectoryContentDisplayController;
+import de.nihas101.imagesToPdfConverter.gui.controller.MainController;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.fileReader.ImageFilesIterator;
 import javafx.application.Application;
@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 /**
  * An {@link Application} for displaying the content of a directory
  */
-public class DirectoryContentDisplay extends Application {
+public final class DirectoryContentDisplay extends Application {
     /**
      * The {@link DirectoryIterator} of which to display the content
      */

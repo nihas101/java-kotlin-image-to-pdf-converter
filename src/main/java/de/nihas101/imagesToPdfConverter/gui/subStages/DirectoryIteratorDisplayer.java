@@ -1,6 +1,6 @@
-package de.nihas101.imagesToPdfConverter.subStages;
+package de.nihas101.imagesToPdfConverter.gui.subStages;
 
-import de.nihas101.imagesToPdfConverter.controller.MainController;
+import de.nihas101.imagesToPdfConverter.gui.controller.MainController;
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.fileReader.ImageFilesIterator;
 import javafx.scene.image.Image;
@@ -8,13 +8,13 @@ import javafx.scene.image.Image;
 import java.io.File;
 import java.net.MalformedURLException;
 
-import static de.nihas101.imagesToPdfConverter.subStages.DirectoryContentDisplay.createDirectoryContentDisplay;
-import static de.nihas101.imagesToPdfConverter.subStages.ImageDisplay.createImageDisplay;
+import static de.nihas101.imagesToPdfConverter.gui.subStages.DirectoryContentDisplay.createDirectoryContentDisplay;
+import static de.nihas101.imagesToPdfConverter.gui.subStages.ImageDisplay.createImageDisplay;
 
 /**
  * A class for displaying the content of a {@link DirectoryIterator}
  */
-public class DirectoryIteratorDisplayer {
+public final class DirectoryIteratorDisplayer {
     /**
      * The {@link DirectoryIterator} of which to display the content
      */

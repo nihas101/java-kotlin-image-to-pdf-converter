@@ -1,14 +1,16 @@
-package de.nihas101.imagesToPdfConverter.pdf
+package de.nihas101.imagesToPdfConverter.pdf.builders
 
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.layout.element.Image
-import de.nihas101.imagesToPdfConverter.ProgressUpdater
+import de.nihas101.imagesToPdfConverter.util.ProgressUpdater
 import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
+import de.nihas101.imagesToPdfConverter.pdf.ImagePdf
+import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions
 import java.io.File
 
 class ImagePdfBuilder: PdfBuilder() {
-    companion object PdfBuilderFactory{
-        fun createPdfImageBuilder() = ImagePdfBuilder()
+    companion object ImagePdfBuilderFactory {
+        fun createImagePdfBuilder() = ImagePdfBuilder()
     }
 
     override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions){
