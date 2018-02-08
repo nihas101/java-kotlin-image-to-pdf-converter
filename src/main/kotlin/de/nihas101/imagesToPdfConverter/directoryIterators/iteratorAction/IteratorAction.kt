@@ -1,13 +1,14 @@
-package de.nihas101.imagesToPdfConverter.fileReader.iteratorAction
+package de.nihas101.imagesToPdfConverter.directoryIterators.iteratorAction
 
-import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
-import de.nihas101.imagesToPdfConverter.fileReader.exceptions.MalformedPdfModificationException
+import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imagesToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
+import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions
 
 abstract class IteratorAction {
     abstract fun execute(directoryIterator: DirectoryIterator)
 
     companion object PdfModificationFactory {
-        fun createIteratorModification(modificationArguments: List<String>): IteratorAction {
+        fun createIteratorModification(modificationArguments: List<String>, pdfWriterOptions: PdfWriterOptions): IteratorAction {
             if(modificationArguments.isEmpty()) throw MalformedPdfModificationException(modificationArguments)
 
             return when {
@@ -16,7 +17,7 @@ abstract class IteratorAction {
                 IteratorRemoveAction.isLeadingIteratorArgument(modificationArguments[0]) ->
                     IteratorRemoveAction.createIteratorRemoveModification(modificationArguments)
                 IteratorBuildAction.isLeadingIteratorArgument(modificationArguments[0]) ->
-                    IteratorBuildAction.createIteratorMoveModification(modificationArguments)
+                    IteratorBuildAction.createIteratorBuildModification(modificationArguments, pdfWriterOptions)
                 else -> throw MalformedPdfModificationException(modificationArguments)
             }
         }

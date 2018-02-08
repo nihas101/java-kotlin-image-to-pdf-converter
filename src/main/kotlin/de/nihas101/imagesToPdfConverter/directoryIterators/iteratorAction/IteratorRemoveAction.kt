@@ -1,13 +1,13 @@
-package de.nihas101.imagesToPdfConverter.fileReader.iteratorAction
+package de.nihas101.imagesToPdfConverter.directoryIterators.iteratorAction
 
-import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
-import de.nihas101.imagesToPdfConverter.fileReader.exceptions.MalformedPdfModificationException
+import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imagesToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
 
 class IteratorRemoveAction private constructor(modificationArguments: List<String>) : IteratorAction(){
     private val removeIndices = modificationArguments.filterIndexed { index, _ -> index > 0 }.map { argument -> argument.toInt() }
 
     override fun execute(directoryIterator: DirectoryIterator) {
-        removeIndices.forEach {
+        removeIndices.sortedDescending().forEach {
             removeIndex ->
             if (removeIndex in 0 until directoryIterator.nrOfFiles())
                 directoryIterator.getFiles().removeAt(removeIndex)
@@ -37,7 +37,7 @@ class IteratorRemoveAction private constructor(modificationArguments: List<Strin
         }
 
         fun getInstruction(): String =
-            " * (remove | r) <index1> <index2> ... - Remove the files with the specified indices from the PDF"
+            " * (remove | r) [index1] [index2] ... - Remove the files with the specified indices from the PDF"
     }
 
     override fun toString(): String = "remove $removeIndices"

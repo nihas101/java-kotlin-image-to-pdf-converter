@@ -1,4 +1,4 @@
-package de.nihas101.imagesToPdfConverter.fileReader
+package de.nihas101.imagesToPdfConverter.directoryIterators
 
 import java.io.File
 

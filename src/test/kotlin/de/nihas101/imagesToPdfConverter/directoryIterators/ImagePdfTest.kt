@@ -1,4 +1,4 @@
-package de.nihas101.imagesToPdfConverter.fileReader
+package de.nihas101.imagesToPdfConverter.directoryIterators
 
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.layout.element.Image

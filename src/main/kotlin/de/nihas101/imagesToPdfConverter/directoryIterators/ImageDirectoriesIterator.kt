@@ -1,6 +1,6 @@
-package de.nihas101.imagesToPdfConverter.fileReader
+package de.nihas101.imagesToPdfConverter.directoryIterators
 
-import de.nihas101.imagesToPdfConverter.fileReader.exceptions.NoMoreDirectoriesException
+import de.nihas101.imagesToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
 import java.io.File
 
 class ImageDirectoriesIterator private constructor(private val directory: File): DirectoryIterator{

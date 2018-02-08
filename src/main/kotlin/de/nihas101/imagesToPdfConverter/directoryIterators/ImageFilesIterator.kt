@@ -1,6 +1,6 @@
-package de.nihas101.imagesToPdfConverter.fileReader
+package de.nihas101.imagesToPdfConverter.directoryIterators
 
-import de.nihas101.imagesToPdfConverter.fileReader.exceptions.NoMoreImagesException
+import de.nihas101.imagesToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
 import java.io.File
 import javax.imageio.ImageIO
 

@@ -1,7 +1,7 @@
-package de.nihas101.imagesToPdfConverter.fileReader.iteratorAction
+package de.nihas101.imagesToPdfConverter.directoryIterators.iteratorAction
 
-import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
-import de.nihas101.imagesToPdfConverter.fileReader.exceptions.MalformedPdfModificationException
+import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imagesToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
 
 class IteratorMoveAction private constructor(pdfModificationArguments: List<String>) : IteratorAction() {
     private val moveFromIndex: Int = pdfModificationArguments[1].toInt()
@@ -30,7 +30,7 @@ class IteratorMoveAction private constructor(pdfModificationArguments: List<Stri
         }
 
         fun getInstruction(): String =
-                " * (move | m) <moveFromIndex> <moveToIndex> - Move the file at moveFromIndex to moveToIndex"
+                " * (move | m) [moveFromIndex] [moveToIndex] - Move the file at moveFromIndex to moveToIndex"
     }
 
     override fun toString() = "move <$moveFromIndex> <$moveToIndex>"
