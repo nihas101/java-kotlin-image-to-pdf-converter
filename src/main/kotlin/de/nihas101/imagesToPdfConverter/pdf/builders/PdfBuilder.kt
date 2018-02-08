@@ -1,7 +1,7 @@
 package de.nihas101.imagesToPdfConverter.pdf.builders
 
 import de.nihas101.imagesToPdfConverter.util.ProgressUpdater
-import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
+import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions
 import java.io.File
 

@@ -3,7 +3,7 @@ package de.nihas101.imagesToPdfConverter.pdf.builders
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.layout.element.Image
 import de.nihas101.imagesToPdfConverter.util.ProgressUpdater
-import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
+import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imagesToPdfConverter.pdf.ImagePdf
 import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions
 import java.io.File

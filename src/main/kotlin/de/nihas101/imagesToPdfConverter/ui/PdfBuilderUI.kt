@@ -20,7 +20,8 @@ class PdfBuilderUI(private val pdfBuilderCommandLineInterface: PdfBuilderCommand
             1 -> execute { pdfBuilderCommandLineInterface.readDirectory() }
             2 -> execute { pdfBuilderCommandLineInterface.readBuildOptions() }
             3 -> execute { pdfBuilderCommandLineInterface.readPdfContent() }
-            4 -> execute { pdfBuilderCommandLineInterface.buildPdf() }
+            4 -> execute { pdfBuilderCommandLineInterface.readCustomTargetPath() }
+            5 -> execute { pdfBuilderCommandLineInterface.buildPdf() }
             else -> state = 0
         }
     }

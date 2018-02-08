@@ -1,6 +1,6 @@
 package de.nihas101.imagesToPdfConverter.ui.commandLineIO
 
-import de.nihas101.imagesToPdfConverter.fileReader.iteratorAction.IteratorBuildAction
+import de.nihas101.imagesToPdfConverter.directoryIterators.iteratorAction.IteratorBuildAction
 import de.nihas101.imagesToPdfConverter.pdf.PdfBuildInformation
 import de.nihas101.imagesToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder
 import de.nihas101.imagesToPdfConverter.pdf.builders.ImagePdfBuilder
@@ -48,9 +48,10 @@ class PdfBuilderCommandLineInterface private constructor(
 
     fun readPdfContent(): Int {
         pdfBuilderCommandLineOutput.printPdfModificationInstructions(pdfBuildInformation)
-        val iteratorModification = pdfBuilderCommandLineInput.readPdfModification {
+        val iteratorModification = pdfBuilderCommandLineInput.readPdfModification({
             pdfBuilderCommandLineOutput.printPdfModificationInstructions(pdfBuildInformation)
-        }
+        },
+                pdfBuildInformation.getPdfWriterOptions())
 
         println(iteratorModification.toString())
 
@@ -58,14 +59,25 @@ class PdfBuilderCommandLineInterface private constructor(
             iteratorModification.execute(pdfBuildInformation.getDirectoryIterator())
             0
         } else{
-            pdfBuildInformation.targetFile = iteratorModification.targetFile
             1
         }
     }
 
+    fun readCustomTargetPath(): Int {
+        pdfBuilderCommandLineOutput.printCustomTargetFile()
+        pdfBuildInformation.customTargetFile = pdfBuilderCommandLineInput.readAnswer { pdfBuilderCommandLineOutput.printCustomTargetFile() }
+        return 1
+    }
+
     fun buildPdf(): Int {
-        if(pdfBuildInformation.targetFile == null)
-            pdfBuildInformation.targetFile = File(pdfBuildInformation.sourceFile!!.absolutePath)
+        if(pdfBuildInformation.customTargetFile) {
+            try {
+                pdfBuildInformation.targetFile = pdfBuilderCommandLineInput.readPath().toFile()
+            } catch (exception: InvalidPathException) {
+                pdfBuilderCommandLineOutput.printInvalidPath()
+                return 0
+            }
+        }else pdfBuildInformation.targetFile = File(pdfBuildInformation.sourceFile!!.absolutePath)
 
         val progressUpdater = object : ProgressUpdater{
             override fun updateProgress(progress: Double) {
@@ -73,8 +85,6 @@ class PdfBuilderCommandLineInterface private constructor(
                 else pdfBuilderCommandLineOutput.printProgress()
             }
         }
-
-        println( pdfBuildInformation.targetFile!!.extension )
 
         if(!pdfBuildInformation.getMultipleDirectories() && pdfBuildInformation.targetFile!!.extension != "pdf")
             pdfBuildInformation.targetFile = File(pdfBuildInformation.targetFile!!.absolutePath + ".pdf")

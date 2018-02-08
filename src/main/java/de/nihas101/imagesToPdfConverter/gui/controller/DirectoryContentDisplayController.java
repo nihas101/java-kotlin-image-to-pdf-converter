@@ -2,11 +2,10 @@ package de.nihas101.imagesToPdfConverter.gui.controller;
 
 import de.nihas101.imagesToPdfConverter.util.ImageMap;
 import de.nihas101.imagesToPdfConverter.gui.subStages.DirectoryContentDisplay;
-import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator;
+import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imagesToPdfConverter.pdf.builders.ImagePdfBuilder;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

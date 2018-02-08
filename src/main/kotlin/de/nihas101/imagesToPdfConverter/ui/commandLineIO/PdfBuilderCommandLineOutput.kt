@@ -1,7 +1,7 @@
 package de.nihas101.imagesToPdfConverter.ui.commandLineIO
 
-import de.nihas101.imagesToPdfConverter.fileReader.DirectoryIterator
-import de.nihas101.imagesToPdfConverter.fileReader.iteratorAction.IteratorAction
+import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imagesToPdfConverter.directoryIterators.iteratorAction.IteratorAction
 import de.nihas101.imagesToPdfConverter.pdf.PdfBuildInformation
 import java.io.PrintStream
 
@@ -40,6 +40,10 @@ class PdfBuilderCommandLineOutput private constructor(private val printStream: P
     fun printInvalidPath() = printStream.println("The given path is invalid\n")
 
     fun printEmptyDirectoryError() = printStream.println("The given directory contains no images or doesn't exist\n")
+
+    fun printCustomTargetFile() {
+        printQuestion("Do you want to save the PDF at a different location than the source files?")
+    }
 
     private fun printQuestion(message: String) = printMessage("$message (yes/no)")
 
