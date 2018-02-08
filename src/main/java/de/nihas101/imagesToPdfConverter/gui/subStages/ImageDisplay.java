@@ -9,6 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import static de.nihas101.imagesToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_HEIGHT;
+import static de.nihas101.imagesToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_WIDTH;
+
 /**
  * An Application for displaying {@link Image}s
  */
@@ -57,8 +60,19 @@ public final class ImageDisplay extends Application {
 
         primaryStage.setTitle("ImageDisplay - " + imageName);
         primaryStage.setScene(scene);
-        primaryStage.setHeight(image.getHeight()*.2);
-        primaryStage.setWidth(image.getWidth()*.2);
+        if(image.getHeight() > IMAGE_DISPLAY_MAX_HEIGHT || image.getWidth() > IMAGE_DISPLAY_MAX_WIDTH) {
+            double scale = calculateScale(image);
+            primaryStage.setHeight(image.getHeight()*scale);
+            primaryStage.setWidth(image.getWidth()*scale);
+        }else{
+            primaryStage.setHeight(image.getHeight());
+            primaryStage.setWidth(image.getWidth());
+        }
         primaryStage.showAndWait();
+    }
+
+    private double calculateScale(Image image){
+        if(image.getWidth() > image.getHeight()) return IMAGE_DISPLAY_MAX_WIDTH / image.getWidth();
+        else return IMAGE_DISPLAY_MAX_HEIGHT / image.getHeight();
     }
 }
