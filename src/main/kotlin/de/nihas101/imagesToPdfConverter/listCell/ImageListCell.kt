@@ -50,7 +50,8 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
                 val dragBoard = startDragAndDrop(TransferMode.MOVE)
                 val content = ClipboardContent()
                 content.putString(index.toString())
-                dragBoard.dragView = imageMap[item]
+                dragBoard.dragView = if(!item.isDirectory)imageMap[item]
+                                     else imageMap[directoryImageFile]
                 dragBoard.setContent(content)
 
                 event.consume()
