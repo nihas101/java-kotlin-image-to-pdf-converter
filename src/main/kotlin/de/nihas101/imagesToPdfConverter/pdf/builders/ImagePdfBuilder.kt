@@ -29,12 +29,14 @@ class ImagePdfBuilder: PdfBuilder() {
         val imagePdf = ImagePdf.createPdf(saveFile.absolutePath, pdfWriterOptions = pdfWriterOptions)
         val nrOfFiles = directoryIterator.nrOfFiles()
 
-        for (i in 1..nrOfFiles){
-            addNextFileToPDF(directoryIterator, imagePdf)
-            progressUpdater.updateProgress(i.toDouble()/nrOfFiles.toDouble())
+        try{
+            for (i in 1..nrOfFiles){
+                addNextFileToPDF(directoryIterator, imagePdf)
+                progressUpdater.updateProgress(i.toDouble()/nrOfFiles.toDouble())
+            }
+        }finally {
+            imagePdf.close()
         }
-
-        imagePdf.close()
     }
 
     private fun addNextFileToPDF(directoryIterator: DirectoryIterator, imagePdf: ImagePdf){
