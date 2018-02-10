@@ -29,6 +29,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.itextpdf.kernel.pdf.CompressionConstants.DEFAULT_COMPRESSION;
 import static com.itextpdf.kernel.pdf.PdfVersion.PDF_1_7;
@@ -74,8 +75,9 @@ public class MainWindowController {
      */
      public PdfWriterOptions pdfWriterOptions;
 
-    private DirectoryChooser directoryChooser;
-    FileChooser saveFileChooser;
+     private DirectoryChooser directoryChooser;
+
+     FileChooser saveFileChooser;
 
     /**
      * Sets up the {@link MainWindowController}
@@ -97,16 +99,30 @@ public class MainWindowController {
 
         imageListView.setOnDragDropped(dragEvent ->{
             if(dragEvent.getDragboard().hasFiles()){
-                File file = dragEvent.getDragboard().getFiles().get(0);
-                if(file.isDirectory()) {
-                    chosenDirectory = file;
-                    new Thread(this::setupIterator).start();
-                }
+                List<File> files = dragEvent.getDragboard().getFiles();
+                setupIteratorFromDragAndDrop(files);
                 dragEvent.setDropCompleted(true);
             }
 
             dragEvent.consume();
         });
+    }
+
+    private void setupIteratorFromDragAndDrop(List<File> files){
+        chosenDirectory = files.get(0);
+
+        new Thread(() -> {
+            setupIterator();
+            if (files.size() > 1) {
+                runLater(() -> {
+                    notifyUser("Loading files...", BLACK);
+                    setDisableInput(true);
+                    mainWindow.getDirectoryIterator().addAll(files.subList(1, files.size()));
+                    imageListView.getItems().addAll(files.subList(1, files.size()));
+                    setDisableInput(false);
+                });
+            }
+        }).start();
     }
 
     /**
@@ -191,10 +207,20 @@ public class MainWindowController {
         return change -> {
             while (change.next()) {
                 if (change.wasRemoved()) removeChange(directoryIterator, change);
-                if (change.wasAdded() && change.getAddedSize() == 1) addChange(directoryIterator, change);
+
+                if (change.wasAdded() && change.getAddedSize() == 1) addAtChangePosition(directoryIterator, change);
+                else if (change.wasAdded()) addChange(directoryIterator, change);
 
                 notifyUser("Files: " + observableFiles.size(), BLACK); }
         };
+    }
+
+    private void addChange(DirectoryIterator directoryIterator, Change<? extends File> change) {
+        IntStream.range(0, change.getAddedSubList().size()-1).forEach(index -> {
+            if(!directoryIterator.add(change.getAddedSubList().get(index))){
+                imageListView.getItems().remove(change.getAddedSubList().get(index));
+            }
+        });
     }
 
     private void removeChange(DirectoryIterator directoryIterator, Change<? extends File> change){
@@ -206,7 +232,7 @@ public class MainWindowController {
         }
     }
 
-    private void addChange(DirectoryIterator directoryIterator, Change<? extends File> change){
+    private void addAtChangePosition(DirectoryIterator directoryIterator, Change<? extends File> change){
         if(!directoryIterator.add(change.getFrom(), change.getAddedSubList().get(0)))
             imageListView.getItems().remove(change.getAddedSubList().get(0));
     }

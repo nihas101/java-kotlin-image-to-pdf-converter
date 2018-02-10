@@ -45,11 +45,10 @@ public final class MainWindow extends Application{
     }
 
     public void setupIterator(File file, boolean isImageDirectoryIterator){
-        if(isImageDirectoryIterator){
+        if(isImageDirectoryIterator)
             directoryIterator = ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator(file);
-        }else{
+        else
             directoryIterator = ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(file);
-        }
     }
 
     private void setupKeyEvents(Scene scene){

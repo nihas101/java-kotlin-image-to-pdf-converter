@@ -27,6 +27,17 @@ class ImageFilesIterator private constructor(private val directory: File): Direc
         else false
     }
 
+    override fun add(file: File): Boolean {
+        return if(isImage(file)){
+            files.add(file)
+            true
+        }else false
+    }
+
+    override fun addAll(files: List<File>): Boolean {
+        return this.files.addAll(files.filter { file -> isImage(file) })
+    }
+
     override fun remove(file: File): Boolean {
         return files.remove(file)
     }
