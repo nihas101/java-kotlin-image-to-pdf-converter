@@ -1,6 +1,6 @@
 package de.nihas101.imagesToPdfConverter.gui;
 
-import de.nihas101.imagesToPdfConverter.gui.controller.MainController;
+import de.nihas101.imagesToPdfConverter.gui.controller.MainWindowController;
 import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.directoryIterators.ImageDirectoriesIterator;
 import de.nihas101.imagesToPdfConverter.directoryIterators.ImageFilesIterator;
@@ -18,7 +18,7 @@ import static javafx.scene.input.KeyEvent.KEY_PRESSED;
 
 public final class MainWindow extends Application{
     private DirectoryIterator directoryIterator;
-    private MainController mainController;
+    private MainWindowController mainWindowController;
 
     /**
      * {@inheritDoc}
@@ -27,8 +27,8 @@ public final class MainWindow extends Application{
         /* Load root-node */
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
         GridPane root = loader.load();
-        mainController = loader.getController();
-        mainController.setup(this);
+        mainWindowController = loader.getController();
+        mainWindowController.setup(this);
 
         /* Create Scene */
         Scene scene = new Scene(root);
@@ -44,24 +44,24 @@ public final class MainWindow extends Application{
         launch(args);
     }
 
-    public void setupIterator(File file) {
-        directoryIterator = ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(file);
+    public void setupIterator(File file, boolean isImageDirectoryIterator){
+        if(isImageDirectoryIterator){
+            directoryIterator = ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator(file);
+        }else{
+            directoryIterator = ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(file);
+        }
     }
 
     private void setupKeyEvents(Scene scene){
         scene.addEventHandler(KEY_PRESSED, (event) -> {
             switch(event.getCode()){
                 case DELETE: {
-                    if(mainController.imageListView.getSelectionModel().getSelectedIndex() > -1)
-                        mainController.imageListView.getItems().remove(mainController.imageListView.getSelectionModel().getSelectedIndex());
+                    if(mainWindowController.imageListView.getSelectionModel().getSelectedIndex() > -1)
+                        mainWindowController.imageListView.getItems().remove(mainWindowController.imageListView.getSelectionModel().getSelectedIndex());
                 } break;
                 default: /* NOP */
             }
         });
-    }
-
-    public void setupDirectoriesIterator(File file){
-        directoryIterator = ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator(file);
     }
 
     public DirectoryIterator getDirectoryIterator() {

@@ -8,6 +8,7 @@ import de.nihas101.imagesToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
 import de.nihas101.imagesToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -18,6 +19,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -26,6 +28,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.itextpdf.kernel.pdf.CompressionConstants.DEFAULT_COMPRESSION;
 import static com.itextpdf.kernel.pdf.PdfVersion.PDF_1_7;
@@ -37,7 +40,7 @@ import static javafx.application.Platform.runLater;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.*;
 
-public class MainController {
+public class MainWindowController {
     @FXML
     public Button directoryButton;
     @FXML
@@ -60,7 +63,7 @@ public class MainController {
     /**
      * The directory from which to load more {@link File}s
      */
-    private File chosenDirectory;
+    private File chosenDirectory = new File("");
     /**
      * The {@link ImageMap} holding the loaded {@link Image}s
      */
@@ -75,7 +78,7 @@ public class MainController {
     FileChooser saveFileChooser;
 
     /**
-     * Sets up the {@link MainController}
+     * Sets up the {@link MainWindowController}
      * @param mainWindow The {@link MainWindow} belonging to this Controller
      */
     public void setup(MainWindow mainWindow){
@@ -84,6 +87,26 @@ public class MainController {
         setupSaveFileChooser();
         imageMap = createImageMap(new HashMap<>());
         pdfWriterOptions = PdfWriterOptions.OptionsFactory.createOptions(false, DEFAULT_COMPRESSION, PDF_1_7);
+
+        imageListView.setOnDragOver(dragEvent -> {
+            if (dragEvent.getGestureSource() != imageListView && dragEvent.getDragboard().hasFiles()) {
+                dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            dragEvent.consume();
+        });
+
+        imageListView.setOnDragDropped(dragEvent ->{
+            if(dragEvent.getDragboard().hasFiles()){
+                File file = dragEvent.getDragboard().getFiles().get(0);
+                if(file.isDirectory()) {
+                    chosenDirectory = file;
+                    setupIterator();
+                }
+                dragEvent.setDropCompleted(true);
+            }
+
+            dragEvent.consume();
+        });
     }
 
     /**
@@ -116,20 +139,17 @@ public class MainController {
 
         chosenDirectory = directoryChooser.showDialog(directoryButton.getScene().getWindow());
 
-        if (chosenDirectory != null) {
-            new Thread(() -> {
-                setDisableInput(true);
-                notifyUser("Loading files...", BLACK);
-                if (pdfWriterOptions.getMultipleDirectories())
-                    mainWindow.setupDirectoriesIterator(chosenDirectory);
-                else
-                    mainWindow.setupIterator(chosenDirectory);
-                setupListView(mainWindow.getDirectoryIterator());
-                setDisableInput(false);
-            }).start();
-        }
+        if (chosenDirectory != null) new Thread(this::setupIterator).start();
 
         actionEvent.consume();
+    }
+
+    private void setupIterator(){
+        setDisableInput(true);
+        notifyUser("Loading files...", BLACK);
+        mainWindow.setupIterator(chosenDirectory, pdfWriterOptions.getMultipleDirectories());
+        setupListView(mainWindow.getDirectoryIterator());
+        setDisableInput(false);
     }
 
     /**
@@ -144,7 +164,7 @@ public class MainController {
                     (loadedFiles) ->
                             notifyUser("Loading files... (" + (int)loadedFiles + "/" + nrOfFiles + ")", BLACK));
 
-            runLater(() -> setupObservableList(directoryIterator));
+            setupObservableList(directoryIterator);
         }).start();
     }
 
@@ -153,25 +173,38 @@ public class MainController {
      * @param directoryIterator The {@link DirectoryIterator} for iterating over directories
      */
     private void setupObservableList(DirectoryIterator directoryIterator) {
-        ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
-        observableFiles.addListener(setupListChangeListener(directoryIterator, observableFiles));
-        imageListView.setItems(observableFiles);
-        imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
-        notifyUser("Files: " + directoryIterator.nrOfFiles(), BLACK);
+        runLater(() -> {
+            ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
+            observableFiles.addListener(setupListChangeListener(directoryIterator, observableFiles));
+            imageListView.setItems(observableFiles);
+            imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
+            notifyUser("Files: " + directoryIterator.nrOfFiles(), BLACK);
+        });
     }
 
     /**
-     * Sets up a {@link ListChangeListener} that forwards all changes on the {@link ObservableList} to the underlying {@link java.util.List}
+     * Sets up a {@link ListChangeListener} that forwards all changes on the {@link ObservableList} to the underlying {@link List}
      * @param directoryIterator The {@link DirectoryIterator} for iterating over directories
      * @return The created {@link ListChangeListener}
      */
     private ListChangeListener<File> setupListChangeListener(DirectoryIterator directoryIterator , ObservableList<File> observableFiles){
         return change -> {
             while (change.next()) {
-                if (change.wasRemoved()) directoryIterator.getFiles().remove(change.getRemoved().get(0));
-                if (change.wasAdded()) directoryIterator.getFiles().add(change.getFrom(), change.getAddedSubList().get(0));
+                if (change.wasRemoved()) directoryIterator.remove(change.getRemoved().get(0));
+                if (change.wasAdded() && change.getAddedSize() == 1) {
+                    addChange(directoryIterator, change);
+                }
                 notifyUser("Files: " + observableFiles.size(), BLACK); }
         };
+    }
+
+    private void addChange(DirectoryIterator directoryIterator, Change<? extends File> change){
+        if(directoryIterator.add(change.getFrom(), change.getAddedSubList().get(0))) {
+            if (!pdfWriterOptions.getMultipleDirectories() &&
+                    !imageMap.contains(change.getAddedSubList().get(0))) {
+                imageMap.loadImage(change.getAddedSubList().get(0));
+            }
+        }else imageListView.getItems().remove(change.getAddedSubList().get(0));
     }
 
     /**
@@ -220,7 +253,7 @@ public class MainController {
                 );
                 notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
             }).start();
-        }
+        }else notifyUser("Build cancelled by user", BLACK);
     }
 
     /**
@@ -241,7 +274,7 @@ public class MainController {
                 );
                 notifyUser("Finished building: " + mainWindow.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
             }).start();
-        }
+        }else notifyUser("Build cancelled by user", BLACK);
     }
 
     /**
@@ -260,7 +293,7 @@ public class MainController {
     }
 
     /**
-     * Notifies the user by setting the {@link MainController#notificationText} to the given message
+     * Notifies the user by setting the {@link MainWindowController#notificationText} to the given message
      * @param message The message of the  notification
      * @param color The color with which the message should be displayed
      */

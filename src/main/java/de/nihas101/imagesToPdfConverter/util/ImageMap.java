@@ -45,15 +45,22 @@ public class ImageMap {
         putImagesIntoMap(files, progressUpdater);
     }
 
+    public void loadImage(File file) {
+        putImageIntoMap(file);
+    }
+
     /**
      * Loads {@link Image}s from the {@link List} and puts them into the {@link ImageMap#imageMap}
      * @param files The files to load {@link Image}s from
      */
     public void loadImages(List<File> files) {
-        imageMap.clear();
         if(files.size() == 0) return;
 
         putImagesIntoMap(files, null);
+    }
+
+    public void clearImages(){
+        imageMap.clear();
     }
 
     /**
@@ -105,5 +112,14 @@ public class ImageMap {
      */
     public void remove(String absolutePathToImage){
         imageMap.remove(absolutePathToImage);
+    }
+
+    public boolean contains(File file) {
+        try {
+            return imageMap.containsKey(file.toURI().toURL().toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -43,21 +43,22 @@ public class DirectoryContentDisplayController {
      */
     private DirectoryIterator directoryIterator;
     private Stage directoryContentDisplayStage;
-    private MainController mainController;
+    private MainWindowController mainWindowController;
     private int directoryIteratorIndex;
 
     /**
      * Sets up the {@link DirectoryContentDisplayController}
      * @param directoryIterator The {@link DirectoryIterator} for iterating over directories
      */
-    public void setup(DirectoryIterator directoryIterator, int directoryIteratorIndex, Stage directoryContentDisplayStage, MainController mainController){
+    public void setup(DirectoryIterator directoryIterator, int directoryIteratorIndex, Stage directoryContentDisplayStage, MainWindowController mainWindowController){
         this.directoryIterator = directoryIterator;
         this.directoryIteratorIndex = directoryIteratorIndex;
         this.directoryContentDisplayStage = directoryContentDisplayStage;
-        this.mainController = mainController;
+        this.mainWindowController = mainWindowController;
 
         new Thread(() -> {
             ImageMap imageMap = createImageMap(new HashMap<>());
+            imageMap.clearImages();
             imageMap.loadImages(directoryIterator.getFiles());
 
             runLater(() -> setupObservableList(directoryIterator, imageMap));
@@ -100,32 +101,32 @@ public class DirectoryContentDisplayController {
 
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
             int index = imageListView.getSelectionModel().getSelectedIndex();
-            createContentDisplayer(directoryIterator).displayContent(index, mainController);
+            createContentDisplayer(directoryIterator).displayContent(index, mainWindowController);
         }
 
         mouseEvent.consume();
     }
 
     public void buildPDF(ActionEvent actionEvent) {
-        mainController.saveFileChooser.setInitialFileName(directoryIterator.getParentDirectory().getName() + ".pdf");
-        mainController.saveFileChooser.setInitialDirectory(directoryIterator.getParentDirectory());
-        File saveFile = mainController.saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
+        mainWindowController.saveFileChooser.setInitialFileName(directoryIterator.getParentDirectory().getName() + ".pdf");
+        mainWindowController.saveFileChooser.setInitialDirectory(directoryIterator.getParentDirectory());
+        File saveFile = mainWindowController.saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
 
         if(saveFile != null) {
             new Thread(() -> {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         directoryIterator,
                         saveFile,
-                        mainController.pdfWriterOptions,
-                        progress -> mainController.buildProgressBar.setProgress(progress)
+                        mainWindowController.pdfWriterOptions,
+                        progress -> mainWindowController.buildProgressBar.setProgress(progress)
                 );
-                mainController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
+                mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
             }).start();
         }
 
         actionEvent.consume();
 
-        mainController.imageListView.getItems().remove(directoryIteratorIndex);
+        mainWindowController.imageListView.getItems().remove(directoryIteratorIndex);
         directoryContentDisplayStage.close();
     }
 }

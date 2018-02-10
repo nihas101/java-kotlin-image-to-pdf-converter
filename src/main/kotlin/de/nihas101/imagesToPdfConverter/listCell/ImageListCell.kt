@@ -59,7 +59,8 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
     }
 
     private fun setOnDragOver() = setOnDragOver { event ->
-            if (event.gestureSource !== this && event.dragboard.hasString()) event.acceptTransferModes(TransferMode.MOVE)
+            if (event.gestureSource !== this && (event.dragboard.hasString() || event.dragboard.hasFiles()))
+                event.acceptTransferModes(TransferMode.MOVE)
             event.consume()
         }
 
@@ -76,14 +77,15 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
             if (item == null) return@setOnDragDropped
 
             val dragBoard = event.dragboard
-            var success = false
 
-            if (dragBoard.hasString()) {
+            if(dragBoard.hasFiles()) {
+                observableFiles.addAll(dragBoard.files)
+                imageMap.loadImages(dragBoard.files)
+            }else if (dragBoard.hasString()) {
                 reorder(dragBoard.string.toInt(), index)
-                success = true
             }
 
-            event.isDropCompleted = success
+            event.isDropCompleted = true
             event.consume()
         }
     }

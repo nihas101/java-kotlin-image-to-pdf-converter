@@ -1,6 +1,6 @@
 package de.nihas101.imagesToPdfConverter.gui.subStages;
 
-import de.nihas101.imagesToPdfConverter.gui.controller.MainController;
+import de.nihas101.imagesToPdfConverter.gui.controller.MainWindowController;
 import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.directoryIterators.ImageFilesIterator;
 import javafx.scene.image.Image;
@@ -37,8 +37,8 @@ public final class DirectoryIteratorDisplayer {
      * Displays the content found at the given index of the {@link DirectoryIterator} instance
      * @param index The index of the content to display
      */
-    public void displayContent(int index, MainController mainController){
-        if(directoryIterator.getFile(index).isDirectory()) displayDirectory(index, mainController);
+    public void displayContent(int index, MainWindowController mainWindowController){
+        if(directoryIterator.getFile(index).isDirectory()) displayDirectory(index, mainWindowController);
         else displayImage(index);
     }
 
@@ -46,11 +46,11 @@ public final class DirectoryIteratorDisplayer {
      * Displays the content of the directory found at the given index of the {@link DirectoryIterator}
      * @param index The index of the directory to display
      */
-    private void displayDirectory(int index, MainController mainController) {
+    private void displayDirectory(int index, MainWindowController mainWindowController) {
         DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
                 ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(directoryIterator.getFile(index)),
                 index,
-                mainController
+                mainWindowController
         );
 
         directoryContentDisplay.displayContent();
