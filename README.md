@@ -6,7 +6,7 @@ This is a program for converting images to PDFs with the use of [iText 7](https:
 
 - Build a single PDF from a directory of images [See here](https://github.com/nihas101/java-kotlin-images-to-pdf-converter/blob/master/README.md#how-to-build-a-single-pdf)
 - Build multiple PDFs from multiple subdirectories of images at once [See here](https://github.com/nihas101/java-kotlin-images-to-pdf-converter/blob/master/README.md#how-to-build-multiple-pdfs-at-once)
-- Change the order the images will appear in in the final PDF via drag-and-drop or remove them
+- Change the order the images will appear in in the final PDF via drag-and-drop or remove unwanted ones
 
 ## Requirements
 **Java 1.8** is required to run this program.
@@ -41,10 +41,10 @@ to run the program in text-mode.
 
 ### In GUI-mode
 
-1. Run the program
-2. Click on ![choosedirectorybutton](https://user-images.githubusercontent.com/19901622/35849256-453993be-0b21-11e8-924c-b04b2e69e1b3.PNG) and choose the source-directory of images you want to convert into a PDF.
-3. Reorder images and remove unwanted ones
-4. Click on ![buildbutton](https://user-images.githubusercontent.com/19901622/35849742-e93f197e-0b22-11e8-8dab-4185c43171eb.PNG). After picking a target-directory the PDF will be build and placed at that location
+1. Run the program.
+2. Simply drag and drop the directory you want to convert **or** click on ![choosedirectorybutton](https://user-images.githubusercontent.com/19901622/35849256-453993be-0b21-11e8-924c-b04b2e69e1b3.PNG) and select the source-directory of images you want to convert into a PDF.
+3. Reorder images and remove unwanted ones.
+4. Click on ![buildbutton](https://user-images.githubusercontent.com/19901622/35849742-e93f197e-0b22-11e8-8dab-4185c43171eb.PNG). After picking a target-directory the PDF will be build and placed at that location.
 
 ### In text-mode
 
@@ -54,9 +54,9 @@ _TODO_
 
 ### In GUI-mode
 
-1. Run the program
-2. Click on ![gear](https://user-images.githubusercontent.com/19901622/35849782-0f48b198-0b23-11e8-8599-15fbdd355392.PNG) and check the "Build PDFs from multiple directories"-box
-3. Click on ![choosedirectorybutton](https://user-images.githubusercontent.com/19901622/35849256-453993be-0b21-11e8-924c-b04b2e69e1b3.PNG) and choose the source-directory which subdirectories you want to convert into a PDF.
+1. Run the program.
+2. Click on ![gear](https://user-images.githubusercontent.com/19901622/35849782-0f48b198-0b23-11e8-8599-15fbdd355392.PNG) and check the "Build PDFs from multiple directories"-box.
+3. Simply drag and drop the directory of subdirectories you want to convert **or** click on ![choosedirectorybutton](https://user-images.githubusercontent.com/19901622/35849256-453993be-0b21-11e8-924c-b04b2e69e1b3.PNG) and select the source-directory of subdirectories you want to convert into PDFs.
 4. If you want to alter specific PDFs to be build, double-click on the directory you want to alter to open a second window with it's contents.
     1. Reorder images and remove unwanted ones
     2. Click on the build button in the second window to build the PDF and remove this directory from the main window
