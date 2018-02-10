@@ -33,11 +33,9 @@ class ImagePdf internal constructor(
         }
 
         private fun createFileOutputStream(pathName: String): OutputStream {
-            val file = Paths.get(normalize(pathName)).toFile()
+            val file = Paths.get(pathName).toFile()
             return FileOutputStream(file.toString())
         }
-
-        private fun normalize(pathName: String): String = Normalizer.normalize(pathName, Normalizer.Form.NFD)
     }
 
     fun add(image: Image) {
