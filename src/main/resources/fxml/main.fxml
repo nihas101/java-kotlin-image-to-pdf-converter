@@ -11,7 +11,7 @@
 <GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
           minWidth="-Infinity" prefHeight="200.0" prefWidth="700.0" stylesheets="@../main.css"
           xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.nihas101.imagesToPdfConverter.controller.MainController">
+          fx:controller="de.nihas101.imagesToPdfConverter.gui.controller.MainWindowController">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="434.0"/>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="200.0"/>
@@ -29,7 +29,7 @@
         </opaqueInsets>
         <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="680.0">
             <Button fx:id="directoryButton" layoutX="66.0" layoutY="2.0" mnemonicParsing="false"
-                    onAction="#chooseDirectory" stylesheets="@../main.css" text="Choose dir"
+                    onAction="#chooseDirectory" stylesheets="@../main.css" text="Choose directory"
                     AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="5.0">
                 <tooltip>
                     <Tooltip text="Choose a directory to load images from"/>
