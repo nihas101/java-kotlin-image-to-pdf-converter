@@ -9,6 +9,8 @@ public class Constants{
     public final static int IMAGE_DISPLAY_MAX_WIDTH = 1600;
     public final static int IMAGE_DISPLAY_MAX_HEIGHT = 900;
 
+    public final static int IMAGE_MAP_MAX_SIZE = 100;
+
     /* Source: icons8.com/icon/2828/open */
     public final static String DIRECTORY_IMAGE_PATH = "src/main/resources/icons8-open-500.png";
     /* Source: icons8.com/icon/54151/gear */

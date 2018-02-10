@@ -6,10 +6,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static de.nihas101.imagesToPdfConverter.util.Constants.DIRECTORY_IMAGE_PATH;
+import static de.nihas101.imagesToPdfConverter.util.Constants.IMAGE_MAP_MAX_SIZE;
 
 /**
  * A class for holding {@link Image}s
@@ -18,9 +21,9 @@ public class ImageMap {
     /**
      * The {@link Map} mapping an absolute path to the corresponding {@link Image}
      */
-    private final Map<String, Image> imageMap;
+    private final LinkedHashMap<String, Image> imageMap; // LinkedHashmap is used to keep entries ordered
 
-    private ImageMap(Map<String, Image> imageMap) {
+    private ImageMap(LinkedHashMap<String, Image> imageMap) {
         this.imageMap = imageMap;
     }
 
@@ -29,8 +32,12 @@ public class ImageMap {
      * @param imageMap The {@link Map} that will hold the {@link Image}
      * @return The created {@link ImageMap} instance
      */
-    public static ImageMap createImageMap(Map<String, Image> imageMap){
+    public static ImageMap createImageMap(LinkedHashMap<String, Image> imageMap){
         return new ImageMap(imageMap);
+    }
+
+    public static ImageMap createImageMap(){
+        return new ImageMap(new LinkedHashMap<>());
     }
 
     /**
@@ -43,10 +50,6 @@ public class ImageMap {
         if(files.size() == 0) return;
 
         putImagesIntoMap(files, progressUpdater);
-    }
-
-    public void loadImage(File file) {
-        putImageIntoMap(file);
     }
 
     /**
@@ -70,12 +73,12 @@ public class ImageMap {
      */
     private void putImagesIntoMap(List<File> files, ProgressUpdater progressUpdater){
         for (int index = 0; index < files.size(); index++) {
-            if(files.get(index).isDirectory()) {
+            if(files.get(index).isDirectory() && imageMap.size() < IMAGE_MAP_MAX_SIZE) {
                 File directoryImage = new File(DIRECTORY_IMAGE_PATH);
                 putImageIntoMap(directoryImage);
             }else{
                 if(progressUpdater != null) progressUpdater.updateProgress(index);
-                putImageIntoMap(files.get(index));
+                if(imageMap.size() < IMAGE_MAP_MAX_SIZE) putImageIntoMap(files.get(index));
             }
         }
     }
@@ -91,19 +94,39 @@ public class ImageMap {
              * Scale images for a smaller memory print.
              * Thanks: stackoverflow.com/questions/15088271/javafx-loading-images-and-memory-problems
              */
-            imageMap.putIfAbsent(url, new Image(url, 100, 100, true, false));
+            if(!imageMap.containsKey(url)) {
+                if(imageMap.size() > IMAGE_MAP_MAX_SIZE){
+                    Iterator<Map.Entry<String,Image>> iterator = imageMap.entrySet().iterator(); // remove eldest entry
+                    if(iterator.hasNext()) {
+                        String key = iterator.next().getKey();
+                        imageMap.remove(key);
+                    }
+                }
+                imageMap.put(url, new Image(url, 100, 100, true, false));
+            }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * @param absolutePathToImage The absolute Path to the {@link Image}
+     * @param file The {@link File} of the {@link Image}
      * @return The {@link Image} found under the given absolute path
      */
     @Nullable
-    public Image get(@NotNull String absolutePathToImage) {
-        return imageMap.get(absolutePathToImage);
+    public Image get(@NotNull File file) throws MalformedURLException {
+        String url = toUrlString(file);
+
+        if(imageMap.containsKey(url))
+            return imageMap.get(url);
+        else{
+            putImageIntoMap(file);
+            return imageMap.get(url);
+        }
+    }
+
+    private String toUrlString(File file) throws MalformedURLException {
+        return file.toURI().toURL().toString();
     }
 
     /**
@@ -122,4 +145,6 @@ public class ImageMap {
             return false;
         }
     }
+
+    public int size() { return imageMap.size(); }
 }

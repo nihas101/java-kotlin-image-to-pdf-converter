@@ -19,7 +19,7 @@ import java.io.File
 
 class ImageListCell(private val imageMap: ImageMap, private val files: MutableList<File>, private val observableFiles: ObservableList<File>) : ListCell<File>(){
     private val imageView: ImageView = ImageView()
-    private val directoryImageString = File(DIRECTORY_IMAGE_PATH).toURI().toURL().toString()
+    private val directoryImageFile = File(DIRECTORY_IMAGE_PATH)
 
     override fun updateItem(file: File?, empty: Boolean) {
         super.updateItem(file, empty)
@@ -50,7 +50,7 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
                 val dragBoard = startDragAndDrop(TransferMode.MOVE)
                 val content = ClipboardContent()
                 content.putString(index.toString())
-                dragBoard.dragView = imageMap[item.toURI().toURL().toString()]
+                dragBoard.dragView = imageMap[item]
                 dragBoard.setContent(content)
 
                 event.consume()
@@ -92,9 +92,9 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
 
     private fun setGraphic(file: File?) {
         if(file!!.isDirectory)
-            imageView.image = imageMap[directoryImageString]
+            imageView.image = imageMap[directoryImageFile]
         else
-            imageView.image = imageMap[file.toURI().toURL().toString()]
+            imageView.image = imageMap[file]
 
         if(imageView.image != null) scaleImageView(imageView)
 

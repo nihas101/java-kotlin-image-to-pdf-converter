@@ -1,12 +1,12 @@
 package de.nihas101.imagesToPdfConverter.gui.controller;
 
-import de.nihas101.imagesToPdfConverter.util.ImageMap;
-import de.nihas101.imagesToPdfConverter.gui.MainWindow;
 import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator;
+import de.nihas101.imagesToPdfConverter.gui.MainWindow;
 import de.nihas101.imagesToPdfConverter.listCell.ImageListCell;
+import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions;
 import de.nihas101.imagesToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
 import de.nihas101.imagesToPdfConverter.pdf.builders.ImagePdfBuilder;
-import de.nihas101.imagesToPdfConverter.pdf.PdfWriterOptions;
+import de.nihas101.imagesToPdfConverter.util.ImageMap;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
@@ -27,15 +27,15 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.HashMap;
+import java.net.MalformedURLException;
 import java.util.List;
 
 import static com.itextpdf.kernel.pdf.CompressionConstants.DEFAULT_COMPRESSION;
 import static com.itextpdf.kernel.pdf.PdfVersion.PDF_1_7;
+import static de.nihas101.imagesToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
+import static de.nihas101.imagesToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
 import static de.nihas101.imagesToPdfConverter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
 import static de.nihas101.imagesToPdfConverter.util.ImageMap.createImageMap;
-import static de.nihas101.imagesToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
-import static de.nihas101.imagesToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static javafx.application.Platform.runLater;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.*;
@@ -85,7 +85,7 @@ public class MainWindowController {
         this.mainWindow = mainWindow;
         setupDirectoryChooser();
         setupSaveFileChooser();
-        imageMap = createImageMap(new HashMap<>());
+        imageMap = createImageMap();
         pdfWriterOptions = PdfWriterOptions.OptionsFactory.createOptions(false, DEFAULT_COMPRESSION, PDF_1_7);
 
         imageListView.setOnDragOver(dragEvent -> {
@@ -100,7 +100,7 @@ public class MainWindowController {
                 File file = dragEvent.getDragboard().getFiles().get(0);
                 if(file.isDirectory()) {
                     chosenDirectory = file;
-                    setupIterator();
+                    new Thread(this::setupIterator).start();
                 }
                 dragEvent.setDropCompleted(true);
             }
@@ -190,21 +190,25 @@ public class MainWindowController {
     private ListChangeListener<File> setupListChangeListener(DirectoryIterator directoryIterator , ObservableList<File> observableFiles){
         return change -> {
             while (change.next()) {
-                if (change.wasRemoved()) directoryIterator.remove(change.getRemoved().get(0));
-                if (change.wasAdded() && change.getAddedSize() == 1) {
-                    addChange(directoryIterator, change);
-                }
+                if (change.wasRemoved()) removeChange(directoryIterator, change);
+                if (change.wasAdded() && change.getAddedSize() == 1) addChange(directoryIterator, change);
+
                 notifyUser("Files: " + observableFiles.size(), BLACK); }
         };
     }
 
+    private void removeChange(DirectoryIterator directoryIterator, Change<? extends File> change){
+        File removedFile = change.getRemoved().get(0);
+        directoryIterator.remove(removedFile);
+        if(imageMap.contains(change.getRemoved().get(0))) {
+            try { imageMap.remove(removedFile.toURI().toURL().toString()); }
+            catch (MalformedURLException e) { e.printStackTrace(); }
+        }
+    }
+
     private void addChange(DirectoryIterator directoryIterator, Change<? extends File> change){
-        if(directoryIterator.add(change.getFrom(), change.getAddedSubList().get(0))) {
-            if (!pdfWriterOptions.getMultipleDirectories() &&
-                    !imageMap.contains(change.getAddedSubList().get(0))) {
-                imageMap.loadImage(change.getAddedSubList().get(0));
-            }
-        }else imageListView.getItems().remove(change.getAddedSubList().get(0));
+        if(!directoryIterator.add(change.getFrom(), change.getAddedSubList().get(0)))
+            imageListView.getItems().remove(change.getAddedSubList().get(0));
     }
 
     /**
