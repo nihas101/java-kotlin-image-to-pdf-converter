@@ -1,6 +1,7 @@
 package de.nihas101.imagesToPdfConverter.directoryIterators
 
 import de.nihas101.imagesToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
+import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
@@ -17,6 +18,18 @@ class ImageFilesIterator private constructor(private val directory: File): Direc
     override fun getFile(index: Int): File = files[index]
 
     override fun getFiles(): MutableList<File> = files
+
+    override fun add(index: Int, file: File): Boolean {
+        return if(isImage(file)){
+            files.add(index, file)
+            true
+        }
+        else false
+    }
+
+    override fun remove(file: File): Boolean {
+        return files.remove(file)
+    }
 
     override fun nextFile(): File{
         if(currentIndex < files.size) return files[currentIndex++]

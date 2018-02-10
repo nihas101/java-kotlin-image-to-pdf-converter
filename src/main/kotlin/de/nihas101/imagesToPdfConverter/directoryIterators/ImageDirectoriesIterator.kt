@@ -21,12 +21,21 @@ class ImageDirectoriesIterator private constructor(private val directory: File):
                 else List(1, { _ -> directory }).filter { file -> file.isDirectory }
 
         return directoryList.filter {
-            file -> ImageFilesIterator.createImageFilesIterator(file).nrOfFiles() != 0 }
-                .map { file -> ImageFilesIterator.createImageFilesIterator(file).getParentDirectory() }
-                .toMutableList()
+            file -> ImageFilesIterator.createImageFilesIterator(file).nrOfFiles() > 0 }.toMutableList()
     }
 
     override fun getFiles(): MutableList<File> = directories
+
+    override fun add(index: Int, file: File): Boolean {
+        return if(file.isDirectory && ImageFilesIterator.createImageFilesIterator(file).nrOfFiles() > 0){
+            directories.add(file)
+        }
+        else false
+    }
+
+    override fun remove(file: File): Boolean {
+        return directories.remove(file)
+    }
 
     override fun nextFile(): File {
         if(currentIndex < directories.size) return directories[currentIndex++]
