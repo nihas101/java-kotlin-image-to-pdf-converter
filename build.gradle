@@ -51,3 +51,10 @@ compileTestKotlin {
 jar {
     baseName = "Image2PdfConverter"
 }
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+}
