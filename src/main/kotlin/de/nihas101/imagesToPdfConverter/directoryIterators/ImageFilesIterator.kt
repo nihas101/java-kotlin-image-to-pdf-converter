@@ -44,9 +44,19 @@ class ImageFilesIterator private constructor(private val directory: File): Direc
 
     override fun getParentDirectory(): File = directory
 
-    private fun isImage(file: File): Boolean = file.isFile && (ImageIO.read(file) != null) && !excluded(file)
+    private fun isImage(file: File): Boolean{
+        if(file.isDirectory || !file.exists()) return false
+
+        val image: BufferedImage? = ImageIO.read(file)
+        return (image != null) && !excluded(file) && !tooBig(image)
+    }
 
     private fun excluded(file: File): Boolean{
         return "gif" == file.extension
+    }
+
+    private fun tooBig(image: BufferedImage): Boolean {
+        /* TODO: check if image sizes are in order */
+        return false
     }
 }
