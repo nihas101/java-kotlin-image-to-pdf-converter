@@ -1,4 +1,4 @@
-# Images To PDF Converter [![build status](https://travis-ci.org/nihas101/java-kotlin-images-to-pdf-converter.svg?branch=master)](https://travis-ci.org/nihas101/java-kotlin-images-to-pdf-converter)
+# Images To PDF Converter [![build status](https://travis-ci.org/nihas101/java-kotlin-images-to-pdf-converter.svg?branch=master)](https://travis-ci.org/nihas101/java-kotlin-images-to-pdf-converter) [![Code Climate](https://codeclimate.com/github/nihas101/java-kotlin-images-to-pdf-converter/badges/gpa.svg)](https://codeclimate.com/github/nihas101/java-kotlin-images-to-pdf-converter)
 
 This is a program for converting images to PDFs with the use of [iText 7](https://itextpdf.com/).
 
