@@ -1,7 +1,9 @@
 package de.nihas101.imagesToPdfConverter.listCell
 
+import com.sun.media.jfxmediaimpl.platform.java.JavaPlatform
 import de.nihas101.imagesToPdfConverter.util.Constants.*
 import de.nihas101.imagesToPdfConverter.util.ImageMap
+import javafx.application.Platform.runLater
 import javafx.collections.ObservableList
 import javafx.event.Event
 import javafx.event.EventHandler
@@ -92,14 +94,14 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
     }
 
     private fun setGraphic(file: File?) {
-        if(file!!.isDirectory)
-            imageView.image = imageMap[directoryImageFile]
-        else
-            imageView.image = imageMap[file]
+        runLater({
+            if (file!!.isDirectory) imageView.image = imageMap[directoryImageFile]
+            else imageView.image = imageMap[file]
 
-        if(imageView.image != null) scaleImageView(imageView)
+            if (imageView.image != null) scaleImageView(imageView)
 
-        graphic = createVBox(imageView, cropText(file.name))
+            graphic = createVBox(imageView, cropText(file.name))
+        })
     }
 
     private fun scaleImageView(imageView: ImageView){
