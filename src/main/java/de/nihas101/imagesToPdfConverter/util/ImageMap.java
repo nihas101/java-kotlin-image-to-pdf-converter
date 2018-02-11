@@ -87,7 +87,7 @@ public class ImageMap {
      * Puts an {@link Image} into the map
      * @param file The {@link File} to load the {@link Image} from
      */
-    private void putImageIntoMap(File file){
+    private synchronized void putImageIntoMap(File file){
         try {
             String url = file.toURI().toURL().toString();
             /*
@@ -114,7 +114,7 @@ public class ImageMap {
      * @return The {@link Image} found under the given absolute path
      */
     @Nullable
-    public Image get(@NotNull File file) throws MalformedURLException {
+    public synchronized Image get(@NotNull File file) throws MalformedURLException {
         String url = toUrlString(file);
 
         if(imageMap.containsKey(url))
@@ -137,7 +137,7 @@ public class ImageMap {
         imageMap.remove(absolutePathToImage);
     }
 
-    public boolean contains(File file) {
+    public synchronized boolean contains(File file) {
         try {
             return imageMap.containsKey(file.toURI().toURL().toString());
         } catch (MalformedURLException e) {
