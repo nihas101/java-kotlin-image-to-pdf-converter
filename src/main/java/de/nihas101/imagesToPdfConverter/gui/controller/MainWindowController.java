@@ -216,10 +216,9 @@ public class MainWindowController {
     }
 
     private void addChange(DirectoryIterator directoryIterator, Change<? extends File> change) {
-        IntStream.range(0, change.getAddedSubList().size()-1).forEach(index -> {
-            if(!directoryIterator.add(change.getAddedSubList().get(index))){
+        IntStream.range(0, change.getAddedSubList().size()).forEach(index -> {
+            if(!directoryIterator.add(change.getAddedSubList().get(index)))
                 imageListView.getItems().remove(change.getAddedSubList().get(index));
-            }
         });
     }
 
