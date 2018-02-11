@@ -153,9 +153,12 @@ public class MainWindowController {
         else
             directoryChooser.setTitle("Choose a directory or sourceFile to turn into a PDF");
 
-        chosenDirectory = directoryChooser.showDialog(directoryButton.getScene().getWindow());
+        File givenDirectory = directoryChooser.showDialog(directoryButton.getScene().getWindow());
 
-        if (chosenDirectory != null) new Thread(this::setupIterator).start();
+        if(givenDirectory != null){
+            chosenDirectory = givenDirectory;
+            new Thread(this::setupIterator).start();
+        }
 
         actionEvent.consume();
     }
