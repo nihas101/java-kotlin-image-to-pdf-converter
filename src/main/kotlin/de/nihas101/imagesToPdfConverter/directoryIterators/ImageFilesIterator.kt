@@ -67,7 +67,9 @@ class ImageFilesIterator private constructor(private val directory: File): Direc
     }
 
     private fun tooBig(image: BufferedImage): Boolean {
-        /* TODO: check if image sizes are in order */
+        /* TODO: check if image sizes are in order
+        *  TODO: Specifically the height and width in relation to each other
+        */
         return false
     }
 }
