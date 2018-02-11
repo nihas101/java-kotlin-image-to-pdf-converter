@@ -344,8 +344,13 @@ public class MainWindowController {
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
             setDisableInput(true);
             int index = imageListView.getSelectionModel().getSelectedIndex();
-            createContentDisplayer(mainWindow.getDirectoryIterator()).displayContent(index, this);
-            setDisableInput(false);
+            try {
+                createContentDisplayer(mainWindow.getDirectoryIterator()).displayContent(index, this);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }finally {
+                setDisableInput(false);
+            }
         }
     }
 
