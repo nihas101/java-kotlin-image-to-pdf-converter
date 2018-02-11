@@ -1,4 +1,5 @@
-# Images To PDF Converter [![build status](https://travis-ci.org/nihas101/java-kotlin-images-to-pdf-converter.svg?branch=master)](https://travis-ci.org/nihas101/java-kotlin-images-to-pdf-converter)
+# Images To PDF Converter
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) [![build status](https://travis-ci.org/nihas101/java-kotlin-images-to-pdf-converter.svg?branch=master)](https://travis-ci.org/nihas101/java-kotlin-images-to-pdf-converter) [![Maintainability](https://api.codeclimate.com/v1/badges/32c17125b13bb7c177bc/maintainability)](https://codeclimate.com/github/nihas101/java-kotlin-images-to-pdf-converter/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/32c17125b13bb7c177bc/test_coverage)](https://codeclimate.com/github/nihas101/java-kotlin-images-to-pdf-converter/test_coverage)
 
 This is a program for converting images to PDFs with the use of [iText 7](https://itextpdf.com/).
 
@@ -6,7 +7,7 @@ This is a program for converting images to PDFs with the use of [iText 7](https:
 
 - Build a single PDF from a directory of images [See here](https://github.com/nihas101/java-kotlin-images-to-pdf-converter/blob/master/README.md#how-to-build-a-single-pdf)
 - Build multiple PDFs from multiple subdirectories of images at once [See here](https://github.com/nihas101/java-kotlin-images-to-pdf-converter/blob/master/README.md#how-to-build-multiple-pdfs-at-once)
-- Change the order the images in the PDF via drag-and-drop and remove unwanted ones
+- Change the order of the images in the PDF via drag-and-drop and remove unwanted ones
 
 ## Requirements
 **Java 1.8** is required to run this program.
