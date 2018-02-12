@@ -83,12 +83,13 @@ public class DirectoryContentDisplayController {
      */
     private ListChangeListener<File> setupListChangeListener(DirectoryIterator directoryIterator) {
         return change -> {
-            while (change.next()) {
-                if (change.wasRemoved()) directoryIterator.getFiles().remove(change.getRemoved().get(0));
-                if (change.wasAdded())
-                    directoryIterator.getFiles().add(change.getFrom(), change.getAddedSubList().get(0));
-            }
+            while (change.next()) handleChange(directoryIterator, change);
         };
+    }
+
+    private void handleChange(DirectoryIterator directoryIterator, ListChangeListener.Change<? extends File> change){
+        if (change.wasRemoved()) directoryIterator.getFiles().remove(change.getRemoved().get(0));
+        if (change.wasAdded()) directoryIterator.getFiles().add(change.getFrom(), change.getAddedSubList().get(0));
     }
 
     /**

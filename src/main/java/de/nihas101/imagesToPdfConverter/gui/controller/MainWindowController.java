@@ -208,14 +208,16 @@ public class MainWindowController {
      */
     private ListChangeListener<File> setupListChangeListener(DirectoryIterator directoryIterator , ObservableList<File> observableFiles){
         return change -> {
-            while (change.next()) {
-                if (change.wasRemoved()) removeChange(directoryIterator, change);
-
-                if (change.wasAdded() && change.getAddedSize() == 1) addAtChangePosition(directoryIterator, change);
-                else if (change.wasAdded()) addChange(directoryIterator, change);
-
-                notifyUser("Files: " + observableFiles.size(), BLACK); }
+            while (change.next()) handleChange(directoryIterator, change);
+            notifyUser("Files: " + observableFiles.size(), BLACK);
         };
+    }
+
+    private void handleChange(DirectoryIterator directoryIterator, Change<? extends File> change){
+        if (change.wasRemoved()) removeChange(directoryIterator, change);
+
+        if (change.wasAdded() && change.getAddedSize() == 1) addAtChangePosition(directoryIterator, change);
+        else if (change.wasAdded()) addChange(directoryIterator, change);
     }
 
     private void addChange(DirectoryIterator directoryIterator, Change<? extends File> change) {
