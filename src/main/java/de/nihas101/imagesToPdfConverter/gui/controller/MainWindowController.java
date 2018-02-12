@@ -41,15 +41,13 @@ import static javafx.application.Platform.runLater;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.*;
 
-public class MainWindowController {
+public class MainWindowController extends FileListViewController {
     @FXML
     public Button directoryButton;
     @FXML
     public Button buildButton;
     @FXML
     public ProgressBar buildProgressBar;
-    @FXML
-    public ListView<File> imageListView;
     @FXML
     public Text notificationText;
     @FXML

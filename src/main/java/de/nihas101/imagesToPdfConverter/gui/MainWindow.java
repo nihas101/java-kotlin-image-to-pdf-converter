@@ -1,9 +1,9 @@
 package de.nihas101.imagesToPdfConverter.gui;
 
-import de.nihas101.imagesToPdfConverter.gui.controller.MainWindowController;
 import de.nihas101.imagesToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imagesToPdfConverter.directoryIterators.ImageDirectoriesIterator;
 import de.nihas101.imagesToPdfConverter.directoryIterators.ImageFilesIterator;
+import de.nihas101.imagesToPdfConverter.gui.controller.MainWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,12 +13,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
-import static javafx.scene.input.KeyEvent.KEY_PRESSED;
-
 
 public final class MainWindow extends Application{
     private DirectoryIterator directoryIterator;
-    private MainWindowController mainWindowController;
 
     /**
      * {@inheritDoc}
@@ -27,12 +24,12 @@ public final class MainWindow extends Application{
         /* Load root-node */
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
         GridPane root = loader.load();
-        mainWindowController = loader.getController();
+        MainWindowController mainWindowController = loader.getController();
         mainWindowController.setup(this);
 
         /* Create Scene */
         Scene scene = new Scene(root);
-        setupKeyEvents(scene);
+        mainWindowController.setupKeyEvents(scene);
 
         primaryStage.setTitle("Images 2 PDF Converter");
         primaryStage.setScene(scene);
@@ -49,18 +46,6 @@ public final class MainWindow extends Application{
             directoryIterator = ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator(file);
         else
             directoryIterator = ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(file);
-    }
-
-    private void setupKeyEvents(Scene scene){
-        scene.addEventHandler(KEY_PRESSED, (event) -> {
-            switch(event.getCode()){
-                case DELETE: {
-                    if(mainWindowController.imageListView.getSelectionModel().getSelectedIndex() > -1)
-                        mainWindowController.imageListView.getItems().remove(mainWindowController.imageListView.getSelectionModel().getSelectedIndex());
-                } break;
-                default: /* NOP */
-            }
-        });
     }
 
     public DirectoryIterator getDirectoryIterator() {

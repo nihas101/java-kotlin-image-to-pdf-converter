@@ -29,12 +29,7 @@ import static javafx.scene.paint.Color.GREEN;
 /**
  * The Controller of the {@link DirectoryContentDisplay} {@link Application}
  */
-public class DirectoryContentDisplayController {
-    /**
-     * The {@link ListView} for displaying the content of the directory
-     */
-    @FXML
-    public ListView<File> imageListView;
+public class DirectoryContentDisplayController extends FileListViewController {
     @FXML
     public Button buildButton;
     /**
