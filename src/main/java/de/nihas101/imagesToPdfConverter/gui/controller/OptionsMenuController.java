@@ -50,25 +50,21 @@ public class OptionsMenuController {
 
     private void setSelectedPdfVersion(ToggleGroup pdfVersionToggle) {
         PdfVersion pdfVersion = pdfWriterOptions.getPdfVersion();
+        int index = pdfVersionToIndex(pdfVersion);
 
-        if(pdfVersion.equals(PDF_1_0))
-            pdfVersionToggle.getToggles().get(0).setSelected(true);
-        else if(pdfVersion.equals(PDF_1_1))
-            pdfVersionToggle.getToggles().get(1).setSelected(true);
-        else if(pdfVersion.equals(PDF_1_2))
-            pdfVersionToggle.getToggles().get(2).setSelected(true);
-        else if(pdfVersion.equals(PDF_1_3))
-            pdfVersionToggle.getToggles().get(3).setSelected(true);
-        else if(pdfVersion.equals(PDF_1_4))
-            pdfVersionToggle.getToggles().get(4).setSelected(true);
-        else if(pdfVersion.equals(PDF_1_5))
-            pdfVersionToggle.getToggles().get(5).setSelected(true);
-        else if(pdfVersion.equals(PDF_1_6))
-            pdfVersionToggle.getToggles().get(6).setSelected(true);
-        else if(pdfVersion.equals(PDF_2_0))
-            pdfVersionToggle.getToggles().get(8).setSelected(true);
-        else
-            pdfVersionToggle.getToggles().get(7).setSelected(true);
+        pdfVersionToggle.getToggles().get(index).setSelected(true);
+    }
+
+    private int pdfVersionToIndex(PdfVersion pdfVersion) {
+        if(pdfVersion.equals(PDF_1_0)) return 0;
+        else if(pdfVersion.equals(PDF_1_1)) return 1;
+        else if(pdfVersion.equals(PDF_1_2)) return 2;
+        else if(pdfVersion.equals(PDF_1_3)) return 3;
+        else if(pdfVersion.equals(PDF_1_4)) return 4;
+        else if(pdfVersion.equals(PDF_1_5)) return 5;
+        else if(pdfVersion.equals(PDF_1_6)) return 6;
+        else if(pdfVersion.equals(PDF_2_0)) return 8;
+        else return 7;
     }
 
     private void setupCompressionUserData(ToggleGroup pdfCompressionToggle) {
