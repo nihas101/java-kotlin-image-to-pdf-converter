@@ -72,14 +72,17 @@ public class ImageMap {
      * @param progressUpdater The {@link ProgressUpdater} to deliver updates
      */
     private void putImagesIntoMap(List<File> files, ProgressUpdater progressUpdater){
-        for (int index = 0; index < files.size(); index++) {
-            if(files.get(index).isDirectory() && imageMap.size() < IMAGE_MAP_MAX_SIZE) {
-                File directoryImage = new File(DIRECTORY_IMAGE_PATH);
-                putImageIntoMap(directoryImage);
-            }else{
-                if(progressUpdater != null) progressUpdater.updateProgress(index);
-                if(imageMap.size() < IMAGE_MAP_MAX_SIZE) putImageIntoMap(files.get(index));
-            }
+        for (int index = 0; index < files.size(); index++)
+            putImageIntoMapIfFile(files.get(index), progressUpdater, index);
+    }
+
+    private void putImageIntoMapIfFile(File file, ProgressUpdater progressUpdater, int progress){
+        if(file.isDirectory() && imageMap.size() < IMAGE_MAP_MAX_SIZE) {
+            File directoryImage = new File(DIRECTORY_IMAGE_PATH);
+            putImageIntoMap(directoryImage);
+        }else{
+            if(progressUpdater != null) progressUpdater.updateProgress(progress);
+            if(imageMap.size() < IMAGE_MAP_MAX_SIZE) putImageIntoMap(file);
         }
     }
 
@@ -95,17 +98,19 @@ public class ImageMap {
              * Thanks: stackoverflow.com/questions/15088271/javafx-loading-images-and-memory-problems
              */
             if(!imageMap.containsKey(url)) {
-                if(imageMap.size() > IMAGE_MAP_MAX_SIZE){
-                    Iterator<Map.Entry<String,Image>> iterator = imageMap.entrySet().iterator(); // remove eldest entry
-                    if(iterator.hasNext()) {
-                        String key = iterator.next().getKey();
-                        imageMap.remove(key);
-                    }
-                }
+                if(imageMap.size() > IMAGE_MAP_MAX_SIZE) removeEldestImage();
                 imageMap.put(url, new Image(url, 100, 100, true, false));
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void removeEldestImage(){
+        Iterator<Map.Entry<String,Image>> iterator = imageMap.entrySet().iterator();
+        if(iterator.hasNext()) {
+            String key = iterator.next().getKey();
+            imageMap.remove(key);
         }
     }
 
