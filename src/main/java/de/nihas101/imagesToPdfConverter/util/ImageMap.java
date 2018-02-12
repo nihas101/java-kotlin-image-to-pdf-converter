@@ -77,13 +77,17 @@ public class ImageMap {
     }
 
     private void putImageIntoMapIfFile(File file, ProgressUpdater progressUpdater, int progress){
-        if(file.isDirectory() && imageMap.size() < IMAGE_MAP_MAX_SIZE) {
-            File directoryImage = new File(DIRECTORY_IMAGE_PATH);
-            putImageIntoMap(directoryImage);
-        }else{
-            if(progressUpdater != null) progressUpdater.updateProgress(progress);
-            if(imageMap.size() < IMAGE_MAP_MAX_SIZE) putImageIntoMap(file);
-        }
+        if(file.isDirectory() && imageMap.size() < IMAGE_MAP_MAX_SIZE)
+            putDirectoryImageIntoMap();
+        else if(imageMap.size() < IMAGE_MAP_MAX_SIZE)
+            putImageIntoMap(file);
+
+        if(progressUpdater != null) progressUpdater.updateProgress(progress);
+    }
+
+    private void putDirectoryImageIntoMap(){
+        File directoryImage = new File(DIRECTORY_IMAGE_PATH);
+        if(!contains(directoryImage)) putImageIntoMap(directoryImage);
     }
 
     /**
