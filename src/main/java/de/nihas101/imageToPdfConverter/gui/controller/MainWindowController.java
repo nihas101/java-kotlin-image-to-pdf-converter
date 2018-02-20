@@ -114,6 +114,7 @@ public class MainWindowController extends FileListViewController {
             setupIterator();
             if (files.size() > 1) {
                 runLater(() -> {
+                    buildProgressBar.setProgress(0);
                     notifyUser("Loading files...", BLACK);
                     disableInput(true);
                     mainWindow.getDirectoryIterator().addAll(files.subList(1, files.size()));
@@ -158,6 +159,7 @@ public class MainWindowController extends FileListViewController {
         if (givenDirectory != null) {
             chosenDirectory = givenDirectory;
             new Thread(this::setupIterator).start();
+            buildProgressBar.setProgress(0);
         }
 
         actionEvent.consume();
