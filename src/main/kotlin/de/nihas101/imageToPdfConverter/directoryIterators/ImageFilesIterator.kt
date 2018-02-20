@@ -38,13 +38,12 @@ class ImageFilesIterator private constructor(private val directory: File): Direc
         return this.files.addAll(files.filter { file -> isImage(file) })
     }
 
-    override fun remove(file: File): Boolean {
-        return files.remove(file)
-    }
+    override fun remove(file: File) =
+            files.remove(file)
 
     override fun nextFile(): File{
         if(currentIndex < files.size) return files[currentIndex++]
-        throw NoMoreImagesException(directory)
+        else throw NoMoreImagesException(directory)
     }
 
     override fun resetIndex() {
