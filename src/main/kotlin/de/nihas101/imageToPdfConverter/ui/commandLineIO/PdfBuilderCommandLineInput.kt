@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.ui.commandLineIO
 
-import de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction.IteratorAction
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
+import de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction.IteratorAction
 import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions
 import java.io.BufferedReader
 import java.nio.file.Path

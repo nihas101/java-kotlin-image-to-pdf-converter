@@ -1,11 +1,13 @@
 package de.nihas101.imageToPdfConverter.pdf
 
-import com.itextpdf.kernel.pdf.*
+import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.kernel.pdf.PdfWriter
+import com.itextpdf.kernel.pdf.WriterProperties
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Image
-import de.nihas101.imageToPdfConverter.util.Constants.NO_MARGIN
 import de.nihas101.imageToPdfConverter.pdf.formatters.FullPageImageCropper.FullPageCropperFactory.createFullPageCropper
 import de.nihas101.imageToPdfConverter.pdf.formatters.ImagePdfPageFormatter
+import de.nihas101.imageToPdfConverter.util.Constants.NO_MARGIN
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.nio.file.Paths
