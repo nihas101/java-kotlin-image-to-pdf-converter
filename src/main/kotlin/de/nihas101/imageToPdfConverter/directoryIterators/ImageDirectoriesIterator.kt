@@ -51,6 +51,10 @@ class ImageDirectoriesIterator private constructor(private val directory: File) 
 
     override fun getFile(index: Int): File = directories[index]
 
-    private fun isImageDirectory(file: File) =
-            file.isDirectory && ImageFilesIterator.createImageFilesIterator(file).nrOfFiles() > 0
+    private fun isImageDirectory(directory: File) = directory.isDirectory && containsImage(directory)
+
+    private fun containsImage(directory: File): Boolean {
+        directory.listFiles().forEach { file -> if (ImageFilesIterator.isImage(file)) return true }
+        return false
+    }
 }
