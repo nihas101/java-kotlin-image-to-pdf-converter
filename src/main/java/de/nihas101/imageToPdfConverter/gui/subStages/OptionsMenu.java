@@ -29,8 +29,8 @@ public final class OptionsMenu extends Application {
 
         primaryStage.setTitle("PdfWriterOptions");
         primaryStage.setScene(scene);
-        primaryStage.showAndWait();
         primaryStage.setResizable(false);
+        primaryStage.showAndWait();
     }
 
     public static OptionsMenu createOptionsMenu(PdfWriterOptions pdfWriterOptions) {
