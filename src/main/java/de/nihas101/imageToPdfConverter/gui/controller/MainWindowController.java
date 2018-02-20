@@ -115,10 +115,10 @@ public class MainWindowController extends FileListViewController {
             if (files.size() > 1) {
                 runLater(() -> {
                     notifyUser("Loading files...", BLACK);
-                    setDisableInput(true);
+                    disableInput(true);
                     mainWindow.getDirectoryIterator().addAll(files.subList(1, files.size()));
                     imageListView.getItems().addAll(files.subList(1, files.size()));
-                    setDisableInput(false);
+                    disableInput(false);
                 });
             }
         }).start();
@@ -164,11 +164,11 @@ public class MainWindowController extends FileListViewController {
     }
 
     private void setupIterator() {
-        setDisableInput(true);
+        disableInput(true);
         notifyUser("Loading files...", BLACK);
         mainWindow.setupIterator(chosenDirectory, pdfWriterOptions.getMultipleDirectories());
-        setupListView(mainWindow.getDirectoryIterator());
-        setDisableInput(false);
+        runLater(() -> setupListView(mainWindow.getDirectoryIterator()));
+        disableInput(false);
     }
 
     /**
@@ -257,10 +257,8 @@ public class MainWindowController extends FileListViewController {
 
         notifyUser("Building PDF...", BLACK);
 
-        setDisableInput(true);
         if (pdfWriterOptions.getMultipleDirectories()) buildMultiplePdf();
         else buildSinglePdf();
-        setDisableInput(false);
 
         actionEvent.consume();
     }
@@ -270,7 +268,7 @@ public class MainWindowController extends FileListViewController {
      *
      * @param isDisabled True to disable, false to enable input
      */
-    private void setDisableInput(boolean isDisabled) {
+    private void disableInput(boolean isDisabled) {
         imageListView.setDisable(isDisabled);
         buildButton.setDisable(isDisabled);
         directoryButton.setDisable(isDisabled);
@@ -287,13 +285,18 @@ public class MainWindowController extends FileListViewController {
 
         if (saveFile != null) {
             new Thread(() -> {
+                disableInput(true);
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
                         saveFile,
                         pdfWriterOptions,
-                        progress -> buildProgressBar.setProgress(progress)
+                        progress -> {
+                            buildProgressBar.setProgress(progress);
+                            System.gc();
+                        }
                 );
                 notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
+                disableInput(false);
             }).start();
         } else notifyUser("Build cancelled by user", BLACK);
     }
@@ -307,6 +310,7 @@ public class MainWindowController extends FileListViewController {
         File saveFile = directoryChooser.showDialog(buildButton.getScene().getWindow());
 
         if (saveFile != null) {
+            disableInput(true);
             new Thread(() -> {
                 ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
@@ -315,6 +319,7 @@ public class MainWindowController extends FileListViewController {
                         progress -> buildProgressBar.setProgress(progress)
                 );
                 notifyUser("Finished building: " + mainWindow.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
+                disableInput(false);
             }).start();
         } else notifyUser("Build cancelled by user", BLACK);
     }
@@ -357,14 +362,14 @@ public class MainWindowController extends FileListViewController {
         if (imageListView.getItems().size() == 0) return;
 
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
-            setDisableInput(true);
+            disableInput(true);
             int index = imageListView.getSelectionModel().getSelectedIndex();
             try {
                 createContentDisplayer(mainWindow.getDirectoryIterator()).displayContent(index, this);
             } catch (Exception exception) {
                 exception.printStackTrace();
             } finally {
-                setDisableInput(false);
+                disableInput(false);
             }
         }
     }
