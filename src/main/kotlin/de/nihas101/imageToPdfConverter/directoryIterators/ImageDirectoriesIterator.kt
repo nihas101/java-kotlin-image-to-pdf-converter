@@ -15,9 +15,8 @@ class ImageDirectoriesIterator private constructor(private val directory: File):
 
     override fun getParentDirectory(): File = directory
 
-    private fun setupDirectories(directory: File): MutableList<File> {
-        return directory.listFiles().filter { file -> isImageDirectory(file) }.toMutableList()
-    }
+    private fun setupDirectories(directory: File) =
+            directory.listFiles().filter { file -> isImageDirectory(file) }.toMutableList()
 
     override fun getFiles(): MutableList<File> = directories
 
@@ -35,13 +34,11 @@ class ImageDirectoriesIterator private constructor(private val directory: File):
         }else false
     }
 
-    override fun addAll(files: List<File>): Boolean {
-        return directories.addAll(files.filter { file -> isImageDirectory(file) })
-    }
+    override fun addAll(files: List<File>) =
+            directories.addAll(files.filter { file -> isImageDirectory(file) })
 
-    override fun remove(file: File): Boolean {
-        return directories.remove(file)
-    }
+    override fun remove(file: File) =
+            directories.remove(file)
 
     override fun nextFile(): File {
         if(currentIndex < directories.size) return directories[currentIndex++]
@@ -54,7 +51,6 @@ class ImageDirectoriesIterator private constructor(private val directory: File):
 
     override fun getFile(index: Int): File = directories[index]
 
-    private fun isImageDirectory(file: File): Boolean{
-        return file.isDirectory && ImageFilesIterator.createImageFilesIterator(file).nrOfFiles() > 0
-    }
+    private fun isImageDirectory(file: File) =
+            file.isDirectory && ImageFilesIterator.createImageFilesIterator(file).nrOfFiles() > 0
 }
