@@ -11,10 +11,6 @@ class ImageFilesIterator private constructor(private val directory: File) : Dire
             else List(1, { _ -> directory }).filter { file -> isImage(file) }.toMutableList()
     private var currentIndex = 0
 
-    companion object ImageFilesIteratorFactory {
-        fun createImageFilesIterator(directory: File): ImageFilesIterator = ImageFilesIterator(directory)
-    }
-
     override fun getFile(index: Int): File = files[index]
 
     override fun getFiles(): MutableList<File> = files
@@ -53,27 +49,31 @@ class ImageFilesIterator private constructor(private val directory: File) : Dire
 
     override fun getParentDirectory(): File = directory
 
-    private fun isImage(file: File): Boolean {
-        val image: BufferedImage?
-        if (file.isDirectory || !file.exists()) return false
+    companion object ImageFilesIteratorFactory {
+        fun createImageFilesIterator(directory: File): ImageFilesIterator = ImageFilesIterator(directory)
 
-        try {
-            image = ImageIO.read(file)
-        } catch (exception: Exception) {
-            return false
+        fun isImage(file: File): Boolean {
+            val image: BufferedImage?
+            if (file.isDirectory || !file.exists()) return false
+
+            try {
+                image = ImageIO.read(file)
+            } catch (exception: Exception) {
+                return false
+            }
+
+            return (image != null) && !exclude(file) && !tooBig(image)
         }
 
-        return (image != null) && !exclude(file) && !tooBig(image)
-    }
+        private fun exclude(file: File): Boolean {
+            return "gif" == file.extension
+        }
 
-    private fun exclude(file: File): Boolean {
-        return "gif" == file.extension
-    }
-
-    private fun tooBig(image: BufferedImage): Boolean {
-        /* TODO: check if image sizes are in order
-        *  TODO: Specifically the height and width in relation to each other
-        */
-        return false
+        private fun tooBig(image: BufferedImage): Boolean {
+            /* TODO: check if image sizes are in order
+            *  TODO: Specifically the height and width in relation to each other
+            */
+            return false
+        }
     }
 }
