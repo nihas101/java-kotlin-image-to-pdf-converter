@@ -157,9 +157,9 @@ public class MainWindowController extends FileListViewController {
         File givenDirectory = directoryChooser.showDialog(directoryButton.getScene().getWindow());
 
         if (givenDirectory != null) {
+            buildProgressBar.setProgress(0);
             chosenDirectory = givenDirectory;
             new Thread(this::setupIterator).start();
-            buildProgressBar.setProgress(0);
         }
 
         actionEvent.consume();
