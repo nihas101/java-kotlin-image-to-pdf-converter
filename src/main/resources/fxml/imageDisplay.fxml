@@ -3,7 +3,7 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.nihas101.imagesToPdfConverter.gui.controller.ImageDisplayController">
+<BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.nihas101.imageToPdfConverter.gui.controller.ImageDisplayController">
    <center>
       <ImageView fx:id="imageView" fitHeight="600.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
    </center>
