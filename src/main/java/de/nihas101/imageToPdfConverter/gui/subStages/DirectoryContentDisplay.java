@@ -30,16 +30,20 @@ public final class DirectoryContentDisplay extends Application {
 
     /**
      * The factory method for creating {@link DirectoryContentDisplay}s
+     *
      * @param imageFilesIterator The {@link DirectoryIterator} of which to display the content
      * @return The created {@link ImageFilesIterator} instance
      */
-    static DirectoryContentDisplay createDirectoryContentDisplay(DirectoryIterator imageFilesIterator, int directoryIteratorIndex, MainWindowController mainWindowController){
+    static DirectoryContentDisplay createDirectoryContentDisplay(DirectoryIterator imageFilesIterator, int directoryIteratorIndex, MainWindowController mainWindowController) {
         return new DirectoryContentDisplay(imageFilesIterator, directoryIteratorIndex, mainWindowController);
     }
 
-    public void displayContent(){
-        try { start(new Stage()); }
-        catch (Exception e) { e.printStackTrace(); }
+    public void displayContent() {
+        try {
+            start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

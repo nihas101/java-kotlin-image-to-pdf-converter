@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public final class MainWindow extends Application{
+public final class MainWindow extends Application {
     private DirectoryIterator directoryIterator;
 
     /**
@@ -41,8 +41,8 @@ public final class MainWindow extends Application{
         launch(args);
     }
 
-    public void setupIterator(File file, boolean isImageDirectoryIterator){
-        if(isImageDirectoryIterator)
+    public void setupIterator(File file, boolean isImageDirectoryIterator) {
+        if (isImageDirectoryIterator)
             directoryIterator = ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator(file);
         else
             directoryIterator = ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(file);

@@ -9,13 +9,12 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 object Main {
-    /* TODO: Testing!!! */
     @JvmStatic
     fun main(args: Array<String>) {
         if (args.isEmpty()) MainWindow().show()
-        else if("--nogui" == args[0].toLowerCase()) {
+        else if ("--nogui" == args[0].toLowerCase()) {
             val commandLineOutput = PdfBuilderCommandLineOutput.createCommandLineOutput(System.out)
-            val commandLineInput = PdfBuilderCommandLineInput.createCommandLineInput(BufferedReader(InputStreamReader( System.`in`)))
+            val commandLineInput = PdfBuilderCommandLineInput.createCommandLineInput(BufferedReader(InputStreamReader(System.`in`)))
             val commandLineInterface = PdfBuilderCommandLineInterface.createCommandLineInterface(commandLineInput, commandLineOutput)
             PdfBuilderUI.createPdfBuilderUI(commandLineInterface).start()
         }

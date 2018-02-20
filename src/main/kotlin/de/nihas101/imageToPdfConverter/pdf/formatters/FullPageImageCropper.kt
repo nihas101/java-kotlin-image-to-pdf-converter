@@ -5,14 +5,14 @@ import com.itextpdf.kernel.pdf.PdfName
 import com.itextpdf.kernel.pdf.PdfPage
 import com.itextpdf.layout.element.Image
 
-class FullPageImageCropper : ImagePdfPageFormatter(){
+class FullPageImageCropper : ImagePdfPageFormatter() {
     private val lowerLeftX: Float = 0F
 
-    companion object FullPageCropperFactory{
+    companion object FullPageCropperFactory {
         fun createFullPageCropper(): FullPageImageCropper = FullPageImageCropper()
     }
 
-    override fun format(pdfPage: PdfPage, image: Image){
+    override fun format(pdfPage: PdfPage, image: Image) {
         val pdfRatio = (pdfPage.mediaBox.width / pdfPage.mediaBox.height)
         val imageRatio = (image.imageWidth / image.imageHeight)
         val scaleBetweenPdfAndImage = pdfRatio / imageRatio
@@ -26,8 +26,7 @@ class FullPageImageCropper : ImagePdfPageFormatter(){
         pdfPage.pdfObject.put(PdfName.CropBox, cropBoxArray)
     }
 
-    private fun createCropBoxArray(lowerLeftX: Float, lowerLeftY: Float, upperRightX: Float, upperRightY: Float): PdfArray
-        = PdfArray(floatArrayOf(lowerLeftX,lowerLeftY,upperRightX,upperRightY))
+    private fun createCropBoxArray(lowerLeftX: Float, lowerLeftY: Float, upperRightX: Float, upperRightY: Float): PdfArray = PdfArray(floatArrayOf(lowerLeftX, lowerLeftY, upperRightX, upperRightY))
 
 
     private fun calculateBottomCrop(height: Float, scale: Float): Float = Math.abs(height - (height * scale))

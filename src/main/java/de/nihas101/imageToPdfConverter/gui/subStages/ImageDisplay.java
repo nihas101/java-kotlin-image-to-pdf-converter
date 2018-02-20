@@ -24,23 +24,27 @@ public final class ImageDisplay extends Application {
      */
     private String imageName;
 
-    private ImageDisplay(Image image, String imageName){
+    private ImageDisplay(Image image, String imageName) {
         this.image = image;
         this.imageName = imageName;
     }
 
     /**
      * The factory method for creating {@link ImageDisplay}s
-     * @param image The {@link Image} to display
+     *
+     * @param image     The {@link Image} to display
      * @param imageName The name of the {@link Image}
      */
-    public static ImageDisplay createImageDisplay(Image image, String imageName){
+    public static ImageDisplay createImageDisplay(Image image, String imageName) {
         return new ImageDisplay(image, imageName);
     }
 
-    public void displayImage(){
-        try { start(new Stage()); }
-        catch (Exception e) { e.printStackTrace(); }
+    public void displayImage() {
+        try {
+            start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -59,19 +63,19 @@ public final class ImageDisplay extends Application {
 
         primaryStage.setTitle("ImageDisplay - " + imageName);
         primaryStage.setScene(scene);
-        if(image.getHeight() > IMAGE_DISPLAY_MAX_HEIGHT || image.getWidth() > IMAGE_DISPLAY_MAX_WIDTH) {
+        if (image.getHeight() > IMAGE_DISPLAY_MAX_HEIGHT || image.getWidth() > IMAGE_DISPLAY_MAX_WIDTH) {
             double scale = calculateScale(image);
-            primaryStage.setHeight(image.getHeight()*scale);
-            primaryStage.setWidth(image.getWidth()*scale);
-        }else{
+            primaryStage.setHeight(image.getHeight() * scale);
+            primaryStage.setWidth(image.getWidth() * scale);
+        } else {
             primaryStage.setHeight(image.getHeight());
             primaryStage.setWidth(image.getWidth());
         }
         primaryStage.showAndWait();
     }
 
-    private double calculateScale(Image image){
-        if(image.getWidth() > image.getHeight()) return IMAGE_DISPLAY_MAX_WIDTH / image.getWidth();
+    private double calculateScale(Image image) {
+        if (image.getWidth() > image.getHeight()) return IMAGE_DISPLAY_MAX_WIDTH / image.getWidth();
         else return IMAGE_DISPLAY_MAX_HEIGHT / image.getHeight();
     }
 }

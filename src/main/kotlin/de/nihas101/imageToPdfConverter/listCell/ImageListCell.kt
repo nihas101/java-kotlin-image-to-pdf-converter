@@ -18,7 +18,7 @@ import javafx.scene.text.Text
 import java.io.File
 
 
-class ImageListCell(private val imageMap: ImageMap, private val files: MutableList<File>, private val observableFiles: ObservableList<File>) : ListCell<File>(){
+class ImageListCell(private val imageMap: ImageMap, private val files: MutableList<File>, private val observableFiles: ObservableList<File>) : ListCell<File>() {
     private val imageView: ImageView = ImageView()
     private val directoryImageFile = File(DIRECTORY_IMAGE_PATH)
 
@@ -44,15 +44,15 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
     }
 
     private fun setupOnDrag() {
-        onDragDetected = EventHandler {
-            event -> run {
+        onDragDetected = EventHandler { event ->
+            run {
                 if (item == null) return@EventHandler
 
                 val dragBoard = startDragAndDrop(TransferMode.MOVE)
                 val content = ClipboardContent()
                 content.putString(index.toString())
-                dragBoard.dragView = if(!item.isDirectory)imageMap[item]
-                                     else imageMap[directoryImageFile]
+                dragBoard.dragView = if (!item.isDirectory) imageMap[item]
+                else imageMap[directoryImageFile]
                 dragBoard.setContent(content)
 
                 event.consume()
@@ -61,10 +61,10 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
     }
 
     private fun setOnDragOver() = setOnDragOver { event ->
-            if (event.gestureSource !== this && (event.dragboard.hasString() || event.dragboard.hasFiles()))
-                event.acceptTransferModes(TransferMode.MOVE)
-            event.consume()
-        }
+        if (event.gestureSource !== this && (event.dragboard.hasString() || event.dragboard.hasFiles()))
+            event.acceptTransferModes(TransferMode.MOVE)
+        event.consume()
+    }
 
     private fun setOnDragEntered() = setOnDragEntered { event ->
         if (event.gestureSource !== this && event.dragboard.hasString()) opacity = 0.3
@@ -80,10 +80,10 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
 
             val dragBoard = event.dragboard
 
-            if(dragBoard.hasFiles()) {
+            if (dragBoard.hasFiles()) {
                 observableFiles.addAll(dragBoard.files)
                 imageMap.loadImages(dragBoard.files)
-            }else if (dragBoard.hasString()) {
+            } else if (dragBoard.hasString()) {
                 reorder(dragBoard.string.toInt(), index)
             }
 
@@ -103,27 +103,27 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
         })
     }
 
-    private fun scaleImageView(imageView: ImageView){
-        val scale = (CELL_SIZE /imageView.image.height)
+    private fun scaleImageView(imageView: ImageView) {
+        val scale = (CELL_SIZE / imageView.image.height)
         imageView.fitHeight = imageView.image.height * scale
-        imageView.fitWidth  = imageView.image.width * scale
+        imageView.fitWidth = imageView.image.width * scale
     }
 
-    private fun createVBox(imageView: ImageView, text: Text): VBox{
+    private fun createVBox(imageView: ImageView, text: Text): VBox {
         val vBox = VBox()
         vBox.children.addAll(imageView, text)
         vBox.alignment = Pos.CENTER
         return vBox
     }
 
-    private fun cropText(text: String): Text{
-        return if(text.length > LIST_CELL_MAX_STRING_LENGTH)
-            Text(text.substring(0,LIST_CELL_MAX_STRING_LENGTH) + "...")
+    private fun cropText(text: String): Text {
+        return if (text.length > LIST_CELL_MAX_STRING_LENGTH)
+            Text(text.substring(0, LIST_CELL_MAX_STRING_LENGTH) + "...")
         else
             Text(text)
     }
 
-    private fun setupImageListCellContextMenu(file: File){
+    private fun setupImageListCellContextMenu(file: File) {
         contextMenu = ContextMenu()
 
         val deleteItem = setupMenuItem(
@@ -136,26 +136,26 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
 
         val moveUpItem = setupMenuItem(
                 "Move ${file.name} up",
-                {_ -> if(index > 0) moveTo(index-1) }
+                { _ -> if (index > 0) moveTo(index - 1) }
         )
 
         val moveDownItem = setupMenuItem("Move ${file.name} down",
-                {_ -> if(index < files.size) moveTo(index+1) }
+                { _ -> if (index < files.size) moveTo(index + 1) }
         )
 
         val moveToFrontItem = setupMenuItem(
                 "Move ${file.name} to the front",
-                {_ -> if(index > 0) moveTo(0) }
+                { _ -> if (index > 0) moveTo(0) }
         )
 
         val moveToBackItem = setupMenuItem("Move ${file.name} to the back",
-                {_ -> if(index < files.size) moveTo(files.size-1) }
+                { _ -> if (index < files.size) moveTo(files.size - 1) }
         )
 
-        if(index == 0) moveUpItem.disableProperty().set(false)
-        if(index == files.size-1) moveDownItem.disableProperty().set(false)
-        if(index == 0) moveToFrontItem.disableProperty().set(false)
-        if(index == files.size-1) moveToBackItem.disableProperty().set(false)
+        if (index == 0) moveUpItem.disableProperty().set(false)
+        if (index == files.size - 1) moveDownItem.disableProperty().set(false)
+        if (index == 0) moveToFrontItem.disableProperty().set(false)
+        if (index == files.size - 1) moveToBackItem.disableProperty().set(false)
 
         contextMenu.items.addAll(moveUpItem, moveToFrontItem, moveDownItem, moveToBackItem, deleteItem)
     }
@@ -168,7 +168,7 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
 
     private fun removeFromLists(): File = observableFiles.removeAt(index)
 
-    private fun setupMenuItem(text: String, onAction: (Event) -> Unit): MenuItem{
+    private fun setupMenuItem(text: String, onAction: (Event) -> Unit): MenuItem {
         val menuItem = MenuItem()
         menuItem.textProperty().set(text)
         menuItem.setOnAction(onAction)

@@ -5,7 +5,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction.Iterato
 import de.nihas101.imageToPdfConverter.pdf.PdfBuildInformation
 import java.io.PrintStream
 
-class PdfBuilderCommandLineOutput private constructor(private val printStream: PrintStream){
+class PdfBuilderCommandLineOutput private constructor(private val printStream: PrintStream) {
     fun printInfo() {
         printStream.println("Follow the instructions to build the PDF(s). To exit the program, simply type \"exit\".\n")
     }
@@ -16,21 +16,21 @@ class PdfBuilderCommandLineOutput private constructor(private val printStream: P
 
     fun printPdfModificationInstructions(pdfBuildInformation: PdfBuildInformation) {
         printStream.println("Instructions:")
-        IteratorAction.getInstructions().forEach({ instruction -> printStream.println(instruction)})
+        IteratorAction.getInstructions().forEach({ instruction -> printStream.println(instruction) })
         printStream.println()
         printPdfContent(pdfBuildInformation)
         printMessage("")
     }
 
-    private fun printPdfContent(pdfBuildInformation: PdfBuildInformation){
+    private fun printPdfContent(pdfBuildInformation: PdfBuildInformation) {
         val directoryIterator: DirectoryIterator = pdfBuildInformation.getDirectoryIterator()
 
-        for(index in 0 until directoryIterator.nrOfFiles())
+        for (index in 0 until directoryIterator.nrOfFiles())
             printStream.println("$index: ${directoryIterator.getFile(index).name}")
     }
 
     fun printBuildInfo(pdfBuildInformation: PdfBuildInformation) =
-            if(pdfBuildInformation.getPdfWriterOptions().multipleDirectories) printStream.println("Building PDFs of version ${pdfBuildInformation.getPdfWriterOptions().pdfVersion}")
+            if (pdfBuildInformation.getPdfWriterOptions().multipleDirectories) printStream.println("Building PDFs of version ${pdfBuildInformation.getPdfWriterOptions().pdfVersion}")
             else printStream.println("Building PDF of version ${pdfBuildInformation.getPdfWriterOptions().pdfVersion}")
 
     fun printProgress() = printStream.print(".")
@@ -49,7 +49,7 @@ class PdfBuilderCommandLineOutput private constructor(private val printStream: P
 
     private fun printMessage(message: String) = printStream.print("$message\n> ")
 
-    companion object CommandLineOutputFactory{
+    companion object CommandLineOutputFactory {
         fun createCommandLineOutput(outputStream: PrintStream) = PdfBuilderCommandLineOutput(outputStream)
     }
 }

@@ -1,6 +1,6 @@
 package de.nihas101.imageToPdfConverter.util;
 
-public class Constants{
+public class Constants {
     public final static Double CELL_SIZE = 100.0;
     public final static int LIST_CELL_MAX_STRING_LENGTH = 27;
     public final static int NOTIFICATION_MAX_STRING_LENGTH = 75;

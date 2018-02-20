@@ -8,7 +8,7 @@ import java.io.File
 
 class ImageFilesIteratorTest {
     @Test
-    fun imagesLoaderDirTest(){
+    fun imagesLoaderDirTest() {
         val file = File("src/test/resources")
         val imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator(file)
 
@@ -16,7 +16,7 @@ class ImageFilesIteratorTest {
 
         try {
             imageFilesIterator.nextFile()
-        }catch (exception: NoMoreImagesException){
+        } catch (exception: NoMoreImagesException) {
             return
         }
 
@@ -24,7 +24,7 @@ class ImageFilesIteratorTest {
     }
 
     @Test
-    fun imagesLoaderSingleImageTest(){
+    fun imagesLoaderSingleImageTest() {
         val file = File("src/test/resources/3.png")
         val imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator(file)
 
@@ -32,7 +32,7 @@ class ImageFilesIteratorTest {
 
         try {
             imageFilesIterator.nextFile()
-        }catch (exception: NoMoreImagesException){
+        } catch (exception: NoMoreImagesException) {
             return
         }
 

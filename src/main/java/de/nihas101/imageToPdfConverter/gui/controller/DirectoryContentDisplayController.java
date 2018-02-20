@@ -42,9 +42,10 @@ public class DirectoryContentDisplayController extends FileListViewController {
 
     /**
      * Sets up the {@link DirectoryContentDisplayController}
+     *
      * @param directoryIterator The {@link DirectoryIterator} for iterating over directories
      */
-    public void setup(DirectoryIterator directoryIterator, int directoryIteratorIndex, Stage directoryContentDisplayStage, MainWindowController mainWindowController){
+    public void setup(DirectoryIterator directoryIterator, int directoryIteratorIndex, Stage directoryContentDisplayStage, MainWindowController mainWindowController) {
         this.directoryIterator = directoryIterator;
         this.directoryIteratorIndex = directoryIteratorIndex;
         this.directoryContentDisplayStage = directoryContentDisplayStage;
@@ -61,8 +62,9 @@ public class DirectoryContentDisplayController extends FileListViewController {
 
     /**
      * Sets up the {@link ObservableList<File>} and adds it to the {@link ListView<File>}
+     *
      * @param directoryIterator The {@link DirectoryIterator} for iterating over directories
-     * @param imageMap The {@link Map} holding the images to be drawn in the list
+     * @param imageMap          The {@link Map} holding the images to be drawn in the list
      */
     private void setupObservableList(DirectoryIterator directoryIterator, ImageMap imageMap) {
         ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
@@ -73,6 +75,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
 
     /**
      * Sets up a {@link ListChangeListener} that forwards all changes on the {@link ObservableList} to the underlying {@link java.util.List}
+     *
      * @param directoryIterator The {@link DirectoryIterator} for iterating over directories
      * @return The created {@link ListChangeListener}
      */
@@ -82,19 +85,20 @@ public class DirectoryContentDisplayController extends FileListViewController {
         };
     }
 
-    private void handleChange(DirectoryIterator directoryIterator, ListChangeListener.Change<? extends File> change){
+    private void handleChange(DirectoryIterator directoryIterator, ListChangeListener.Change<? extends File> change) {
         if (change.wasRemoved()) directoryIterator.getFiles().remove(change.getRemoved().get(0));
         if (change.wasAdded()) directoryIterator.getFiles().add(change.getFrom(), change.getAddedSubList().get(0));
     }
 
     /**
      * Displays the content of the {@link DirectoryIterator}
+     *
      * @param mouseEvent The delivered {@link Event}
      */
     public void displayListCell(MouseEvent mouseEvent) {
-        if(imageListView.getItems().size() == 0) return;
+        if (imageListView.getItems().size() == 0) return;
 
-        if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
+        if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
             int index = imageListView.getSelectionModel().getSelectedIndex();
             createContentDisplayer(directoryIterator).displayContent(index, mainWindowController);
         }
@@ -107,7 +111,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
         mainWindowController.saveFileChooser.setInitialDirectory(directoryIterator.getParentDirectory());
         File saveFile = mainWindowController.saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
 
-        if(saveFile != null) {
+        if (saveFile != null) {
             new Thread(() -> {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         directoryIterator,

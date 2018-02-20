@@ -11,7 +11,7 @@ public abstract class FileListViewController {
     @FXML
     ListView<File> imageListView;
 
-    public void setupKeyEvents(Scene scene){
+    public void setupKeyEvents(Scene scene) {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             switch (event.getCode()) {
                 case DELETE:

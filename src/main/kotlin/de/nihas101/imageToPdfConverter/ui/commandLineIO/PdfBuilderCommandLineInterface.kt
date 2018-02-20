@@ -11,7 +11,7 @@ import java.nio.file.InvalidPathException
 class PdfBuilderCommandLineInterface private constructor(
         private val pdfBuilderCommandLineInput: PdfBuilderCommandLineInput,
         private val pdfBuilderCommandLineOutput: PdfBuilderCommandLineOutput
-){
+) {
     private var pdfBuildInformation: PdfBuildInformation = PdfBuildInformation()
 
     fun setup(): Int {
@@ -19,12 +19,12 @@ class PdfBuilderCommandLineInterface private constructor(
         return 1
     }
 
-    fun readDirectory(): Int{
+    fun readDirectory(): Int {
         pdfBuilderCommandLineOutput.printReadDirectoryInstructions()
         return try {
             pdfBuildInformation.sourceFile = pdfBuilderCommandLineInput.readPath().toFile()
             1
-        } catch (exception: InvalidPathException){
+        } catch (exception: InvalidPathException) {
             pdfBuilderCommandLineOutput.printInvalidPath()
             0
         }
@@ -39,11 +39,10 @@ class PdfBuilderCommandLineInterface private constructor(
         )
         pdfBuildInformation.setupDirectoryIterator()
 
-        return if(pdfBuildInformation.getDirectoryIterator().nrOfFiles() == 0){
+        return if (pdfBuildInformation.getDirectoryIterator().nrOfFiles() == 0) {
             pdfBuilderCommandLineOutput.printEmptyDirectoryError()
             -1
-        }
-        else 1
+        } else 1
     }
 
     fun readPdfContent(): Int {
@@ -55,10 +54,10 @@ class PdfBuilderCommandLineInterface private constructor(
 
         println(iteratorModification.toString())
 
-        return if(iteratorModification !is IteratorBuildAction){
+        return if (iteratorModification !is IteratorBuildAction) {
             iteratorModification.execute(pdfBuildInformation.getDirectoryIterator())
             0
-        } else{
+        } else {
             1
         }
     }
@@ -70,35 +69,35 @@ class PdfBuilderCommandLineInterface private constructor(
     }
 
     fun buildPdf(): Int {
-        if(pdfBuildInformation.customTargetFile) {
+        if (pdfBuildInformation.customTargetFile) {
             try {
                 pdfBuildInformation.targetFile = pdfBuilderCommandLineInput.readPath().toFile()
             } catch (exception: InvalidPathException) {
                 pdfBuilderCommandLineOutput.printInvalidPath()
                 return 0
             }
-        }else pdfBuildInformation.targetFile = File(pdfBuildInformation.sourceFile!!.absolutePath)
+        } else pdfBuildInformation.targetFile = File(pdfBuildInformation.sourceFile!!.absolutePath)
 
-        val progressUpdater = object : ProgressUpdater{
+        val progressUpdater = object : ProgressUpdater {
             override fun updateProgress(progress: Double) {
-                if(progress == 1.toDouble()) pdfBuilderCommandLineOutput.printFinishedBuilding()
+                if (progress == 1.toDouble()) pdfBuilderCommandLineOutput.printFinishedBuilding()
                 else pdfBuilderCommandLineOutput.printProgress()
             }
         }
 
-        if(!pdfBuildInformation.getMultipleDirectories() && pdfBuildInformation.targetFile!!.extension != "pdf")
+        if (!pdfBuildInformation.getMultipleDirectories() && pdfBuildInformation.targetFile!!.extension != "pdf")
             pdfBuildInformation.targetFile = File(pdfBuildInformation.targetFile!!.absolutePath + ".pdf")
 
 
         pdfBuilderCommandLineOutput.printBuildInfo(pdfBuildInformation)
-        if(pdfBuildInformation.getPdfWriterOptions().multipleDirectories){
+        if (pdfBuildInformation.getPdfWriterOptions().multipleDirectories) {
             ImageDirectoriesPdfBuilder.createImageDirectoriesPdfBuilder().build(
                     pdfBuildInformation.getDirectoryIterator(),
                     pdfBuildInformation.targetFile!!,
                     pdfBuildInformation.getPdfWriterOptions(),
                     progressUpdater
             )
-        }else{
+        } else {
             ImagePdfBuilder.createImagePdfBuilder().build(
                     pdfBuildInformation.getDirectoryIterator(),
                     pdfBuildInformation.targetFile!!,
@@ -110,8 +109,7 @@ class PdfBuilderCommandLineInterface private constructor(
         return 1
     }
 
-    companion object CommandLineInterfaceFactory{
-        fun createCommandLineInterface(pdfBuilderCommandLineInput: PdfBuilderCommandLineInput, pdfBuilderCommandLineOutput: PdfBuilderCommandLineOutput)
-                = PdfBuilderCommandLineInterface(pdfBuilderCommandLineInput, pdfBuilderCommandLineOutput)
+    companion object CommandLineInterfaceFactory {
+        fun createCommandLineInterface(pdfBuilderCommandLineInput: PdfBuilderCommandLineInput, pdfBuilderCommandLineOutput: PdfBuilderCommandLineOutput) = PdfBuilderCommandLineInterface(pdfBuilderCommandLineInput, pdfBuilderCommandLineOutput)
     }
 }

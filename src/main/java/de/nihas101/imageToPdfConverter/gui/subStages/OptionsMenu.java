@@ -12,7 +12,7 @@ public final class OptionsMenu extends Application {
     private final PdfWriterOptions pdfWriterOptions;
     private OptionsMenuController optionsMenuController;
 
-    private OptionsMenu(PdfWriterOptions pdfWriterOptions){
+    private OptionsMenu(PdfWriterOptions pdfWriterOptions) {
         this.pdfWriterOptions = pdfWriterOptions;
     }
 
@@ -40,12 +40,16 @@ public final class OptionsMenu extends Application {
     /**
      * Returns the set pdfWriterOptions by the user
      * The method doesn't return until the displayed dialog is dismissed.
+     *
      * @return A new {@link PdfWriterOptions} instance holding the pdfWriterOptions the user
      * has set
      */
     public PdfWriterOptions setOptions() {
-        try { start(new Stage()); }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return optionsMenuController.getPdfWriterOptions();
     }
 }

@@ -8,7 +8,7 @@ class IteratorMoveAction private constructor(pdfModificationArguments: List<Stri
     private val moveToIndex: Int = pdfModificationArguments[2].toInt()
 
     override fun execute(directoryIterator: DirectoryIterator) {
-        if(moveFromIndex in 0 until directoryIterator.nrOfFiles() && moveToIndex in 0 until directoryIterator.nrOfFiles()) {
+        if (moveFromIndex in 0 until directoryIterator.nrOfFiles() && moveToIndex in 0 until directoryIterator.nrOfFiles()) {
             val file = directoryIterator.getFiles().removeAt(moveFromIndex)
             directoryIterator.getFiles().add(moveToIndex, file)
         }
@@ -16,14 +16,14 @@ class IteratorMoveAction private constructor(pdfModificationArguments: List<Stri
 
     companion object IteratorMoveModificationFactory {
         fun createIteratorMoveModification(modificationArguments: List<String>): IteratorMoveAction {
-            if(isFormedCorrectly(modificationArguments)) return IteratorMoveAction(modificationArguments)
+            if (isFormedCorrectly(modificationArguments)) return IteratorMoveAction(modificationArguments)
             else throw MalformedPdfModificationException(modificationArguments)
         }
 
         internal fun isLeadingIteratorArgument(argument: String) = "m" == argument || "move" == argument
 
         private fun isFormedCorrectly(modificationArguments: List<String>): Boolean {
-            if(modificationArguments.size < 3) return false
+            if (modificationArguments.size < 3) return false
 
             return isLeadingIteratorArgument(modificationArguments[0]) &&
                     isInt(modificationArguments[1]) && isInt(modificationArguments[2])

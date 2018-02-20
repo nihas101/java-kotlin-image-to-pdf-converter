@@ -12,16 +12,16 @@ data class PdfBuildInformation(
         private var directoryIterator: DirectoryIterator? = null,
         var customTargetFile: Boolean = false,
         var targetFile: File? = null
-        ){
+) {
 
-    fun setupDirectoryIterator(){
-        directoryIterator = if(!pdfWriterOptions.multipleDirectories)
+    fun setupDirectoryIterator() {
+        directoryIterator = if (!pdfWriterOptions.multipleDirectories)
             ImageFilesIterator.createImageFilesIterator(sourceFile!!)
         else
             ImageDirectoriesIterator.createImageDirectoriesIterator(sourceFile!!)
     }
 
-    fun setMultipleDirectories(multipleDirectories: Boolean){
+    fun setMultipleDirectories(multipleDirectories: Boolean) {
         pdfWriterOptions = pdfWriterOptions.copy(multipleDirectories = multipleDirectories)
     }
 

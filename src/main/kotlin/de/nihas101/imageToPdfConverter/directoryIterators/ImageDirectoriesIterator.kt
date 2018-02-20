@@ -3,7 +3,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
 import java.io.File
 
-class ImageDirectoriesIterator private constructor(private val directory: File): DirectoryIterator{
+class ImageDirectoriesIterator private constructor(private val directory: File) : DirectoryIterator {
     private var directories: MutableList<File> = setupDirectories(directory)
     private var currentIndex = 0
 
@@ -21,17 +21,17 @@ class ImageDirectoriesIterator private constructor(private val directory: File):
     override fun getFiles(): MutableList<File> = directories
 
     override fun add(index: Int, file: File): Boolean {
-        return if(isImageDirectory(file)){
+        return if (isImageDirectory(file)) {
             directories.add(index, file)
             true
         } else false
     }
 
     override fun add(file: File): Boolean {
-        return if(isImageDirectory(file)){
+        return if (isImageDirectory(file)) {
             directories.add(file)
             true
-        }else false
+        } else false
     }
 
     override fun addAll(files: List<File>) =
@@ -41,7 +41,7 @@ class ImageDirectoriesIterator private constructor(private val directory: File):
             directories.remove(file)
 
     override fun nextFile(): File {
-        if(currentIndex < directories.size) return directories[currentIndex++]
+        if (currentIndex < directories.size) return directories[currentIndex++]
         throw NoMoreDirectoriesException(directory)
     }
 

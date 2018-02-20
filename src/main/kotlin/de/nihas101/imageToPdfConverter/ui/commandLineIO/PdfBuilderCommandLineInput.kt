@@ -7,8 +7,8 @@ import java.io.BufferedReader
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class PdfBuilderCommandLineInput private constructor(private val bufferedReader: BufferedReader){
-    companion object CommandLineInputFactory{
+class PdfBuilderCommandLineInput private constructor(private val bufferedReader: BufferedReader) {
+    companion object CommandLineInputFactory {
         fun createCommandLineInput(inputStream: BufferedReader) = PdfBuilderCommandLineInput(inputStream)
     }
 
@@ -16,29 +16,29 @@ class PdfBuilderCommandLineInput private constructor(private val bufferedReader:
 
 
     fun readAnswer(onFail: () -> Unit): Boolean {
-        while(true) {
+        while (true) {
             val readLine = readReader()
-            if("yes" == readLine || "y" == readLine) return true
-            else if("no" == readLine || "n" == readLine) return false
+            if ("yes" == readLine || "y" == readLine) return true
+            else if ("no" == readLine || "n" == readLine) return false
             else onFail()
         }
     }
 
     fun readPdfModification(onFail: () -> Unit, pdfWriterOptions: PdfWriterOptions): IteratorAction {
-        while (true){
+        while (true) {
             val readModificationArguments = readReader().split(Regex("\\s"))
-            try{
-                return IteratorAction.createIteratorModification(readModificationArguments ,pdfWriterOptions)
-            }catch(exception: MalformedPdfModificationException){
+            try {
+                return IteratorAction.createIteratorModification(readModificationArguments, pdfWriterOptions)
+            } catch (exception: MalformedPdfModificationException) {
                 onFail()
             }
         }
     }
 
-    private fun readReader(): String{
+    private fun readReader(): String {
         val readLine = bufferedReader.readLine()
 
-        if("exit" == readLine) System.exit(0)
+        if ("exit" == readLine) System.exit(0)
         return readLine
     }
 }

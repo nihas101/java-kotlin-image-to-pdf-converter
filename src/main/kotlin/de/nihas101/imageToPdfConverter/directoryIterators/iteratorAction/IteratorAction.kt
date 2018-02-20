@@ -9,7 +9,7 @@ abstract class IteratorAction {
 
     companion object PdfModificationFactory {
         fun createIteratorModification(modificationArguments: List<String>, pdfWriterOptions: PdfWriterOptions): IteratorAction {
-            if(modificationArguments.isEmpty()) throw MalformedPdfModificationException(modificationArguments)
+            if (modificationArguments.isEmpty()) throw MalformedPdfModificationException(modificationArguments)
 
             return when {
                 IteratorMoveAction.isLeadingIteratorArgument(modificationArguments[0]) ->
@@ -23,8 +23,11 @@ abstract class IteratorAction {
         }
 
         internal fun isInt(string: String): Boolean {
-            try{ string.toInt() }
-            catch (exception: NumberFormatException){ return false }
+            try {
+                string.toInt()
+            } catch (exception: NumberFormatException) {
+                return false
+            }
 
             return true
         }

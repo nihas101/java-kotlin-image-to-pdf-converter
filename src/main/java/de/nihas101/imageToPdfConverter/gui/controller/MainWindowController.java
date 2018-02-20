@@ -71,17 +71,18 @@ public class MainWindowController extends FileListViewController {
     /**
      * The selected {@link PdfWriterOptions} for building the PDF(s)
      */
-     public PdfWriterOptions pdfWriterOptions;
+    public PdfWriterOptions pdfWriterOptions;
 
-     private DirectoryChooser directoryChooser;
+    private DirectoryChooser directoryChooser;
 
-     FileChooser saveFileChooser;
+    FileChooser saveFileChooser;
 
     /**
      * Sets up the {@link MainWindowController}
+     *
      * @param mainWindow The {@link MainWindow} belonging to this Controller
      */
-    public void setup(MainWindow mainWindow){
+    public void setup(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
         setupDirectoryChooser();
         setupSaveFileChooser();
@@ -95,8 +96,8 @@ public class MainWindowController extends FileListViewController {
             dragEvent.consume();
         });
 
-        imageListView.setOnDragDropped(dragEvent ->{
-            if(dragEvent.getDragboard().hasFiles()){
+        imageListView.setOnDragDropped(dragEvent -> {
+            if (dragEvent.getDragboard().hasFiles()) {
                 List<File> files = dragEvent.getDragboard().getFiles();
                 setupIteratorFromDragAndDrop(files);
                 dragEvent.setDropCompleted(true);
@@ -106,7 +107,7 @@ public class MainWindowController extends FileListViewController {
         });
     }
 
-    private void setupIteratorFromDragAndDrop(List<File> files){
+    private void setupIteratorFromDragAndDrop(List<File> files) {
         chosenDirectory = files.get(0);
 
         new Thread(() -> {
@@ -143,17 +144,18 @@ public class MainWindowController extends FileListViewController {
 
     /**
      * Opens a {@link DirectoryChooser} and loads the files contained within it
+     *
      * @param actionEvent The delivered {@link Event}
      */
     public void chooseDirectory(ActionEvent actionEvent) {
-        if(pdfWriterOptions.getMultipleDirectories())
+        if (pdfWriterOptions.getMultipleDirectories())
             directoryChooser.setTitle("Choose a directory of directories to turn into a PDF");
         else
             directoryChooser.setTitle("Choose a directory or sourceFile to turn into a PDF");
 
         File givenDirectory = directoryChooser.showDialog(directoryButton.getScene().getWindow());
 
-        if(givenDirectory != null){
+        if (givenDirectory != null) {
             chosenDirectory = givenDirectory;
             new Thread(this::setupIterator).start();
         }
@@ -161,7 +163,7 @@ public class MainWindowController extends FileListViewController {
         actionEvent.consume();
     }
 
-    private void setupIterator(){
+    private void setupIterator() {
         setDisableInput(true);
         notifyUser("Loading files...", BLACK);
         mainWindow.setupIterator(chosenDirectory, pdfWriterOptions.getMultipleDirectories());
@@ -171,7 +173,8 @@ public class MainWindowController extends FileListViewController {
 
     /**
      * Sets up the {@link ListView}
-     * @param directoryIterator  The {@link DirectoryIterator} for iterating over files
+     *
+     * @param directoryIterator The {@link DirectoryIterator} for iterating over files
      */
     private void setupListView(DirectoryIterator directoryIterator) {
         int nrOfFiles = directoryIterator.nrOfFiles();
@@ -179,7 +182,7 @@ public class MainWindowController extends FileListViewController {
         new Thread(() -> {
             imageMap.loadImages(directoryIterator.getFiles(),
                     (loadedFiles) ->
-                            notifyUser("Loading files... (" + (int)loadedFiles + "/" + nrOfFiles + ")", BLACK));
+                            notifyUser("Loading files... (" + (int) loadedFiles + "/" + nrOfFiles + ")", BLACK));
 
             setupObservableList(directoryIterator);
         }).start();
@@ -187,6 +190,7 @@ public class MainWindowController extends FileListViewController {
 
     /**
      * Sets up the {@link ObservableList<File>} and adds it to the {@link ListView<File>}
+     *
      * @param directoryIterator The {@link DirectoryIterator} for iterating over directories
      */
     private void setupObservableList(DirectoryIterator directoryIterator) {
@@ -201,17 +205,18 @@ public class MainWindowController extends FileListViewController {
 
     /**
      * Sets up a {@link ListChangeListener} that forwards all changes on the {@link ObservableList} to the underlying {@link List}
+     *
      * @param directoryIterator The {@link DirectoryIterator} for iterating over directories
      * @return The created {@link ListChangeListener}
      */
-    private ListChangeListener<File> setupListChangeListener(DirectoryIterator directoryIterator , ObservableList<File> observableFiles){
+    private ListChangeListener<File> setupListChangeListener(DirectoryIterator directoryIterator, ObservableList<File> observableFiles) {
         return change -> {
             while (change.next()) handleChange(directoryIterator, change);
             notifyUser("Files: " + observableFiles.size(), BLACK);
         };
     }
 
-    private void handleChange(DirectoryIterator directoryIterator, Change<? extends File> change){
+    private void handleChange(DirectoryIterator directoryIterator, Change<? extends File> change) {
         if (change.wasRemoved()) removeChange(directoryIterator, change);
 
         if (change.wasAdded() && change.getAddedSize() == 1) addAtChangePosition(directoryIterator, change);
@@ -220,36 +225,40 @@ public class MainWindowController extends FileListViewController {
 
     private void addChange(DirectoryIterator directoryIterator, Change<? extends File> change) {
         IntStream.range(0, change.getAddedSubList().size()).forEach(index -> {
-            if(!directoryIterator.add(change.getAddedSubList().get(index)))
+            if (!directoryIterator.add(change.getAddedSubList().get(index)))
                 imageListView.getItems().remove(change.getAddedSubList().get(index));
         });
     }
 
-    private void removeChange(DirectoryIterator directoryIterator, Change<? extends File> change){
+    private void removeChange(DirectoryIterator directoryIterator, Change<? extends File> change) {
         File removedFile = change.getRemoved().get(0);
         directoryIterator.remove(removedFile);
-        if(imageMap.contains(change.getRemoved().get(0))) {
-            try { imageMap.remove(removedFile.toURI().toURL().toString()); }
-            catch (MalformedURLException e) { e.printStackTrace(); }
+        if (imageMap.contains(change.getRemoved().get(0))) {
+            try {
+                imageMap.remove(removedFile.toURI().toURL().toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void addAtChangePosition(DirectoryIterator directoryIterator, Change<? extends File> change){
-        if(!directoryIterator.add(change.getFrom(), change.getAddedSubList().get(0)))
+    private void addAtChangePosition(DirectoryIterator directoryIterator, Change<? extends File> change) {
+        if (!directoryIterator.add(change.getFrom(), change.getAddedSubList().get(0)))
             imageListView.getItems().remove(change.getAddedSubList().get(0));
     }
 
     /**
      * Builds single or multiple {@link de.nihas101.imageToPdfConverter.pdf.ImagePdf}s
+     *
      * @param actionEvent The delivered {@link Event}
      */
     public void buildPdf(ActionEvent actionEvent) {
-        if(!valuesSetForBuilding()) return;
+        if (!valuesSetForBuilding()) return;
 
         notifyUser("Building PDF...", BLACK);
 
         setDisableInput(true);
-        if(pdfWriterOptions.getMultipleDirectories()) buildMultiplePdf();
+        if (pdfWriterOptions.getMultipleDirectories()) buildMultiplePdf();
         else buildSinglePdf();
         setDisableInput(false);
 
@@ -258,6 +267,7 @@ public class MainWindowController extends FileListViewController {
 
     /**
      * Disables and enables input
+     *
      * @param isDisabled True to disable, false to enable input
      */
     private void setDisableInput(boolean isDisabled) {
@@ -270,12 +280,12 @@ public class MainWindowController extends FileListViewController {
     /**
      * Builds a single {@link de.nihas101.imageToPdfConverter.pdf.ImagePdf}s
      */
-    private void buildSinglePdf(){
+    private void buildSinglePdf() {
         saveFileChooser.setInitialFileName(mainWindow.getDirectoryIterator().getParentDirectory().getName() + ".pdf");
         saveFileChooser.setInitialDirectory(chosenDirectory.getParentFile());
         File saveFile = saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
 
-        if(saveFile != null) {
+        if (saveFile != null) {
             new Thread(() -> {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
@@ -285,7 +295,7 @@ public class MainWindowController extends FileListViewController {
                 );
                 notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
             }).start();
-        }else notifyUser("Build cancelled by user", BLACK);
+        } else notifyUser("Build cancelled by user", BLACK);
     }
 
     /**
@@ -296,7 +306,7 @@ public class MainWindowController extends FileListViewController {
         directoryChooser.setTitle("Choose a folder to save the PDFs in");
         File saveFile = directoryChooser.showDialog(buildButton.getScene().getWindow());
 
-        if(saveFile != null) {
+        if (saveFile != null) {
             new Thread(() -> {
                 ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
@@ -306,17 +316,17 @@ public class MainWindowController extends FileListViewController {
                 );
                 notifyUser("Finished building: " + mainWindow.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
             }).start();
-        }else notifyUser("Build cancelled by user", BLACK);
+        } else notifyUser("Build cancelled by user", BLACK);
     }
 
     /**
      * @return True if a all necessary values for building the PDF are set, false otherwise
      */
     private boolean valuesSetForBuilding() {
-        if(mainWindow.getDirectoryIterator() == null){
+        if (mainWindow.getDirectoryIterator() == null) {
             notifyUser("Please choose a directory", RED);
             return false;
-        }else if(mainWindow.getDirectoryIterator().nrOfFiles() == 0){
+        } else if (mainWindow.getDirectoryIterator().nrOfFiles() == 0) {
             notifyUser("There are no files to turn into a PDF", RED);
             return false;
         }
@@ -326,11 +336,12 @@ public class MainWindowController extends FileListViewController {
 
     /**
      * Notifies the user by setting the {@link MainWindowController#notificationText} to the given message
+     *
      * @param message The message of the  notification
-     * @param color The color with which the message should be displayed
+     * @param color   The color with which the message should be displayed
      */
-    public void notifyUser(String message, Color color){
-        if(message.length() > NOTIFICATION_MAX_STRING_LENGTH)
+    public void notifyUser(String message, Color color) {
+        if (message.length() > NOTIFICATION_MAX_STRING_LENGTH)
             message = message.substring(0, NOTIFICATION_MAX_STRING_LENGTH) + "...";
 
         notificationText.setText(message);
@@ -339,27 +350,31 @@ public class MainWindowController extends FileListViewController {
 
     /**
      * Displays the content of the {@link DirectoryIterator}
+     *
      * @param mouseEvent The delivered {@link Event}
      */
     public void displayListCell(MouseEvent mouseEvent) {
-        if(imageListView.getItems().size() == 0) return;
+        if (imageListView.getItems().size() == 0) return;
 
-        if(mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2){
+        if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
             setDisableInput(true);
             int index = imageListView.getSelectionModel().getSelectedIndex();
             try {
                 createContentDisplayer(mainWindow.getDirectoryIterator()).displayContent(index, this);
             } catch (Exception exception) {
                 exception.printStackTrace();
-            }finally {
+            } finally {
                 setDisableInput(false);
             }
         }
     }
 
     public void openOptionsMenu(ActionEvent actionEvent) {
-        try { pdfWriterOptions = createOptionsMenu(pdfWriterOptions).setOptions(); }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            pdfWriterOptions = createOptionsMenu(pdfWriterOptions).setOptions();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         actionEvent.consume();
     }
 }

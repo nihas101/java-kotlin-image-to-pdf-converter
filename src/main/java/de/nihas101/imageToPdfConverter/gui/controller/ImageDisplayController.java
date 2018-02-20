@@ -14,6 +14,7 @@ public class ImageDisplayController {
 
     /**
      * Sets up the {@link ImageDisplayController}
+     *
      * @param image The {@link Image} to display
      */
     public void setup(Image image) {

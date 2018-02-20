@@ -56,14 +56,14 @@ public class OptionsMenuController {
     }
 
     private int pdfVersionToIndex(PdfVersion pdfVersion) {
-        if(pdfVersion.equals(PDF_1_0)) return 0;
-        else if(pdfVersion.equals(PDF_1_1)) return 1;
-        else if(pdfVersion.equals(PDF_1_2)) return 2;
-        else if(pdfVersion.equals(PDF_1_3)) return 3;
-        else if(pdfVersion.equals(PDF_1_4)) return 4;
-        else if(pdfVersion.equals(PDF_1_5)) return 5;
-        else if(pdfVersion.equals(PDF_1_6)) return 6;
-        else if(pdfVersion.equals(PDF_2_0)) return 8;
+        if (pdfVersion.equals(PDF_1_0)) return 0;
+        else if (pdfVersion.equals(PDF_1_1)) return 1;
+        else if (pdfVersion.equals(PDF_1_2)) return 2;
+        else if (pdfVersion.equals(PDF_1_3)) return 3;
+        else if (pdfVersion.equals(PDF_1_4)) return 4;
+        else if (pdfVersion.equals(PDF_1_5)) return 5;
+        else if (pdfVersion.equals(PDF_1_6)) return 6;
+        else if (pdfVersion.equals(PDF_2_0)) return 8;
         else return 7;
     }
 
@@ -77,11 +77,19 @@ public class OptionsMenuController {
     }
 
     private void setSelectedCompression(ToggleGroup pdfCompressionToggle) {
-        switch (pdfWriterOptions.getCompressionLevel()){
-            case NO_COMPRESSION: pdfCompressionToggle.getToggles().get(0).setSelected(true); break;
-            case BEST_COMPRESSION: pdfCompressionToggle.getToggles().get(2).setSelected(true); break;
-            case BEST_SPEED: pdfCompressionToggle.getToggles().get(3).setSelected(true); break;
-            default: pdfCompressionToggle.getToggles().get(1).setSelected(true); break;
+        switch (pdfWriterOptions.getCompressionLevel()) {
+            case NO_COMPRESSION:
+                pdfCompressionToggle.getToggles().get(0).setSelected(true);
+                break;
+            case BEST_COMPRESSION:
+                pdfCompressionToggle.getToggles().get(2).setSelected(true);
+                break;
+            case BEST_SPEED:
+                pdfCompressionToggle.getToggles().get(3).setSelected(true);
+                break;
+            default:
+                pdfCompressionToggle.getToggles().get(1).setSelected(true);
+                break;
         }
     }
 

@@ -29,80 +29,85 @@ public class ImageMap {
 
     /**
      * The Factory method creating {@link ImageMap} instances
+     *
      * @param imageMap The {@link Map} that will hold the {@link Image}
      * @return The created {@link ImageMap} instance
      */
-    public static ImageMap createImageMap(LinkedHashMap<String, Image> imageMap){
+    public static ImageMap createImageMap(LinkedHashMap<String, Image> imageMap) {
         return new ImageMap(imageMap);
     }
 
-    public static ImageMap createImageMap(){
+    public static ImageMap createImageMap() {
         return new ImageMap(new LinkedHashMap<>());
     }
 
     /**
      * Loads {@link Image}s from the {@link List} and puts them into the {@link ImageMap#imageMap}
-     * @param files The files to load {@link Image}s from
+     *
+     * @param files           The files to load {@link Image}s from
      * @param progressUpdater The {@link ProgressUpdater} to deliver updates
      */
     public void loadImages(List<File> files, ProgressUpdater progressUpdater) {
         imageMap.clear();
-        if(files.size() == 0) return;
+        if (files.size() == 0) return;
 
         putImagesIntoMap(files, progressUpdater);
     }
 
     /**
      * Loads {@link Image}s from the {@link List} and puts them into the {@link ImageMap#imageMap}
+     *
      * @param files The files to load {@link Image}s from
      */
     public void loadImages(List<File> files) {
-        if(files.size() == 0) return;
+        if (files.size() == 0) return;
 
         putImagesIntoMap(files, null);
     }
 
-    public void clearImages(){
+    public void clearImages() {
         imageMap.clear();
     }
 
     /**
      * Puts {@link Image}s into the map
-     * @param files The {@link File}s to load the {@link Image}s from
+     *
+     * @param files           The {@link File}s to load the {@link Image}s from
      * @param progressUpdater The {@link ProgressUpdater} to deliver updates
      */
-    private void putImagesIntoMap(List<File> files, ProgressUpdater progressUpdater){
+    private void putImagesIntoMap(List<File> files, ProgressUpdater progressUpdater) {
         for (int index = 0; index < files.size(); index++)
             putImageIntoMapIfFile(files.get(index), progressUpdater, index);
     }
 
-    private void putImageIntoMapIfFile(File file, ProgressUpdater progressUpdater, int progress){
-        if(file.isDirectory() && imageMap.size() < IMAGE_MAP_MAX_SIZE)
+    private void putImageIntoMapIfFile(File file, ProgressUpdater progressUpdater, int progress) {
+        if (file.isDirectory() && imageMap.size() < IMAGE_MAP_MAX_SIZE)
             putDirectoryImageIntoMap();
-        else if(imageMap.size() < IMAGE_MAP_MAX_SIZE)
+        else if (imageMap.size() < IMAGE_MAP_MAX_SIZE)
             putImageIntoMap(file);
 
-        if(progressUpdater != null) progressUpdater.updateProgress(progress);
+        if (progressUpdater != null) progressUpdater.updateProgress(progress);
     }
 
-    private void putDirectoryImageIntoMap(){
+    private void putDirectoryImageIntoMap() {
         File directoryImage = new File(DIRECTORY_IMAGE_PATH);
-        if(!contains(directoryImage)) putImageIntoMap(directoryImage);
+        if (!contains(directoryImage)) putImageIntoMap(directoryImage);
     }
 
     /**
      * Puts an {@link Image} into the map
+     *
      * @param file The {@link File} to load the {@link Image} from
      */
-    private synchronized void putImageIntoMap(File file){
+    private synchronized void putImageIntoMap(File file) {
         try {
             String url = file.toURI().toURL().toString();
             /*
              * Scale images for a smaller memory print.
              * Thanks: stackoverflow.com/questions/15088271/javafx-loading-images-and-memory-problems
              */
-            if(!imageMap.containsKey(url)) {
-                if(imageMap.size() > IMAGE_MAP_MAX_SIZE) removeEldestImage();
+            if (!imageMap.containsKey(url)) {
+                if (imageMap.size() > IMAGE_MAP_MAX_SIZE) removeEldestImage();
                 imageMap.put(url, new Image(url, 100, 100, true, false));
             }
         } catch (MalformedURLException e) {
@@ -110,9 +115,9 @@ public class ImageMap {
         }
     }
 
-    private void removeEldestImage(){
-        Iterator<Map.Entry<String,Image>> iterator = imageMap.entrySet().iterator();
-        if(iterator.hasNext()) {
+    private void removeEldestImage() {
+        Iterator<Map.Entry<String, Image>> iterator = imageMap.entrySet().iterator();
+        if (iterator.hasNext()) {
             String key = iterator.next().getKey();
             imageMap.remove(key);
         }
@@ -126,9 +131,9 @@ public class ImageMap {
     public synchronized Image get(@NotNull File file) throws MalformedURLException {
         String url = toUrlString(file);
 
-        if(imageMap.containsKey(url))
+        if (imageMap.containsKey(url))
             return imageMap.get(url);
-        else{
+        else {
             putImageIntoMap(file);
             return imageMap.get(url);
         }
@@ -140,9 +145,10 @@ public class ImageMap {
 
     /**
      * Removes the {@link Image} found under the given absolute path
+     *
      * @param absolutePathToImage The absolute Path to the {@link Image}
      */
-    public void remove(String absolutePathToImage){
+    public void remove(String absolutePathToImage) {
         imageMap.remove(absolutePathToImage);
     }
 
@@ -155,5 +161,7 @@ public class ImageMap {
         }
     }
 
-    public int size() { return imageMap.size(); }
+    public int size() {
+        return imageMap.size();
+    }
 }

@@ -8,38 +8,38 @@ import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
-class ImagePdfBuilder: PdfBuilder() {
+class ImagePdfBuilder : PdfBuilder() {
     companion object ImagePdfBuilderFactory {
         fun createImagePdfBuilder() = ImagePdfBuilder()
     }
 
-    override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions){
+    override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions) {
         directoryIterator.resetIndex()
         val imagePdf = ImagePdf.createPdf(saveFile.absolutePath, pdfWriterOptions = pdfWriterOptions)
         val nrOfFiles = directoryIterator.nrOfFiles()
 
         for (i in 1..nrOfFiles)
-            addNextFileToPDF(directoryIterator,imagePdf)
+            addNextFileToPDF(directoryIterator, imagePdf)
 
         imagePdf.close()
     }
 
-    override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions, progressUpdater: ProgressUpdater){
+    override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions, progressUpdater: ProgressUpdater) {
         directoryIterator.resetIndex()
         val imagePdf = ImagePdf.createPdf(saveFile.absolutePath, pdfWriterOptions = pdfWriterOptions)
         val nrOfFiles = directoryIterator.nrOfFiles()
 
-        try{
-            for (i in 1..nrOfFiles){
+        try {
+            for (i in 1..nrOfFiles) {
                 addNextFileToPDF(directoryIterator, imagePdf)
-                progressUpdater.updateProgress(i.toDouble()/nrOfFiles.toDouble())
+                progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble())
             }
-        }finally {
+        } finally {
             imagePdf.close()
         }
     }
 
-    private fun addNextFileToPDF(directoryIterator: DirectoryIterator, imagePdf: ImagePdf){
+    private fun addNextFileToPDF(directoryIterator: DirectoryIterator, imagePdf: ImagePdf) {
         val filePath = directoryIterator.nextFile().absolutePath
         val image = Image(ImageDataFactory.create(filePath))
         imagePdf.add(image)

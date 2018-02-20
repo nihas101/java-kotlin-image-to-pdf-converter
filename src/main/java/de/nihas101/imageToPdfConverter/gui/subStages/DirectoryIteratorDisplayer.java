@@ -20,30 +20,33 @@ public final class DirectoryIteratorDisplayer {
      */
     private final DirectoryIterator directoryIterator;
 
-    private DirectoryIteratorDisplayer(DirectoryIterator directoryIterator){
+    private DirectoryIteratorDisplayer(DirectoryIterator directoryIterator) {
         this.directoryIterator = directoryIterator;
     }
 
     /**
      * The factory method for creating {@link DirectoryIteratorDisplayer}s
+     *
      * @param directoryIterator The {@link DirectoryIterator} of which to display the content
      * @return The created {@link DirectoryIteratorDisplayer} instance
      */
-    public static DirectoryIteratorDisplayer createContentDisplayer(DirectoryIterator directoryIterator){
+    public static DirectoryIteratorDisplayer createContentDisplayer(DirectoryIterator directoryIterator) {
         return new DirectoryIteratorDisplayer(directoryIterator);
     }
 
     /**
      * Displays the content found at the given index of the {@link DirectoryIterator} instance
+     *
      * @param index The index of the content to display
      */
-    public void displayContent(int index, MainWindowController mainWindowController){
-        if(directoryIterator.getFile(index).isDirectory()) displayDirectory(index, mainWindowController);
+    public void displayContent(int index, MainWindowController mainWindowController) {
+        if (directoryIterator.getFile(index).isDirectory()) displayDirectory(index, mainWindowController);
         else displayImage(index);
     }
 
     /**
      * Displays the content of the directory found at the given index of the {@link DirectoryIterator}
+     *
      * @param index The index of the directory to display
      */
     private void displayDirectory(int index, MainWindowController mainWindowController) {
@@ -58,6 +61,7 @@ public final class DirectoryIteratorDisplayer {
 
     /**
      * Displays the image found at the given index of the {@link DirectoryIterator}
+     *
      * @param index The index of the image to display
      */
     private void displayImage(int index) {

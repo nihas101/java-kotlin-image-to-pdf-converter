@@ -16,7 +16,7 @@ class ImagePdf internal constructor(
         private val document: Document,
         private val pdf: PdfDocument,
         private val imagePdfPageFormatter: ImagePdfPageFormatter
-){
+) {
     companion object ImagePdfFactory {
         fun createPdf(
                 pathName: String,
