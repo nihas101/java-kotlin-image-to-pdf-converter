@@ -7,10 +7,6 @@ class ImageDirectoriesIterator private constructor(private val directory: File) 
     private var directories: MutableList<File> = setupDirectories(directory)
     private var currentIndex = 0
 
-    companion object ImageDirectoriesIteratorFactory {
-        fun createImageDirectoriesIterator(directory: File): ImageDirectoriesIterator = ImageDirectoriesIterator(directory)
-    }
-
     override fun nrOfFiles(): Int = directories.size
 
     override fun getParentDirectory(): File = directory
@@ -56,5 +52,9 @@ class ImageDirectoriesIterator private constructor(private val directory: File) 
     private fun containsImage(directory: File): Boolean {
         directory.listFiles().forEach { file -> if (ImageFilesIterator.isImage(file)) return true }
         return false
+    }
+
+    companion object ImageDirectoriesIteratorFactory {
+        fun createImageDirectoriesIterator(directory: File): ImageDirectoriesIterator = ImageDirectoriesIterator(directory)
     }
 }
