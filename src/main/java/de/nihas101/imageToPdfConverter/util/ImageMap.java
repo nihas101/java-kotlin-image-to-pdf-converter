@@ -160,8 +160,4 @@ public class ImageMap {
             return false;
         }
     }
-
-    public int size() {
-        return imageMap.size();
-    }
 }

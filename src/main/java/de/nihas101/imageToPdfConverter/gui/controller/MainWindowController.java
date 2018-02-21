@@ -292,10 +292,7 @@ public class MainWindowController extends FileListViewController {
                         mainWindow.getDirectoryIterator(),
                         saveFile,
                         pdfWriterOptions,
-                        progress -> {
-                            buildProgressBar.setProgress(progress);
-                            System.gc();
-                        }
+                        progress -> buildProgressBar.setProgress(progress)
                 );
                 notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
                 disableInput(false);

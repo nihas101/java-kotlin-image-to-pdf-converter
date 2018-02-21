@@ -20,6 +20,8 @@ class ImagePdfBuilder : PdfBuilder() {
 
         try {
             for (i in 1..nrOfFiles) addNextFileToPDF(directoryIterator, imagePdf)
+        } catch (exception: Exception) {
+            exception.printStackTrace()
         } finally {
             imagePdf.close()
         }
@@ -35,14 +37,16 @@ class ImagePdfBuilder : PdfBuilder() {
                 addNextFileToPDF(directoryIterator, imagePdf)
                 progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble())
             }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
         } finally {
             imagePdf.close()
         }
     }
 
     private fun addNextFileToPDF(directoryIterator: DirectoryIterator, imagePdf: ImagePdf) {
-        val filePath = directoryIterator.nextFile().absolutePath
-        val image = Image(ImageDataFactory.create(filePath))
-        imagePdf.add(image)
+        val fileURL = directoryIterator.nextFile().toURI().toURL()
+        imagePdf.add(Image(ImageDataFactory.create(fileURL)))
+        System.gc()
     }
 }
