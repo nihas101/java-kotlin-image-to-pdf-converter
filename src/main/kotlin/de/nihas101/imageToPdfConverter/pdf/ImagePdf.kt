@@ -24,10 +24,8 @@ class ImagePdf internal constructor(
     }
 
     private fun prepareForNewImage(image: Image) {
-        if (pdf.numberOfPages > 0) {
-            pdf.addNewPage(PageSize(Rectangle(0F, 0F, image.imageWidth, image.imageHeight)))
-            flush()
-        } else pdf.addNewPage()
+        pdf.addNewPage(PageSize(Rectangle(0F, 0F, image.imageWidth, image.imageHeight)))
+        if (pdf.numberOfPages > 1) flush()
     }
 
     private fun flush() {
