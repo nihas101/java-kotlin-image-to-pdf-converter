@@ -34,6 +34,8 @@ import static com.itextpdf.kernel.pdf.PdfVersion.PDF_1_7;
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
 import static de.nihas101.imageToPdfConverter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
+import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
+import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createSaveFileChooser;
 import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
 import static javafx.application.Platform.runLater;
 import static javafx.collections.FXCollections.observableArrayList;
@@ -71,11 +73,12 @@ public class MainWindowController extends FileListViewController {
      */
     public PdfWriterOptions pdfWriterOptions;
 
+    private ListChangeListenerFactory listChangeListenerFactory;
+
+    public FileChooser saveFileChooser;
     private DirectoryChooser directoryChooser;
 
-    FileChooser saveFileChooser;
-
-    private ListChangeListenerFactory listChangeListenerFactory;
+    /* TODO: Hold onto threads to cancel them if something goes wrong */
 
     /**
      * Sets up the {@link MainWindowController}
@@ -84,18 +87,26 @@ public class MainWindowController extends FileListViewController {
      */
     public void setup(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-        setupDirectoryChooser();
-        setupSaveFileChooser();
+
+        saveFileChooser = createSaveFileChooser();
+        directoryChooser = createDirectoryChooser();
+
         imageMap = createImageMap();
+
         pdfWriterOptions = PdfWriterOptions.OptionsFactory.createOptions(
                 false,
                 DEFAULT_COMPRESSION,
                 PDF_1_7,
                 null
         );
+
         listChangeListenerFactory = ListChangeListenerFactory.ListChangeListenerFactoryFactory
                 .createListChangeListenerFactory(imageListView, imageMap);
 
+        setOnDrag();
+    }
+
+    private void setOnDrag() {
         imageListView.setOnDragOver(dragEvent -> {
             if (dragEvent.getGestureSource() != imageListView && dragEvent.getDragboard().hasFiles()) {
                 dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
@@ -130,24 +141,6 @@ public class MainWindowController extends FileListViewController {
                 });
             }
         }).start();
-    }
-
-    /**
-     * Sets up the {@link DirectoryChooser} instance
-     */
-    private void setupDirectoryChooser() {
-        directoryChooser = new DirectoryChooser();
-    }
-
-    /**
-     * Sets up the {@link FileChooser} instance
-     */
-    private void setupSaveFileChooser() {
-        saveFileChooser = new FileChooser();
-        saveFileChooser.setTitle("Choose a save location for the PDF");
-        FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
-        saveFileChooser.getExtensionFilters().add(extFilter);
     }
 
     /**
