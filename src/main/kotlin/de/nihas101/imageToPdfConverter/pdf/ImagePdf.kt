@@ -44,12 +44,14 @@ class ImagePdf internal constructor(
     }
 
     companion object ImagePdfFactory {
-        fun createPdf(pdfWriterOptions: PdfWriterOptions): ImagePdf {
+        fun createPdf(
+                pdfWriterOptions: PdfWriterOptions,
+                fileOutputStream: OutputStream = createFileOutputStream(pdfWriterOptions.saveLocation!!)
+        ): ImagePdf {
             val writerProperties = WriterProperties()
             writerProperties.setPdfVersion(pdfWriterOptions.pdfVersion)
             writerProperties.setCompressionLevel(pdfWriterOptions.compressionLevel)
 
-            val fileOutputStream = createFileOutputStream(pdfWriterOptions.saveLocation!!)
             val pdf = PdfDocument(PdfWriter(fileOutputStream, writerProperties))
             val document = Document(pdf, PageSize.A4, true)
 
