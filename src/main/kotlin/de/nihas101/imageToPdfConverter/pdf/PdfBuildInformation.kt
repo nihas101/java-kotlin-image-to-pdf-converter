@@ -10,8 +10,7 @@ data class PdfBuildInformation(
         var sourceFile: File? = null,
         private var pdfWriterOptions: PdfWriterOptions = createOptions(),
         private var directoryIterator: DirectoryIterator? = null,
-        var customTargetFile: Boolean = false,
-        var targetFile: File? = null
+        var customTargetFile: Boolean = false
 ) {
 
     fun setupDirectoryIterator() {
@@ -25,9 +24,15 @@ data class PdfBuildInformation(
         pdfWriterOptions = pdfWriterOptions.copy(multipleDirectories = multipleDirectories)
     }
 
+    fun setTargetFile(targetFile: File) {
+        pdfWriterOptions = pdfWriterOptions.copy(saveLocation = targetFile)
+    }
+
     fun getMultipleDirectories() = pdfWriterOptions.multipleDirectories
 
     fun getPdfWriterOptions() = pdfWriterOptions
 
     fun getDirectoryIterator() = directoryIterator!!
+
+    fun getTargetFile() = pdfWriterOptions.saveLocation!!
 }

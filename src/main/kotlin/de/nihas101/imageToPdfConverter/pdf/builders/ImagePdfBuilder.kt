@@ -6,16 +6,15 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.pdf.ImagePdf
 import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
-import java.io.File
 
 class ImagePdfBuilder : PdfBuilder() {
     companion object ImagePdfBuilderFactory {
         fun createImagePdfBuilder() = ImagePdfBuilder()
     }
 
-    override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions) {
+    override fun build(directoryIterator: DirectoryIterator, pdfWriterOptions: PdfWriterOptions) {
         directoryIterator.resetIndex()
-        val imagePdf = ImagePdf.createPdf(saveFile.absolutePath, pdfWriterOptions = pdfWriterOptions)
+        val imagePdf = ImagePdf.createPdf(pdfWriterOptions)
         val nrOfFiles = directoryIterator.nrOfFiles()
 
         try {
@@ -27,9 +26,9 @@ class ImagePdfBuilder : PdfBuilder() {
         }
     }
 
-    override fun build(directoryIterator: DirectoryIterator, saveFile: File, pdfWriterOptions: PdfWriterOptions, progressUpdater: ProgressUpdater) {
+    override fun build(directoryIterator: DirectoryIterator, pdfWriterOptions: PdfWriterOptions, progressUpdater: ProgressUpdater) {
         directoryIterator.resetIndex()
-        val imagePdf = ImagePdf.createPdf(saveFile.absolutePath, pdfWriterOptions = pdfWriterOptions)
+        val imagePdf = ImagePdf.createPdf(pdfWriterOptions)
         val nrOfFiles = directoryIterator.nrOfFiles()
 
         try {

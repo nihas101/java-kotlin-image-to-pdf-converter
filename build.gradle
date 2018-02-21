@@ -14,6 +14,8 @@ applicationName = 'image2PdfConverter'
 mainClassName = 'de.nihas101.imageToPdfConverter.Main'
 archivesBaseName = 'Image2PdfConverter'
 
+applicationDefaultJvmArgs = ["-Xmx1g"]
+
 buildscript {
     ext.kotlin_version = '1.2.21'
 

@@ -1,63 +1,36 @@
 package de.nihas101.imageToPdfConverter.pdf
 
+import com.itextpdf.kernel.geom.PageSize
+import com.itextpdf.kernel.geom.Rectangle
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfOutputStream
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.kernel.pdf.WriterProperties
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Image
-import de.nihas101.imageToPdfConverter.pdf.formatters.FullPageImageCropper.FullPageCropperFactory.createFullPageCropper
-import de.nihas101.imageToPdfConverter.pdf.formatters.ImagePdfPageFormatter
 import de.nihas101.imageToPdfConverter.util.Constants.NO_MARGIN
+import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.nio.file.Paths
 
 class ImagePdf internal constructor(
         private val outputStream: OutputStream,
         private var document: Document,
-        private var pdf: PdfDocument,
-        private val imagePdfPageFormatter: ImagePdfPageFormatter
+        private var pdf: PdfDocument
 ) {
-    companion object ImagePdfFactory {
-        fun createPdf(
-                directoryPath: String,
-                imagePdfPageFormatter: ImagePdfPageFormatter = createFullPageCropper(),
-                outputStream: OutputStream = createFileOutputStream(directoryPath),
-                pdfWriterOptions: PdfWriterOptions = PdfWriterOptions.createOptions()
-        ): ImagePdf {
-            val writerProperties = WriterProperties()
-            writerProperties.setPdfVersion(pdfWriterOptions.pdfVersion)
-            writerProperties.setCompressionLevel(pdfWriterOptions.compressionLevel)
-            val pdf = PdfDocument(PdfWriter(outputStream, writerProperties))
-            val document = Document(pdf)
-            document.setMargins(NO_MARGIN, NO_MARGIN, NO_MARGIN, NO_MARGIN)
-            return ImagePdf(outputStream, document, pdf, imagePdfPageFormatter)
-        }
-
-        private fun createFileOutputStream(pathName: String): OutputStream {
-            val file = Paths.get(pathName).toFile()
-            return PdfOutputStream(FileOutputStream(file.toString()))
-        }
-    }
-
     fun add(image: Image) {
-        prepareForNewImage()
-
+        prepareForNewImage(image)
         document.add(image)
-        imagePdfPageFormatter.format(pdf.lastPage, image)
-
-        /* TODO: Close document, so images are hopefully flushed, then reopen the document or something */
     }
 
-    private fun prepareForNewImage() {
+    private fun prepareForNewImage(image: Image) {
         if (pdf.numberOfPages > 0) {
-            pdf.addNewPage()
+            pdf.addNewPage(PageSize(Rectangle(0F, 0F, image.imageWidth, image.imageHeight)))
             flush()
         } else pdf.addNewPage()
     }
 
-    fun flush() {
+    private fun flush() {
         document.flush()
         outputStream.flush()
         System.gc()
@@ -69,5 +42,25 @@ class ImagePdf internal constructor(
         document.close()
         pdf.close()
         outputStream.close()
+        System.gc()
+    }
+
+    companion object ImagePdfFactory {
+        fun createPdf(pdfWriterOptions: PdfWriterOptions): ImagePdf {
+            val writerProperties = WriterProperties()
+            writerProperties.setPdfVersion(pdfWriterOptions.pdfVersion)
+            writerProperties.setCompressionLevel(pdfWriterOptions.compressionLevel)
+
+            val fileOutputStream = createFileOutputStream(pdfWriterOptions.saveLocation!!)
+            val pdf = PdfDocument(PdfWriter(fileOutputStream, writerProperties))
+            val document = Document(pdf, PageSize.A4, true)
+
+            document.setMargins(NO_MARGIN, NO_MARGIN, NO_MARGIN, NO_MARGIN)
+            return ImagePdf(fileOutputStream, document, pdf)
+        }
+
+        private fun createFileOutputStream(file: File): OutputStream {
+            return PdfOutputStream(FileOutputStream(file))
+        }
     }
 }

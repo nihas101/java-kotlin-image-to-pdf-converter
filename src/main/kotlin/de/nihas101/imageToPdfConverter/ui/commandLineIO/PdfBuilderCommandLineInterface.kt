@@ -69,44 +69,55 @@ class PdfBuilderCommandLineInterface private constructor(
     }
 
     fun buildPdf(): Int {
-        if (pdfBuildInformation.customTargetFile) {
-            try {
-                pdfBuildInformation.targetFile = pdfBuilderCommandLineInput.readPath().toFile()
-            } catch (exception: InvalidPathException) {
-                pdfBuilderCommandLineOutput.printInvalidPath()
-                return 0
-            }
-        } else pdfBuildInformation.targetFile = File(pdfBuildInformation.sourceFile!!.absolutePath)
+        try {
+            setupTargetFile()
+        } catch (exception: InvalidPathException) {
+            pdfBuilderCommandLineOutput.printInvalidPath()
+            return 0
+        }
 
-        val progressUpdater = object : ProgressUpdater {
+        val progressUpdater = setupProgressUpdater()
+
+        if (!pdfBuildInformation.getMultipleDirectories() && pdfBuildInformation.getTargetFile().extension != "pdf")
+            pdfBuildInformation.setTargetFile(File(pdfBuildInformation.getTargetFile().absolutePath + ".pdf"))
+
+
+        pdfBuilderCommandLineOutput.printBuildInfo(pdfBuildInformation)
+        build(progressUpdater)
+
+        return 1
+    }
+
+    private fun setupProgressUpdater(): ProgressUpdater {
+        return object : ProgressUpdater {
             override fun updateProgress(progress: Double) {
                 if (progress == 1.toDouble()) pdfBuilderCommandLineOutput.printFinishedBuilding()
                 else pdfBuilderCommandLineOutput.printProgress()
             }
         }
+    }
 
-        if (!pdfBuildInformation.getMultipleDirectories() && pdfBuildInformation.targetFile!!.extension != "pdf")
-            pdfBuildInformation.targetFile = File(pdfBuildInformation.targetFile!!.absolutePath + ".pdf")
+    private fun setupTargetFile() {
+        if (pdfBuildInformation.customTargetFile)
+            pdfBuildInformation.setTargetFile(pdfBuilderCommandLineInput.readPath().toFile())
+        else
+            pdfBuildInformation.setTargetFile(File(pdfBuildInformation.sourceFile!!.absolutePath))
+    }
 
-
-        pdfBuilderCommandLineOutput.printBuildInfo(pdfBuildInformation)
+    private fun build(progressUpdater: ProgressUpdater) {
         if (pdfBuildInformation.getPdfWriterOptions().multipleDirectories) {
             ImageDirectoriesPdfBuilder.createImageDirectoriesPdfBuilder().build(
                     pdfBuildInformation.getDirectoryIterator(),
-                    pdfBuildInformation.targetFile!!,
                     pdfBuildInformation.getPdfWriterOptions(),
                     progressUpdater
             )
         } else {
             ImagePdfBuilder.createImagePdfBuilder().build(
                     pdfBuildInformation.getDirectoryIterator(),
-                    pdfBuildInformation.targetFile!!,
                     pdfBuildInformation.getPdfWriterOptions(),
                     progressUpdater
             )
         }
-
-        return 1
     }
 
     companion object CommandLineInterfaceFactory {

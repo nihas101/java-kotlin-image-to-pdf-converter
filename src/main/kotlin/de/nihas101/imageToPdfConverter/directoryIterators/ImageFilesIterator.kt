@@ -62,18 +62,11 @@ class ImageFilesIterator private constructor(private val directory: File) : Dire
                 return false
             }
 
-            return (image != null) && !exclude(file) && !tooBig(image)
+            return (image != null) && !exclude(file)
         }
 
         private fun exclude(file: File): Boolean {
             return "gif" == file.extension
-        }
-
-        private fun tooBig(image: BufferedImage): Boolean {
-            /* TODO: check if image sizes are in order
-            *  TODO: Specifically the height and width in relation to each other
-            */
-            return false
         }
     }
 }

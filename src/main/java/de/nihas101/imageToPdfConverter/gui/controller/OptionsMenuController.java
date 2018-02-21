@@ -21,7 +21,12 @@ public class OptionsMenuController {
     private PdfWriterOptions pdfWriterOptions;
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
-        pdfWriterOptions = pdfWriterOptions.copy(multipleDirectoriesCheckBox.isSelected(), pdfWriterOptions.getCompressionLevel(), pdfWriterOptions.getPdfVersion());
+        pdfWriterOptions = pdfWriterOptions.copy(
+                multipleDirectoriesCheckBox.isSelected(),
+                pdfWriterOptions.getCompressionLevel(),
+                pdfWriterOptions.getPdfVersion(),
+                pdfWriterOptions.getSaveLocation()
+        );
         actionEvent.consume();
     }
 
@@ -98,12 +103,22 @@ public class OptionsMenuController {
     }
 
     public void setPdfVersion(ActionEvent actionEvent) {
-        pdfWriterOptions = pdfWriterOptions.copy(pdfWriterOptions.getMultipleDirectories(), pdfWriterOptions.getCompressionLevel(), (PdfVersion) pdfVersionToggle.getSelectedToggle().getUserData());
+        pdfWriterOptions = pdfWriterOptions.copy(
+                pdfWriterOptions.getMultipleDirectories(),
+                pdfWriterOptions.getCompressionLevel(),
+                (PdfVersion) pdfVersionToggle.getSelectedToggle().getUserData(),
+                pdfWriterOptions.getSaveLocation()
+        );
         actionEvent.consume();
     }
 
     public void setCompression(ActionEvent actionEvent) {
-        pdfWriterOptions = pdfWriterOptions.copy(pdfWriterOptions.getMultipleDirectories(), (Integer) pdfCompressionToggle.getSelectedToggle().getUserData(), pdfWriterOptions.getPdfVersion());
+        pdfWriterOptions = pdfWriterOptions.copy(
+                pdfWriterOptions.getMultipleDirectories(),
+                (Integer) pdfCompressionToggle.getSelectedToggle().getUserData(),
+                pdfWriterOptions.getPdfVersion(),
+                pdfWriterOptions.getSaveLocation()
+        );
         actionEvent.consume();
     }
 }

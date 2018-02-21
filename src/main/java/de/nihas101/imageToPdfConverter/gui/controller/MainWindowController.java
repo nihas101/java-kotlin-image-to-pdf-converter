@@ -87,7 +87,7 @@ public class MainWindowController extends FileListViewController {
         setupDirectoryChooser();
         setupSaveFileChooser();
         imageMap = createImageMap();
-        pdfWriterOptions = PdfWriterOptions.OptionsFactory.createOptions(false, DEFAULT_COMPRESSION, PDF_1_7);
+        pdfWriterOptions = PdfWriterOptions.OptionsFactory.createOptions(false, DEFAULT_COMPRESSION, PDF_1_7, null);
 
         imageListView.setOnDragOver(dragEvent -> {
             if (dragEvent.getGestureSource() != imageListView && dragEvent.getDragboard().hasFiles()) {
@@ -286,11 +286,11 @@ public class MainWindowController extends FileListViewController {
         File saveFile = saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
 
         if (saveFile != null) {
+            setSaveLocation(saveFile);
+            disableInput(true);
             new Thread(() -> {
-                disableInput(true);
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
-                        saveFile,
                         pdfWriterOptions,
                         progress -> buildProgressBar.setProgress(progress)
                 );
@@ -309,11 +309,11 @@ public class MainWindowController extends FileListViewController {
         File saveFile = directoryChooser.showDialog(buildButton.getScene().getWindow());
 
         if (saveFile != null) {
+            setSaveLocation(saveFile);
             disableInput(true);
             new Thread(() -> {
                 ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
-                        saveFile,
                         pdfWriterOptions,
                         progress -> buildProgressBar.setProgress(progress)
                 );
@@ -380,5 +380,13 @@ public class MainWindowController extends FileListViewController {
             e.printStackTrace();
         }
         actionEvent.consume();
+    }
+
+    private void setSaveLocation(File saveLocation) {
+        pdfWriterOptions = pdfWriterOptions.copy(
+                pdfWriterOptions.getMultipleDirectories(),
+                pdfWriterOptions.getCompressionLevel(),
+                pdfWriterOptions.getPdfVersion(),
+                saveLocation);
     }
 }
