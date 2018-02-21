@@ -2,7 +2,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators
 
 import java.io.File
 
-class ZipFilesIterator: DirectoryIterator{
+class ZipFilesIterator : DirectoryIterator {
     override fun nextFile(): File {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

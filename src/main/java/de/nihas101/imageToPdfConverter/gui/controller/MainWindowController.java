@@ -7,8 +7,7 @@ import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ListChangeListener.Change;
+import de.nihas101.imageToPdfConverter.util.ListChangeListenerFactory;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -25,11 +24,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import kotlin.Unit;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static com.itextpdf.kernel.pdf.CompressionConstants.DEFAULT_COMPRESSION;
 import static com.itextpdf.kernel.pdf.PdfVersion.PDF_1_7;
@@ -77,6 +75,8 @@ public class MainWindowController extends FileListViewController {
 
     FileChooser saveFileChooser;
 
+    private ListChangeListenerFactory listChangeListenerFactory;
+
     /**
      * Sets up the {@link MainWindowController}
      *
@@ -87,7 +87,14 @@ public class MainWindowController extends FileListViewController {
         setupDirectoryChooser();
         setupSaveFileChooser();
         imageMap = createImageMap();
-        pdfWriterOptions = PdfWriterOptions.OptionsFactory.createOptions(false, DEFAULT_COMPRESSION, PDF_1_7, null);
+        pdfWriterOptions = PdfWriterOptions.OptionsFactory.createOptions(
+                false,
+                DEFAULT_COMPRESSION,
+                PDF_1_7,
+                null
+        );
+        listChangeListenerFactory = ListChangeListenerFactory.ListChangeListenerFactoryFactory
+                .createListChangeListenerFactory(imageListView, imageMap);
 
         imageListView.setOnDragOver(dragEvent -> {
             if (dragEvent.getGestureSource() != imageListView && dragEvent.getDragboard().hasFiles()) {
@@ -198,55 +205,14 @@ public class MainWindowController extends FileListViewController {
     private void setupObservableList(DirectoryIterator directoryIterator) {
         runLater(() -> {
             ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
-            observableFiles.addListener(setupListChangeListener(directoryIterator, observableFiles));
+            observableFiles.addListener(listChangeListenerFactory.setupListChangeListener(directoryIterator, () -> {
+                notifyUser("Files: " + observableFiles.size(), BLACK);
+                return Unit.INSTANCE;
+            }));
             imageListView.setItems(observableFiles);
             imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
             notifyUser("Files: " + directoryIterator.nrOfFiles(), BLACK);
         });
-    }
-
-    /**
-     * Sets up a {@link ListChangeListener} that forwards all changes on the {@link ObservableList} to the underlying {@link List}
-     *
-     * @param directoryIterator The {@link DirectoryIterator} for iterating over directories
-     * @return The created {@link ListChangeListener}
-     */
-    private ListChangeListener<File> setupListChangeListener(DirectoryIterator directoryIterator, ObservableList<File> observableFiles) {
-        return change -> {
-            while (change.next()) handleChange(directoryIterator, change);
-            notifyUser("Files: " + observableFiles.size(), BLACK);
-        };
-    }
-
-    private void handleChange(DirectoryIterator directoryIterator, Change<? extends File> change) {
-        if (change.wasRemoved()) removeChange(directoryIterator, change);
-
-        if (change.wasAdded() && change.getAddedSize() == 1) addAtChangePosition(directoryIterator, change);
-        else if (change.wasAdded()) addChange(directoryIterator, change);
-    }
-
-    private void addChange(DirectoryIterator directoryIterator, Change<? extends File> change) {
-        IntStream.range(0, change.getAddedSubList().size()).forEach(index -> {
-            if (!directoryIterator.add(change.getAddedSubList().get(index)))
-                imageListView.getItems().remove(change.getAddedSubList().get(index));
-        });
-    }
-
-    private void removeChange(DirectoryIterator directoryIterator, Change<? extends File> change) {
-        File removedFile = change.getRemoved().get(0);
-        directoryIterator.remove(removedFile);
-        if (imageMap.contains(change.getRemoved().get(0))) {
-            try {
-                imageMap.remove(removedFile.toURI().toURL().toString());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void addAtChangePosition(DirectoryIterator directoryIterator, Change<? extends File> change) {
-        if (!directoryIterator.add(change.getFrom(), change.getAddedSubList().get(0)))
-            imageListView.getItems().remove(change.getAddedSubList().get(0));
     }
 
     /**

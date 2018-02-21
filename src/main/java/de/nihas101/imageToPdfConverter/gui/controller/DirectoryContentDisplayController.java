@@ -137,7 +137,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
         directoryContentDisplayStage.close();
     }
 
-    private void setSaveLocation(File saveLocation){
+    private void setSaveLocation(File saveLocation) {
         pdfWriterOptions = pdfWriterOptions.copy(
                 pdfWriterOptions.getMultipleDirectories(),
                 pdfWriterOptions.getCompressionLevel(),

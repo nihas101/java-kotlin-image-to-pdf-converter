@@ -5,9 +5,9 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 
-class ZipFileIterator(file: File): DirectoryIterator{
+class ZipFileIterator(file: File) : DirectoryIterator {
     init {
-        if (file.extension == "zip"){ // TODO: Check which extensions are supported
+        if (file.extension == "zip") { // TODO: Check which extensions are supported
             /* TODO: Create folder and unzip into it */
             val zipInputStream = createZipInputStream(file)
             zipInputStream.use { _ -> unzipFile(zipInputStream) }
@@ -23,27 +23,29 @@ class ZipFileIterator(file: File): DirectoryIterator{
         return ZipInputStream(BufferedInputStream(fileInputStream))
     }
 
-    private fun unzipFile(zipInputStream: ZipInputStream){
+    private fun unzipFile(zipInputStream: ZipInputStream) {
         var zipEntry = zipInputStream.getNextEntry()
 
-        while (zipEntry != null){
+        while (zipEntry != null) {
             unzipEntry(zipEntry, zipInputStream)
 
             zipEntry = zipInputStream.getNextEntry()
         }
     }
 
-    private fun unzipEntry(zipEntry: ZipEntry, zipInputStream: ZipInputStream){
+    private fun unzipEntry(zipEntry: ZipEntry, zipInputStream: ZipInputStream) {
         val BUFFER = 2048
         val data = ByteArray(BUFFER)
         val fos = FileOutputStream(zipEntry.name) // TODO: Set path into folder
         val dest = BufferedOutputStream(fos, BUFFER)
         var count = zipInputStream.read(data, 0, BUFFER)
 
-        dest.use { while (count != -1) {
-            dest.write(data, 0, count)
-            count = zipInputStream.read(data, 0, BUFFER)
-        } }
+        dest.use {
+            while (count != -1) {
+                dest.write(data, 0, count)
+                count = zipInputStream.read(data, 0, BUFFER)
+            }
+        }
     }
 
     override fun nextFile(): File {
