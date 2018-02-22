@@ -33,10 +33,6 @@ class Unzipper private constructor(private val zipInputStream: ZipInputStream) {
         }
     }
 
-    fun createFileOutputStream(path: String): FileOutputStream {
-        return FileOutputStream(File(path))
-    }
-
     companion object ZipFileIteratorFactory {
         fun createUnzipper(file: File): Unzipper {
             if (file.extension == "zip") // TODO: Check which extensions are supported
@@ -47,6 +43,13 @@ class Unzipper private constructor(private val zipInputStream: ZipInputStream) {
         private fun createZipInputStream(file: File): ZipInputStream {
             val fileInputStream = FileInputStream(file)
             return ZipInputStream(BufferedInputStream(fileInputStream))
+        }
+
+        fun createFileOutputStream(path: String, deleteOnExit: Boolean = false): FileOutputStream {
+            val file = File(path)
+            if(deleteOnExit) file.deleteOnExit()
+
+            return FileOutputStream(file)
         }
     }
 }
