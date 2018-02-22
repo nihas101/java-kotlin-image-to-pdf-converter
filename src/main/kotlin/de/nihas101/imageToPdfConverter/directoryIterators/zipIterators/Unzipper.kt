@@ -1,6 +1,7 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.FileIsDirectoryException
 import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
@@ -22,7 +23,12 @@ class Unzipper private constructor(private val zipInputStream: ZipInputStream) {
     private fun unzipEntry(zipEntry: ZipEntry, outputStreamFactory: (String) -> OutputStream) {
         val BUFFER = 2048
         val data = ByteArray(BUFFER)
-        val outputStream = outputStreamFactory(zipEntry.name) // TODO: Set path into folder
+        val outputStream: OutputStream = try {
+            outputStreamFactory(zipEntry.name)
+        } catch (exception: FileIsDirectoryException) {
+            return
+        }
+
         var count = zipInputStream.read(data)
 
         outputStream.use {
@@ -47,9 +53,16 @@ class Unzipper private constructor(private val zipInputStream: ZipInputStream) {
 
         fun createFileOutputStream(path: String, deleteOnExit: Boolean = false): FileOutputStream {
             val file = File(path)
+
             if (deleteOnExit) file.deleteOnExit()
 
-            return FileOutputStream(file)
+            if (file.extension == "") {
+                file.mkdir()
+                throw FileIsDirectoryException(file)
+            } else {
+                file.createNewFile()
+                return FileOutputStream(file)
+            }
         }
     }
 }

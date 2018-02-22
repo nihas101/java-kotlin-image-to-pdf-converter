@@ -7,12 +7,12 @@ import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.Unzipper.
 import java.io.File
 
 
-class ZipFileIterator(private val file: File) : DirectoryIterator {
+class ZipFileIterator(private val file: File, deleteOnExit: Boolean) : DirectoryIterator {
     private val imageFilesIterator: ImageFilesIterator
 
     init {
-        createUnzipper(file).unzip { fileName -> createFileOutputStream("${file.parent}/$fileName") }
-        imageFilesIterator = ImageFilesIterator.createImageFilesIterator(file)
+        createUnzipper(file).unzip { fileName -> createFileOutputStream("${file.parent}/$fileName", deleteOnExit) }
+        imageFilesIterator = ImageFilesIterator.createImageFilesIterator(File("${file.parent}/${file.nameWithoutExtension}"))
     }
 
     /* TODO: Create ImageFilesIterator and pass the newly unzipped files to it */
@@ -31,7 +31,7 @@ class ZipFileIterator(private val file: File) : DirectoryIterator {
 
     override fun add(file: File) = imageFilesIterator.add(file)
 
-    override fun addAll(files: List<File>) = imageFilesIterator.add(file)
+    override fun addAll(files: List<File>) = imageFilesIterator.addAll(files)
 
     override fun numberOfFiles() = imageFilesIterator.numberOfFiles()
 
@@ -40,8 +40,8 @@ class ZipFileIterator(private val file: File) : DirectoryIterator {
     override fun resetIndex() = imageFilesIterator.resetIndex()
 
     companion object ZipFileIteratorFactory {
-        fun createZipFileIterator(file: File): ZipFileIterator {
-            return ZipFileIterator(file)
+        fun createZipFileIterator(file: File, deleteOnExit: Boolean): ZipFileIterator {
+            return ZipFileIterator(file, deleteOnExit)
         }
     }
 }
