@@ -9,27 +9,27 @@ import java.io.File
 
 class ImageFilesIteratorTest {
     private val files = mutableListOf(
-            File("src/test/resources/1.jpg"),
-            File("src/test/resources/2.png"),
-            File("src/test/resources/3.png"),
-            File("src/test/resources/の.png")
-            )
+            File("src/test/resources/images/1.jpg"),
+            File("src/test/resources/images/2.png"),
+            File("src/test/resources/images/3.png"),
+            File("src/test/resources/images/の.png")
+    )
 
     @Test
     fun getFile() {
         val imageFilesIterator = createTestIterator()
 
-        assertEquals(files[0],imageFilesIterator.getFile(0))
-        assertEquals(files[1],imageFilesIterator.getFile(1))
-        assertEquals(files[2],imageFilesIterator.getFile(2))
-        assertEquals(files[3],imageFilesIterator.getFile(3))
+        assertEquals(files[0], imageFilesIterator.getFile(0))
+        assertEquals(files[1], imageFilesIterator.getFile(1))
+        assertEquals(files[2], imageFilesIterator.getFile(2))
+        assertEquals(files[3], imageFilesIterator.getFile(3))
     }
 
     @Test
     fun getFiles() {
         val imageFilesIterator = createTestIterator()
 
-        assertEquals(files,imageFilesIterator.getFiles())
+        assertEquals(files, imageFilesIterator.getFiles())
     }
 
     @Test
@@ -47,7 +47,7 @@ class ImageFilesIteratorTest {
 
         imageFilesIterator.addAll(files)
 
-        assertEquals(files, imageFilesIterator.getFiles().subList(4,8))
+        assertEquals(files, imageFilesIterator.getFiles().subList(4, 8))
     }
 
     @Test
@@ -56,7 +56,7 @@ class ImageFilesIteratorTest {
 
         imageFilesIterator.remove(files[0])
 
-        assertEquals(files.subList(1,4), imageFilesIterator.getFiles())
+        assertEquals(files.subList(1, 4), imageFilesIterator.getFiles())
     }
 
     @Test
@@ -68,12 +68,15 @@ class ImageFilesIteratorTest {
                 imageFilesIterator.nextFile(),
                 imageFilesIterator.nextFile(),
                 imageFilesIterator.nextFile()
-                )
+        )
 
         assertEquals(files, files0)
 
-        try { imageFilesIterator.nextFile() }
-        catch (exception: NoMoreImagesException){ return }
+        try {
+            imageFilesIterator.nextFile()
+        } catch (exception: NoMoreImagesException) {
+            return
+        }
 
         fail("NoMoreImagesException was not thrown")
     }
@@ -93,8 +96,11 @@ class ImageFilesIteratorTest {
 
         imageFilesIterator.resetIndex()
 
-        try { imageFilesIterator.nextFile() }
-        catch (exception: NoMoreImagesException){ fail("NoMoreImagesException was thrown") }
+        try {
+            imageFilesIterator.nextFile()
+        } catch (exception: NoMoreImagesException) {
+            fail("NoMoreImagesException was thrown")
+        }
     }
 
     @Test
@@ -108,5 +114,5 @@ class ImageFilesIteratorTest {
     }
 
 
-    private fun createTestIterator() = createImageFilesIterator(File("src/test/resources"))
+    private fun createTestIterator() = createImageFilesIterator(File("src/test/resources/images"))
 }

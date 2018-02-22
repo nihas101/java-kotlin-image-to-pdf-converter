@@ -18,7 +18,7 @@ class ImagePdfTest {
         val testOutputStream = TestOutputStream(StringBuilder())
         val imagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/test1.pdf")), testOutputStream)
 
-        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/3.png")))
+        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/3.png")))
         imagePdf.close()
 
         if (testOutputStream.output.isEmpty()) fail()
@@ -29,7 +29,7 @@ class ImagePdfTest {
         val testOutputStream = TestOutputStream(StringBuilder())
         val imagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/test2.pdf")), testOutputStream)
 
-        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/2.png")))
+        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/2.png")))
         imagePdf.close()
 
         if (testOutputStream.output.isEmpty()) fail()
@@ -40,7 +40,7 @@ class ImagePdfTest {
         val testOutputStream = TestOutputStream(StringBuilder())
         val imagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/test3.pdf")), testOutputStream)
 
-        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/1.jpg")))
+        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/1.jpg")))
         imagePdf.close()
 
         if (testOutputStream.output.isEmpty()) fail()
@@ -51,7 +51,7 @@ class ImagePdfTest {
         val testOutputStream = TestOutputStream(StringBuilder())
         val imagePdf: ImagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/の.png")), testOutputStream)
 
-        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/1.jpg")))
+        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/1.jpg")))
         imagePdf.close()
 
         if (testOutputStream.output.isEmpty()) fail()

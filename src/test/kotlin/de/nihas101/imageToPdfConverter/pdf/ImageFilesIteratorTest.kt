@@ -25,7 +25,7 @@ class ImageFilesIteratorTest {
 
     @Test
     fun imagesLoaderSingleImageTest() {
-        val file = File("src/test/resources/3.png")
+        val file = File("src/test/resources/images/3.png")
         val imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator(file)
 
         imageFilesIterator.nextFile()
