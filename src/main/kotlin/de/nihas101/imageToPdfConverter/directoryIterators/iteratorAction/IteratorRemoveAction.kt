@@ -8,7 +8,7 @@ class IteratorRemoveAction private constructor(modificationArguments: List<Strin
 
     override fun execute(directoryIterator: DirectoryIterator) {
         removeIndices.sortedDescending().forEach { removeIndex ->
-            if (removeIndex in 0 until directoryIterator.nrOfFiles())
+            if (removeIndex in 0 until directoryIterator.numberOfFiles())
                 directoryIterator.getFiles().removeAt(removeIndex)
         }
     }

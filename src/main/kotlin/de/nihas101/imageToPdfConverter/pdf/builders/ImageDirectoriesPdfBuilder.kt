@@ -14,7 +14,7 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
 
     override fun build(directoryIterator: DirectoryIterator, pdfWriterOptions: PdfWriterOptions) {
         directoryIterator.resetIndex()
-        val nrOfFiles = directoryIterator.nrOfFiles()
+        val nrOfFiles = directoryIterator.numberOfFiles()
         if (nrOfFiles == 0) return
 
         for (i in 1..nrOfFiles)
@@ -23,7 +23,7 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
 
     override fun build(directoryIterator: DirectoryIterator, pdfWriterOptions: PdfWriterOptions, progressUpdater: ProgressUpdater) {
         directoryIterator.resetIndex()
-        val nrOfFiles = directoryIterator.nrOfFiles()
+        val nrOfFiles = directoryIterator.numberOfFiles()
         if (nrOfFiles == 0) return
 
         for (i in 1..nrOfFiles) {
@@ -33,7 +33,7 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
     }
 
     private fun buildNextPDF(directoryIterator: DirectoryIterator, pdfWriterOptions: PdfWriterOptions) {
-        if (directoryIterator.nrOfFiles() != 0) {
+        if (directoryIterator.numberOfFiles() != 0) {
             val pdfWriterOptionsInstance = pdfWriterOptions.copy(
                     saveLocation = Paths.get(pdfWriterOptions.saveLocation!!.absolutePath + "/" + directoryIterator.getParentDirectory().name + ".pdf").toFile()
             )

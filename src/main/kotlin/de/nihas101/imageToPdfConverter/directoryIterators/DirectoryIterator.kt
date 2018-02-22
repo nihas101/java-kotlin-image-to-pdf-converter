@@ -10,7 +10,7 @@ interface DirectoryIterator {
     fun add(index: Int, file: File): Boolean
     fun add(file: File): Boolean
     fun addAll(files: List<File>): Boolean
-    fun nrOfFiles(): Int
+    fun numberOfFiles(): Int
     fun getParentDirectory(): File
     fun resetIndex()
 }

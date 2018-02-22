@@ -8,7 +8,7 @@ class ImageDirectoriesIterator private constructor(private val directory: File) 
     private var directories: MutableList<File> = setupDirectories(directory)
     private var currentIndex = 0
 
-    override fun nrOfFiles(): Int = directories.size
+    override fun numberOfFiles(): Int = directories.size
 
     override fun getParentDirectory(): File = directory
 

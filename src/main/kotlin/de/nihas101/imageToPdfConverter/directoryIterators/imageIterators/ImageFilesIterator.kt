@@ -46,7 +46,7 @@ class ImageFilesIterator private constructor(private val directory: File) : Dire
         currentIndex = 0
     }
 
-    override fun nrOfFiles(): Int = files.size
+    override fun numberOfFiles(): Int = files.size
 
     override fun getParentDirectory(): File = directory
 

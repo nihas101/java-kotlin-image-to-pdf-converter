@@ -25,7 +25,7 @@ class PdfBuilderCommandLineOutput private constructor(private val printStream: P
     private fun printPdfContent(pdfBuildInformation: PdfBuildInformation) {
         val directoryIterator: DirectoryIterator = pdfBuildInformation.getDirectoryIterator()
 
-        for (index in 0 until directoryIterator.nrOfFiles())
+        for (index in 0 until directoryIterator.numberOfFiles())
             printStream.println("$index: ${directoryIterator.getFile(index).name}")
     }
 

@@ -8,7 +8,7 @@ class IteratorMoveAction private constructor(pdfModificationArguments: List<Stri
     private val moveToIndex: Int = pdfModificationArguments[2].toInt()
 
     override fun execute(directoryIterator: DirectoryIterator) {
-        if (moveFromIndex in 0 until directoryIterator.nrOfFiles() && moveToIndex in 0 until directoryIterator.nrOfFiles()) {
+        if (moveFromIndex in 0 until directoryIterator.numberOfFiles() && moveToIndex in 0 until directoryIterator.numberOfFiles()) {
             val file = directoryIterator.getFiles().removeAt(moveFromIndex)
             directoryIterator.getFiles().add(moveToIndex, file)
         }

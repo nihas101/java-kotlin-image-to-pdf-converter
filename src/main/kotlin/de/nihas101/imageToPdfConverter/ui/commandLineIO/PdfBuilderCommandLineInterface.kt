@@ -39,7 +39,7 @@ class PdfBuilderCommandLineInterface private constructor(
         )
         pdfBuildInformation.setupDirectoryIterator()
 
-        return if (pdfBuildInformation.getDirectoryIterator().nrOfFiles() == 0) {
+        return if (pdfBuildInformation.getDirectoryIterator().numberOfFiles() == 0) {
             pdfBuilderCommandLineOutput.printEmptyDirectoryError()
             -1
         } else 1

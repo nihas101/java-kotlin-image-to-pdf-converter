@@ -179,7 +179,7 @@ public class MainWindowController extends FileListViewController {
      * @param directoryIterator The {@link DirectoryIterator} for iterating over files
      */
     private void setupListView(DirectoryIterator directoryIterator) {
-        int nrOfFiles = directoryIterator.nrOfFiles();
+        int nrOfFiles = directoryIterator.numberOfFiles();
 
         new Thread(() -> {
             imageMap.loadImages(directoryIterator.getFiles(),
@@ -204,7 +204,7 @@ public class MainWindowController extends FileListViewController {
             }));
             imageListView.setItems(observableFiles);
             imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
-            notifyUser("Files: " + directoryIterator.nrOfFiles(), BLACK);
+            notifyUser("Files: " + directoryIterator.numberOfFiles(), BLACK);
         });
     }
 
@@ -289,7 +289,7 @@ public class MainWindowController extends FileListViewController {
         if (mainWindow.getDirectoryIterator() == null) {
             notifyUser("Please choose a directory", RED);
             return false;
-        } else if (mainWindow.getDirectoryIterator().nrOfFiles() == 0) {
+        } else if (mainWindow.getDirectoryIterator().numberOfFiles() == 0) {
             notifyUser("There are no files to turn into a PDF", RED);
             return false;
         }
