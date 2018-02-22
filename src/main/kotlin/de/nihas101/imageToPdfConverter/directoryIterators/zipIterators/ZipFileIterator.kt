@@ -15,9 +15,7 @@ class ZipFileIterator(private val file: File, deleteOnExit: Boolean) : Directory
         imageFilesIterator = ImageFilesIterator.createImageFilesIterator(File("${file.parent}/${file.nameWithoutExtension}"))
     }
 
-    /* TODO: Create ImageFilesIterator and pass the newly unzipped files to it */
-    /* TODO: Make it so ImageDirectoriesIterator and ImageFilesIterator can delete a folder after creating a PDF */
-    /* TODO: Then add that as an option! for the user */
+    /* TODO: Add this as possibility for user */
 
     override fun nextFile() = imageFilesIterator.nextFile()
 

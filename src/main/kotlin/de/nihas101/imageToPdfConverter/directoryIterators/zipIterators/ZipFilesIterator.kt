@@ -4,6 +4,10 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import java.io.File
 
 class ZipFilesIterator : DirectoryIterator {
+
+    /* TODO: Create ImageDirectoryIterator and pass the newly unzipped files to it */
+    /* TODO: Add this as possibility for user */
+
     override fun nextFile(): File {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
