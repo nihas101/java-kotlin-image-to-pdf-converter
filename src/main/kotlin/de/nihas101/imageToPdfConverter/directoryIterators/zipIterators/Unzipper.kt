@@ -47,7 +47,7 @@ class Unzipper private constructor(private val zipInputStream: ZipInputStream) {
 
         fun createFileOutputStream(path: String, deleteOnExit: Boolean = false): FileOutputStream {
             val file = File(path)
-            if(deleteOnExit) file.deleteOnExit()
+            if (deleteOnExit) file.deleteOnExit()
 
             return FileOutputStream(file)
         }

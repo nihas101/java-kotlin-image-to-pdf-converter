@@ -29,7 +29,6 @@ class ZipFileIterator(private val file: File) : DirectoryIterator {
 
     override fun add(index: Int, file: File) = imageFilesIterator.add(index, file)
 
-
     override fun add(file: File) = imageFilesIterator.add(file)
 
     override fun addAll(files: List<File>) = imageFilesIterator.add(file)
@@ -38,9 +37,7 @@ class ZipFileIterator(private val file: File) : DirectoryIterator {
 
     override fun getParentDirectory() = imageFilesIterator.getParentDirectory()
 
-    override fun resetIndex(){
-        imageFilesIterator.resetIndex()
-    }
+    override fun resetIndex() = imageFilesIterator.resetIndex()
 
     companion object ZipFileIteratorFactory {
         fun createZipFileIterator(file: File): ZipFileIterator {
