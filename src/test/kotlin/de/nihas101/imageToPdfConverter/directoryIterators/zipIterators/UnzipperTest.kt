@@ -10,7 +10,7 @@ class UnzipperTest {
     @Test
     fun unzip() {
         val fileNameList = MutableList(0, { _ -> "" })
-        val unzipper = createUnzipper(File("src/test/resources/test.zip"))
+        val unzipper = createUnzipper(File("src/test/resources/zip/test.zip"))
 
         unzipper.unzip(outputStreamFactoryFactory(StringBuilder(), fileNameList))
 
