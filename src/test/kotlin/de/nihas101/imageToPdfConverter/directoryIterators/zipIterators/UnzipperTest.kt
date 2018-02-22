@@ -9,11 +9,10 @@ import java.io.File
 class UnzipperTest {
     @Test
     fun unzip() {
-        val output = StringBuilder()
         val fileNameList = MutableList(0, { _ -> "" })
         val unzipper = createUnzipper(File("src/test/resources/test.zip"))
 
-        unzipper.unzip(outputStreamFactoryFactory(output, fileNameList))
+        unzipper.unzip(outputStreamFactoryFactory(StringBuilder(), fileNameList))
 
         assertEquals("test/", fileNameList[0])
         assertEquals("test/1.txt", fileNameList[1])
