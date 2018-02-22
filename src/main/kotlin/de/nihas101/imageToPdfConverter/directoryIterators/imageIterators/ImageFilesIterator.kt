@@ -1,5 +1,6 @@
-package de.nihas101.imageToPdfConverter.directoryIterators
+package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
+import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
 import java.awt.image.BufferedImage
 import java.io.File

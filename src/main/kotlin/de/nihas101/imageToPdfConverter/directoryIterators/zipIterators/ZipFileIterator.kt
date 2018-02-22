@@ -1,8 +1,15 @@
-package de.nihas101.imageToPdfConverter.directoryIterators
+package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
+import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import java.io.File
 
-class ZipFilesIterator : DirectoryIterator {
+
+class ZipFileIterator(private val unzipper: Unzipper) : DirectoryIterator {
+
+    /* TODO: Create ImageFilesIterator and pass the newly unzipped files to it */
+    /* TODO: Make it so ImageDirectoriesIterator and ImageFilesIterator can delete a folder after creating a PDF */
+    /* TODO: Then add that as an option! for the user */
+
     override fun nextFile(): File {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -43,9 +50,9 @@ class ZipFilesIterator : DirectoryIterator {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    companion object ZipFilesIteratorFactory {
-        fun createZipFilesIterator(file: File): ZipFilesIterator {
-            return ZipFilesIterator()
+    companion object ZipFileIteratorFactory {
+        fun createZipFileIterator(file: File): ZipFileIterator {
+            return ZipFileIterator(Unzipper.createUnzipper(file))
         }
     }
 }

@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.pdf.builders
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
 import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater

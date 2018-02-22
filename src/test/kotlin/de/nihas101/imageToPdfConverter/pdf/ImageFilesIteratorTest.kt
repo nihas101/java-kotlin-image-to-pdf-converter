@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.pdf
 
-import de.nihas101.imageToPdfConverter.directoryIterators.ImageFilesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
+import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator
 import junit.framework.TestCase.fail
 import org.junit.Test
 import java.io.File

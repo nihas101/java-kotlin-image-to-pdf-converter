@@ -1,8 +1,8 @@
 package de.nihas101.imageToPdfConverter.pdf
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.ImageDirectoriesIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.ImageFilesIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator
 import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions.OptionsFactory.createOptions
 import java.io.File
 

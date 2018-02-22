@@ -11,10 +11,12 @@ import java.io.File
 import java.io.OutputStream
 
 class ImagePdfTest {
+    /* TODO: Add more tests! */
+
     @Test
     fun imagePdfTest1() {
-        val testOutputStream = TestOutputStream("")
-        val imagePdf= createPdf(createOptions(false, saveLocation = File("src/test/resources/test1.pdf")), testOutputStream)
+        val testOutputStream = TestOutputStream(StringBuilder())
+        val imagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/test1.pdf")), testOutputStream)
 
         imagePdf.add(Image(ImageDataFactory.create("src/test/resources/3.png")))
         imagePdf.close()
@@ -24,7 +26,7 @@ class ImagePdfTest {
 
     @Test
     fun imagePdfTest2() {
-        val testOutputStream = TestOutputStream("")
+        val testOutputStream = TestOutputStream(StringBuilder())
         val imagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/test2.pdf")), testOutputStream)
 
         imagePdf.add(Image(ImageDataFactory.create("src/test/resources/2.png")))
@@ -35,7 +37,7 @@ class ImagePdfTest {
 
     @Test
     fun imagePdfTest3() {
-        val testOutputStream = TestOutputStream("")
+        val testOutputStream = TestOutputStream(StringBuilder())
         val imagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/test3.pdf")), testOutputStream)
 
         imagePdf.add(Image(ImageDataFactory.create("src/test/resources/1.jpg")))
@@ -46,7 +48,7 @@ class ImagePdfTest {
 
     @Test
     fun unicodeTest() {
-        val testOutputStream = TestOutputStream("")
+        val testOutputStream = TestOutputStream(StringBuilder())
         val imagePdf: ImagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/の.png")), testOutputStream)
 
         imagePdf.add(Image(ImageDataFactory.create("src/test/resources/1.jpg")))
@@ -55,9 +57,9 @@ class ImagePdfTest {
         if (testOutputStream.output.isEmpty()) fail()
     }
 
-    class TestOutputStream(var output: String) : OutputStream() {
+    class TestOutputStream(var output: StringBuilder) : OutputStream() {
         override fun write(b: Int) {
-            output += b.toChar()
+            output.append(b.toChar())
         }
     }
 }
