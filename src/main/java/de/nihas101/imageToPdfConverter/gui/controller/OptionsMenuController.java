@@ -23,7 +23,7 @@ public class OptionsMenuController {
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
         imageToPdfOptions = imageToPdfOptions.copy(
-                imageToPdfOptions.component1(), /* TODO! Allow for zip files */
+                imageToPdfOptions.component1(),
                 imageToPdfOptions.component2()
         );
         actionEvent.consume();

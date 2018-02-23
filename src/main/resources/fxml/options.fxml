@@ -1,71 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.RadioMenuItem?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-
-<GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="220.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.nihas101.imageToPdfConverter.gui.controller.OptionsMenuController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+          prefHeight="100.0" prefWidth="220.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8.0.121"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.nihas101.imageToPdfConverter.gui.controller.OptionsMenuController">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
     </rowConstraints>
-    <CheckBox fx:id="multipleDirectoriesCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setMultipleDirectoriesOption" stylesheets="@../main.css" text="Build PDFs from multiple directories" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+    <CheckBox fx:id="multipleDirectoriesCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              mnemonicParsing="false" onAction="#setMultipleDirectoriesOption" stylesheets="@../main.css"
+              text="Build PDFs from multiple directories" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
+              GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
         <tooltip>
-            <Tooltip text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories" />
+            <Tooltip
+                    text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories"/>
         </tooltip>
         <GridPane.margin>
-            <Insets />
+            <Insets/>
         </GridPane.margin>
         <padding>
-            <Insets bottom="10.0" left="5.0" />
+            <Insets bottom="10.0" left="5.0"/>
         </padding>
     </CheckBox>
-   <CheckBox fx:id="zipFilesCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setZipFilesOption" stylesheets="@../main.css" text="Build PDF(s) from zip-file(s)" GridPane.rowIndex="1">
-      <tooltip>
-         <Tooltip text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories" />
-      </tooltip>
-      <padding>
-         <Insets bottom="10.0" left="5.0" />
-      </padding>
-   </CheckBox>
-    <MenuButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" stylesheets="@../main.css" text="PDF version" textAlignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+    <CheckBox fx:id="zipFilesCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              mnemonicParsing="false" onAction="#setZipFilesOption" stylesheets="@../main.css"
+              text="Build PDF(s) from zip-file(s)" GridPane.rowIndex="1">
+        <tooltip>
+            <Tooltip
+                    text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories"/>
+        </tooltip>
+        <padding>
+            <Insets bottom="10.0" left="5.0"/>
+        </padding>
+    </CheckBox>
+    <MenuButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                stylesheets="@../main.css" text="PDF version" textAlignment="CENTER" GridPane.hgrow="ALWAYS"
+                GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
         <items>
             <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.0">
                 <toggleGroup>
-                    <ToggleGroup fx:id="pdfVersionToggle" />
+                    <ToggleGroup fx:id="pdfVersionToggle"/>
                 </toggleGroup>
             </RadioMenuItem>
-            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.1" toggleGroup="$pdfVersionToggle" />
-            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.2" toggleGroup="$pdfVersionToggle" />
-            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.3" toggleGroup="$pdfVersionToggle" />
-            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.4" toggleGroup="$pdfVersionToggle" />
-            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.5" toggleGroup="$pdfVersionToggle" />
-            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.6" toggleGroup="$pdfVersionToggle" />
-            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.7" toggleGroup="$pdfVersionToggle" />
-            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="2.0" toggleGroup="$pdfVersionToggle" />
+            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.1"
+                           toggleGroup="$pdfVersionToggle"/>
+            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.2"
+                           toggleGroup="$pdfVersionToggle"/>
+            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.3"
+                           toggleGroup="$pdfVersionToggle"/>
+            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.4"
+                           toggleGroup="$pdfVersionToggle"/>
+            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.5"
+                           toggleGroup="$pdfVersionToggle"/>
+            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.6"
+                           toggleGroup="$pdfVersionToggle"/>
+            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.7"
+                           toggleGroup="$pdfVersionToggle"/>
+            <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="2.0"
+                           toggleGroup="$pdfVersionToggle"/>
         </items>
     </MenuButton>
-    <MenuButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" stylesheets="@../main.css" text="Compression" textAlignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+    <MenuButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                stylesheets="@../main.css" text="Compression" textAlignment="CENTER" GridPane.hgrow="ALWAYS"
+                GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
         <items>
             <RadioMenuItem mnemonicParsing="false" onAction="#setCompression" text="No compression">
                 <toggleGroup>
-                    <ToggleGroup fx:id="pdfCompressionToggle" />
+                    <ToggleGroup fx:id="pdfCompressionToggle"/>
                 </toggleGroup>
             </RadioMenuItem>
-            <RadioMenuItem mnemonicParsing="false" onAction="#setCompression" text="Default compression" toggleGroup="$pdfCompressionToggle" />
-            <RadioMenuItem mnemonicParsing="false" onAction="#setCompression" text="Best compression" toggleGroup="$pdfCompressionToggle" />
-            <RadioMenuItem mnemonicParsing="false" onAction="#setCompression" text="Best speed" toggleGroup="$pdfCompressionToggle" />
+            <RadioMenuItem mnemonicParsing="false" onAction="#setCompression" text="Default compression"
+                           toggleGroup="$pdfCompressionToggle"/>
+            <RadioMenuItem mnemonicParsing="false" onAction="#setCompression" text="Best compression"
+                           toggleGroup="$pdfCompressionToggle"/>
+            <RadioMenuItem mnemonicParsing="false" onAction="#setCompression" text="Best speed"
+                           toggleGroup="$pdfCompressionToggle"/>
         </items>
     </MenuButton>
 </GridPane>
