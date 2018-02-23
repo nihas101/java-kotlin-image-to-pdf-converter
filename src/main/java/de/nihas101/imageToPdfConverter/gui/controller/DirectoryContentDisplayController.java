@@ -53,8 +53,8 @@ public class DirectoryContentDisplayController extends FileListViewController {
         this.directoryContentDisplayStage = directoryContentDisplayStage;
         this.mainWindowController = mainWindowController;
         this.imageToPdfOptions = mainWindowController.imageToPdfOptions.copy(
-                imageToPdfOptions.component1(),
-                imageToPdfOptions.component2()
+                mainWindowController.imageToPdfOptions.component1(),
+                mainWindowController.imageToPdfOptions.component2()
         );
 
         new Thread(() -> {
@@ -122,7 +122,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
             new Thread(() -> {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         directoryIterator,
-                        mainWindowController.imageToPdfOptions,
+                        imageToPdfOptions,
                         progress -> mainWindowController.buildProgressBar.setProgress(progress)
                 );
                 mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
