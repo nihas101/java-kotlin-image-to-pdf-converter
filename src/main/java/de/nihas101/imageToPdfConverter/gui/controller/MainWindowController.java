@@ -34,8 +34,7 @@ import static com.itextpdf.kernel.pdf.PdfVersion.PDF_1_7;
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
 import static de.nihas101.imageToPdfConverter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
-import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
-import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createSaveFileChooser;
+import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.*;
 import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
 import static javafx.application.Platform.runLater;
 import static javafx.collections.FXCollections.observableArrayList;
@@ -76,7 +75,6 @@ public class MainWindowController extends FileListViewController {
     private ListChangeListenerFactory listChangeListenerFactory;
 
     public FileChooser saveFileChooser;
-    private DirectoryChooser directoryChooser;
 
     /* TODO: Hold onto threads to cancel them if something goes wrong */
 
@@ -87,10 +85,7 @@ public class MainWindowController extends FileListViewController {
      */
     public void setup(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-
         saveFileChooser = createSaveFileChooser();
-        directoryChooser = createDirectoryChooser();
-
         imageMap = createImageMap();
 
         imageToPdfOptions = ImageToPdfOptions.OptionsFactory.createOptions(
@@ -150,12 +145,12 @@ public class MainWindowController extends FileListViewController {
      * @param actionEvent The delivered {@link Event}
      */
     public void chooseDirectory(ActionEvent actionEvent) {
-        if (imageToPdfOptions.getIteratorOptions().getMultipleDirectories())
-            directoryChooser.setTitle("Choose a directory of directories to turn into a PDF");
-        else
-            directoryChooser.setTitle("Choose a directory or sourceFile to turn into a PDF");
+        File givenDirectory;
 
-        File givenDirectory = directoryChooser.showDialog(directoryButton.getScene().getWindow());
+        if (imageToPdfOptions.getIteratorOptions().getZipFiles())
+            givenDirectory = createZipFileChooser().showOpenDialog(directoryButton.getScene().getWindow());
+        else
+            givenDirectory = createDirectoryChooser(imageToPdfOptions.getIteratorOptions()).showDialog(directoryButton.getScene().getWindow());
 
         if (givenDirectory != null) {
             buildProgressBar.setProgress(0);
@@ -264,6 +259,7 @@ public class MainWindowController extends FileListViewController {
      * Builds multiple {@link de.nihas101.imageToPdfConverter.pdf.ImagePdf}s
      */
     private void buildMultiplePdf() {
+        DirectoryChooser directoryChooser = createDirectoryChooser(imageToPdfOptions.getIteratorOptions());
         directoryChooser.setInitialDirectory(mainWindow.getDirectoryIterator().getParentDirectory());
         directoryChooser.setTitle("Choose a folder to save the PDFs in");
         File saveFile = directoryChooser.showDialog(buildButton.getScene().getWindow());
