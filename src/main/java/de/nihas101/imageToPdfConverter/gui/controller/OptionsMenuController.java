@@ -23,7 +23,10 @@ public class OptionsMenuController {
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
         imageToPdfOptions = imageToPdfOptions.copy(
-                imageToPdfOptions.component1(),
+                imageToPdfOptions.component1().copy(
+                        multipleDirectoriesCheckBox.isSelected(),
+                        imageToPdfOptions.component1().getZipFiles()
+                ),
                 imageToPdfOptions.component2()
         );
         actionEvent.consume();
@@ -32,6 +35,7 @@ public class OptionsMenuController {
     public void setup(ImageToPdfOptions imageToPdfOptions) {
         this.imageToPdfOptions = imageToPdfOptions;
         multipleDirectoriesCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getMultipleDirectories());
+        zipFilesCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getZipFiles());
         setupPdfVersionUserData(pdfVersionToggle);
         setSelectedPdfVersion(pdfVersionToggle);
         setupCompressionUserData(pdfCompressionToggle);
