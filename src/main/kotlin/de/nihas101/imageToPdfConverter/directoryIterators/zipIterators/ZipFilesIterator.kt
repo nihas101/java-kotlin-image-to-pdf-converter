@@ -1,56 +1,54 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnzipper.ZipFileIteratorFactory.createImageUnzipper
 import java.io.File
 
-class ZipFilesIterator : DirectoryIterator() {
+class ZipFilesIterator(directory: File, deleteOnExit: Boolean) : DirectoryIterator() {
+    private var imageDirectoriesIterator: ImageDirectoriesIterator
 
-    /* TODO: Create ImageDirectoryIterator and pass the newly unzipped files to it */
-    /* TODO: Add deleteOnExit as possibility for user */
-
-    override fun nextFile(): File {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    init {
+        directory.listFiles().forEach { file ->
+            val unzipInto = makeUnzipDirectory(file, deleteOnExit)
+            createImageUnzipper(file).unzip(unzipInto)
+        }
+        imageDirectoriesIterator = createImageDirectoriesIterator(directory)
     }
 
-    override fun getFile(index: Int): File {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun makeUnzipDirectory(file: File, deleteOnExit: Boolean): File {
+        val unzipDirectory = File("${file.parent}/${file.nameWithoutExtension}")
+
+        if (deleteOnExit) unzipDirectory.deleteOnExit()
+        unzipDirectory.mkdir()
+
+        return unzipDirectory
     }
 
-    override fun getFiles(): MutableList<File> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun nextFile() = imageDirectoriesIterator.nextFile()
 
-    override fun remove(file: File): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getFile(index: Int) = imageDirectoriesIterator.getFile(index)
 
-    override fun add(index: Int, file: File): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getFiles() = imageDirectoriesIterator.getFiles()
 
-    override fun add(file: File): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun remove(file: File) = imageDirectoriesIterator.remove(file)
 
-    override fun addAll(files: List<File>): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun add(index: Int, file: File) = imageDirectoriesIterator.add(index, file)
 
-    override fun numberOfFiles(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun add(file: File) = imageDirectoriesIterator.add(file)
 
-    override fun getParentDirectory(): File {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun addAll(files: List<File>) = imageDirectoriesIterator.addAll(files)
 
-    override fun resetIndex() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun numberOfFiles() = imageDirectoriesIterator.numberOfFiles()
+
+    override fun getParentDirectory() = imageDirectoriesIterator.getParentDirectory()
+
+    override fun resetIndex() = imageDirectoriesIterator.resetIndex()
 
     companion object ZipFilesIteratorFactory {
-        fun createZipFilesIterator(file: File): ZipFilesIterator {
-            return ZipFilesIterator()
+        fun createZipFilesIterator(directory: File, deleteOnExit: Boolean): ZipFilesIterator {
+            return ZipFilesIterator(directory, deleteOnExit)
         }
     }
 }
