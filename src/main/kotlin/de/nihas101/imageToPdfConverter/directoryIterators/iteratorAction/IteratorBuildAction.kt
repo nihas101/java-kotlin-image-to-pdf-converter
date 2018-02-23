@@ -8,7 +8,7 @@ import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions
 
 class IteratorBuildAction private constructor(
         private val modificationArguments: List<String>,
-        private val imageToPdfOptions: ImageToPdfOptions
+        private var imageToPdfOptions: ImageToPdfOptions
 ) : IteratorAction() {
     private var compressionString = "default"
 
@@ -43,7 +43,8 @@ class IteratorBuildAction private constructor(
                 }
             }
 
-        imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.pdfOptions.copy(compressionLevel = compressionLevel))
+        imageToPdfOptions =
+                imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.pdfOptions.copy(compressionLevel = compressionLevel))
     }
 
     private fun parseVersion(versionArg: String) {
@@ -63,7 +64,8 @@ class IteratorBuildAction private constructor(
                 else -> PDF_1_7
             }
 
-        imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.pdfOptions.copy(pdfVersion = pdfVersion))
+        imageToPdfOptions =
+                imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.pdfOptions.copy(pdfVersion = pdfVersion))
     }
 
     override fun execute(directoryIterator: DirectoryIterator) {

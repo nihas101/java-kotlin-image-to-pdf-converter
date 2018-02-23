@@ -8,7 +8,7 @@ abstract class IteratorAction {
     abstract fun execute(directoryIterator: DirectoryIterator)
 
     companion object PdfModificationFactory {
-        fun createIteratorModification(modificationArguments: List<String>, imageToPdfOptions: ImageToPdfOptions): IteratorAction {
+        fun createIteratorAction(modificationArguments: List<String>, imageToPdfOptions: ImageToPdfOptions): IteratorAction {
             if (modificationArguments.isEmpty()) throw MalformedPdfModificationException(modificationArguments)
 
             return when {

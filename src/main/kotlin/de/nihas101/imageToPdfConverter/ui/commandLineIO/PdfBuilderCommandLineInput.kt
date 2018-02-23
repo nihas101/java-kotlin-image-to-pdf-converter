@@ -28,7 +28,7 @@ class PdfBuilderCommandLineInput private constructor(private val bufferedReader:
         while (true) {
             val readModificationArguments = readReader().split(Regex("\\s"))
             try {
-                return IteratorAction.createIteratorModification(readModificationArguments, imageToPdfOptions)
+                return IteratorAction.createIteratorAction(readModificationArguments, imageToPdfOptions)
             } catch (exception: MalformedPdfModificationException) {
                 onFail()
             }
