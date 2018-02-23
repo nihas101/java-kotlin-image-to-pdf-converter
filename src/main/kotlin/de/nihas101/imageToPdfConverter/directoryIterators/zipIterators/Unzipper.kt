@@ -8,30 +8,26 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 class Unzipper private constructor(private val zipInputStream: ZipInputStream) {
-    fun unzip(filePath: String, deleteOnExit: Boolean): MutableList<File> {
-        return unzip({ fileName -> createFileOutputStream("$filePath/$fileName", deleteOnExit) })
+    fun unzip(unzipInto: File, deleteOnExit: Boolean) {
+        unzip({ fileName -> createFileOutputStream("${unzipInto.absolutePath}/$fileName", deleteOnExit) })
     }
 
-    fun unzip(outputStreamFactory: (String) -> OutputStream): MutableList<File> {
-        zipInputStream.use { _ -> return unzipFile(outputStreamFactory) }
+    fun unzip(outputStreamFactory: (String) -> OutputStream) {
+        zipInputStream.use { _ -> unzipFile(outputStreamFactory) }
     }
 
-    private fun unzipFile(outputStreamFactory: (String) -> OutputStream): MutableList<File> {
-        val directoriesList = mutableListOf<File>()
+    private fun unzipFile(outputStreamFactory: (String) -> OutputStream) {
         var zipEntry = zipInputStream.getNextEntry()
 
         while (zipEntry != null) {
             try {
                 unzipEntry(zipEntry, outputStreamFactory)
             } catch (exception: FileIsDirectoryException) {
-                /* TODO: Maybe just collect all files, so loose files can be added to the iterators, too */
-                directoriesList.add(exception.file)
+                /* SKIP ENTRY */
             }
 
             zipEntry = zipInputStream.getNextEntry()
         }
-
-        return directoriesList
     }
 
     private fun unzipEntry(zipEntry: ZipEntry, outputStreamFactory: (String) -> OutputStream) {
@@ -50,6 +46,7 @@ class Unzipper private constructor(private val zipInputStream: ZipInputStream) {
 
     companion object ZipFileIteratorFactory {
         fun createUnzipper(file: File): Unzipper {
+            println(file)
             if (file.extension == "zip") // TODO: Check which extensions are supported
                 return Unzipper(createZipInputStream(file))
             else throw ExtensionNotSupportedException(file.extension)

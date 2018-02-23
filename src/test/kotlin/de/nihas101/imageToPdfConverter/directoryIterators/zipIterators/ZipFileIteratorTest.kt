@@ -81,5 +81,5 @@ class ZipFileIteratorTest {
         }
     }
 
-    private fun createTestIterator() = createZipFileIterator(File("src/test/resources/zip/images.zip"), true)
+    private fun createTestIterator() = createZipFileIterator(File("src/test/resources/zip/images.zip"), false)
 }

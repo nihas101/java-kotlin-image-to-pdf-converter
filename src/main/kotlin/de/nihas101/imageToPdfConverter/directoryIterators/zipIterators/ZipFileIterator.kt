@@ -10,12 +10,19 @@ class ZipFileIterator(private val file: File, deleteOnExit: Boolean) : Directory
     private val imageFilesIterator: ImageFilesIterator
 
     init {
-        val directories = createUnzipper(file).unzip(file.parent, deleteOnExit)
-        /* TODO: Throw Exception when no directory or deal with it somehow */
-        imageFilesIterator = ImageFilesIterator.createImageFilesIterator(directories[0])
-        if (directories.size > 1) imageFilesIterator.addAll(directories.subList(1, directories.size))
+        val unzipInto = makeUnzipDirectory(deleteOnExit)
+        createUnzipper(file).unzip(unzipInto, deleteOnExit)
+        imageFilesIterator = ImageFilesIterator.createImageFilesIterator(unzipInto)
     }
 
+    private fun makeUnzipDirectory(deleteOnExit: Boolean): File {
+        val unzipDirectory = File("${file.parent}/${file.nameWithoutExtension}")
+
+        if (deleteOnExit) unzipDirectory.deleteOnExit()
+        unzipDirectory.mkdir()
+
+        return unzipDirectory
+    }
 
     /* TODO: Add this as possibility for user */
 
