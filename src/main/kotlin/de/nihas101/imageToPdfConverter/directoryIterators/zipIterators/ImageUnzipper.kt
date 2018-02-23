@@ -35,7 +35,8 @@ class ImageUnzipper private constructor(private val zipInputStream: ZipInputStre
     private fun unzipImage(zipEntry: ZipEntry, fileFactory: (ZipEntry) -> File) {
         val file: File = fileFactory(zipEntry)
         val bufferedImage = ImageIO.read(zipInputStream)
-        ImageIO.write(bufferedImage, extractExtension(zipEntry), file)
+        if (bufferedImage != null)
+            ImageIO.write(bufferedImage, extractExtension(zipEntry), file)
     }
 
     private fun extractExtension(zipEntry: ZipEntry): String {
@@ -44,9 +45,13 @@ class ImageUnzipper private constructor(private val zipInputStream: ZipInputStre
 
     companion object ZipFileIteratorFactory {
         fun createImageUnzipper(file: File): ImageUnzipper {
-            if (file.extension == "zip") // TODO: Check which extensions are supported
+            if (canUnzip(file)) // TODO: Check which extensions are supported
                 return ImageUnzipper(createZipInputStream(file))
             else throw ExtensionNotSupportedException(file.extension)
+        }
+
+        fun canUnzip(file: File): Boolean {
+            return (!file.isDirectory && file.extension == "zip")
         }
 
         private fun createZipInputStream(file: File): ZipInputStream {

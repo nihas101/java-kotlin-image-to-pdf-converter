@@ -12,7 +12,7 @@ class ZipFilesIterator(directory: File, deleteOnExit: Boolean) : DirectoryIterat
     init {
         directory.listFiles().forEach { file ->
             val unzipInto = makeUnzipDirectory(file, deleteOnExit)
-            createImageUnzipper(file).unzip(unzipInto)
+            if (ImageUnzipper.canUnzip(file)) createImageUnzipper(file).unzip(unzipInto, true)
         }
         imageDirectoriesIterator = createImageDirectoriesIterator(directory)
     }
