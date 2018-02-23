@@ -2,32 +2,37 @@ package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.FileIsDirectoryException
+import de.nihas101.imageToPdfConverter.util.Constants.BUFFER
 import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 class Unzipper private constructor(private val zipInputStream: ZipInputStream) {
-    fun unzip(outputStreamFactory: (String) -> OutputStream) {
-        zipInputStream.use { _ -> unzipFile(outputStreamFactory) }
+    fun unzip(outputStreamFactory: (String) -> OutputStream): MutableList<File> {
+        zipInputStream.use { _ -> return unzipFile(outputStreamFactory) }
     }
 
-    private fun unzipFile(outputStreamFactory: (String) -> OutputStream) {
+    private fun unzipFile(outputStreamFactory: (String) -> OutputStream): MutableList<File> {
+        val directoriesList = mutableListOf<File>()
         var zipEntry = zipInputStream.getNextEntry()
 
         while (zipEntry != null) {
-            unzipEntry(zipEntry, outputStreamFactory)
+            try {
+                unzipEntry(zipEntry, outputStreamFactory)
+            } catch (exception: FileIsDirectoryException) {
+                /* TODO: Maybe just collect all files, so loose files can be added to the iterators, too */
+                directoriesList.add(exception.file)
+            }
+
             zipEntry = zipInputStream.getNextEntry()
         }
+
+        return directoriesList
     }
 
     private fun unzipEntry(zipEntry: ZipEntry, outputStreamFactory: (String) -> OutputStream) {
-        val BUFFER = 2048
         val data = ByteArray(BUFFER)
-        val outputStream: OutputStream = try {
-            outputStreamFactory(zipEntry.name)
-        } catch (exception: FileIsDirectoryException) {
-            return
-        }
+        val outputStream: OutputStream = outputStreamFactory(zipEntry.name)
 
         var count = zipInputStream.read(data)
 

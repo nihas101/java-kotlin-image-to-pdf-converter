@@ -15,4 +15,6 @@ public class Constants {
     public final static String DIRECTORY_IMAGE_PATH = "src/main/resources/icons8-open-500.png";
     /* Source: icons8.com/icon/54151/gear */
     public final static String GEAR_IMAGE_PATH = "src/main/resources/icons8-open-500.png";
+
+    public final static int BUFFER = 2048;
 }
