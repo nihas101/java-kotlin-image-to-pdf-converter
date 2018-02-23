@@ -3,7 +3,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import java.io.File
 
-class ZipFilesIterator : DirectoryIterator {
+class ZipFilesIterator : DirectoryIterator() {
 
     /* TODO: Create ImageDirectoryIterator and pass the newly unzipped files to it */
     /* TODO: Add deleteOnExit as possibility for user */

@@ -6,7 +6,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.Unzipper.
 import java.io.File
 
 
-class ZipFileIterator(private val file: File, deleteOnExit: Boolean) : DirectoryIterator {
+class ZipFileIterator(private val file: File, deleteOnExit: Boolean) : DirectoryIterator() {
     private val imageFilesIterator: ImageFilesIterator
 
     init {

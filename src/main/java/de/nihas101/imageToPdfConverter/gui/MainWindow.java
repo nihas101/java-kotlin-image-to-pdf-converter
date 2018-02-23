@@ -1,9 +1,8 @@
 package de.nihas101.imageToPdfConverter.gui;
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
-import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator;
-import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator;
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
+import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -41,11 +40,10 @@ public final class MainWindow extends Application {
         launch(args);
     }
 
-    public void setupIterator(File file, boolean isImageDirectoryIterator) {
-        if (isImageDirectoryIterator)
-            directoryIterator = ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator(file);
-        else
-            directoryIterator = ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(file);
+    public void setupIterator(File directory, ImageToPdfOptions imageToPdfOptions) {
+        directoryIterator = DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(
+                directory, imageToPdfOptions.getIteratorOptions()
+        );
     }
 
     public DirectoryIterator getDirectoryIterator() {

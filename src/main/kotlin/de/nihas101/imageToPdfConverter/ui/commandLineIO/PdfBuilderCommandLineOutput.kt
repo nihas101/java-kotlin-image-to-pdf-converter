@@ -30,8 +30,8 @@ class PdfBuilderCommandLineOutput private constructor(private val printStream: P
     }
 
     fun printBuildInfo(pdfBuildInformation: PdfBuildInformation) =
-            if (pdfBuildInformation.getPdfWriterOptions().multipleDirectories) printStream.println("Building PDFs of version ${pdfBuildInformation.getPdfWriterOptions().pdfVersion}")
-            else printStream.println("Building PDF of version ${pdfBuildInformation.getPdfWriterOptions().pdfVersion}")
+            if (pdfBuildInformation.getPdfWriterOptions().iteratorOptions.multipleDirectories) printStream.println("Building PDFs of version ${pdfBuildInformation.getPdfWriterOptions().pdfOptions.pdfVersion}")
+            else printStream.println("Building PDF of version ${pdfBuildInformation.getPdfWriterOptions().pdfOptions.pdfVersion}")
 
     fun printProgress() = printStream.print(".")
 

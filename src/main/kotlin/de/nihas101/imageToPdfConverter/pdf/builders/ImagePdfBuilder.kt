@@ -4,7 +4,7 @@ import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.layout.element.Image
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.pdf.ImagePdf
-import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions
+import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 
 class ImagePdfBuilder : PdfBuilder() {
@@ -12,9 +12,9 @@ class ImagePdfBuilder : PdfBuilder() {
         fun createImagePdfBuilder() = ImagePdfBuilder()
     }
 
-    override fun build(directoryIterator: DirectoryIterator, pdfWriterOptions: PdfWriterOptions) {
+    override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions) {
         directoryIterator.resetIndex()
-        val imagePdf = ImagePdf.createPdf(pdfWriterOptions)
+        val imagePdf = ImagePdf.createPdf(imageToPdfOptions)
         val nrOfFiles = directoryIterator.numberOfFiles()
 
         try {
@@ -26,9 +26,9 @@ class ImagePdfBuilder : PdfBuilder() {
         }
     }
 
-    override fun build(directoryIterator: DirectoryIterator, pdfWriterOptions: PdfWriterOptions, progressUpdater: ProgressUpdater) {
+    override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) {
         directoryIterator.resetIndex()
-        val imagePdf = ImagePdf.createPdf(pdfWriterOptions)
+        val imagePdf = ImagePdf.createPdf(imageToPdfOptions)
         val nrOfFiles = directoryIterator.numberOfFiles()
 
         try {

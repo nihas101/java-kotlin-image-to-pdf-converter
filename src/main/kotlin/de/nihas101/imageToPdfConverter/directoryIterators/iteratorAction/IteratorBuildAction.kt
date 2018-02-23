@@ -4,11 +4,11 @@ import com.itextpdf.kernel.pdf.CompressionConstants.*
 import com.itextpdf.kernel.pdf.PdfVersion.*
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
-import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions
+import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions
 
 class IteratorBuildAction private constructor(
         private val modificationArguments: List<String>,
-        private val pdfWriterOptions: PdfWriterOptions
+        private val imageToPdfOptions: ImageToPdfOptions
 ) : IteratorAction() {
     private var compressionString = "default"
 
@@ -43,7 +43,7 @@ class IteratorBuildAction private constructor(
                 }
             }
 
-        pdfWriterOptions.copy(compressionLevel = compressionLevel)
+        imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.pdfOptions.copy(compressionLevel = compressionLevel))
     }
 
     private fun parseVersion(versionArg: String) {
@@ -63,7 +63,7 @@ class IteratorBuildAction private constructor(
                 else -> PDF_1_7
             }
 
-        pdfWriterOptions.copy(pdfVersion = pdfVersion)
+        imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.pdfOptions.copy(pdfVersion = pdfVersion))
     }
 
     override fun execute(directoryIterator: DirectoryIterator) {
@@ -73,10 +73,10 @@ class IteratorBuildAction private constructor(
     companion object IteratorBuildModificationFactory {
         fun createIteratorBuildModification(
                 modificationArguments: List<String>,
-                pdfWriterOptions: PdfWriterOptions
+                imageToPdfOptions: ImageToPdfOptions
         ): IteratorBuildAction {
             if (isFormedCorrectly(modificationArguments))
-                return IteratorBuildAction(modificationArguments, pdfWriterOptions)
+                return IteratorBuildAction(modificationArguments, imageToPdfOptions)
             else throw MalformedPdfModificationException(modificationArguments)
         }
 
@@ -98,5 +98,5 @@ class IteratorBuildAction private constructor(
     }
 
     override fun toString() =
-            "build version: ${pdfWriterOptions.pdfVersion} compression: $compressionString"
+            "build version: ${imageToPdfOptions.pdfOptions.pdfVersion} compression: $compressionString"
 }

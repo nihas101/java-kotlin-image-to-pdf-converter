@@ -4,7 +4,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
 import java.io.File
 
-class ImageDirectoriesIterator private constructor(private val directory: File) : DirectoryIterator {
+class ImageDirectoriesIterator private constructor(private val directory: File) : DirectoryIterator() {
     private var directories: MutableList<File> = setupDirectories(directory)
     private var currentIndex = 0
 

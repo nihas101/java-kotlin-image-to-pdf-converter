@@ -3,7 +3,7 @@ package de.nihas101.imageToPdfConverter.gui.controller;
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.MainWindow;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
-import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions;
+import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
@@ -69,9 +69,9 @@ public class MainWindowController extends FileListViewController {
     private ImageMap imageMap;
 
     /**
-     * The selected {@link PdfWriterOptions} for building the PDF(s)
+     * The selected {@link ImageToPdfOptions} for building the PDF(s)
      */
-    public PdfWriterOptions pdfWriterOptions;
+    public ImageToPdfOptions imageToPdfOptions;
 
     private ListChangeListenerFactory listChangeListenerFactory;
 
@@ -93,7 +93,8 @@ public class MainWindowController extends FileListViewController {
 
         imageMap = createImageMap();
 
-        pdfWriterOptions = PdfWriterOptions.OptionsFactory.createOptions(
+        imageToPdfOptions = ImageToPdfOptions.OptionsFactory.createOptions(
+                false,
                 false,
                 DEFAULT_COMPRESSION,
                 PDF_1_7,
@@ -149,7 +150,7 @@ public class MainWindowController extends FileListViewController {
      * @param actionEvent The delivered {@link Event}
      */
     public void chooseDirectory(ActionEvent actionEvent) {
-        if (pdfWriterOptions.getMultipleDirectories())
+        if (imageToPdfOptions.getIteratorOptions().getMultipleDirectories())
             directoryChooser.setTitle("Choose a directory of directories to turn into a PDF");
         else
             directoryChooser.setTitle("Choose a directory or sourceFile to turn into a PDF");
@@ -168,7 +169,7 @@ public class MainWindowController extends FileListViewController {
     private void setupIterator() {
         disableInput(true);
         notifyUser("Loading files...", BLACK);
-        mainWindow.setupIterator(chosenDirectory, pdfWriterOptions.getMultipleDirectories());
+        mainWindow.setupIterator(chosenDirectory, imageToPdfOptions);
         runLater(() -> setupListView(mainWindow.getDirectoryIterator()));
         disableInput(false);
     }
@@ -218,7 +219,7 @@ public class MainWindowController extends FileListViewController {
 
         notifyUser("Building PDF...", BLACK);
 
-        if (pdfWriterOptions.getMultipleDirectories()) buildMultiplePdf();
+        if (imageToPdfOptions.getIteratorOptions().getMultipleDirectories()) buildMultiplePdf();
         else buildSinglePdf();
 
         actionEvent.consume();
@@ -250,7 +251,7 @@ public class MainWindowController extends FileListViewController {
             new Thread(() -> {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
-                        pdfWriterOptions,
+                        imageToPdfOptions,
                         progress -> buildProgressBar.setProgress(progress)
                 );
                 notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
@@ -273,7 +274,7 @@ public class MainWindowController extends FileListViewController {
             new Thread(() -> {
                 ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
-                        pdfWriterOptions,
+                        imageToPdfOptions,
                         progress -> buildProgressBar.setProgress(progress)
                 );
                 notifyUser("Finished building: " + mainWindow.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
@@ -334,7 +335,7 @@ public class MainWindowController extends FileListViewController {
 
     public void openOptionsMenu(ActionEvent actionEvent) {
         try {
-            pdfWriterOptions = createOptionsMenu(pdfWriterOptions).setOptions();
+            imageToPdfOptions = createOptionsMenu(imageToPdfOptions).setOptions();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -342,10 +343,13 @@ public class MainWindowController extends FileListViewController {
     }
 
     private void setSaveLocation(File saveLocation) {
-        pdfWriterOptions = pdfWriterOptions.copy(
-                pdfWriterOptions.getMultipleDirectories(),
-                pdfWriterOptions.getCompressionLevel(),
-                pdfWriterOptions.getPdfVersion(),
-                saveLocation);
+        imageToPdfOptions = imageToPdfOptions.copy(
+                imageToPdfOptions.component1(),
+                imageToPdfOptions.component2().copy(
+                        imageToPdfOptions.component2().getCompressionLevel(),
+                        imageToPdfOptions.component2().getPdfVersion(),
+                        saveLocation
+                )
+        );
     }
 }

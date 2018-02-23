@@ -105,7 +105,7 @@ class PdfBuilderCommandLineInterface private constructor(
     }
 
     private fun build(progressUpdater: ProgressUpdater) {
-        if (pdfBuildInformation.getPdfWriterOptions().multipleDirectories) {
+        if (pdfBuildInformation.getPdfWriterOptions().iteratorOptions.multipleDirectories) {
             ImageDirectoriesPdfBuilder.createImageDirectoriesPdfBuilder().build(
                     pdfBuildInformation.getDirectoryIterator(),
                     pdfBuildInformation.getPdfWriterOptions(),

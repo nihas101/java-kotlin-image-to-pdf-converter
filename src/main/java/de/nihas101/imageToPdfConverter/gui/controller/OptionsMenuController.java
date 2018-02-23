@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.gui.controller;
 
 import com.itextpdf.kernel.pdf.PdfVersion;
-import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions;
+import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -18,21 +18,19 @@ public class OptionsMenuController {
     public CheckBox multipleDirectoriesCheckBox;
     public ToggleGroup pdfCompressionToggle;
     public ToggleGroup pdfVersionToggle;
-    private PdfWriterOptions pdfWriterOptions;
+    private ImageToPdfOptions imageToPdfOptions;
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
-        pdfWriterOptions = pdfWriterOptions.copy(
-                multipleDirectoriesCheckBox.isSelected(),
-                pdfWriterOptions.getCompressionLevel(),
-                pdfWriterOptions.getPdfVersion(),
-                pdfWriterOptions.getSaveLocation()
+        imageToPdfOptions = imageToPdfOptions.copy(
+                imageToPdfOptions.component1(), /* TODO! Allow for zip files */
+                imageToPdfOptions.component2()
         );
         actionEvent.consume();
     }
 
-    public void setup(PdfWriterOptions pdfWriterOptions) {
-        this.pdfWriterOptions = pdfWriterOptions;
-        multipleDirectoriesCheckBox.setSelected(pdfWriterOptions.getMultipleDirectories());
+    public void setup(ImageToPdfOptions imageToPdfOptions) {
+        this.imageToPdfOptions = imageToPdfOptions;
+        multipleDirectoriesCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getMultipleDirectories());
         setupPdfVersionUserData(pdfVersionToggle);
         setSelectedPdfVersion(pdfVersionToggle);
         setupCompressionUserData(pdfCompressionToggle);
@@ -54,7 +52,7 @@ public class OptionsMenuController {
     }
 
     private void setSelectedPdfVersion(ToggleGroup pdfVersionToggle) {
-        PdfVersion pdfVersion = pdfWriterOptions.getPdfVersion();
+        PdfVersion pdfVersion = imageToPdfOptions.getPdfOptions().getPdfVersion();
         int index = pdfVersionToIndex(pdfVersion);
 
         pdfVersionToggle.getToggles().get(index).setSelected(true);
@@ -82,7 +80,7 @@ public class OptionsMenuController {
     }
 
     private void setSelectedCompression(ToggleGroup pdfCompressionToggle) {
-        switch (pdfWriterOptions.getCompressionLevel()) {
+        switch (imageToPdfOptions.getPdfOptions().getCompressionLevel()) {
             case NO_COMPRESSION:
                 pdfCompressionToggle.getToggles().get(0).setSelected(true);
                 break;
@@ -98,26 +96,30 @@ public class OptionsMenuController {
         }
     }
 
-    public PdfWriterOptions getPdfWriterOptions() {
-        return pdfWriterOptions;
+    public ImageToPdfOptions getImageToPdfOptions() {
+        return imageToPdfOptions;
     }
 
     public void setPdfVersion(ActionEvent actionEvent) {
-        pdfWriterOptions = pdfWriterOptions.copy(
-                pdfWriterOptions.getMultipleDirectories(),
-                pdfWriterOptions.getCompressionLevel(),
-                (PdfVersion) pdfVersionToggle.getSelectedToggle().getUserData(),
-                pdfWriterOptions.getSaveLocation()
+        imageToPdfOptions = imageToPdfOptions.copy(
+                imageToPdfOptions.component1(),
+                imageToPdfOptions.component2().copy(
+                        imageToPdfOptions.component2().getCompressionLevel(),
+                        (PdfVersion) pdfVersionToggle.getSelectedToggle().getUserData(),
+                        imageToPdfOptions.component2().getSaveLocation()
+                )
         );
         actionEvent.consume();
     }
 
     public void setCompression(ActionEvent actionEvent) {
-        pdfWriterOptions = pdfWriterOptions.copy(
-                pdfWriterOptions.getMultipleDirectories(),
-                (Integer) pdfCompressionToggle.getSelectedToggle().getUserData(),
-                pdfWriterOptions.getPdfVersion(),
-                pdfWriterOptions.getSaveLocation()
+        imageToPdfOptions = imageToPdfOptions.copy(
+                imageToPdfOptions.component1(),
+                imageToPdfOptions.component2().copy(
+                        (Integer) pdfCompressionToggle.getSelectedToggle().getUserData(),
+                        imageToPdfOptions.component2().getPdfVersion(),
+                        imageToPdfOptions.component2().getSaveLocation()
+                )
         );
         actionEvent.consume();
     }

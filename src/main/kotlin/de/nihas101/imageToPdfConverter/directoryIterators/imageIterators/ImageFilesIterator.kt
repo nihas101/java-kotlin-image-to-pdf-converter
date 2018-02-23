@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
-class ImageFilesIterator private constructor(private val directory: File) : DirectoryIterator {
+class ImageFilesIterator private constructor(private val directory: File) : DirectoryIterator() {
     private var files: MutableList<File> =
             if (directory.isDirectory) directory.listFiles().filter { file -> isImage(file) }.toMutableList()
             else List(1, { _ -> directory }).filter { file -> isImage(file) }.toMutableList()

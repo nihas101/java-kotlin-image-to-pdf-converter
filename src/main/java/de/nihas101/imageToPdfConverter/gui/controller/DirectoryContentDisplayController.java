@@ -3,7 +3,7 @@ package de.nihas101.imageToPdfConverter.gui.controller;
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
-import de.nihas101.imageToPdfConverter.pdf.PdfWriterOptions;
+import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import javafx.application.Application;
@@ -39,7 +39,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
     private DirectoryIterator directoryIterator;
     private Stage directoryContentDisplayStage;
     private MainWindowController mainWindowController;
-    private PdfWriterOptions pdfWriterOptions;
+    private ImageToPdfOptions imageToPdfOptions;
     private int directoryIteratorIndex;
 
     /**
@@ -52,11 +52,9 @@ public class DirectoryContentDisplayController extends FileListViewController {
         this.directoryIteratorIndex = directoryIteratorIndex;
         this.directoryContentDisplayStage = directoryContentDisplayStage;
         this.mainWindowController = mainWindowController;
-        this.pdfWriterOptions = mainWindowController.pdfWriterOptions.copy(
-                pdfWriterOptions.component1(),
-                pdfWriterOptions.component2(),
-                pdfWriterOptions.component3(),
-                pdfWriterOptions.component4()
+        this.imageToPdfOptions = mainWindowController.imageToPdfOptions.copy(
+                imageToPdfOptions.component1(),
+                imageToPdfOptions.component2()
         );
 
         new Thread(() -> {
@@ -124,7 +122,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
             new Thread(() -> {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         directoryIterator,
-                        mainWindowController.pdfWriterOptions,
+                        mainWindowController.imageToPdfOptions,
                         progress -> mainWindowController.buildProgressBar.setProgress(progress)
                 );
                 mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
@@ -138,11 +136,13 @@ public class DirectoryContentDisplayController extends FileListViewController {
     }
 
     private void setSaveLocation(File saveLocation) {
-        pdfWriterOptions = pdfWriterOptions.copy(
-                pdfWriterOptions.getMultipleDirectories(),
-                pdfWriterOptions.getCompressionLevel(),
-                pdfWriterOptions.getPdfVersion(),
-                saveLocation
+        imageToPdfOptions = imageToPdfOptions.copy(
+                imageToPdfOptions.component1(),
+                imageToPdfOptions.component2().copy(
+                        imageToPdfOptions.component2().getCompressionLevel(),
+                        imageToPdfOptions.component2().getPdfVersion(),
+                        saveLocation
+                )
         );
     }
 }
