@@ -18,6 +18,7 @@ public class OptionsMenuController {
     public CheckBox multipleDirectoriesCheckBox;
     public ToggleGroup pdfCompressionToggle;
     public ToggleGroup pdfVersionToggle;
+    public CheckBox zipFilesCheckBox;
     private ImageToPdfOptions imageToPdfOptions;
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
@@ -120,6 +121,17 @@ public class OptionsMenuController {
                         imageToPdfOptions.component2().getPdfVersion(),
                         imageToPdfOptions.component2().getSaveLocation()
                 )
+        );
+        actionEvent.consume();
+    }
+
+    public void setZipFilesOption(ActionEvent actionEvent) {
+        imageToPdfOptions = imageToPdfOptions.copy(
+                imageToPdfOptions.component1().copy(
+                        imageToPdfOptions.component1().getMultipleDirectories(),
+                        zipFilesCheckBox.isSelected()
+                ),
+                imageToPdfOptions.component2()
         );
         actionEvent.consume();
     }
