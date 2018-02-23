@@ -5,6 +5,8 @@ import com.itextpdf.layout.element.Image
 import de.nihas101.imageToPdfConverter.pdf.ImagePdf
 import de.nihas101.imageToPdfConverter.pdf.ImagePdf.ImagePdfFactory.createPdf
 import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions.OptionsFactory.createOptions
+import de.nihas101.imageToPdfConverter.pdf.IteratorOptions
+import de.nihas101.imageToPdfConverter.pdf.PdfOptions
 import junit.framework.TestCase.fail
 import org.junit.Test
 import java.io.File
@@ -14,7 +16,11 @@ class ImagePdfTest {
     @Test
     fun imagePdfTest1() {
         val testOutputStream = TestOutputStream(StringBuilder())
-        val imagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/test1.pdf")), testOutputStream)
+        val options = createOptions(
+                IteratorOptions(false),
+                PdfOptions(saveLocation = File("src/test/resources/test1.pdf"))
+        )
+        val imagePdf = createPdf(options, testOutputStream)
 
         imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/3.png")))
         imagePdf.close()
@@ -25,7 +31,11 @@ class ImagePdfTest {
     @Test
     fun imagePdfTest2() {
         val testOutputStream = TestOutputStream(StringBuilder())
-        val imagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/test2.pdf")), testOutputStream)
+        val options = createOptions(
+                IteratorOptions(false),
+                PdfOptions(saveLocation = File("src/test/resources/test2.pdf"))
+        )
+        val imagePdf = createPdf(options, testOutputStream)
 
         imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/2.png")))
         imagePdf.close()
@@ -36,7 +46,11 @@ class ImagePdfTest {
     @Test
     fun imagePdfTest3() {
         val testOutputStream = TestOutputStream(StringBuilder())
-        val imagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/test3.pdf")), testOutputStream)
+        val options = createOptions(
+                IteratorOptions(false),
+                PdfOptions(saveLocation = File("src/test/resources/test3.pdf"))
+        )
+        val imagePdf = createPdf(options, testOutputStream)
 
         imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/1.jpg")))
         imagePdf.close()
@@ -47,7 +61,11 @@ class ImagePdfTest {
     @Test
     fun unicodeTest() {
         val testOutputStream = TestOutputStream(StringBuilder())
-        val imagePdf: ImagePdf = createPdf(createOptions(false, saveLocation = File("src/test/resources/の.png")), testOutputStream)
+        val options = createOptions(
+                IteratorOptions(false),
+                PdfOptions(saveLocation = File("src/test/resources/の.png"))
+        )
+        val imagePdf: ImagePdf = createPdf(options, testOutputStream)
 
         imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/1.jpg")))
         imagePdf.close()

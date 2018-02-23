@@ -4,6 +4,8 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.MainWindow;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions;
+import de.nihas101.imageToPdfConverter.pdf.IteratorOptions;
+import de.nihas101.imageToPdfConverter.pdf.PdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
@@ -29,8 +31,6 @@ import kotlin.Unit;
 import java.io.File;
 import java.util.List;
 
-import static com.itextpdf.kernel.pdf.CompressionConstants.DEFAULT_COMPRESSION;
-import static com.itextpdf.kernel.pdf.PdfVersion.PDF_1_7;
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
 import static de.nihas101.imageToPdfConverter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
@@ -89,11 +89,8 @@ public class MainWindowController extends FileListViewController {
         imageMap = createImageMap();
 
         imageToPdfOptions = ImageToPdfOptions.OptionsFactory.createOptions(
-                false,
-                false,
-                DEFAULT_COMPRESSION,
-                PDF_1_7,
-                null
+                new IteratorOptions(),
+                new PdfOptions()
         );
 
         listChangeListenerFactory = ListChangeListenerFactory.ListChangeListenerFactoryFactory
@@ -147,7 +144,7 @@ public class MainWindowController extends FileListViewController {
     public void chooseDirectory(ActionEvent actionEvent) {
         File givenDirectory;
 
-        if (imageToPdfOptions.getIteratorOptions().getZipFiles())
+        if (imageToPdfOptions.getIteratorOptions().getZipFiles() && !imageToPdfOptions.getIteratorOptions().getMultipleDirectories())
             givenDirectory = createZipFileChooser().showOpenDialog(directoryButton.getScene().getWindow());
         else
             givenDirectory = createDirectoryChooser(imageToPdfOptions.getIteratorOptions()).showDialog(directoryButton.getScene().getWindow());

@@ -30,14 +30,14 @@ abstract class DirectoryIterator {
         private fun createSingleDirectoryIterator(directory: File, iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.zipFiles) {
                 false -> createImageFilesIterator(directory)
-                true -> createZipFileIterator(directory, true) /* TODO: Delete on exit set by user! */
+                true -> createZipFileIterator(directory, iteratorOptions.deleteOnExit)
             }
         }
 
         private fun createMultipleDirectoriesIterator(directory: File, iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.zipFiles) {
                 false -> createImageDirectoriesIterator(directory)
-                true -> ZipFilesIterator.createZipFilesIterator(directory, true) /* TODO: Delete on exit set by user! */
+                true -> ZipFilesIterator.createZipFilesIterator(directory, iteratorOptions.deleteOnExit)
             }
         }
     }

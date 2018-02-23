@@ -9,7 +9,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import javax.imageio.ImageIO
 
-class ImageUnzipper private constructor(private val zipInputStream: ZipInputStream) {
+class ImageUnZipper private constructor(private val zipInputStream: ZipInputStream) {
     fun unzip(unzipInto: File, deleteOnExit: Boolean = false) {
         unzip({ zipEntry -> createFile("${unzipInto.absolutePath}/${zipEntry.name}", deleteOnExit) })
     }
@@ -44,9 +44,9 @@ class ImageUnzipper private constructor(private val zipInputStream: ZipInputStre
     }
 
     companion object ZipFileIteratorFactory {
-        fun createImageUnzipper(file: File): ImageUnzipper {
-            if (canUnzip(file)) // TODO: Check which extensions are supported
-                return ImageUnzipper(createZipInputStream(file))
+        fun createImageUnZipper(file: File): ImageUnZipper {
+            if (canUnzip(file))
+                return ImageUnZipper(createZipInputStream(file))
             else throw ExtensionNotSupportedException(file.extension)
         }
 

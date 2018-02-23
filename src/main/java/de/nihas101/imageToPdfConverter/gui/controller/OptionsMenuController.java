@@ -19,13 +19,15 @@ public class OptionsMenuController {
     public ToggleGroup pdfCompressionToggle;
     public ToggleGroup pdfVersionToggle;
     public CheckBox zipFilesCheckBox;
+    public CheckBox deleteOnExitCheckBox;
     private ImageToPdfOptions imageToPdfOptions;
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
         imageToPdfOptions = imageToPdfOptions.copy(
                 imageToPdfOptions.component1().copy(
                         multipleDirectoriesCheckBox.isSelected(),
-                        imageToPdfOptions.component1().getZipFiles()
+                        imageToPdfOptions.component1().component2(),
+                        imageToPdfOptions.component1().component3()
                 ),
                 imageToPdfOptions.component2()
         );
@@ -34,8 +36,11 @@ public class OptionsMenuController {
 
     public void setup(ImageToPdfOptions imageToPdfOptions) {
         this.imageToPdfOptions = imageToPdfOptions;
+
         multipleDirectoriesCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getMultipleDirectories());
         zipFilesCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getZipFiles());
+        deleteOnExitCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getDeleteOnExit());
+
         setupPdfVersionUserData(pdfVersionToggle);
         setSelectedPdfVersion(pdfVersionToggle);
         setupCompressionUserData(pdfCompressionToggle);
@@ -133,7 +138,20 @@ public class OptionsMenuController {
         imageToPdfOptions = imageToPdfOptions.copy(
                 imageToPdfOptions.component1().copy(
                         imageToPdfOptions.component1().getMultipleDirectories(),
-                        zipFilesCheckBox.isSelected()
+                        zipFilesCheckBox.isSelected(),
+                        imageToPdfOptions.component1().component3()
+                ),
+                imageToPdfOptions.component2()
+        );
+        actionEvent.consume();
+    }
+
+    public void setDeleteOnExitOption(ActionEvent actionEvent) {
+        imageToPdfOptions = imageToPdfOptions.copy(
+                imageToPdfOptions.component1().copy(
+                        imageToPdfOptions.component1().getMultipleDirectories(),
+                        imageToPdfOptions.component1().component2(),
+                        deleteOnExitCheckBox.isSelected()
                 ),
                 imageToPdfOptions.component2()
         );

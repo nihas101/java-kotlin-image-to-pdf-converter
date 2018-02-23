@@ -4,13 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-          prefHeight="100.0" prefWidth="220.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8.0.121"
+          prefHeight="125.0" prefWidth="220.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8.0.121"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="de.nihas101.imageToPdfConverter.gui.controller.OptionsMenuController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
     </columnConstraints>
     <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
@@ -33,7 +34,7 @@
     </CheckBox>
     <CheckBox fx:id="zipFilesCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
               mnemonicParsing="false" onAction="#setZipFilesOption" stylesheets="@../main.css"
-              text="Build PDF(s) from zip-file(s)" GridPane.rowIndex="1">
+              text="Build PDF(s) from ZIP(s) files" GridPane.rowIndex="1">
         <tooltip>
             <Tooltip
                     text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories"/>
@@ -44,7 +45,7 @@
     </CheckBox>
     <MenuButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                 stylesheets="@../main.css" text="PDF version" textAlignment="CENTER" GridPane.hgrow="ALWAYS"
-                GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+                GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
         <items>
             <RadioMenuItem mnemonicParsing="false" onAction="#setPdfVersion" text="1.0">
                 <toggleGroup>
@@ -71,7 +72,7 @@
     </MenuButton>
     <MenuButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                 stylesheets="@../main.css" text="Compression" textAlignment="CENTER" GridPane.hgrow="ALWAYS"
-                GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+                GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
         <items>
             <RadioMenuItem mnemonicParsing="false" onAction="#setCompression" text="No compression">
                 <toggleGroup>
@@ -86,4 +87,15 @@
                            toggleGroup="$pdfCompressionToggle"/>
         </items>
     </MenuButton>
+    <CheckBox fx:id="deleteOnExitCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              mnemonicParsing="false" onAction="#setDeleteOnExitOption" stylesheets="@../main.css"
+              text="Delete unzipped files on exit" GridPane.rowIndex="2">
+        <tooltip>
+            <Tooltip
+                    text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories"/>
+        </tooltip>
+        <padding>
+            <Insets bottom="10.0" left="5.0"/>
+        </padding>
+    </CheckBox>
 </GridPane>

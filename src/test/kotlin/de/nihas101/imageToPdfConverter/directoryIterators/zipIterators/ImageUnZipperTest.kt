@@ -4,7 +4,7 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.io.File
 
-class ImageUnzipperTest {
+class ImageUnZipperTest {
 
     @Test
     fun unzip() {
@@ -12,7 +12,7 @@ class ImageUnzipperTest {
         unzipInto.mkdir()
         unzipInto.deleteOnExit()
 
-        ImageUnzipper.createImageUnzipper(File("src/test/resources/zip/images.zip")).unzip(unzipInto, true)
+        ImageUnZipper.createImageUnZipper(File("src/test/resources/zip/images.zip")).unzip(unzipInto, true)
 
         assertEquals(4, unzipInto.listFiles().size)
     }

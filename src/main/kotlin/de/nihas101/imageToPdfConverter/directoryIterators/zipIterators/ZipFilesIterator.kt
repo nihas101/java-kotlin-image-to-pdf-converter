@@ -3,7 +3,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnzipper.ZipFileIteratorFactory.createImageUnzipper
+import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.createImageUnZipper
 import java.io.File
 
 class ZipFilesIterator(directory: File, deleteOnExit: Boolean) : DirectoryIterator() {
@@ -12,7 +12,7 @@ class ZipFilesIterator(directory: File, deleteOnExit: Boolean) : DirectoryIterat
     init {
         directory.listFiles().forEach { file ->
             val unzipInto = makeUnzipDirectory(file, deleteOnExit)
-            if (ImageUnzipper.canUnzip(file)) createImageUnzipper(file).unzip(unzipInto, true)
+            if (ImageUnZipper.canUnzip(file)) createImageUnZipper(file).unzip(unzipInto, true)
         }
         imageDirectoriesIterator = createImageDirectoriesIterator(directory)
     }
