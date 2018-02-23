@@ -8,6 +8,10 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 class Unzipper private constructor(private val zipInputStream: ZipInputStream) {
+    fun unzip(filePath: String, deleteOnExit: Boolean): MutableList<File> {
+        return unzip({ fileName -> createFileOutputStream("$filePath/$fileName", deleteOnExit) })
+    }
+
     fun unzip(outputStreamFactory: (String) -> OutputStream): MutableList<File> {
         zipInputStream.use { _ -> return unzipFile(outputStreamFactory) }
     }
