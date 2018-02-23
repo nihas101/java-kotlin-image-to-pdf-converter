@@ -9,6 +9,7 @@ This is a program for converting images to PDFs with the use of [iText 7](https:
 
 - Build a single PDF from a directory of images [See here](https://github.com/nihas101/java-kotlin-images-to-pdf-converter/blob/master/README.md#how-to-build-a-single-pdf)
 - Build multiple PDFs from multiple subdirectories of images at once [See here](https://github.com/nihas101/java-kotlin-images-to-pdf-converter/blob/master/README.md#how-to-build-multiple-pdfs-at-once)
+- Build PDFs from one or multiple ZIP files of images
 - Change the order of the images in the PDF via drag-and-drop and remove unwanted ones
 
 ## Requirements
