@@ -24,7 +24,7 @@ class ZipFileIterator(private val file: File, deleteOnExit: Boolean) : Directory
         return unzipDirectory
     }
 
-    /* TODO: Add this as possibility for user */
+    /* TODO: Add deleteOnExit as possibility for user */
 
     override fun nextFile() = imageFilesIterator.nextFile()
 
