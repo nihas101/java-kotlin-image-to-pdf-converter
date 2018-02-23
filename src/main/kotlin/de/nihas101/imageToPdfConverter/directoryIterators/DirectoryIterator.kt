@@ -3,6 +3,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFileIterator.ZipFileIteratorFactory.createZipFileIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFilesIterator
 import de.nihas101.imageToPdfConverter.pdf.IteratorOptions
 import java.io.File
 
@@ -29,14 +30,14 @@ abstract class DirectoryIterator {
         private fun createSingleDirectoryIterator(directory: File, iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.zipFiles) {
                 false -> createImageFilesIterator(directory)
-                true -> createZipFileIterator(directory, true)
+                true -> createZipFileIterator(directory, true) /* TODO: Delete on exit set by user! */
             }
         }
 
         private fun createMultipleDirectoriesIterator(directory: File, iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.zipFiles) {
                 false -> createImageDirectoriesIterator(directory)
-                true -> createImageDirectoriesIterator(directory) /* TODO */
+                true -> ZipFilesIterator.createZipFilesIterator(directory, true) /* TODO: Delete on exit set by user! */
             }
         }
     }

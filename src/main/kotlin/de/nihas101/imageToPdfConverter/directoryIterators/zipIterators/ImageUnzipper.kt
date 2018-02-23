@@ -43,7 +43,7 @@ class ImageUnzipper private constructor(private val zipInputStream: ZipInputStre
     }
 
     companion object ZipFileIteratorFactory {
-        fun createUnzipper(file: File): ImageUnzipper {
+        fun createImageUnzipper(file: File): ImageUnzipper {
             if (file.extension == "zip") // TODO: Check which extensions are supported
                 return ImageUnzipper(createZipInputStream(file))
             else throw ExtensionNotSupportedException(file.extension)

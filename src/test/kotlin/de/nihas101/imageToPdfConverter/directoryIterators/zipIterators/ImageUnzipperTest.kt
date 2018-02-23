@@ -12,7 +12,7 @@ class ImageUnzipperTest {
         unzipInto.mkdir()
         unzipInto.deleteOnExit()
 
-        ImageUnzipper.createUnzipper(File("src/test/resources/zip/images.zip")).unzip(unzipInto, true)
+        ImageUnzipper.createImageUnzipper(File("src/test/resources/zip/images.zip")).unzip(unzipInto, true)
 
         assertEquals(4, unzipInto.listFiles().size)
     }

@@ -11,8 +11,6 @@ import java.io.File
 import java.io.OutputStream
 
 class ImagePdfTest {
-    /* TODO: Add more tests! */
-
     @Test
     fun imagePdfTest1() {
         val testOutputStream = TestOutputStream(StringBuilder())
