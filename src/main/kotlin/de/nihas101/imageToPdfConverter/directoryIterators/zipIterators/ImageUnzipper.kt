@@ -10,20 +10,20 @@ import java.util.zip.ZipInputStream
 import javax.imageio.ImageIO
 
 class ImageUnzipper private constructor(private val zipInputStream: ZipInputStream) {
-    fun unzip(unzipInto: File, deleteOnExit: Boolean) {
+    fun unzip(unzipInto: File, deleteOnExit: Boolean = false) {
         unzip({ zipEntry -> createFile("${unzipInto.absolutePath}/${zipEntry.name}", deleteOnExit) })
     }
 
-    fun unzip(fileFactory: (ZipEntry) -> File) {
-        zipInputStream.use { _ -> unzipFile(fileFactory) }
+    private fun unzip(fileFactory: (ZipEntry) -> File) {
+        zipInputStream.use { _ -> unzipImages(fileFactory) }
     }
 
-    private fun unzipFile(fileFactory: (ZipEntry) -> File) {
+    private fun unzipImages(fileFactory: (ZipEntry) -> File) {
         var zipEntry = zipInputStream.getNextEntry()
 
         while (zipEntry != null) {
             try {
-                unzipEntry(zipEntry, fileFactory)
+                unzipImage(zipEntry, fileFactory)
             } catch (exception: FileIsDirectoryException) {
                 /* SKIP ENTRY */
             }
@@ -32,10 +32,9 @@ class ImageUnzipper private constructor(private val zipInputStream: ZipInputStre
         }
     }
 
-    private fun unzipEntry(zipEntry: ZipEntry, fileFactory: (ZipEntry) -> File) {
+    private fun unzipImage(zipEntry: ZipEntry, fileFactory: (ZipEntry) -> File) {
         val file: File = fileFactory(zipEntry)
         val bufferedImage = ImageIO.read(zipInputStream)
-
         ImageIO.write(bufferedImage, extractExtension(zipEntry), file)
     }
 
