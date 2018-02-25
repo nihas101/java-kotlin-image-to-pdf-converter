@@ -4,7 +4,7 @@ import com.itextpdf.kernel.pdf.CompressionConstants.*
 import com.itextpdf.kernel.pdf.PdfVersion.*
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
-import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 
 class IteratorBuildAction private constructor(
         private val modificationArguments: List<String>,
@@ -44,7 +44,7 @@ class IteratorBuildAction private constructor(
             }
 
         imageToPdfOptions =
-                imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.pdfOptions.copy(compressionLevel = compressionLevel))
+                imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.getPdfOptions().copy(compressionLevel = compressionLevel))
     }
 
     private fun parseVersion(versionArg: String) {
@@ -65,7 +65,7 @@ class IteratorBuildAction private constructor(
             }
 
         imageToPdfOptions =
-                imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.pdfOptions.copy(pdfVersion = pdfVersion))
+                imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.getPdfOptions().copy(pdfVersion = pdfVersion))
     }
 
     override fun execute(directoryIterator: DirectoryIterator) {
@@ -100,5 +100,5 @@ class IteratorBuildAction private constructor(
     }
 
     override fun toString() =
-            "build version: ${imageToPdfOptions.pdfOptions.pdfVersion} compression: $compressionString"
+            "build version: ${imageToPdfOptions.getPdfOptions().pdfVersion} compression: $compressionString"
 }

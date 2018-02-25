@@ -4,7 +4,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDi
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFileIterator.ZipFileIteratorFactory.createZipFileIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFilesIterator
-import de.nihas101.imageToPdfConverter.pdf.IteratorOptions
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import java.io.File
 
 abstract class DirectoryIterator {

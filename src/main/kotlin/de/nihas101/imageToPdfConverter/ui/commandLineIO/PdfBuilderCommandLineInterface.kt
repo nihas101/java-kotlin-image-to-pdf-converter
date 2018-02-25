@@ -1,9 +1,9 @@
 package de.nihas101.imageToPdfConverter.ui.commandLineIO
 
 import de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction.IteratorBuildAction
-import de.nihas101.imageToPdfConverter.pdf.PdfBuildInformation
 import de.nihas101.imageToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfBuildInformation
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 import java.nio.file.InvalidPathException
@@ -107,7 +107,7 @@ class PdfBuilderCommandLineInterface private constructor(
     }
 
     private fun build(progressUpdater: ProgressUpdater) {
-        if (pdfBuildInformation.getPdfWriterOptions().iteratorOptions.multipleDirectories) {
+        if (pdfBuildInformation.getPdfWriterOptions().getIteratorOptions().multipleDirectories) {
             ImageDirectoriesPdfBuilder.createImageDirectoriesPdfBuilder().build(
                     pdfBuildInformation.getDirectoryIterator(),
                     pdfBuildInformation.getPdfWriterOptions(),

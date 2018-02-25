@@ -2,8 +2,8 @@ package de.nihas101.imageToPdfConverter.pdf.builders
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
-import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.nio.file.Paths
 
@@ -27,12 +27,13 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
     private fun buildNextPDF(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions) {
         if (directoryIterator.numberOfFiles() != 0) {
             val file = Paths.get(
-                    imageToPdfOptions.pdfOptions.saveLocation!!.absolutePath + "/" + directoryIterator.getParentDirectory().name + ".pdf"
+                    imageToPdfOptions.getPdfOptions().saveLocation!!.absolutePath + "/" + directoryIterator.getParentDirectory().name + ".pdf"
             ).toFile()
 
-            val pdfWriterOptionsInstance =
-                    imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.pdfOptions.copy(saveLocation = file))
-            createImagePdfBuilder().build(directoryIterator, pdfWriterOptionsInstance)
+            val nextImageToPdfOptions = imageToPdfOptions.copy()
+            nextImageToPdfOptions.setSaveLocation(file)
+
+            createImagePdfBuilder().build(directoryIterator, nextImageToPdfOptions)
         }
     }
 }

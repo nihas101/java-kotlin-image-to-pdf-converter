@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.util
 
 
-import de.nihas101.imageToPdfConverter.pdf.IteratorOptions
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import javafx.stage.DirectoryChooser
 import javafx.stage.FileChooser
 

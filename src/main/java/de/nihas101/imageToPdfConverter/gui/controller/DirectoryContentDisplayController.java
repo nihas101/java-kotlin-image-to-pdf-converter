@@ -3,8 +3,8 @@ package de.nihas101.imageToPdfConverter.gui.controller;
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
-import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.MainWindowProgressUpdater;
 import javafx.application.Application;
@@ -53,10 +53,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
         this.directoryIteratorIndex = directoryIteratorIndex;
         this.directoryContentDisplayStage = directoryContentDisplayStage;
         this.mainWindowController = mainWindowController;
-        this.imageToPdfOptions = mainWindowController.imageToPdfOptions.copy(
-                mainWindowController.imageToPdfOptions.component1(),
-                mainWindowController.imageToPdfOptions.component2()
-        );
+        this.imageToPdfOptions = mainWindowController.imageToPdfOptions.copyForJava();
 
         new Thread(() -> {
             ImageMap imageMap = createImageMap();
@@ -119,7 +116,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
         File saveFile = mainWindowController.saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
 
         if (saveFile != null) {
-            setSaveLocation(saveFile);
+            imageToPdfOptions.setSaveLocation(saveFile);
             new Thread(() -> {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         directoryIterator,
@@ -134,16 +131,5 @@ public class DirectoryContentDisplayController extends FileListViewController {
 
         mainWindowController.imageListView.getItems().remove(directoryIteratorIndex);
         directoryContentDisplayStage.close();
-    }
-
-    private void setSaveLocation(File saveLocation) {
-        imageToPdfOptions = imageToPdfOptions.copy(
-                imageToPdfOptions.component1(),
-                imageToPdfOptions.component2().copy(
-                        imageToPdfOptions.component2().getCompressionLevel(),
-                        imageToPdfOptions.component2().getPdfVersion(),
-                        saveLocation
-                )
-        );
     }
 }

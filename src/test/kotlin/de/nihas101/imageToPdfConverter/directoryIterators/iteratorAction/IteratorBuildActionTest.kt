@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction
 
 import de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction.IteratorAction.PdfModificationFactory.createIteratorAction
-import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

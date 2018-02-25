@@ -2,7 +2,7 @@ package de.nihas101.imageToPdfConverter.ui.commandLineIO
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction.IteratorAction
-import de.nihas101.imageToPdfConverter.pdf.PdfBuildInformation
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfBuildInformation
 import java.io.PrintStream
 
 class PdfBuilderCommandLineOutput private constructor(private val printStream: PrintStream) {
@@ -30,8 +30,14 @@ class PdfBuilderCommandLineOutput private constructor(private val printStream: P
     }
 
     fun printBuildInfo(pdfBuildInformation: PdfBuildInformation) =
-            if (pdfBuildInformation.getPdfWriterOptions().iteratorOptions.multipleDirectories) printStream.println("Building PDFs of version ${pdfBuildInformation.getPdfWriterOptions().pdfOptions.pdfVersion}")
-            else printStream.println("Building PDF of version ${pdfBuildInformation.getPdfWriterOptions().pdfOptions.pdfVersion}")
+            if (pdfBuildInformation.getPdfWriterOptions().getIteratorOptions().multipleDirectories)
+                printStream.println(
+                        "Building PDFs of version ${pdfBuildInformation.getPdfWriterOptions().getPdfOptions().pdfVersion}"
+                )
+            else
+                printStream.println(
+                        "Building PDF of version ${pdfBuildInformation.getPdfWriterOptions().getPdfOptions().pdfVersion}"
+                )
 
     fun printProgress() = printStream.print(".")
 

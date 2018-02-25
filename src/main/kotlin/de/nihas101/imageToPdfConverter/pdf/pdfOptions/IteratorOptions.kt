@@ -1,4 +1,4 @@
-package de.nihas101.imageToPdfConverter.pdf
+package de.nihas101.imageToPdfConverter.pdf.pdfOptions
 
 data class IteratorOptions(
         val multipleDirectories: Boolean = false,

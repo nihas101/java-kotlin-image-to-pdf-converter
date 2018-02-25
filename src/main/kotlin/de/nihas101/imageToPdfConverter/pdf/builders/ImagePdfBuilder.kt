@@ -4,7 +4,7 @@ import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.layout.element.Image
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.pdf.ImagePdf
-import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 

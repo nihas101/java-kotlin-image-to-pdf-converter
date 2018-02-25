@@ -1,4 +1,4 @@
-package de.nihas101.imageToPdfConverter.pdf
+package de.nihas101.imageToPdfConverter.pdf.pdfOptions
 
 import com.itextpdf.kernel.pdf.CompressionConstants
 import com.itextpdf.kernel.pdf.PdfVersion

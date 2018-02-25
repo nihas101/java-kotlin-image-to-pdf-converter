@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.gui.controller;
 
 import com.itextpdf.kernel.pdf.PdfVersion;
-import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions;
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -23,14 +23,7 @@ public class OptionsMenuController {
     private ImageToPdfOptions imageToPdfOptions;
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
-        imageToPdfOptions = imageToPdfOptions.copy(
-                imageToPdfOptions.component1().copy(
-                        multipleDirectoriesCheckBox.isSelected(),
-                        imageToPdfOptions.component1().component2(),
-                        imageToPdfOptions.component1().component3()
-                ),
-                imageToPdfOptions.component2()
-        );
+        imageToPdfOptions.setMultipleDirectories(multipleDirectoriesCheckBox.isSelected());
         actionEvent.consume();
     }
 
@@ -111,50 +104,22 @@ public class OptionsMenuController {
     }
 
     public void setPdfVersion(ActionEvent actionEvent) {
-        imageToPdfOptions = imageToPdfOptions.copy(
-                imageToPdfOptions.component1(),
-                imageToPdfOptions.component2().copy(
-                        imageToPdfOptions.component2().getCompressionLevel(),
-                        (PdfVersion) pdfVersionToggle.getSelectedToggle().getUserData(),
-                        imageToPdfOptions.component2().getSaveLocation()
-                )
-        );
+        imageToPdfOptions.setPdfVersion((PdfVersion) pdfVersionToggle.getSelectedToggle().getUserData());
         actionEvent.consume();
     }
 
     public void setCompression(ActionEvent actionEvent) {
-        imageToPdfOptions = imageToPdfOptions.copy(
-                imageToPdfOptions.component1(),
-                imageToPdfOptions.component2().copy(
-                        (Integer) pdfCompressionToggle.getSelectedToggle().getUserData(),
-                        imageToPdfOptions.component2().getPdfVersion(),
-                        imageToPdfOptions.component2().getSaveLocation()
-                )
-        );
+        imageToPdfOptions.setCompressionLevel((Integer) pdfCompressionToggle.getSelectedToggle().getUserData());
         actionEvent.consume();
     }
 
     public void setZipFilesOption(ActionEvent actionEvent) {
-        imageToPdfOptions = imageToPdfOptions.copy(
-                imageToPdfOptions.component1().copy(
-                        imageToPdfOptions.component1().getMultipleDirectories(),
-                        zipFilesCheckBox.isSelected(),
-                        imageToPdfOptions.component1().component3()
-                ),
-                imageToPdfOptions.component2()
-        );
+        imageToPdfOptions.setZipFiles(zipFilesCheckBox.isSelected());
         actionEvent.consume();
     }
 
     public void setDeleteOnExitOption(ActionEvent actionEvent) {
-        imageToPdfOptions = imageToPdfOptions.copy(
-                imageToPdfOptions.component1().copy(
-                        imageToPdfOptions.component1().getMultipleDirectories(),
-                        imageToPdfOptions.component1().component2(),
-                        deleteOnExitCheckBox.isSelected()
-                ),
-                imageToPdfOptions.component2()
-        );
+        imageToPdfOptions.setDeleteOnExit(deleteOnExitCheckBox.isSelected());
         actionEvent.consume();
     }
 }

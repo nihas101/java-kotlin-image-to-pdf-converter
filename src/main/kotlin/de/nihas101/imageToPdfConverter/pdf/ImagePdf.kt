@@ -8,6 +8,7 @@ import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.kernel.pdf.WriterProperties
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Image
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 import de.nihas101.imageToPdfConverter.util.Constants.NO_MARGIN
 import java.io.File
 import java.io.FileOutputStream
@@ -46,11 +47,11 @@ class ImagePdf internal constructor(
     companion object ImagePdfFactory {
         fun createPdf(
                 imageToPdfOptions: ImageToPdfOptions,
-                fileOutputStream: OutputStream = createFileOutputStream(imageToPdfOptions.pdfOptions.saveLocation!!)
+                fileOutputStream: OutputStream = createFileOutputStream(imageToPdfOptions.getPdfOptions().saveLocation!!)
         ): ImagePdf {
             val writerProperties = WriterProperties()
-            writerProperties.setPdfVersion(imageToPdfOptions.pdfOptions.pdfVersion)
-            writerProperties.setCompressionLevel(imageToPdfOptions.pdfOptions.compressionLevel)
+            writerProperties.setPdfVersion(imageToPdfOptions.getPdfOptions().pdfVersion)
+            writerProperties.setCompressionLevel(imageToPdfOptions.getPdfOptions().compressionLevel)
 
             val pdf = PdfDocument(PdfWriter(fileOutputStream, writerProperties))
             val document = Document(pdf, PageSize.A4, true)

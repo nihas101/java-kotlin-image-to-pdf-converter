@@ -2,7 +2,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
-import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 
 abstract class IteratorAction {
     abstract fun execute(directoryIterator: DirectoryIterator)

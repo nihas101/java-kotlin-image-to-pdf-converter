@@ -4,9 +4,9 @@ import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.layout.element.Image
 import de.nihas101.imageToPdfConverter.pdf.ImagePdf
 import de.nihas101.imageToPdfConverter.pdf.ImagePdf.ImagePdfFactory.createPdf
-import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions.OptionsFactory.createOptions
-import de.nihas101.imageToPdfConverter.pdf.IteratorOptions
-import de.nihas101.imageToPdfConverter.pdf.PdfOptions
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions.OptionsFactory.createOptions
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions
 import junit.framework.TestCase.fail
 import org.junit.Test
 import java.io.File

@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.gui.subStages;
 
 import de.nihas101.imageToPdfConverter.gui.controller.OptionsMenuController;
-import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions;
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
