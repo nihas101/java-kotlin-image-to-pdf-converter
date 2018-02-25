@@ -3,11 +3,12 @@ package de.nihas101.imageToPdfConverter.gui.controller;
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.MainWindow;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
-import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions;
-import de.nihas101.imageToPdfConverter.pdf.IteratorOptions;
-import de.nihas101.imageToPdfConverter.pdf.PdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
+import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.ListChangeListenerFactory;
 import de.nihas101.imageToPdfConverter.util.MainWindowProgressUpdater;
@@ -164,9 +165,15 @@ public class MainWindowController extends FileListViewController {
     private void setupIterator() {
         disableInput(true);
         notifyUser("Preparing files...", BLACK);
-        mainWindow.setupIterator(chosenDirectory, imageToPdfOptions);
-        runLater(() -> setupListView(mainWindow.getDirectoryIterator()));
-        disableInput(false);
+        try {
+            mainWindow.setupIterator(chosenDirectory, imageToPdfOptions);
+            runLater(() -> setupListView(mainWindow.getDirectoryIterator()));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            notifyUser("An error occurred while trying to prepare the files", RED);
+        } finally {
+            disableInput(false);
+        }
     }
 
     /**
@@ -242,17 +249,31 @@ public class MainWindowController extends FileListViewController {
 
         if (saveFile != null) {
             setSaveLocation(saveFile);
-            disableInput(true);
-            new Thread(() -> {
-                ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
-                        mainWindow.getDirectoryIterator(),
-                        imageToPdfOptions,
-                        new MainWindowProgressUpdater(this)
-                );
-                notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
-                disableInput(false);
-            }).start();
+            createPdfBuilderThread(ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder()).start();
         } else notifyUser("Build cancelled by user", BLACK);
+    }
+
+    private Thread createPdfBuilderThread(PdfBuilder pdfBuilder) {
+        return new Thread(() -> {
+            disableInput(true);
+            try {
+                buildPdf(pdfBuilder);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                notifyUser("An error occurred while trying to build the PDF(s)", RED);
+            } finally {
+                disableInput(false);
+            }
+        });
+    }
+
+    private void buildPdf(PdfBuilder pdfBuilder) {
+        pdfBuilder.build(
+                mainWindow.getDirectoryIterator(),
+                imageToPdfOptions,
+                new MainWindowProgressUpdater(this)
+        );
+        notifyUser("Finished building: " + imageToPdfOptions.getPdfOptions().getSaveLocation().getAbsolutePath(), GREEN);
     }
 
     /**
@@ -266,16 +287,7 @@ public class MainWindowController extends FileListViewController {
 
         if (saveFile != null) {
             setSaveLocation(saveFile);
-            disableInput(true);
-            new Thread(() -> {
-                ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder().build(
-                        mainWindow.getDirectoryIterator(),
-                        imageToPdfOptions,
-                        new MainWindowProgressUpdater(this)
-                );
-                notifyUser("Finished building: " + mainWindow.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
-                disableInput(false);
-            }).start();
+            createPdfBuilderThread(ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder()).start();
         } else notifyUser("Build cancelled by user", BLACK);
     }
 
@@ -339,13 +351,6 @@ public class MainWindowController extends FileListViewController {
     }
 
     private void setSaveLocation(File saveLocation) {
-        imageToPdfOptions = imageToPdfOptions.copy(
-                imageToPdfOptions.component1(),
-                imageToPdfOptions.component2().copy(
-                        imageToPdfOptions.component2().getCompressionLevel(),
-                        imageToPdfOptions.component2().getPdfVersion(),
-                        saveLocation
-                )
-        );
+        imageToPdfOptions.setSaveLocation(saveLocation);
     }
 }
