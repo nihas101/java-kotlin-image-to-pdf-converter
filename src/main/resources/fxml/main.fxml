@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,50 +20,78 @@
         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="150.0" prefHeight="150.0" vgrow="NEVER"/>
         <RowConstraints maxHeight="-Infinity" minHeight="15.0" prefHeight="15.0" vgrow="ALWAYS"/>
     </rowConstraints>
-    <ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" styleClass="toolBar"
-             stylesheets="@../main.css" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
-             GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-        <opaqueInsets>
-            <Insets/>
-        </opaqueInsets>
-        <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="680.0">
-            <Button fx:id="directoryButton" layoutX="66.0" layoutY="2.0" mnemonicParsing="false"
-                    onAction="#chooseDirectory" stylesheets="@../main.css" text="Choose directory"
-                    AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="5.0">
-                <tooltip>
-                    <Tooltip text="Choose a directory to load images from"/>
-                </tooltip>
-            </Button>
-            <Button fx:id="buildButton" layoutX="402.0" layoutY="2.0" mnemonicParsing="false"
-                    onAction="#buildPdf" prefHeight="25.0" stylesheets="@../main.css" text="Build"
-                    textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="-5.0"
-                    AnchorPane.topAnchor="5.0">
-                <tooltip>
-                    <Tooltip text="Build the PDF"/>
-                </tooltip>
-            </Button>
-            <Button fx:id="optionsButton" layoutX="7.0" layoutY="4.0" mnemonicParsing="false"
-                    onAction="#openOptionsMenu" stylesheets="@../main.css" AnchorPane.bottomAnchor="5.0"
-                    AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
-                <graphic>
-                    <ImageView fitHeight="10.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true"
-                               scaleX="2.25" scaleY="2.25" scaleZ="2.25">
-                        <viewport>
-                            <Rectangle2D/>
-                        </viewport>
-                        <Image url="@../icons8-gear-96.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
-        </AnchorPane>
-    </ToolBar>
-    <ProgressBar fx:id="buildProgressBar" prefHeight="15.0" prefWidth="200.0" progress="0.0" stylesheets="@../main.css"
-                 GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS"/>
-    <ListView fx:id="imageListView" onMouseClicked="#displayListCell" orientation="HORIZONTAL" prefHeight="200.0"
-              prefWidth="700.0" stylesheets="@../main.css" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS"
-              GridPane.rowIndex="1" GridPane.vgrow="ALWAYS"/>
-    <TextFlow fx:id="notificationTextFlow" prefHeight="15.0" prefWidth="200.0" stylesheets="@../main.css"
-              GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
-        <Text fx:id="notificationText" strokeType="OUTSIDE" strokeWidth="0.0"/>
-    </TextFlow>
+    <children>
+        <ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0"
+                 styleClass="toolBar" stylesheets="@../main.css" GridPane.columnSpan="2" GridPane.halignment="CENTER"
+                 GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <items>
+                <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="680.0">
+                    <children>
+                        <Button fx:id="directoryButton" layoutX="66.0" layoutY="2.0" mnemonicParsing="false"
+                                onAction="#chooseDirectory" stylesheets="@../main.css" text="Choose directory"
+                                AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="5.0">
+                            <tooltip>
+                                <Tooltip text="Choose a directory to load images from"/>
+                            </tooltip>
+                        </Button>
+                        <Button fx:id="buildButton" layoutX="402.0" layoutY="2.0" mnemonicParsing="false"
+                                onAction="#buildPdf" prefHeight="25.0" stylesheets="@../main.css" text="Build"
+                                textAlignment="CENTER" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="-5.0"
+                                AnchorPane.topAnchor="5.0">
+                            <tooltip>
+                                <Tooltip text="Build the PDF"/>
+                            </tooltip>
+                        </Button>
+                        <Button fx:id="optionsButton" layoutX="7.0" layoutY="4.0" mnemonicParsing="false"
+                                onAction="#openOptionsMenu" stylesheets="@../main.css" AnchorPane.bottomAnchor="5.0"
+                                AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
+                            <graphic>
+                                <ImageView fitHeight="10.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true"
+                                           scaleX="2.25" scaleY="2.25" scaleZ="2.25">
+                                    <viewport>
+                                        <Rectangle2D/>
+                                    </viewport>
+                                    <image>
+                                        <Image url="@../icons8-gear-96.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                </AnchorPane>
+            </items>
+        </ToolBar>
+        <ProgressBar fx:id="buildProgressBar" prefHeight="15.0" prefWidth="200.0" progress="0.0"
+                     stylesheets="@../main.css" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="2"
+                     GridPane.vgrow="ALWAYS"/>
+        <ListView fx:id="imageListView" onMouseClicked="#displayListCell" orientation="HORIZONTAL" prefHeight="200.0"
+                  prefWidth="700.0" stylesheets="@../main.css" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS"
+                  GridPane.rowIndex="1" GridPane.vgrow="ALWAYS"/>
+        <HBox GridPane.rowIndex="2">
+            <children>
+                <ProgressIndicator fx:id="progressIndicator" prefHeight="10.0" prefWidth="10.0" visible="false"
+                                   HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </HBox.margin>
+                    <opaqueInsets>
+                        <Insets right="5.0"/>
+                    </opaqueInsets>
+                </ProgressIndicator>
+                <TextFlow fx:id="notificationTextFlow" maxWidth="1.7976931348623157E308" prefHeight="15.0"
+                          stylesheets="@../main.css" GridPane.hgrow="NEVER" GridPane.rowIndex="2"
+                          GridPane.vgrow="ALWAYS">
+                    <children>
+                        <Text fx:id="notificationText" strokeType="OUTSIDE" strokeWidth="0.0"/>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                </TextFlow>
+            </children>
+        </HBox>
+    </children>
 </GridPane>
