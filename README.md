@@ -9,6 +9,7 @@ This is a program for converting images to PDFs with the use of [iText 7](https:
 
 - Build a single PDF from a directory of images [See here](https://github.com/nihas101/java-kotlin-images-to-pdf-converter/blob/master/README.md#how-to-build-a-single-pdf)
 - Build multiple PDFs from multiple subdirectories of images at once [See here](https://github.com/nihas101/java-kotlin-images-to-pdf-converter/blob/master/README.md#how-to-build-multiple-pdfs-at-once)
+- Build PDFs from one or multiple ZIP files of images
 - Change the order of the images in the PDF via drag-and-drop and remove unwanted ones
 
 ## Requirements
@@ -63,7 +64,7 @@ _TODO_
 4. If you want to alter specific PDFs to be build, double-click on the directory you want to alter to open a second window with it's contents.
     1. Reorder images and remove unwanted ones
     2. Click on the build button in the second window to build the PDF and remove this directory from the main window
-5. Click on ![buildbutton](https://user-images.githubusercontent.com/19901622/35849742-e93f197e-0b22-11e8-8dab-4185c43171eb.PNG) to build multiple PDFs from the chosen directories. After picking a target-directory the PDF will be build and placed at that location
+5. Click on ![buildbutton](https://user-images.githubusercontent.com/19901622/35849742-e93f197e-0b22-11e8-8dab-4185c43171eb.PNG) to build multiple PDFs from the chosen directories. After picking a target-directory the PDFs will be build and placed at that location
 
 ### In text-mode
 
