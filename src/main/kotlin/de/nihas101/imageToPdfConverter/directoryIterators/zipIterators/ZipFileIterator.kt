@@ -1,6 +1,7 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.createImageUnZipper
 import java.io.File
@@ -11,7 +12,11 @@ class ZipFileIterator(private val file: File, deleteOnExit: Boolean) : Directory
 
     init {
         val unzipInto = makeUnzipDirectory(deleteOnExit)
-        createImageUnZipper(file).unzip(unzipInto, deleteOnExit)
+        try {
+            createImageUnZipper(file).unzip(unzipInto, deleteOnExit)
+        } catch (exception: ExtensionNotSupportedException) {
+            /* Proceed with empty unzip directory */
+        }
         imageFilesIterator = ImageFilesIterator.createImageFilesIterator(unzipInto)
     }
 
