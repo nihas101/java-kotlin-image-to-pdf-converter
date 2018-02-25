@@ -10,6 +10,7 @@ import de.nihas101.imageToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.ListChangeListenerFactory;
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -17,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -53,6 +55,7 @@ public class MainWindowController extends FileListViewController {
     public TextFlow notificationTextFlow;
     @FXML
     public Button optionsButton;
+    public ProgressIndicator progressIndicator;
 
     /**
      * The {@link MainWindow} belonging to this Controller
@@ -223,6 +226,7 @@ public class MainWindowController extends FileListViewController {
      * @param isDisabled True to disable, false to enable input
      */
     private void disableInput(boolean isDisabled) {
+        progressIndicator.setVisible(isDisabled);
         imageListView.setDisable(isDisabled);
         buildButton.setDisable(isDisabled);
         directoryButton.setDisable(isDisabled);
