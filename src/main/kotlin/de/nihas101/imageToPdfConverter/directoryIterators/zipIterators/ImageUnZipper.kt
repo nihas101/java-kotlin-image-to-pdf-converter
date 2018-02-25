@@ -12,6 +12,7 @@ import javax.imageio.ImageIO
 class ImageUnZipper private constructor(private val zipInputStream: ZipInputStream) {
     fun unzip(unzipInto: File, deleteOnExit: Boolean = false) {
         unzip({ zipEntry -> createFile("${unzipInto.absolutePath}/${zipEntry.name}", deleteOnExit) })
+        System.gc()
     }
 
     private fun unzip(fileFactory: (ZipEntry) -> File) {
