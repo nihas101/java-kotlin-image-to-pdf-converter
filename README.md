@@ -1,4 +1,4 @@
-# Images To PDF Converter
+# Image To PDF Converter
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) [![build status](https://travis-ci.org/nihas101/java-kotlin-images-to-pdf-converter.svg?branch=master)](https://travis-ci.org/nihas101/java-kotlin-images-to-pdf-converter) [![Maintainability](https://api.codeclimate.com/v1/badges/32c17125b13bb7c177bc/maintainability)](https://codeclimate.com/github/nihas101/java-kotlin-images-to-pdf-converter/maintainability) [![codecov](https://codecov.io/gh/nihas101/java-kotlin-images-to-pdf-converter/branch/master/graph/badge.svg)](https://codecov.io/gh/nihas101/java-kotlin-images-to-pdf-converter)
 
 
@@ -33,7 +33,7 @@ The distribution is placed under `build/distributions`.
 
 To run the program from the distribution, extract the zip or tar file, and run the launch script for your system in the bin folder by double-clicking on it or typing either:
 ```sh
-./images2PdfConverter
+./image2PdfConverter
 ```
 in the command-line interface or
 ```sh
