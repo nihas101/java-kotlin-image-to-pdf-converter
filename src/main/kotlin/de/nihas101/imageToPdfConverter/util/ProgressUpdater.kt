@@ -6,7 +6,7 @@ interface ProgressUpdater {
     fun updateProgress(progress: Double, file: File)
 }
 
-class TrivialProgressUpdate : ProgressUpdater {
+class TrivialProgressUpdater : ProgressUpdater {
     override fun updateProgress(progress: Double, file: File) {
         /* DO NOTHING */
     }
