@@ -19,6 +19,8 @@ abstract class DirectoryIterator {
     abstract fun getParentDirectory(): File
     abstract fun resetIndex()
 
+    /* TODO: Allow for a progressindicator to be passed? */
+
     companion object DirectoryIteratorFactory {
         fun createDirectoryIterator(directory: File, iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.multipleDirectories) {

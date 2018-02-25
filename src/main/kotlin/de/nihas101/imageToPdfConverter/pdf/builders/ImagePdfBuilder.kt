@@ -6,24 +6,11 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.pdf.ImagePdf
 import de.nihas101.imageToPdfConverter.pdf.ImageToPdfOptions
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
+import java.io.File
 
 class ImagePdfBuilder : PdfBuilder() {
     companion object ImagePdfBuilderFactory {
         fun createImagePdfBuilder() = ImagePdfBuilder()
-    }
-
-    override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions) {
-        directoryIterator.resetIndex()
-        val imagePdf = ImagePdf.createPdf(imageToPdfOptions)
-        val nrOfFiles = directoryIterator.numberOfFiles()
-
-        try {
-            for (i in 1..nrOfFiles) addNextFileToPDF(directoryIterator, imagePdf)
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-        } finally {
-            imagePdf.close()
-        }
     }
 
     override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) {
@@ -33,8 +20,9 @@ class ImagePdfBuilder : PdfBuilder() {
 
         try {
             for (i in 1..nrOfFiles) {
-                addNextFileToPDF(directoryIterator, imagePdf)
-                progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble())
+                val file = directoryIterator.nextFile()
+                addNextFileToPDF(file, imagePdf)
+                progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble(), file)
             }
         } catch (exception: Exception) {
             exception.printStackTrace()
@@ -43,8 +31,8 @@ class ImagePdfBuilder : PdfBuilder() {
         }
     }
 
-    private fun addNextFileToPDF(directoryIterator: DirectoryIterator, imagePdf: ImagePdf) {
-        val fileURL = directoryIterator.nextFile().toURI().toURL()
+    private fun addNextFileToPDF(file: File, imagePdf: ImagePdf) {
+        val fileURL = file.toURI().toURL()
         imagePdf.add(Image(ImageDataFactory.create(fileURL)))
         System.gc()
     }

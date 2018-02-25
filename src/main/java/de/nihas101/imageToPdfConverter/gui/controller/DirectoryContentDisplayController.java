@@ -123,7 +123,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         directoryIterator,
                         imageToPdfOptions,
-                        progress -> mainWindowController.buildProgressBar.setProgress(progress)
+                        mainWindowController.createProgressUpdater()
                 );
                 mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
             }).start();

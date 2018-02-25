@@ -86,7 +86,7 @@ public class ImageMap {
         else if (imageMap.size() < IMAGE_MAP_MAX_SIZE)
             putImageIntoMap(file);
 
-        if (progressUpdater != null) progressUpdater.updateProgress(progress);
+        if (progressUpdater != null) progressUpdater.updateProgress(progress, file);
     }
 
     private void putDirectoryImageIntoMap() {

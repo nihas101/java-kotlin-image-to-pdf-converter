@@ -129,7 +129,7 @@ public class MainWindowController extends FileListViewController {
             if (files.size() > 1) {
                 runLater(() -> {
                     buildProgressBar.setProgress(0);
-                    notifyUser("Loading files...", BLACK);
+                    notifyUser("Preparing files...", BLACK);
                     disableInput(true);
                     mainWindow.getDirectoryIterator().addAll(files.subList(1, files.size()));
                     imageListView.getItems().addAll(files.subList(1, files.size()));
@@ -163,7 +163,7 @@ public class MainWindowController extends FileListViewController {
 
     private void setupIterator() {
         disableInput(true);
-        notifyUser("Loading files...", BLACK);
+        notifyUser("Preparing files...", BLACK);
         mainWindow.setupIterator(chosenDirectory, imageToPdfOptions);
         runLater(() -> setupListView(mainWindow.getDirectoryIterator()));
         disableInput(false);
@@ -179,8 +179,9 @@ public class MainWindowController extends FileListViewController {
 
         new Thread(() -> {
             imageMap.loadImages(directoryIterator.getFiles(),
-                    (loadedFiles) ->
-                            notifyUser("Loading files... (" + (int) loadedFiles + "/" + nrOfFiles + ")", BLACK));
+                    (loadedFiles, file) ->
+                            notifyUser("Loading files... (" + (int) loadedFiles + "/" + nrOfFiles + ")", BLACK)
+            );
 
             setupObservableList(directoryIterator);
         }).start();
@@ -211,8 +212,6 @@ public class MainWindowController extends FileListViewController {
      */
     public void buildPdf(ActionEvent actionEvent) {
         if (!valuesSetForBuilding()) return;
-
-        notifyUser("Building PDF...", BLACK);
 
         if (imageToPdfOptions.getIteratorOptions().getMultipleDirectories()) buildMultiplePdf();
         else buildSinglePdf();
@@ -248,7 +247,7 @@ public class MainWindowController extends FileListViewController {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
                         imageToPdfOptions,
-                        progress -> buildProgressBar.setProgress(progress)
+                        createProgressUpdater()
                 );
                 notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
                 disableInput(false);
@@ -272,7 +271,7 @@ public class MainWindowController extends FileListViewController {
                 ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
                         imageToPdfOptions,
-                        progress -> buildProgressBar.setProgress(progress)
+                        createProgressUpdater()
                 );
                 notifyUser("Finished building: " + mainWindow.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
                 disableInput(false);
@@ -348,5 +347,12 @@ public class MainWindowController extends FileListViewController {
                         saveLocation
                 )
         );
+    }
+
+    public ProgressUpdater createProgressUpdater() {
+        return (progress, file) -> {
+            buildProgressBar.setProgress(progress);
+            notifyUser("Building PDF: " + file.getName(), BLACK);
+        };
     }
 }

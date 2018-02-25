@@ -12,23 +12,15 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
         fun createImageDirectoriesPdfBuilder() = ImageDirectoriesPdfBuilder()
     }
 
-    override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions) {
-        directoryIterator.resetIndex()
-        val nrOfFiles = directoryIterator.numberOfFiles()
-        if (nrOfFiles == 0) return
-
-        for (i in 1..nrOfFiles)
-            buildNextPDF(createImageFilesIterator(directoryIterator.nextFile()), imageToPdfOptions)
-    }
-
     override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) {
         directoryIterator.resetIndex()
         val nrOfFiles = directoryIterator.numberOfFiles()
         if (nrOfFiles == 0) return
 
         for (i in 1..nrOfFiles) {
-            buildNextPDF(createImageFilesIterator(directoryIterator.nextFile()), imageToPdfOptions)
-            progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble())
+            val file = directoryIterator.nextFile()
+            buildNextPDF(createImageFilesIterator(file), imageToPdfOptions)
+            progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble(), file)
         }
     }
 
