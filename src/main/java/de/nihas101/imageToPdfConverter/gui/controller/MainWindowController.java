@@ -10,7 +10,7 @@ import de.nihas101.imageToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.ListChangeListenerFactory;
-import de.nihas101.imageToPdfConverter.util.ProgressUpdater;
+import de.nihas101.imageToPdfConverter.util.MainWindowProgressUpdater;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -247,7 +247,7 @@ public class MainWindowController extends FileListViewController {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
                         imageToPdfOptions,
-                        createProgressUpdater()
+                        new MainWindowProgressUpdater(this)
                 );
                 notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
                 disableInput(false);
@@ -271,7 +271,7 @@ public class MainWindowController extends FileListViewController {
                 ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder().build(
                         mainWindow.getDirectoryIterator(),
                         imageToPdfOptions,
-                        createProgressUpdater()
+                        new MainWindowProgressUpdater(this)
                 );
                 notifyUser("Finished building: " + mainWindow.getDirectoryIterator().getParentDirectory().getAbsolutePath(), GREEN);
                 disableInput(false);
@@ -347,12 +347,5 @@ public class MainWindowController extends FileListViewController {
                         saveLocation
                 )
         );
-    }
-
-    public ProgressUpdater createProgressUpdater() {
-        return (progress, file) -> {
-            buildProgressBar.setProgress(progress);
-            notifyUser("Building PDF: " + file.getName(), BLACK);
-        };
     }
 }
