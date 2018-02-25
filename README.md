@@ -3,7 +3,7 @@
 
 
 
-This is a program for converting images to PDFs with the use of [iText 7](https://itextpdf.com/).
+Image2PDF Converter is a program for converting images to PDFs with the use of [iText 7](https://itextpdf.com/).
 
 ## Features
 
@@ -37,7 +37,7 @@ To run the program from the distribution, extract the zip or tar file, and run t
 ```
 in the command-line interface or
 ```sh
-./images2PdfConverter --noGUI
+./imagesPdfConverter --noGUI
 ```
 to run the program in text-mode.
 
