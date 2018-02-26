@@ -9,6 +9,7 @@ import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
+import de.nihas101.imageToPdfConverter.tasks.BuildPdfTask;
 import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorFromDragAndDropTask;
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorTask;
@@ -269,19 +270,25 @@ public class MainWindowController extends FileListViewController {
         } else notifyUser("Build cancelled by user", BLACK);
     }
 
-    /* TODO: Move this to own class */
     private Thread createPdfBuilderThread(PdfBuilder pdfBuilder) {
-        return new Thread(() -> {
-            disableInput(true);
-            try {
-                buildPdf(pdfBuilder);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                notifyUser("An error occurred while trying to build the PDF(s)", RED);
-            } finally {
-                disableInput(false);
-            }
-        });
+        return BuildPdfTask.BuildPdfThreadFactory.createBuildPdfThread(
+                () -> {
+                    build(pdfBuilder);
+                    return Unit.INSTANCE;
+                }
+        );
+    }
+
+    private void build(PdfBuilder pdfBuilder) {
+        disableInput(true);
+        try {
+            buildPdf(pdfBuilder);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            notifyUser("An error occurred while trying to build the PDF(s)", RED);
+        } finally {
+            disableInput(false);
+        }
     }
 
     private void buildPdf(PdfBuilder pdfBuilder) {
