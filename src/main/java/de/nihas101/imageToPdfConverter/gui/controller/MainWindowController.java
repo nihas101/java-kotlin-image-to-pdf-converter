@@ -1,5 +1,6 @@
 package de.nihas101.imageToPdfConverter.gui.controller;
 
+import de.nihas101.imageToPdfConverter.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.MainWindow;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
@@ -9,9 +10,10 @@ import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
+import de.nihas101.imageToPdfConverter.util.BuildProgressUpdater;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.ListChangeListenerFactory;
-import de.nihas101.imageToPdfConverter.util.MainWindowProgressUpdater;
+import de.nihas101.imageToPdfConverter.util.LoadProgressUpdater;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -24,7 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
@@ -80,7 +82,7 @@ public class MainWindowController extends FileListViewController {
 
     public FileChooser saveFileChooser;
 
-    /* TODO: Hold onto threads to cancel them if something goes wrong */
+    /* TODO: Hold onto threads to cancel them if something goes wrong / Use ExecutorService */
 
     /**
      * Sets up the {@link MainWindowController}
@@ -182,16 +184,24 @@ public class MainWindowController extends FileListViewController {
      * @param directoryIterator The {@link DirectoryIterator} for iterating over files
      */
     private void setupListView(DirectoryIterator directoryIterator) {
-        int nrOfFiles = directoryIterator.numberOfFiles();
+        LoadProgressUpdater loadProgressUpdater = new LoadProgressUpdater(
+                (message, color) -> {
+                    notifyUser(message, color);
+                    return Unit.INSTANCE;
+                },
+                directoryIterator.numberOfFiles()
+        );
 
-        new Thread(() -> {
-            imageMap.loadImages(directoryIterator.getFiles(),
-                    (loadedFiles, file) ->
-                            notifyUser("Loading files... (" + (int) loadedFiles + "/" + nrOfFiles + ")", BLACK)
-            );
+        Thread loadImagesThread = LoadImagesTask.LoadImagesThreadFactory.createLoadImagesThread(
+                directoryIterator,
+                imageMap,
+                loadProgressUpdater,
+                () -> {
+                    setupObservableList(directoryIterator);
+                    return Unit.INSTANCE;
+                });
 
-            setupObservableList(directoryIterator);
-        }).start();
+        loadImagesThread.start();
     }
 
     /**
@@ -271,7 +281,7 @@ public class MainWindowController extends FileListViewController {
         pdfBuilder.build(
                 mainWindow.getDirectoryIterator(),
                 imageToPdfOptions,
-                new MainWindowProgressUpdater(this)
+                new BuildProgressUpdater(this)
         );
         notifyUser("Finished building: " + imageToPdfOptions.getPdfOptions().getSaveLocation().getAbsolutePath(), GREEN);
     }
@@ -312,7 +322,7 @@ public class MainWindowController extends FileListViewController {
      * @param message The message of the  notification
      * @param color   The color with which the message should be displayed
      */
-    public void notifyUser(String message, Color color) {
+    public void notifyUser(String message, Paint color) {
         if (message.length() > NOTIFICATION_MAX_STRING_LENGTH)
             message = message.substring(0, NOTIFICATION_MAX_STRING_LENGTH) + "...";
 

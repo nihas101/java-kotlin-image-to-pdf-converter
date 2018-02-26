@@ -5,8 +5,8 @@ import de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
+import de.nihas101.imageToPdfConverter.util.BuildProgressUpdater;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
-import de.nihas101.imageToPdfConverter.util.MainWindowProgressUpdater;
 import javafx.application.Application;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -121,7 +121,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         directoryIterator,
                         imageToPdfOptions,
-                        new MainWindowProgressUpdater(mainWindowController)
+                        new BuildProgressUpdater(mainWindowController)
                 );
                 mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
             }).start();

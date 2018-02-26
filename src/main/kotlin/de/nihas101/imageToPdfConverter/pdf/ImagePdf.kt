@@ -15,7 +15,8 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 class ImagePdf internal constructor(
-        private val outputStream: OutputStream,
+        //private val outputStream: OutputStream,
+        private val pdfWriter: PdfWriter,
         private var document: Document,
         private var pdf: PdfDocument
 ) {
@@ -31,33 +32,37 @@ class ImagePdf internal constructor(
 
     private fun flush() {
         document.flush()
-        outputStream.flush()
+        //outputStream.flush()
+        pdfWriter.flush()
         System.gc()
     }
 
     fun close() {
         document.flush()
-        outputStream.flush()
+        //outputStream.flush()
+        pdfWriter.flush()
         document.close()
         pdf.close()
-        outputStream.close()
+        pdfWriter.close()
+        //outputStream.close()
         System.gc()
     }
 
     companion object ImagePdfFactory {
         fun createPdf(
                 imageToPdfOptions: ImageToPdfOptions,
-                fileOutputStream: OutputStream = createFileOutputStream(imageToPdfOptions.getPdfOptions().saveLocation!!)
+                outputStream: OutputStream = createFileOutputStream(imageToPdfOptions.getPdfOptions().saveLocation!!)
         ): ImagePdf {
             val writerProperties = WriterProperties()
             writerProperties.setPdfVersion(imageToPdfOptions.getPdfOptions().pdfVersion)
             writerProperties.setCompressionLevel(imageToPdfOptions.getPdfOptions().compressionLevel)
 
-            val pdf = PdfDocument(PdfWriter(fileOutputStream, writerProperties))
+            val pdfWriter = PdfWriter(outputStream, writerProperties) //Test(outputStream)
+            val pdf = PdfDocument(pdfWriter)
             val document = Document(pdf, PageSize.A4, true)
 
             document.setMargins(NO_MARGIN, NO_MARGIN, NO_MARGIN, NO_MARGIN)
-            return ImagePdf(fileOutputStream, document, pdf)
+            return ImagePdf(pdfWriter, document, pdf)
         }
 
         private fun createFileOutputStream(file: File): OutputStream {

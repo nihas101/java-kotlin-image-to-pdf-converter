@@ -46,6 +46,8 @@ public final class MainWindow extends Application {
         );
     }
 
+    /* TODO: Add Shortcut for building: Like pressing b */
+
     public DirectoryIterator getDirectoryIterator() {
         return directoryIterator;
     }
