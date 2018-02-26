@@ -131,7 +131,7 @@ public class MainWindowController extends FileListViewController {
     }
 
     private Thread createSetupIteratorFromDragAndDropThread(List<File> files) {
-        return SetupIteratorFromDragAndDropTask.SetupIteratorFromDragAndDropTaskFactory.createSetupIteratorThread(
+        return SetupIteratorFromDragAndDropTask.SetupIteratorFromDragAndDropThreadFactory.createSetupIteratorThread(
                 this,
                 () -> {
                     if (files.size() > 1) {
@@ -171,7 +171,7 @@ public class MainWindowController extends FileListViewController {
     }
 
     private Thread createSetupIteratorThread() {
-        return SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorThread(this);
+        return SetupIteratorTask.SetupIteratorThreadFactory.createSetupIteratorThread(this);
     }
 
     public void setupIterator() {

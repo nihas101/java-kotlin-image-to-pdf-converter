@@ -8,7 +8,7 @@ open class SetupIteratorTask(private val mainWindowController: MainWindowControl
         mainWindowController.setupIterator()
     }
 
-    companion object SetupIteratorTaskFactory {
+    companion object SetupIteratorThreadFactory {
         fun createSetupIteratorThread(mainWindowController: MainWindowController): Thread {
             return Thread(SetupIteratorTask(mainWindowController))
         }
