@@ -13,10 +13,7 @@ import de.nihas101.imageToPdfConverter.tasks.BuildPdfTask;
 import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorFromDragAndDropTask;
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorTask;
-import de.nihas101.imageToPdfConverter.util.BuildProgressUpdater;
-import de.nihas101.imageToPdfConverter.util.ImageMap;
-import de.nihas101.imageToPdfConverter.util.ListChangeListenerFactory;
-import de.nihas101.imageToPdfConverter.util.LoadProgressUpdater;
+import de.nihas101.imageToPdfConverter.util.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -191,24 +188,29 @@ public class MainWindowController extends FileListViewController {
      * @param directoryIterator The {@link DirectoryIterator} for iterating over files
      */
     private void setupListView(DirectoryIterator directoryIterator) {
-        LoadProgressUpdater loadProgressUpdater = new LoadProgressUpdater(
+        Thread loadImagesThread = createLoadImagesThread(directoryIterator);
+        loadImagesThread.start();
+    }
+
+    private Thread createLoadImagesThread(DirectoryIterator directoryIterator) {
+        return LoadImagesTask.LoadImagesThreadFactory.createLoadImagesThread(
+                directoryIterator,
+                imageMap,
+                createLoadProgressUpdater(directoryIterator),
+                () -> {
+                    setupObservableList(directoryIterator);
+                    return Unit.INSTANCE;
+                });
+    }
+
+    private ProgressUpdater createLoadProgressUpdater(DirectoryIterator directoryIterator) {
+        return new LoadProgressUpdater(
                 (message, color) -> {
                     notifyUser(message, color);
                     return Unit.INSTANCE;
                 },
                 directoryIterator.numberOfFiles()
         );
-
-        Thread loadImagesThread = LoadImagesTask.LoadImagesThreadFactory.createLoadImagesThread(
-                directoryIterator,
-                imageMap,
-                loadProgressUpdater,
-                () -> {
-                    setupObservableList(directoryIterator);
-                    return Unit.INSTANCE;
-                });
-
-        loadImagesThread.start();
     }
 
     /**
