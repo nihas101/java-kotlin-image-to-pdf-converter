@@ -5,7 +5,10 @@ import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFi
 import javafx.concurrent.Task
 import java.io.File
 
-class CreateImageFilesIteratorTask(private val file: File, private val after: (DirectoryIterator) -> Unit) : Task<Unit>() {
+class CreateImageFilesIteratorTask(
+        private val file: File,
+        private val after: (DirectoryIterator) -> Unit
+) : Task<Unit>() {
     override fun call() {
         val imageFilesIterator = ImageFilesIterator.createImageFilesIterator(file)
         after(imageFilesIterator)

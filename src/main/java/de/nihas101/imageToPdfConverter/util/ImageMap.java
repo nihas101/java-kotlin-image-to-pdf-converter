@@ -21,7 +21,7 @@ public class ImageMap {
     /**
      * The {@link Map} mapping an absolute path to the corresponding {@link Image}
      */
-    private final LinkedHashMap<String, Image> imageMap; // LinkedHashmap is used to keep entries ordered
+    private final LinkedHashMap<String, Image> imageMap; // LinkedHashMap is used to keep entries ordered
 
     private ImageMap(LinkedHashMap<String, Image> imageMap) {
         this.imageMap = imageMap;
