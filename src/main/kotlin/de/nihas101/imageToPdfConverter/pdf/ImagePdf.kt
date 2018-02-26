@@ -15,36 +15,31 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 class ImagePdf internal constructor(
-        //private val outputStream: OutputStream,
         private val pdfWriter: PdfWriter,
         private var document: Document,
         private var pdf: PdfDocument
 ) {
     fun add(image: Image) {
-        prepareForNewImage(image)
+        addNewImage(image)
         document.add(image)
+        flush()
     }
 
-    private fun prepareForNewImage(image: Image) {
+    private fun addNewImage(image: Image) {
         pdf.addNewPage(PageSize(Rectangle(0F, 0F, image.imageWidth, image.imageHeight)))
-        if (pdf.numberOfPages > 1) flush()
     }
 
     private fun flush() {
         document.flush()
-        //outputStream.flush()
+        if (pdf.numberOfPages > 1) pdf.getPage(pdf.numberOfPages - 1).flush(true)
         pdfWriter.flush()
         System.gc()
     }
 
     fun close() {
-        document.flush()
-        //outputStream.flush()
-        pdfWriter.flush()
-        document.close()
         pdf.close()
         pdfWriter.close()
-        //outputStream.close()
+        document.close()
         System.gc()
     }
 
@@ -57,7 +52,7 @@ class ImagePdf internal constructor(
             writerProperties.setPdfVersion(imageToPdfOptions.getPdfOptions().pdfVersion)
             writerProperties.setCompressionLevel(imageToPdfOptions.getPdfOptions().compressionLevel)
 
-            val pdfWriter = PdfWriter(outputStream, writerProperties) //Test(outputStream)
+            val pdfWriter = PdfWriter(outputStream, writerProperties)
             val pdf = PdfDocument(pdfWriter)
             val document = Document(pdf, PageSize.A4, true)
 
