@@ -15,49 +15,49 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 class ImagePdf internal constructor(
-        private val outputStream: OutputStream,
+        private val pdfWriter: PdfWriter,
         private var document: Document,
         private var pdf: PdfDocument
 ) {
     fun add(image: Image) {
-        prepareForNewImage(image)
+        addNewImage(image)
         document.add(image)
+        flush()
     }
 
-    private fun prepareForNewImage(image: Image) {
+    private fun addNewImage(image: Image) {
         pdf.addNewPage(PageSize(Rectangle(0F, 0F, image.imageWidth, image.imageHeight)))
-        if (pdf.numberOfPages > 1) flush()
     }
 
     private fun flush() {
         document.flush()
-        outputStream.flush()
+        if (pdf.numberOfPages > 1) pdf.getPage(pdf.numberOfPages - 1).flush(true)
+        pdfWriter.flush()
         System.gc()
     }
 
     fun close() {
-        document.flush()
-        outputStream.flush()
-        document.close()
         pdf.close()
-        outputStream.close()
+        pdfWriter.close()
+        document.close()
         System.gc()
     }
 
     companion object ImagePdfFactory {
         fun createPdf(
                 imageToPdfOptions: ImageToPdfOptions,
-                fileOutputStream: OutputStream = createFileOutputStream(imageToPdfOptions.getPdfOptions().saveLocation!!)
+                outputStream: OutputStream = createFileOutputStream(imageToPdfOptions.getPdfOptions().saveLocation!!)
         ): ImagePdf {
             val writerProperties = WriterProperties()
             writerProperties.setPdfVersion(imageToPdfOptions.getPdfOptions().pdfVersion)
             writerProperties.setCompressionLevel(imageToPdfOptions.getPdfOptions().compressionLevel)
 
-            val pdf = PdfDocument(PdfWriter(fileOutputStream, writerProperties))
+            val pdfWriter = PdfWriter(outputStream, writerProperties)
+            val pdf = PdfDocument(pdfWriter)
             val document = Document(pdf, PageSize.A4, true)
 
             document.setMargins(NO_MARGIN, NO_MARGIN, NO_MARGIN, NO_MARGIN)
-            return ImagePdf(fileOutputStream, document, pdf)
+            return ImagePdf(pdfWriter, document, pdf)
         }
 
         private fun createFileOutputStream(file: File): OutputStream {

@@ -5,8 +5,10 @@ import de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
+import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
+import de.nihas101.imageToPdfConverter.util.BuildProgressUpdater;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
-import de.nihas101.imageToPdfConverter.util.MainWindowProgressUpdater;
+import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater;
 import javafx.application.Application;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -18,6 +20,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import kotlin.Unit;
 
 import java.io.File;
 import java.util.Map;
@@ -55,13 +58,19 @@ public class DirectoryContentDisplayController extends FileListViewController {
         this.mainWindowController = mainWindowController;
         this.imageToPdfOptions = mainWindowController.imageToPdfOptions.copyForJava();
 
-        new Thread(() -> {
-            ImageMap imageMap = createImageMap();
-            imageMap.clearImages();
-            imageMap.loadImages(directoryIterator.getFiles());
+        Thread loadImageThread = createLoadImagesThread(createImageMap());
+        loadImageThread.start();
+    }
 
-            runLater(() -> setupObservableList(directoryIterator, imageMap));
-        }).start();
+    private Thread createLoadImagesThread(ImageMap imageMap) {
+        return LoadImagesTask.LoadImagesThreadFactory.createLoadImagesThread(
+                directoryIterator,
+                imageMap,
+                new TrivialProgressUpdater(),
+                () -> {
+                    setupObservableList(directoryIterator, imageMap);
+                    return Unit.INSTANCE;
+                });
     }
 
     /**
@@ -121,15 +130,16 @@ public class DirectoryContentDisplayController extends FileListViewController {
                 ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
                         directoryIterator,
                         imageToPdfOptions,
-                        new MainWindowProgressUpdater(mainWindowController)
+                        new BuildProgressUpdater(mainWindowController)
                 );
-                mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
+                runLater(() -> {
+                    mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
+                    mainWindowController.imageListView.getItems().remove(directoryIteratorIndex);
+                    directoryContentDisplayStage.close();
+                });
             }).start();
         }
 
         actionEvent.consume();
-
-        mainWindowController.imageListView.getItems().remove(directoryIteratorIndex);
-        directoryContentDisplayStage.close();
     }
 }
