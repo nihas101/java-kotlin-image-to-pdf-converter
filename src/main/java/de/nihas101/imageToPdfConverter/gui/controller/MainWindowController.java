@@ -10,6 +10,7 @@ import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
 import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
+import de.nihas101.imageToPdfConverter.tasks.SetupIteratorFromDragAndDropTask;
 import de.nihas101.imageToPdfConverter.util.BuildProgressUpdater;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.ListChangeListenerFactory;
@@ -127,19 +128,23 @@ public class MainWindowController extends FileListViewController {
     private void setupIteratorFromDragAndDrop(List<File> files) {
         chosenDirectory = files.get(0);
 
-        new Thread(() -> {
-            setupIterator();
-            if (files.size() > 1) {
-                runLater(() -> {
-                    buildProgressBar.setProgress(0);
-                    notifyUser("Preparing files...", BLACK);
-                    disableInput(true);
-                    mainWindow.getDirectoryIterator().addAll(files.subList(1, files.size()));
-                    imageListView.getItems().addAll(files.subList(1, files.size()));
-                    disableInput(false);
+        Thread thread = SetupIteratorFromDragAndDropTask.SetupIteratorFromDragAndDropTaskFactory.createSetupIteratorThread(
+                this,
+                () -> {
+                    if (files.size() > 1) {
+                        runLater(() -> {
+                            buildProgressBar.setProgress(0.0);
+                            notifyUser("Preparing files...", BLACK);
+                            disableInput(true);
+                            mainWindow.getDirectoryIterator().addAll(files.subList(1, files.size()));
+                            imageListView.getItems().addAll(files.subList(1, files.size()));
+                            disableInput(false);
+                        });
+                    }
+                    return Unit.INSTANCE;
                 });
-            }
-        }).start();
+
+        thread.start();
     }
 
     /**
@@ -164,7 +169,7 @@ public class MainWindowController extends FileListViewController {
         actionEvent.consume();
     }
 
-    private void setupIterator() {
+    public void setupIterator() {
         disableInput(true);
         notifyUser("Preparing files...", BLACK);
         try {
