@@ -10,6 +10,7 @@ import java.io.InputStreamReader
 
 object Main {
     /* TODO: Add copyright notice to every file */
+    /* TODO: Move all Threads to tasks! */
     @JvmStatic
     fun main(args: Array<String>) {
         if (args.isEmpty()) MainWindow().show()
