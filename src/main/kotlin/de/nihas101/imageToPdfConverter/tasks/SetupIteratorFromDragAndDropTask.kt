@@ -1,11 +1,10 @@
 package de.nihas101.imageToPdfConverter.tasks
 
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController
-import javafx.concurrent.Task
 
-class SetupIteratorFromDragAndDropTask(private val mainWindowController: MainWindowController, private val after: () -> Unit) : Task<Unit>() {
+class SetupIteratorFromDragAndDropTask(private val mainWindowController: MainWindowController, private val after: () -> Unit) : SetupIteratorTask(mainWindowController) {
     override fun call() {
-        mainWindowController.setupIterator()
+        super.call()
         after()
     }
 

@@ -11,6 +11,7 @@ import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
 import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorFromDragAndDropTask;
+import de.nihas101.imageToPdfConverter.tasks.SetupIteratorTask;
 import de.nihas101.imageToPdfConverter.util.BuildProgressUpdater;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.ListChangeListenerFactory;
@@ -163,7 +164,7 @@ public class MainWindowController extends FileListViewController {
         if (givenDirectory != null) {
             buildProgressBar.setProgress(0);
             chosenDirectory = givenDirectory;
-            new Thread(this::setupIterator).start();
+            SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorThread(this).start();
         }
 
         actionEvent.consume();
