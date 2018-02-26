@@ -58,9 +58,12 @@ public class DirectoryContentDisplayController extends FileListViewController {
         this.mainWindowController = mainWindowController;
         this.imageToPdfOptions = mainWindowController.imageToPdfOptions.copyForJava();
 
-        ImageMap imageMap = createImageMap();
+        Thread loadImageThread = createLoadImagesThread(createImageMap());
+        loadImageThread.start();
+    }
 
-        Thread loadImageThread = LoadImagesTask.LoadImagesThreadFactory.createLoadImagesThread(
+    private Thread createLoadImagesThread(ImageMap imageMap) {
+        return LoadImagesTask.LoadImagesThreadFactory.createLoadImagesThread(
                 directoryIterator,
                 imageMap,
                 new TrivialProgressUpdater(),
@@ -68,8 +71,6 @@ public class DirectoryContentDisplayController extends FileListViewController {
                     setupObservableList(directoryIterator, imageMap);
                     return Unit.INSTANCE;
                 });
-
-        loadImageThread.start();
     }
 
     /**

@@ -126,8 +126,12 @@ public class MainWindowController extends FileListViewController {
 
     private void setupIteratorFromDragAndDrop(List<File> files) {
         chosenDirectory = files.get(0);
+        Thread thread = createSetupIteratorFromDragAndDropThread(files);
+        thread.start();
+    }
 
-        Thread thread = SetupIteratorFromDragAndDropTask.SetupIteratorFromDragAndDropTaskFactory.createSetupIteratorThread(
+    private Thread createSetupIteratorFromDragAndDropThread(List<File> files) {
+        return SetupIteratorFromDragAndDropTask.SetupIteratorFromDragAndDropTaskFactory.createSetupIteratorThread(
                 this,
                 () -> {
                     if (files.size() > 1) {
@@ -142,8 +146,6 @@ public class MainWindowController extends FileListViewController {
                     }
                     return Unit.INSTANCE;
                 });
-
-        thread.start();
     }
 
     /**
@@ -162,10 +164,14 @@ public class MainWindowController extends FileListViewController {
         if (givenDirectory != null) {
             buildProgressBar.setProgress(0);
             chosenDirectory = givenDirectory;
-            SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorThread(this).start();
+            createSetupIteratorThread().start();
         }
 
         actionEvent.consume();
+    }
+
+    private Thread createSetupIteratorThread() {
+        return SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorThread(this);
     }
 
     public void setupIterator() {
