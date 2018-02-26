@@ -1,6 +1,5 @@
 package de.nihas101.imageToPdfConverter.gui.controller;
 
-import de.nihas101.imageToPdfConverter.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.MainWindow;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
@@ -10,6 +9,7 @@ import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
+import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.util.BuildProgressUpdater;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.ListChangeListenerFactory;
@@ -241,7 +241,7 @@ public class MainWindowController extends FileListViewController {
      *
      * @param isDisabled True to disable, false to enable input
      */
-    private void disableInput(boolean isDisabled) {
+    public void disableInput(boolean isDisabled) {
         progressIndicator.setVisible(isDisabled);
         imageListView.setDisable(isDisabled);
         buildButton.setDisable(isDisabled);
@@ -263,6 +263,7 @@ public class MainWindowController extends FileListViewController {
         } else notifyUser("Build cancelled by user", BLACK);
     }
 
+    /* TODO: Move this to own class */
     private Thread createPdfBuilderThread(PdfBuilder pdfBuilder) {
         return new Thread(() -> {
             disableInput(true);
@@ -339,14 +340,11 @@ public class MainWindowController extends FileListViewController {
         if (imageListView.getItems().size() == 0) return;
 
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
-            disableInput(true);
             int index = imageListView.getSelectionModel().getSelectedIndex();
             try {
                 createContentDisplayer(mainWindow.getDirectoryIterator()).displayContent(index, this);
             } catch (Exception exception) {
                 exception.printStackTrace();
-            } finally {
-                disableInput(false);
             }
         }
     }

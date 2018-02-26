@@ -1,15 +1,17 @@
 package de.nihas101.imageToPdfConverter.gui.subStages;
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
-import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator;
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
+import de.nihas101.imageToPdfConverter.tasks.CreateImageFilesIteratorTask;
 import javafx.scene.image.Image;
+import kotlin.Unit;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay.createDirectoryContentDisplay;
 import static de.nihas101.imageToPdfConverter.gui.subStages.ImageDisplay.createImageDisplay;
+import static javafx.application.Platform.runLater;
 
 /**
  * A class for displaying the content of a {@link DirectoryIterator}
@@ -41,7 +43,7 @@ public final class DirectoryIteratorDisplayer {
      */
     public void displayContent(int index, MainWindowController mainWindowController) {
         if (directoryIterator.getFile(index).isDirectory()) displayDirectory(index, mainWindowController);
-        else displayImage(index);
+        else displayImage(index, mainWindowController);
     }
 
     /**
@@ -50,13 +52,23 @@ public final class DirectoryIteratorDisplayer {
      * @param index The index of the directory to display
      */
     private void displayDirectory(int index, MainWindowController mainWindowController) {
-        DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
-                ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator(directoryIterator.getFile(index)),
-                index,
-                mainWindowController
-        );
+        Thread thread = CreateImageFilesIteratorTask.CreateImageFilesIteratorThreadFactory.createCreateImageFilesIteratorThread(
+                directoryIterator.getFile(index), (imageFilesIterator) -> {
+                    runLater(() -> {
+                        mainWindowController.disableInput(true);
+                        DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
+                                imageFilesIterator,
+                                index,
+                                mainWindowController
+                        );
 
-        directoryContentDisplay.displayContent();
+                        directoryContentDisplay.displayContent();
+                        mainWindowController.disableInput(false);
+                    });
+                    return Unit.INSTANCE;
+                });
+
+        thread.start();
     }
 
     /**
@@ -64,20 +76,24 @@ public final class DirectoryIteratorDisplayer {
      *
      * @param index The index of the image to display
      */
-    private void displayImage(int index) {
-        ImageDisplay imageDisplay;
+    private void displayImage(int index, MainWindowController mainWindowController) {
         File file = directoryIterator.getFile(index);
 
-        try {
-            imageDisplay = createImageDisplay(
-                    new Image(String.valueOf(file.toURI().toURL())),
-                    file.getName()
-            );
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return;
-        }
+        runLater(() -> {
+            mainWindowController.disableInput(true);
+            ImageDisplay imageDisplay;
+            try {
+                imageDisplay = createImageDisplay(
+                        new Image(String.valueOf(file.toURI().toURL())),
+                        file.getName()
+                );
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return;
+            }
 
-        imageDisplay.displayImage();
+            imageDisplay.displayImage();
+            mainWindowController.disableInput(false);
+        });
     }
 }

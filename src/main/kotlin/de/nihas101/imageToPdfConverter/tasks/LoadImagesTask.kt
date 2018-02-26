@@ -1,8 +1,7 @@
-package de.nihas101.imageToPdfConverter
+package de.nihas101.imageToPdfConverter.tasks
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.util.ImageMap
-import de.nihas101.imageToPdfConverter.util.LoadProgressUpdater
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import javafx.concurrent.Task
 
@@ -22,10 +21,10 @@ class LoadImagesTask(
         fun createLoadImagesThread(
                 directoryIterator: DirectoryIterator,
                 imageMap: ImageMap,
-                loadProgressUpdater: LoadProgressUpdater,
+                progressUpdater: ProgressUpdater,
                 after: () -> Unit
         ): Thread {
-            val thread = Thread(LoadImagesTask(directoryIterator, imageMap, loadProgressUpdater, after))
+            val thread = Thread(LoadImagesTask(directoryIterator, imageMap, progressUpdater, after))
             thread.isDaemon = true
             return thread
         }
