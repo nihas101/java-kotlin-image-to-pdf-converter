@@ -10,14 +10,16 @@ class ImageDirectoriesIterator private constructor() : DirectoryIterator() {
 
     override fun setupDirectory(directory: File) {
         super.setupDirectory(directory)
-        directories = setupDirectories(directory)
+        if (directory.isDirectory)
+            directories = setupDirectories(directory)
     }
 
-    private fun setupDirectories(directory: File) =
-            directory.listFiles().filter { file ->
-                if (cancelled) throw InterruptedException()
-                isImageDirectory(file)
-            }.toMutableList()
+    private fun setupDirectories(directory: File): MutableList<File> {
+        return directory.listFiles().filter { file ->
+            if (cancelled) throw InterruptedException()
+            isImageDirectory(file)
+        }.toMutableList()
+    }
 
     override fun numberOfFiles(): Int = directories.size
 

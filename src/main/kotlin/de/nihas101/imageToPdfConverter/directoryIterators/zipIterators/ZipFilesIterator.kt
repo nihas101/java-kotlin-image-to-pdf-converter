@@ -12,7 +12,15 @@ class ZipFilesIterator(private val deleteOnExit: Boolean) : DirectoryIterator() 
 
     override fun setupDirectory(directory: File) {
         super.setupDirectory(directory)
-        directory.listFiles().forEach { file ->
+
+        if (directory.isDirectory) unzipFilesInDirectory()
+
+        imageDirectoriesIterator = createImageDirectoriesIterator()
+        imageDirectoriesIterator.setupDirectory(directory)
+    }
+
+    private fun unzipFilesInDirectory() {
+        directory!!.listFiles().forEach { file ->
             if (cancelled) throw InterruptedException()
             val unzipInto = makeUnzipDirectory(file, deleteOnExit)
             if (ImageUnZipper.canUnzip(file)) {
@@ -20,9 +28,6 @@ class ZipFilesIterator(private val deleteOnExit: Boolean) : DirectoryIterator() 
                 imageUnZipper!!.unzip(unzipInto, true)
             }
         }
-
-        imageDirectoriesIterator = createImageDirectoriesIterator()
-        imageDirectoriesIterator.setupDirectory(directory)
     }
 
     private fun makeUnzipDirectory(file: File, deleteOnExit: Boolean): File {
