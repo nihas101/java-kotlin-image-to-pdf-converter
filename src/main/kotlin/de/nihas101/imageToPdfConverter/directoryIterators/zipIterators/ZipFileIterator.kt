@@ -7,26 +7,35 @@ import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZi
 import java.io.File
 
 
-class ZipFileIterator(private val file: File, deleteOnExit: Boolean) : DirectoryIterator() {
-    private val imageFilesIterator: ImageFilesIterator
+class ZipFileIterator(private val deleteOnExit: Boolean) : DirectoryIterator() {
+    private var imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator()
+    private var imageUnZipper: ImageUnZipper? = null
 
-    init {
+    override fun setupDirectory(directory: File) {
+        super.setupDirectory(directory)
         val unzipInto = makeUnzipDirectory(deleteOnExit)
         try {
-            createImageUnZipper(file).unzip(unzipInto, deleteOnExit)
+            imageUnZipper = createImageUnZipper(directory)
+            imageUnZipper!!.unzip(unzipInto, deleteOnExit)
         } catch (exception: ExtensionNotSupportedException) {
             /* Proceed with empty unzip directory */
         }
-        imageFilesIterator = ImageFilesIterator.createImageFilesIterator(unzipInto)
+        imageFilesIterator = ImageFilesIterator.createImageFilesIterator()
+        imageFilesIterator.setupDirectory(unzipInto)
     }
 
     private fun makeUnzipDirectory(deleteOnExit: Boolean): File {
-        val unzipDirectory = File("${file.parent}/${file.nameWithoutExtension}")
+        val unzipDirectory = File("${directory!!.parent}/${directory!!.nameWithoutExtension}")
 
         if (deleteOnExit) unzipDirectory.deleteOnExit()
         unzipDirectory.mkdir()
 
         return unzipDirectory
+    }
+
+    override fun cancelTask() {
+        super.cancelTask()
+        if (imageUnZipper != null) imageUnZipper!!.cancelTask()
     }
 
     override fun nextFile() = imageFilesIterator.nextFile()
@@ -50,8 +59,8 @@ class ZipFileIterator(private val file: File, deleteOnExit: Boolean) : Directory
     override fun resetIndex() = imageFilesIterator.resetIndex()
 
     companion object ZipFileIteratorFactory {
-        fun createZipFileIterator(file: File, deleteOnExit: Boolean): ZipFileIterator {
-            return ZipFileIterator(file, deleteOnExit)
+        fun createZipFileIterator(deleteOnExit: Boolean): ZipFileIterator {
+            return ZipFileIterator(deleteOnExit)
         }
     }
 }

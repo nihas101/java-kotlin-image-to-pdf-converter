@@ -2,6 +2,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.FileIsDirectoryException
+import de.nihas101.imageToPdfConverter.tasks.Cancellable
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -9,7 +10,9 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import javax.imageio.ImageIO
 
-class ImageUnZipper private constructor(private val zipInputStream: ZipInputStream) {
+class ImageUnZipper private constructor(private val zipInputStream: ZipInputStream) : Cancellable {
+    var cancelled = false
+
     fun unzip(unzipInto: File, deleteOnExit: Boolean = false) {
         unzip({ zipEntry -> createFile("${unzipInto.absolutePath}/${zipEntry.name}", deleteOnExit) })
         System.gc()
@@ -23,6 +26,7 @@ class ImageUnZipper private constructor(private val zipInputStream: ZipInputStre
         var zipEntry = zipInputStream.getNextEntry()
 
         while (zipEntry != null) {
+            if (cancelled) throw InterruptedException()
             try {
                 unzipImage(zipEntry, fileFactory)
             } catch (exception: FileIsDirectoryException) {
@@ -31,6 +35,10 @@ class ImageUnZipper private constructor(private val zipInputStream: ZipInputStre
 
             zipEntry = zipInputStream.getNextEntry()
         }
+    }
+
+    override fun cancelTask() {
+        cancelled = true
     }
 
     private fun unzipImage(zipEntry: ZipEntry, fileFactory: (ZipEntry) -> File) {

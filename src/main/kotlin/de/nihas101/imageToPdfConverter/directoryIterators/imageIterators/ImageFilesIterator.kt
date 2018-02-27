@@ -6,11 +6,18 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
-class ImageFilesIterator private constructor(private val directory: File) : DirectoryIterator() {
-    private var files: MutableList<File> =
-            if (directory.isDirectory) directory.listFiles().filter { file -> isImage(file) }.toMutableList()
-            else List(1, { _ -> directory }).filter { file -> isImage(file) }.toMutableList()
+class ImageFilesIterator private constructor() : DirectoryIterator() {
+    private var files: MutableList<File> = mutableListOf()
     private var currentIndex = 0
+
+    override fun setupDirectory(directory: File) {
+        super.setupDirectory(directory)
+        files = if (directory.isDirectory) directory.listFiles().filter { file ->
+            if (cancelled) throw InterruptedException()
+            isImage(file)
+        }.toMutableList()
+        else List(1, { _ -> directory }).filter { file -> isImage(file) }.toMutableList()
+    }
 
     override fun getFile(index: Int): File = files[index]
 
@@ -39,7 +46,7 @@ class ImageFilesIterator private constructor(private val directory: File) : Dire
 
     override fun nextFile(): File {
         if (currentIndex < files.size) return files[currentIndex++]
-        else throw NoMoreImagesException(directory)
+        else throw NoMoreImagesException(directory!!)
     }
 
     override fun resetIndex() {
@@ -48,10 +55,10 @@ class ImageFilesIterator private constructor(private val directory: File) : Dire
 
     override fun numberOfFiles(): Int = files.size
 
-    override fun getParentDirectory(): File = directory
+    override fun getParentDirectory(): File = directory!!
 
     companion object ImageFilesIteratorFactory {
-        fun createImageFilesIterator(directory: File): ImageFilesIterator = ImageFilesIterator(directory)
+        fun createImageFilesIterator(): ImageFilesIterator = ImageFilesIterator()
 
         fun isImage(file: File): Boolean {
             val image: BufferedImage?

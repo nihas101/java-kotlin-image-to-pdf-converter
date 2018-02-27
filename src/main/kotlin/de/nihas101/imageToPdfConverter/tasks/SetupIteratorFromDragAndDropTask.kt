@@ -1,18 +1,24 @@
 package de.nihas101.imageToPdfConverter.tasks
 
-import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController
+import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import java.io.File
 
-class SetupIteratorFromDragAndDropTask(mainWindowController: MainWindowController, private val after: () -> Unit) : SetupIteratorTask(mainWindowController) {
-    override fun call() {
-        super.call()
-        after()
-    }
+class SetupIteratorFromDragAndDropTask(
+        directoryIterator: DirectoryIterator,
+        directory: File,
+        before: () -> Unit,
+        after: () -> Unit
+) : SetupIteratorTask(directoryIterator, directory, before, after) {
 
-    companion object SetupIteratorFromDragAndDropThreadFactory {
-        fun createSetupIteratorThread(mainWindowController: MainWindowController, after: () -> Unit): Thread {
-            val thread = Thread(SetupIteratorFromDragAndDropTask(mainWindowController, after))
-            thread.isDaemon = true
-            return thread
+
+    companion object SetupIteratorFromDragAndDropTaskFactory {
+        fun createSetupIteratorTask(directoryIterator: DirectoryIterator, directory: File, before: () -> Unit, after: () -> Unit): SetupIteratorFromDragAndDropTask {
+            return SetupIteratorFromDragAndDropTask(
+                    directoryIterator,
+                    directory,
+                    before,
+                    after
+            )
         }
     }
 }

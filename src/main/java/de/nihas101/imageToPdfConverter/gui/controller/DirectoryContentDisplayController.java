@@ -56,21 +56,22 @@ public class DirectoryContentDisplayController extends FileListViewController {
         this.directoryIteratorIndex = directoryIteratorIndex;
         this.directoryContentDisplayStage = directoryContentDisplayStage;
         this.mainWindowController = mainWindowController;
-        this.imageToPdfOptions = mainWindowController.imageToPdfOptions.copyForJava();
+        this.imageToPdfOptions = mainWindowController.mainWindow.imageToPdfOptions.copyForJava();
 
-        Thread loadImageThread = createLoadImagesThread(createImageMap());
-        loadImageThread.start();
+        startLoadImagesThread(createImageMap());
     }
 
-    private Thread createLoadImagesThread(ImageMap imageMap) {
-        return LoadImagesTask.LoadImagesThreadFactory.createLoadImagesThread(
-                directoryIterator,
+    private void startLoadImagesThread(ImageMap imageMap) {
+        LoadImagesTask loadImagesTask = LoadImagesTask.LoadImagesTaskFactory.createLoadImagesTask(
                 imageMap,
+                directoryIterator,
                 new TrivialProgressUpdater(),
                 () -> {
                     setupObservableList(directoryIterator, imageMap);
                     return Unit.INSTANCE;
                 });
+
+        mainWindowController.mainWindow.taskManager.start(loadImagesTask, true);
     }
 
     /**
@@ -120,9 +121,10 @@ public class DirectoryContentDisplayController extends FileListViewController {
     }
 
     public void buildPDF(ActionEvent actionEvent) {
-        mainWindowController.saveFileChooser.setInitialFileName(directoryIterator.getParentDirectory().getName() + ".pdf");
-        mainWindowController.saveFileChooser.setInitialDirectory(directoryIterator.getParentDirectory());
-        File saveFile = mainWindowController.saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
+        File saveFile = mainWindowController.mainWindow.openSaveFileChooser(
+                directoryIterator.getParentDirectory(),
+                directoryIterator.getParentDirectory().getName() + ".pdf"
+        );
 
         if (saveFile != null) {
             imageToPdfOptions.setSaveLocation(saveFile);

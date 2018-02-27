@@ -6,15 +6,28 @@ import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDi
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.createImageUnZipper
 import java.io.File
 
-class ZipFilesIterator(directory: File, deleteOnExit: Boolean) : DirectoryIterator() {
-    private var imageDirectoriesIterator: ImageDirectoriesIterator
+class ZipFilesIterator(private val deleteOnExit: Boolean) : DirectoryIterator() {
+    private var imageDirectoriesIterator: ImageDirectoriesIterator = createImageDirectoriesIterator()
+    private var imageUnZipper: ImageUnZipper? = null
 
-    init {
-        directory.listFiles().forEach { file ->
+    override fun setupDirectory(directory: File) {
+        super.setupDirectory(directory)
+
+        if (directory.isDirectory) unzipFilesInDirectory()
+
+        imageDirectoriesIterator = createImageDirectoriesIterator()
+        imageDirectoriesIterator.setupDirectory(directory)
+    }
+
+    private fun unzipFilesInDirectory() {
+        directory!!.listFiles().forEach { file ->
+            if (cancelled) throw InterruptedException()
             val unzipInto = makeUnzipDirectory(file, deleteOnExit)
-            if (ImageUnZipper.canUnzip(file)) createImageUnZipper(file).unzip(unzipInto, true)
+            if (ImageUnZipper.canUnzip(file)) {
+                imageUnZipper = createImageUnZipper(file)
+                imageUnZipper!!.unzip(unzipInto, true)
+            }
         }
-        imageDirectoriesIterator = createImageDirectoriesIterator(directory)
     }
 
     private fun makeUnzipDirectory(file: File, deleteOnExit: Boolean): File {
@@ -24,6 +37,11 @@ class ZipFilesIterator(directory: File, deleteOnExit: Boolean) : DirectoryIterat
         unzipDirectory.mkdir()
 
         return unzipDirectory
+    }
+
+    override fun cancelTask() {
+        super.cancelTask()
+        if (imageUnZipper != null) imageUnZipper!!.cancelTask()
     }
 
     override fun nextFile() = imageDirectoriesIterator.nextFile()
@@ -47,8 +65,8 @@ class ZipFilesIterator(directory: File, deleteOnExit: Boolean) : DirectoryIterat
     override fun resetIndex() = imageDirectoriesIterator.resetIndex()
 
     companion object ZipFilesIteratorFactory {
-        fun createZipFilesIterator(directory: File, deleteOnExit: Boolean): ZipFilesIterator {
-            return ZipFilesIterator(directory, deleteOnExit)
+        fun createZipFilesIterator(deleteOnExit: Boolean): ZipFilesIterator {
+            return ZipFilesIterator(deleteOnExit)
         }
     }
 }

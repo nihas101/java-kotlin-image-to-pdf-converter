@@ -23,7 +23,7 @@ private fun setTitle(directoryChooser: DirectoryChooser, iteratorOptions: Iterat
 
 fun createZipFileChooser(): FileChooser {
     val fileChooser = FileChooser()
-    fileChooser.title = "Choose a zip-file to turn into a PDF"
+    fileChooser.title = "Choose a zip-directory to turn into a PDF"
     return fileChooser
 }
 

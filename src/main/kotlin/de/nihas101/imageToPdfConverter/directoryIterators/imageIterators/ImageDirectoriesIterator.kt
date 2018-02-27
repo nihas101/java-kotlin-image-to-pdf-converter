@@ -4,16 +4,26 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
 import java.io.File
 
-class ImageDirectoriesIterator private constructor(private val directory: File) : DirectoryIterator() {
-    private var directories: MutableList<File> = setupDirectories(directory)
+class ImageDirectoriesIterator private constructor() : DirectoryIterator() {
+    private var directories: MutableList<File> = mutableListOf()
     private var currentIndex = 0
 
-    private fun setupDirectories(directory: File) =
-            directory.listFiles().filter { file -> isImageDirectory(file) }.toMutableList()
+    override fun setupDirectory(directory: File) {
+        super.setupDirectory(directory)
+        if (directory.isDirectory)
+            directories = setupDirectories(directory)
+    }
+
+    private fun setupDirectories(directory: File): MutableList<File> {
+        return directory.listFiles().filter { file ->
+            if (cancelled) throw InterruptedException()
+            isImageDirectory(file)
+        }.toMutableList()
+    }
 
     override fun numberOfFiles(): Int = directories.size
 
-    override fun getParentDirectory(): File = directory
+    override fun getParentDirectory(): File = directory!!
 
     override fun getFiles(): MutableList<File> = directories
 
@@ -39,7 +49,7 @@ class ImageDirectoriesIterator private constructor(private val directory: File) 
 
     override fun nextFile(): File {
         if (currentIndex < directories.size) return directories[currentIndex++]
-        throw NoMoreDirectoriesException(directory)
+        throw NoMoreDirectoriesException(directory!!)
     }
 
     override fun resetIndex() {
@@ -56,6 +66,6 @@ class ImageDirectoriesIterator private constructor(private val directory: File) 
     }
 
     companion object ImageDirectoriesIteratorFactory {
-        fun createImageDirectoriesIterator(directory: File): ImageDirectoriesIterator = ImageDirectoriesIterator(directory)
+        fun createImageDirectoriesIterator(): ImageDirectoriesIterator = ImageDirectoriesIterator()
     }
 }

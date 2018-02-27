@@ -90,5 +90,9 @@ class ZipFilesIteratorTest {
         }
     }
 
-    private fun createTestIterator() = createZipFilesIterator(File("src/test/resources/zip"), true)
+    private fun createTestIterator(): ZipFilesIterator {
+        val zipFilesIterator = createZipFilesIterator(true)
+        zipFilesIterator.setupDirectory(File("src/test/resources/zip"))
+        return zipFilesIterator
+    }
 }

@@ -2,7 +2,8 @@ package de.nihas101.imageToPdfConverter.gui.subStages;
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
-import de.nihas101.imageToPdfConverter.tasks.CreateImageFilesIteratorTask;
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
+import de.nihas101.imageToPdfConverter.tasks.SetupIteratorTask;
 import javafx.scene.image.Image;
 import kotlin.Unit;
 
@@ -12,6 +13,7 @@ import java.net.MalformedURLException;
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay.createDirectoryContentDisplay;
 import static de.nihas101.imageToPdfConverter.gui.subStages.ImageDisplay.createImageDisplay;
 import static javafx.application.Platform.runLater;
+import static javafx.scene.paint.Color.BLACK;
 
 /**
  * A class for displaying the content of a {@link DirectoryIterator}
@@ -52,10 +54,22 @@ public final class DirectoryIteratorDisplayer {
      * @param index The index of the directory to display
      */
     private void displayDirectory(int index, MainWindowController mainWindowController) {
-        Thread thread = CreateImageFilesIteratorTask.CreateImageFilesIteratorThreadFactory.createCreateImageFilesIteratorThread(
-                directoryIterator.getFile(index), (imageFilesIterator) -> {
+        DirectoryIterator imageFilesIterator = DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(
+                new IteratorOptions()
+        );
+        SetupIteratorTask setupIteratorTask = SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorTask(
+                imageFilesIterator,
+                directoryIterator.getFile(index),
+                () -> {
                     runLater(() -> {
                         mainWindowController.disableInput(true);
+                        mainWindowController.notifyUser("Preparing files...", BLACK);
+                    });
+                    return Unit.INSTANCE;
+                },
+                () -> {
+                    runLater(() -> {
+                        mainWindowController.notifyUser("Files: " + directoryIterator.numberOfFiles(), BLACK);
                         DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
                                 imageFilesIterator,
                                 index,
@@ -66,9 +80,10 @@ public final class DirectoryIteratorDisplayer {
                         mainWindowController.disableInput(false);
                     });
                     return Unit.INSTANCE;
-                });
+                }
+        );
 
-        thread.start();
+        mainWindowController.mainWindow.taskManager.start(setupIteratorTask, true);
     }
 
     /**

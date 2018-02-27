@@ -1,5 +1,6 @@
 package de.nihas101.imageToPdfConverter.util;
 
+import de.nihas101.imageToPdfConverter.tasks.Cancellable;
 import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,11 +18,13 @@ import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_MAP_MAX_SIZE;
 /**
  * A class for holding {@link Image}s
  */
-public class ImageMap {
+public class ImageMap implements Cancellable {
+    private boolean cancelled = false;
+
     /**
      * The {@link Map} mapping an absolute path to the corresponding {@link Image}
      */
-    private final LinkedHashMap<String, Image> imageMap; // LinkedHashmap is used to keep entries ordered
+    private final LinkedHashMap<String, Image> imageMap; // LinkedHashMap is used to keep entries ordered
 
     private ImageMap(LinkedHashMap<String, Image> imageMap) {
         this.imageMap = imageMap;
@@ -47,7 +50,7 @@ public class ImageMap {
      * @param files           The files to load {@link Image}s from
      * @param progressUpdater The {@link ProgressUpdater} to deliver updates
      */
-    public void loadImages(List<File> files, ProgressUpdater progressUpdater) {
+    public void loadImages(List<File> files, ProgressUpdater progressUpdater) throws InterruptedException {
         imageMap.clear();
         if (files.size() == 0) return;
 
@@ -59,7 +62,7 @@ public class ImageMap {
      *
      * @param files The files to load {@link Image}s from
      */
-    public void loadImages(List<File> files) {
+    public void loadImages(List<File> files) throws InterruptedException {
         if (files.size() == 0) return;
 
         putImagesIntoMap(files, null);
@@ -75,9 +78,11 @@ public class ImageMap {
      * @param files           The {@link File}s to load the {@link Image}s from
      * @param progressUpdater The {@link ProgressUpdater} to deliver updates
      */
-    private void putImagesIntoMap(List<File> files, ProgressUpdater progressUpdater) {
-        for (int index = 0; index < files.size(); index++)
+    private void putImagesIntoMap(List<File> files, ProgressUpdater progressUpdater) throws InterruptedException {
+        for (int index = 0; index < files.size(); index++) {
+            if (cancelled) throw new InterruptedException();
             putImageIntoMapIfFile(files.get(index), progressUpdater, index);
+        }
     }
 
     private void putImageIntoMapIfFile(File file, ProgressUpdater progressUpdater, int progress) {
@@ -159,5 +164,10 @@ public class ImageMap {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public void cancelTask() {
+        cancelled = true;
     }
 }
