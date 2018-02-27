@@ -12,7 +12,11 @@ open class SetupIteratorTask(
 
     override fun call() {
         before()
-        directoryIterator.setupDirectory(directory)
+        try {
+            directoryIterator.setupDirectory(directory)
+        } catch (exception: InterruptedException) {
+            /* The task was cancelled */
+        }
         after()
     }
 

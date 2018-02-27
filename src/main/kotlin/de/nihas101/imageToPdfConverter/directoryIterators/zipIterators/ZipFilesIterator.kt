@@ -8,14 +8,19 @@ import java.io.File
 
 class ZipFilesIterator(private val deleteOnExit: Boolean) : DirectoryIterator() {
     private var imageDirectoriesIterator: ImageDirectoriesIterator = createImageDirectoriesIterator()
+    private var imageUnZipper: ImageUnZipper? = null
 
     override fun setupDirectory(directory: File) {
         super.setupDirectory(directory)
         directory.listFiles().forEach { file ->
             if (cancelled) throw InterruptedException()
             val unzipInto = makeUnzipDirectory(file, deleteOnExit)
-            if (ImageUnZipper.canUnzip(file)) createImageUnZipper(file).unzip(unzipInto, true)
+            if (ImageUnZipper.canUnzip(file)) {
+                imageUnZipper = createImageUnZipper(file)
+                imageUnZipper!!.unzip(unzipInto, true)
+            }
         }
+
         imageDirectoriesIterator = createImageDirectoriesIterator()
         imageDirectoriesIterator.setupDirectory(directory)
     }
@@ -27,6 +32,11 @@ class ZipFilesIterator(private val deleteOnExit: Boolean) : DirectoryIterator() 
         unzipDirectory.mkdir()
 
         return unzipDirectory
+    }
+
+    override fun cancelTask() {
+        super.cancelTask()
+        if (imageUnZipper != null) imageUnZipper!!.cancelTask()
     }
 
     override fun nextFile() = imageDirectoriesIterator.nextFile()

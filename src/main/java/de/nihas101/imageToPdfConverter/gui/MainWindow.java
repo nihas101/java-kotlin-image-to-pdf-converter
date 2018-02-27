@@ -60,6 +60,7 @@ public final class MainWindow extends Application {
         GridPane root = loader.load();
         mainWindowController = loader.getController();
         setupMainWindow();
+        setupOnExit(primaryStage);
         mainWindowController.setup(this);
 
         /* Create Scene */
@@ -80,6 +81,10 @@ public final class MainWindow extends Application {
                 new IteratorOptions(),
                 new PdfOptions()
         );
+    }
+
+    private void setupOnExit(Stage stage) {
+        stage.setOnCloseRequest(event -> taskManager.cancelAllTasks());
     }
 
     public File openSaveFileChooser(File initialDirectory, String initialFileName) {

@@ -9,9 +9,7 @@ import java.io.File
 import java.nio.file.Paths
 
 class ImageDirectoriesPdfBuilder : PdfBuilder() {
-    companion object PdfBuilderFactory {
-        fun createImageDirectoriesPdfBuilder() = ImageDirectoriesPdfBuilder()
-    }
+    var imagePdfBuilder: ImagePdfBuilder? = null
 
     override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) {
         directoryIterator.resetIndex()
@@ -37,7 +35,17 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
             val nextImageToPdfOptions = imageToPdfOptions.copy()
             nextImageToPdfOptions.setSaveLocation(file)
 
-            createImagePdfBuilder().build(directoryIterator, nextImageToPdfOptions)
+            imagePdfBuilder = createImagePdfBuilder()
+            imagePdfBuilder!!.build(directoryIterator, nextImageToPdfOptions)
         }
+    }
+
+    override fun cancelTask() {
+        super.cancelTask()
+        imagePdfBuilder!!.cancelTask()
+    }
+
+    companion object PdfBuilderFactory {
+        fun createImageDirectoriesPdfBuilder() = ImageDirectoriesPdfBuilder()
     }
 }

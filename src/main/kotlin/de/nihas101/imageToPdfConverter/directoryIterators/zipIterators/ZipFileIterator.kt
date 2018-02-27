@@ -9,12 +9,14 @@ import java.io.File
 
 class ZipFileIterator(private val deleteOnExit: Boolean) : DirectoryIterator() {
     private var imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator()
+    private var imageUnZipper: ImageUnZipper? = null
 
     override fun setupDirectory(directory: File) {
         super.setupDirectory(directory)
         val unzipInto = makeUnzipDirectory(deleteOnExit)
         try {
-            createImageUnZipper(directory).unzip(unzipInto, deleteOnExit)
+            imageUnZipper = createImageUnZipper(directory)
+            imageUnZipper!!.unzip(unzipInto, deleteOnExit)
         } catch (exception: ExtensionNotSupportedException) {
             /* Proceed with empty unzip directory */
         }
@@ -29,6 +31,11 @@ class ZipFileIterator(private val deleteOnExit: Boolean) : DirectoryIterator() {
         unzipDirectory.mkdir()
 
         return unzipDirectory
+    }
+
+    override fun cancelTask() {
+        super.cancelTask()
+        if (imageUnZipper != null) imageUnZipper!!.cancelTask()
     }
 
     override fun nextFile() = imageFilesIterator.nextFile()

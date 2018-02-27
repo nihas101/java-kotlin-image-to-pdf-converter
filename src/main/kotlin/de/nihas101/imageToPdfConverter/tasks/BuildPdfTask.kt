@@ -16,7 +16,11 @@ class BuildPdfTask(
 
     override fun call() {
         before()
-        pdfBuilder.build(directoryIterator, imageToPdfOptions, progressUpdater)
+        try {
+            pdfBuilder.build(directoryIterator, imageToPdfOptions, progressUpdater)
+        } catch (exception: InterruptedException) {
+            /* The task was cancelled */
+        }
         after()
     }
 

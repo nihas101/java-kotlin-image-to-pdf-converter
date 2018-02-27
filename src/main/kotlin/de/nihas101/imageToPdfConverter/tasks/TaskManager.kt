@@ -6,6 +6,10 @@ class TaskManager private constructor(private val tasks: MutableList<Cancellable
         startThread(task, isDaemon)
     }
 
+    fun cancelAllTasks() {
+        tasks.forEach { task -> task.cancelTask() }
+    }
+
     private fun add(task: CancellableTask) {
         tasks.removeAll(tasks.filter { task.isDone })
         tasks.add(task)

@@ -14,7 +14,12 @@ class LoadImagesTask(
 
     override fun call() {
         before()
-        imageMap.loadImages(directoryIterator.getFiles(), updater)
+        try {
+            imageMap.loadImages(directoryIterator.getFiles(), updater)
+        } catch (exception: InterruptedException) {
+            /* The task was cancelled */
+        }
+
         after()
     }
 
