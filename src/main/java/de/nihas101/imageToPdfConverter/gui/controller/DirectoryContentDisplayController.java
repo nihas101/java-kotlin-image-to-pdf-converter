@@ -121,7 +121,10 @@ public class DirectoryContentDisplayController extends FileListViewController {
     }
 
     public void buildPDF(ActionEvent actionEvent) {
-        File saveFile = mainWindowController.mainWindow.openSaveFileChooser(directoryIterator.getParentDirectory());
+        File saveFile = mainWindowController.mainWindow.openSaveFileChooser(
+                directoryIterator.getParentDirectory(),
+                directoryIterator.getParentDirectory().getName() + ".pdf"
+        );
 
         if (saveFile != null) {
             imageToPdfOptions.setSaveLocation(saveFile);

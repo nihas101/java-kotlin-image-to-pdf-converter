@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
+import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createSaveFileChooser;
@@ -26,6 +27,7 @@ import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
 
 
 public final class MainWindow extends Application {
+    private MainWindowController mainWindowController;
     private Scene scene;
 
     private DirectoryIterator directoryIterator;
@@ -56,7 +58,7 @@ public final class MainWindow extends Application {
         /* Load root-node */
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
         GridPane root = loader.load();
-        MainWindowController mainWindowController = loader.getController();
+        mainWindowController = loader.getController();
         setupMainWindow();
         mainWindowController.setup(this);
 
@@ -80,8 +82,8 @@ public final class MainWindow extends Application {
         );
     }
 
-    public File openSaveFileChooser(File initialDirectory) {
-        saveFileChooser.setInitialFileName(directoryIterator.getParentDirectory().getName() + ".pdf");
+    public File openSaveFileChooser(File initialDirectory, String initialFileName) {
+        saveFileChooser.setInitialFileName(initialFileName);
         saveFileChooser.setInitialDirectory(initialDirectory);
         return saveFileChooser.showSaveDialog(scene.getWindow());
     }
@@ -91,6 +93,14 @@ public final class MainWindow extends Application {
         directoryChooser.setInitialDirectory(initialDirectory);
         directoryChooser.setTitle("Choose a folder to save the PDFs in");
         return directoryChooser.showDialog(scene.getWindow());
+    }
+
+    public void openContentDisplay(int index) {
+        try {
+            createContentDisplayer(directoryIterator).displayContent(index, mainWindowController);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     public void openOptionsMenu() {

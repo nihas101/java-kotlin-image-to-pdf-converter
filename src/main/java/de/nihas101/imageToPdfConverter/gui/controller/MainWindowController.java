@@ -34,7 +34,6 @@ import kotlin.Unit;
 import java.io.File;
 import java.util.List;
 
-import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createZipFileChooser;
@@ -285,7 +284,10 @@ public class MainWindowController extends FileListViewController {
      * Builds a single {@link de.nihas101.imageToPdfConverter.pdf.ImagePdf}s
      */
     private void buildSinglePdf() {
-        File saveFile = mainWindow.openSaveFileChooser(mainWindow.chosenDirectory.getParentFile());
+        File saveFile = mainWindow.openSaveFileChooser(
+                mainWindow.chosenDirectory.getParentFile(),
+                mainWindow.getDirectoryIterator().getParentDirectory().getName() + ".pdf"
+        );
 
         if (saveFile != null) {
             mainWindow.setSaveLocation(saveFile);
@@ -368,11 +370,7 @@ public class MainWindowController extends FileListViewController {
 
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
             int index = imageListView.getSelectionModel().getSelectedIndex();
-            try {
-                createContentDisplayer(mainWindow.getDirectoryIterator()).displayContent(index, this);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
+            mainWindow.openContentDisplay(index);
         }
     }
 
