@@ -6,9 +6,6 @@ import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
-import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
-import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
-import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
 import de.nihas101.imageToPdfConverter.tasks.BuildPdfTask;
 import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorFromDragAndDropTask;
@@ -40,8 +37,8 @@ import java.util.List;
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
 import static de.nihas101.imageToPdfConverter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
-import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.*;
-import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
+import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
+import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createZipFileChooser;
 import static javafx.application.Platform.runLater;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.*;
@@ -77,13 +74,6 @@ public class MainWindowController extends FileListViewController {
      */
     public void setup(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-        mainWindow.saveFileChooser = createSaveFileChooser();
-        mainWindow.imageMap = createImageMap();
-
-        mainWindow.imageToPdfOptions = ImageToPdfOptions.OptionsFactory.createOptions(
-                new IteratorOptions(),
-                new PdfOptions()
-        );
 
         listChangeListenerFactory = ListChangeListenerFactory.ListChangeListenerFactoryFactory
                 .createListChangeListenerFactory(imageListView, mainWindow.imageMap);
@@ -269,10 +259,14 @@ public class MainWindowController extends FileListViewController {
     public void buildPdf(ActionEvent actionEvent) {
         if (!valuesSetForBuilding()) return;
 
-        if (mainWindow.imageToPdfOptions.getIteratorOptions().getMultipleDirectories()) buildMultiplePdf();
+        if (userWantsMultiplePDFs()) buildMultiplePdf();
         else buildSinglePdf();
 
         actionEvent.consume();
+    }
+
+    private boolean userWantsMultiplePDFs() {
+        return mainWindow.imageToPdfOptions.getIteratorOptions().getMultipleDirectories();
     }
 
     /**
@@ -292,9 +286,7 @@ public class MainWindowController extends FileListViewController {
      * Builds a single {@link de.nihas101.imageToPdfConverter.pdf.ImagePdf}s
      */
     private void buildSinglePdf() {
-        mainWindow.saveFileChooser.setInitialFileName(mainWindow.getDirectoryIterator().getParentDirectory().getName() + ".pdf");
-        mainWindow.saveFileChooser.setInitialDirectory(mainWindow.chosenDirectory.getParentFile());
-        File saveFile = mainWindow.saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
+        File saveFile = mainWindow.openSaveFileChooser(mainWindow.chosenDirectory.getParentFile());
 
         if (saveFile != null) {
             setSaveLocation(saveFile);
@@ -330,10 +322,7 @@ public class MainWindowController extends FileListViewController {
      * Builds multiple {@link de.nihas101.imageToPdfConverter.pdf.ImagePdf}s
      */
     private void buildMultiplePdf() {
-        DirectoryChooser directoryChooser = createDirectoryChooser(mainWindow.imageToPdfOptions.getIteratorOptions());
-        directoryChooser.setInitialDirectory(mainWindow.getDirectoryIterator().getParentDirectory());
-        directoryChooser.setTitle("Choose a folder to save the PDFs in");
-        File saveFile = directoryChooser.showDialog(buildButton.getScene().getWindow());
+        File saveFile = mainWindow.openDirectoryChooser(mainWindow.getDirectoryIterator().getParentDirectory());
 
         if (saveFile != null) {
             setSaveLocation(saveFile);
