@@ -13,5 +13,6 @@ abstract class CancellableTask(
 
     override fun cancelTask() {
         cancellable.cancelTask()
+        this.cancel()
     }
 }

@@ -3,7 +3,7 @@ package de.nihas101.imageToPdfConverter.tasks
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import java.io.File
 
-class SetupIteratorFromDragAndDropTask(
+class SetupIteratorFromDragAndDropTask private constructor(
         directoryIterator: DirectoryIterator,
         directory: File,
         before: () -> Unit,

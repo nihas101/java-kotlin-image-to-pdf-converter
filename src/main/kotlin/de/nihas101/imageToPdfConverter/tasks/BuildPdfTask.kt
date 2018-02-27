@@ -5,7 +5,7 @@ import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 
-class BuildPdfTask(
+class BuildPdfTask private constructor(
         private val pdfBuilder: PdfBuilder,
         private val directoryIterator: DirectoryIterator,
         private val imageToPdfOptions: ImageToPdfOptions,

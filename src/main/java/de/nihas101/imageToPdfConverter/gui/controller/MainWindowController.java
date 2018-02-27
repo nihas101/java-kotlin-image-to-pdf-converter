@@ -3,8 +3,6 @@ package de.nihas101.imageToPdfConverter.gui.controller;
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.MainWindow;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
-import de.nihas101.imageToPdfConverter.pdf.builders.ImageDirectoriesPdfBuilder;
-import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
 import de.nihas101.imageToPdfConverter.tasks.BuildPdfTask;
 import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
@@ -286,9 +284,21 @@ public class MainWindowController extends FileListViewController {
                 mainWindow.getDirectoryIterator().getParentDirectory().getName() + ".pdf"
         );
 
+        buildPdf(saveFile);
+    }
+
+    /**
+     * Builds multiple {@link de.nihas101.imageToPdfConverter.pdf.ImagePdf}s
+     */
+    private void buildMultiplePdf() {
+        File saveFile = mainWindow.openDirectoryChooser(mainWindow.getDirectoryIterator().getParentDirectory());
+        buildPdf(saveFile);
+    }
+
+    private void buildPdf(File saveFile) {
         if (saveFile != null) {
             mainWindow.setSaveLocation(saveFile);
-            startPdfBuilderThread(ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder());
+            startPdfBuilderThread(PdfBuilder.PdfBuilderFactory.createPdfBBuilder(mainWindow.imageToPdfOptions.getIteratorOptions()));
         } else notifyUser("Build cancelled by user", BLACK);
     }
 
@@ -314,18 +324,6 @@ public class MainWindowController extends FileListViewController {
         );
 
         mainWindow.taskManager.start(buildPdfTask, true);
-    }
-
-    /**
-     * Builds multiple {@link de.nihas101.imageToPdfConverter.pdf.ImagePdf}s
-     */
-    private void buildMultiplePdf() {
-        File saveFile = mainWindow.openDirectoryChooser(mainWindow.getDirectoryIterator().getParentDirectory());
-
-        if (saveFile != null) {
-            mainWindow.setSaveLocation(saveFile);
-            startPdfBuilderThread(ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder());
-        } else notifyUser("Build cancelled by user", BLACK);
     }
 
     /**

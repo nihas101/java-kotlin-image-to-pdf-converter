@@ -3,7 +3,6 @@ package de.nihas101.imageToPdfConverter.gui.controller;
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
-import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;

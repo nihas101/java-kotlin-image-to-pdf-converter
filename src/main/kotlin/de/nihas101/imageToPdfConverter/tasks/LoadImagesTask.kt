@@ -4,11 +4,11 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.util.ImageMap
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 
-class LoadImagesTask(
-        before: () -> Unit,
+class LoadImagesTask private constructor(
         private val imageMap: ImageMap,
         private val directoryIterator: DirectoryIterator,
         private val updater: ProgressUpdater,
+        before: () -> Unit,
         after: () -> Unit
 ) : CancellableTask(before, imageMap, after) {
 
@@ -30,7 +30,7 @@ class LoadImagesTask(
                 progressUpdater: ProgressUpdater,
                 after: () -> Unit
         ): LoadImagesTask {
-            return LoadImagesTask({}, imageMap, directoryIterator, progressUpdater, after)
+            return LoadImagesTask(imageMap, directoryIterator, progressUpdater, {}, after)
         }
     }
 }
