@@ -3,7 +3,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction
 import com.itextpdf.kernel.pdf.CompressionConstants.*
 import com.itextpdf.kernel.pdf.PdfVersion.*
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfActionException
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 
 class IteratorBuildAction private constructor(
@@ -79,7 +79,7 @@ class IteratorBuildAction private constructor(
         ): IteratorBuildAction {
             if (isFormedCorrectly(modificationArguments))
                 return IteratorBuildAction(modificationArguments, imageToPdfOptions)
-            else throw MalformedPdfModificationException(modificationArguments)
+            else throw MalformedPdfActionException(modificationArguments)
         }
 
         internal fun isLeadingIteratorArgument(argument: String) = "b" == argument || "build" == argument

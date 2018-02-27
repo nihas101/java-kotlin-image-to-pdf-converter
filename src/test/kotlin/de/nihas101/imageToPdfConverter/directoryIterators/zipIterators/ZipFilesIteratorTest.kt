@@ -1,7 +1,9 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
+import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
-import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFilesIterator.ZipFilesIteratorFactory.createZipFilesIterator
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
@@ -60,6 +62,15 @@ class ZipFilesIteratorTest {
     }
 
     @Test
+    fun addIndex() {
+        val zipFilesIterator = createTestIterator()
+
+        zipFilesIterator.add(0, File("src/test/resources/images"))
+
+        assertEquals("images", zipFilesIterator.getFile(0).name)
+    }
+
+    @Test
     fun addAll() {
         val zipFilesIterator = createTestIterator()
 
@@ -90,9 +101,10 @@ class ZipFilesIteratorTest {
         }
     }
 
-    private fun createTestIterator(): ZipFilesIterator {
-        val zipFilesIterator = createZipFilesIterator(true)
-        zipFilesIterator.setupDirectory(File("src/test/resources/zip"))
-        return zipFilesIterator
+    private fun createTestIterator(): DirectoryIterator {
+        return createDirectoryIterator(
+                File("src/test/resources/zip"),
+                IteratorOptions(true, true, true)
+        )
     }
 }

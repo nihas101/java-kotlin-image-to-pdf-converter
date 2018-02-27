@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfActionException
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 
 abstract class IteratorAction {
@@ -9,7 +9,7 @@ abstract class IteratorAction {
 
     companion object PdfModificationFactory {
         fun createIteratorAction(modificationArguments: List<String>, imageToPdfOptions: ImageToPdfOptions): IteratorAction {
-            if (modificationArguments.isEmpty()) throw MalformedPdfModificationException(modificationArguments)
+            if (modificationArguments.isEmpty()) throw MalformedPdfActionException(modificationArguments)
 
             return when {
                 IteratorMoveAction.isLeadingIteratorArgument(modificationArguments[0]) ->
@@ -18,7 +18,7 @@ abstract class IteratorAction {
                     IteratorRemoveAction.createIteratorRemoveModification(modificationArguments)
                 IteratorBuildAction.isLeadingIteratorArgument(modificationArguments[0]) ->
                     IteratorBuildAction.createIteratorBuildModification(modificationArguments, imageToPdfOptions)
-                else -> throw MalformedPdfModificationException(modificationArguments)
+                else -> throw MalformedPdfActionException(modificationArguments)
             }
         }
 

@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfActionException
 
 class IteratorMoveAction private constructor(pdfModificationArguments: List<String>) : IteratorAction() {
     private val moveFromIndex: Int = pdfModificationArguments[1].toInt()
@@ -17,7 +17,7 @@ class IteratorMoveAction private constructor(pdfModificationArguments: List<Stri
     companion object IteratorMoveModificationFactory {
         fun createIteratorMoveModification(modificationArguments: List<String>): IteratorMoveAction {
             if (isFormedCorrectly(modificationArguments)) return IteratorMoveAction(modificationArguments)
-            else throw MalformedPdfModificationException(modificationArguments)
+            else throw MalformedPdfActionException(modificationArguments)
         }
 
         internal fun isLeadingIteratorArgument(argument: String) = "m" == argument || "move" == argument

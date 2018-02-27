@@ -1,7 +1,9 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
+import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
-import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFileIterator.ZipFileIteratorFactory.createZipFileIterator
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.fail
 import org.junit.Test
@@ -24,7 +26,8 @@ class ZipFileIteratorTest {
     @Test
     fun getFiles() {
         val zipFileIterator = createTestIterator()
-        assertEquals("1.jpg", zipFileIterator.getFile(0).name)
+        assertEquals("[1.jpg, 2.png, 3.png, の.png]",
+                zipFileIterator.getFiles().map { file -> file.name }.toString())
     }
 
     @Test
@@ -39,6 +42,13 @@ class ZipFileIteratorTest {
         val zipFileIterator = createTestIterator()
         zipFileIterator.add(File("src/test/resources/images/1.jpg"))
         assertEquals("1.jpg", zipFileIterator.getFile(4).name)
+    }
+
+    @Test
+    fun addIndex() {
+        val zipFileIterator = createTestIterator()
+        zipFileIterator.add(0, File("src/test/resources/images/1.jpg"))
+        assertEquals("1.jpg", zipFileIterator.getFile(0).name)
     }
 
     @Test
@@ -81,9 +91,10 @@ class ZipFileIteratorTest {
         }
     }
 
-    private fun createTestIterator(): ZipFileIterator {
-        val zipFileIterator = createZipFileIterator(true)
-        zipFileIterator.setupDirectory(File("src/test/resources/zip/images.zip"))
-        return zipFileIterator
+    private fun createTestIterator(): DirectoryIterator {
+        return createDirectoryIterator(
+                File("src/test/resources/zip/images.zip"),
+                IteratorOptions(zipFiles = true, deleteOnExit = true)
+        )
     }
 }

@@ -2,6 +2,7 @@ package de.nihas101.imageToPdfConverter.tasks
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
+import de.nihas101.imageToPdfConverter.tasks.SetupIteratorFromDragAndDropTask.SetupIteratorFromDragAndDropTaskFactory.createSetupIteratorTask
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.File
@@ -13,7 +14,7 @@ class SetupIteratorFromDragAndDropTaskTest {
         var afterExecuted = false
         val directoryIterator = createDirectoryIterator(IteratorOptions())
 
-        val setupIteratorTask = SetupIteratorTask.createSetupIteratorTask(
+        val setupIteratorTask = createSetupIteratorTask(
                 directoryIterator,
                 File("src/test/resources/images"),
                 { beforeExecuted = true },

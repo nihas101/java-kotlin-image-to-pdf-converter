@@ -1,6 +1,6 @@
 package de.nihas101.imageToPdfConverter.ui.commandLineIO
 
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfActionException
 import de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction.IteratorAction
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 import java.io.BufferedReader
@@ -29,7 +29,7 @@ class PdfBuilderCommandLineInput private constructor(private val bufferedReader:
             val readModificationArguments = readReader().split(Regex("\\s"))
             try {
                 return IteratorAction.createIteratorAction(readModificationArguments, imageToPdfOptions)
-            } catch (exception: MalformedPdfModificationException) {
+            } catch (exception: MalformedPdfActionException) {
                 onFail()
             }
         }

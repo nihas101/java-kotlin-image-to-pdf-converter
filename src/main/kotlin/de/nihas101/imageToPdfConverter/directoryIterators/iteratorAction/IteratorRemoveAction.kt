@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfModificationException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfActionException
 
 class IteratorRemoveAction private constructor(modificationArguments: List<String>) : IteratorAction() {
     private val removeIndices = modificationArguments.filterIndexed { index, _ -> index > 0 }.map { argument -> argument.toInt() }
@@ -16,7 +16,7 @@ class IteratorRemoveAction private constructor(modificationArguments: List<Strin
     companion object IteratorMoveModificationFactory {
         fun createIteratorRemoveModification(modificationArguments: List<String>): IteratorRemoveAction {
             if (isFormedCorrectly(modificationArguments)) return IteratorRemoveAction(modificationArguments)
-            else throw MalformedPdfModificationException(modificationArguments)
+            else throw MalformedPdfActionException(modificationArguments)
         }
 
         internal fun isLeadingIteratorArgument(argument: String) = "r" == argument || "remove" == argument

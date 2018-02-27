@@ -52,7 +52,7 @@ class PdfBuilderCommandLineInterface private constructor(
         val iteratorModification = pdfBuilderCommandLineInput.readPdfModification({
             pdfBuilderCommandLineOutput.printPdfModificationInstructions(pdfBuildInformation)
         },
-                pdfBuildInformation.getPdfWriterOptions())
+                pdfBuildInformation.getImageToPdfOptions())
 
         println(iteratorModification.toString())
 
@@ -107,16 +107,16 @@ class PdfBuilderCommandLineInterface private constructor(
     }
 
     private fun build(progressUpdater: ProgressUpdater) {
-        if (pdfBuildInformation.getPdfWriterOptions().getIteratorOptions().multipleDirectories) {
+        if (pdfBuildInformation.getImageToPdfOptions().getIteratorOptions().multipleDirectories) {
             ImageDirectoriesPdfBuilder.createImageDirectoriesPdfBuilder().build(
                     pdfBuildInformation.getDirectoryIterator(),
-                    pdfBuildInformation.getPdfWriterOptions(),
+                    pdfBuildInformation.getImageToPdfOptions(),
                     progressUpdater
             )
         } else {
             ImagePdfBuilder.createImagePdfBuilder().build(
                     pdfBuildInformation.getDirectoryIterator(),
-                    pdfBuildInformation.getPdfWriterOptions(),
+                    pdfBuildInformation.getImageToPdfOptions(),
                     progressUpdater
             )
         }

@@ -52,4 +52,11 @@ class IteratorRemoveActionTest {
 
         fail("directoryIterator holds more than 2 files")
     }
+
+    @Test
+    fun toStringTest() {
+        val iteratorAction = IteratorAction.createIteratorAction(listOf("remove", "0", "3", "4"), ImageToPdfOptions.createOptions())
+
+        assertEquals("remove [0, 3, 4]", iteratorAction.toString())
+    }
 }

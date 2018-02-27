@@ -3,7 +3,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFileIterator.ZipFileIteratorFactory.createZipFileIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFilesIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFilesIterator.ZipFilesIteratorFactory.createZipFilesIterator
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import de.nihas101.imageToPdfConverter.tasks.Cancellable
 import java.io.File
@@ -35,10 +35,7 @@ abstract class DirectoryIterator : Cancellable {
 
     companion object DirectoryIteratorFactory {
         fun createDirectoryIterator(file: File, iteratorOptions: IteratorOptions): DirectoryIterator {
-            val directoryIterator = when (iteratorOptions.multipleDirectories) {
-                false -> createSingleDirectoryIterator(iteratorOptions)
-                true -> createMultipleDirectoriesIterator(iteratorOptions)
-            }
+            val directoryIterator = createDirectoryIterator(iteratorOptions)
             directoryIterator.setupDirectory(file)
             return directoryIterator
         }
@@ -60,7 +57,7 @@ abstract class DirectoryIterator : Cancellable {
         private fun createMultipleDirectoriesIterator(iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.zipFiles) {
                 false -> createImageDirectoriesIterator()
-                true -> ZipFilesIterator.createZipFilesIterator(iteratorOptions.deleteOnExit)
+                true -> createZipFilesIterator(iteratorOptions.deleteOnExit)
             }
         }
     }

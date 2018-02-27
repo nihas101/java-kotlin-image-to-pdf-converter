@@ -26,7 +26,7 @@ data class PdfBuildInformation(
 
     fun getMultipleDirectories() = imageToPdfOptions.getIteratorOptions().multipleDirectories
 
-    fun getPdfWriterOptions() = imageToPdfOptions
+    fun getImageToPdfOptions() = imageToPdfOptions
 
     fun getDirectoryIterator() = directoryIterator!!
 

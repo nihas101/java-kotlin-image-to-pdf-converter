@@ -23,8 +23,8 @@ abstract class PdfBuilder : Cancellable {
     companion object PdfBuilderFactory {
         fun createPdfBBuilder(iteratorOptions: IteratorOptions): PdfBuilder {
             return when (iteratorOptions.multipleDirectories) {
-                true -> ImageDirectoriesPdfBuilder()
-                false -> ImagePdfBuilder()
+                true -> ImageDirectoriesPdfBuilder.createImageDirectoriesPdfBuilder()
+                false -> ImagePdfBuilder.createImagePdfBuilder()
             }
         }
     }

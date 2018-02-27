@@ -40,4 +40,14 @@ class IteratorMoveActionTest {
         assertEquals("2.png", directoryIterator.getFile(0).name)
         assertEquals("1.jpg", directoryIterator.getFile(1).name)
     }
+
+    @Test
+    fun toStringTest() {
+        val iteratorAction = createIteratorAction(
+                listOf("move", "0", "1"),
+                imageToPdfOptions = ImageToPdfOptions.createOptions()
+        )
+
+        assertEquals("move <0> <1>", iteratorAction.toString())
+    }
 }
