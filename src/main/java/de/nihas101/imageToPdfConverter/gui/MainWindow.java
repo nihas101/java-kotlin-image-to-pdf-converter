@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
+import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createSaveFileChooser;
 import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
@@ -90,6 +91,14 @@ public final class MainWindow extends Application {
         directoryChooser.setInitialDirectory(initialDirectory);
         directoryChooser.setTitle("Choose a folder to save the PDFs in");
         return directoryChooser.showDialog(scene.getWindow());
+    }
+
+    public void openOptionsMenu() {
+        try {
+            imageToPdfOptions = createOptionsMenu(imageToPdfOptions).setOptions();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setSaveLocation(File saveLocation) {

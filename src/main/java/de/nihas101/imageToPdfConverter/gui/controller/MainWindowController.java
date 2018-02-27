@@ -35,7 +35,6 @@ import java.io.File;
 import java.util.List;
 
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
-import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
 import static de.nihas101.imageToPdfConverter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createZipFileChooser;
@@ -378,11 +377,7 @@ public class MainWindowController extends FileListViewController {
     }
 
     public void openOptionsMenu(ActionEvent actionEvent) {
-        try {
-            mainWindow.imageToPdfOptions = createOptionsMenu(mainWindow.imageToPdfOptions).setOptions();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        mainWindow.openOptionsMenu();
         actionEvent.consume();
     }
 }
