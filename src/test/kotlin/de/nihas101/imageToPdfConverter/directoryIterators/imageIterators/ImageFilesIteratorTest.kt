@@ -1,5 +1,6 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
+import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
 import junit.framework.TestCase.assertEquals
@@ -114,5 +115,9 @@ class ImageFilesIteratorTest {
     }
 
 
-    private fun createTestIterator() = createImageFilesIterator(File("src/test/resources/images"))
+    private fun createTestIterator(): DirectoryIterator {
+        val directoriesIterator = createImageFilesIterator()
+        directoriesIterator.setupDirectory(File("src/test/resources/images"))
+        return directoriesIterator
+    }
 }

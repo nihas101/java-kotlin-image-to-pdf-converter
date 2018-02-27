@@ -1,16 +1,34 @@
 package de.nihas101.imageToPdfConverter.tasks
 
-import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController
-import javafx.concurrent.Task
+import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import java.io.File
 
-open class SetupIteratorTask(private val mainWindowController: MainWindowController) : Task<Unit>() {
+open class SetupIteratorTask(
+        protected val directoryIterator: DirectoryIterator,
+        protected val directory: File,
+        before: () -> Unit,
+        after: () -> Unit
+) : CancellableTask(before, directoryIterator, after) {
+
     override fun call() {
-        mainWindowController.setupIterator()
+        before()
+        directoryIterator.setupDirectory(directory)
+        after()
     }
 
-    companion object SetupIteratorThreadFactory {
-        fun createSetupIteratorThread(mainWindowController: MainWindowController): Thread {
-            return Thread(SetupIteratorTask(mainWindowController))
+    companion object SetupIteratorTaskFactory {
+        fun createSetupIteratorTask(
+                directoryIterator: DirectoryIterator,
+                file: File,
+                before: () -> Unit = {},
+                after: () -> Unit = {}
+        ): SetupIteratorTask {
+            return SetupIteratorTask(
+                    directoryIterator,
+                    file,
+                    before,
+                    after
+            )
         }
     }
 }

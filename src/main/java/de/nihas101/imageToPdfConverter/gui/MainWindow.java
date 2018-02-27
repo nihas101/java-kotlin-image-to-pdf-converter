@@ -2,14 +2,12 @@ package de.nihas101.imageToPdfConverter.gui;
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
-import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 
 
@@ -40,10 +38,8 @@ public final class MainWindow extends Application {
         launch(args);
     }
 
-    public void setupIterator(File directory, ImageToPdfOptions imageToPdfOptions) {
-        directoryIterator = DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(
-                directory, imageToPdfOptions.getIteratorOptions()
-        );
+    public void setupIterator(DirectoryIterator directoryIterator) {
+        this.directoryIterator = directoryIterator;
     }
 
     /* TODO: Add Shortcut for building: Like pressing b */

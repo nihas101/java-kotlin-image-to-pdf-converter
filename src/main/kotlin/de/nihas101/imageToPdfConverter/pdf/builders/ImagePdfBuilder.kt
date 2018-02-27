@@ -20,6 +20,7 @@ class ImagePdfBuilder : PdfBuilder() {
 
         try {
             for (i in 1..nrOfFiles) {
+                if (cancelled) throw InterruptedException()
                 val file = directoryIterator.nextFile()
                 addNextFileToPDF(file, imagePdf)
                 progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble(), file)

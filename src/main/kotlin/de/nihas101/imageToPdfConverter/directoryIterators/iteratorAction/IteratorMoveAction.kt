@@ -30,7 +30,7 @@ class IteratorMoveAction private constructor(pdfModificationArguments: List<Stri
         }
 
         fun getInstruction(): String =
-                " * (move | m) [moveFromIndex] [moveToIndex] - Move the file at moveFromIndex to moveToIndex"
+                " * (move | m) [moveFromIndex] [moveToIndex] - Move the directory at moveFromIndex to moveToIndex"
     }
 
     override fun toString() = "move <$moveFromIndex> <$moveToIndex>"

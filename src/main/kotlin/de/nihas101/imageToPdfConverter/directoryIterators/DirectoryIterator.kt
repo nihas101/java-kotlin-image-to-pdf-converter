@@ -5,9 +5,17 @@ import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFi
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFileIterator.ZipFileIteratorFactory.createZipFileIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFilesIterator
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
+import de.nihas101.imageToPdfConverter.tasks.Cancellable
 import java.io.File
 
-abstract class DirectoryIterator {
+abstract class DirectoryIterator : Cancellable {
+    protected var directory: File? = null
+    protected var cancelled = false
+
+    open fun setupDirectory(directory: File) {
+        this.directory = directory
+    }
+
     abstract fun nextFile(): File
     abstract fun getFile(index: Int): File
     abstract fun getFiles(): MutableList<File>
@@ -19,27 +27,40 @@ abstract class DirectoryIterator {
     abstract fun getParentDirectory(): File
     abstract fun resetIndex()
 
+    override fun cancelTask() {
+        cancelled = true
+    }
+
     /* TODO: Allow for a progressindicator to be passed? */
 
     companion object DirectoryIteratorFactory {
-        fun createDirectoryIterator(directory: File, iteratorOptions: IteratorOptions): DirectoryIterator {
+        fun createDirectoryIterator(file: File, iteratorOptions: IteratorOptions): DirectoryIterator {
+            val directoryIterator = when (iteratorOptions.multipleDirectories) {
+                false -> createSingleDirectoryIterator(iteratorOptions)
+                true -> createMultipleDirectoriesIterator(iteratorOptions)
+            }
+            directoryIterator.setupDirectory(file)
+            return directoryIterator
+        }
+
+        fun createDirectoryIterator(iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.multipleDirectories) {
-                false -> createSingleDirectoryIterator(directory, iteratorOptions)
-                true -> createMultipleDirectoriesIterator(directory, iteratorOptions)
+                false -> createSingleDirectoryIterator(iteratorOptions)
+                true -> createMultipleDirectoriesIterator(iteratorOptions)
             }
         }
 
-        private fun createSingleDirectoryIterator(directory: File, iteratorOptions: IteratorOptions): DirectoryIterator {
+        private fun createSingleDirectoryIterator(iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.zipFiles) {
-                false -> createImageFilesIterator(directory)
-                true -> createZipFileIterator(directory, iteratorOptions.deleteOnExit)
+                false -> createImageFilesIterator()
+                true -> createZipFileIterator(iteratorOptions.deleteOnExit)
             }
         }
 
-        private fun createMultipleDirectoriesIterator(directory: File, iteratorOptions: IteratorOptions): DirectoryIterator {
+        private fun createMultipleDirectoriesIterator(iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.zipFiles) {
-                false -> createImageDirectoriesIterator(directory)
-                true -> ZipFilesIterator.createZipFilesIterator(directory, iteratorOptions.deleteOnExit)
+                false -> createImageDirectoriesIterator()
+                true -> ZipFilesIterator.createZipFilesIterator(iteratorOptions.deleteOnExit)
             }
         }
     }

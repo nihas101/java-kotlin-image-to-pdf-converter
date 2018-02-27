@@ -2,7 +2,7 @@ package de.nihas101.imageToPdfConverter.gui.subStages;
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
-import de.nihas101.imageToPdfConverter.tasks.CreateImageFilesIteratorTask;
+import de.nihas101.imageToPdfConverter.tasks.SetupIteratorTask;
 import javafx.scene.image.Image;
 import kotlin.Unit;
 
@@ -52,6 +52,31 @@ public final class DirectoryIteratorDisplayer {
      * @param index The index of the directory to display
      */
     private void displayDirectory(int index, MainWindowController mainWindowController) {
+        DirectoryIterator imageFilesIterator = DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(mainWindowController.imageToPdfOptions.getIteratorOptions());
+        SetupIteratorTask setupIteratorTask = SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorTask(
+                imageFilesIterator,
+                directoryIterator.getFile(index),
+                () -> Unit.INSTANCE,
+                () -> {
+                    runLater(() -> {
+                        mainWindowController.disableInput(true);
+                        DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
+                                imageFilesIterator,
+                                index,
+                                mainWindowController
+                        );
+
+                        directoryContentDisplay.displayContent();
+                        mainWindowController.disableInput(false);
+                    });
+                    return Unit.INSTANCE;
+                }
+        );
+
+        Thread thread = mainWindowController.createThread(setupIteratorTask);
+        thread.start();
+
+        /*
         Thread thread = CreateImageFilesIteratorTask.CreateImageFilesIteratorThreadFactory.createCreateImageFilesIteratorThread(
                 directoryIterator.getFile(index), (imageFilesIterator) -> {
                     runLater(() -> {
@@ -69,6 +94,7 @@ public final class DirectoryIteratorDisplayer {
                 });
 
         thread.start();
+        */
     }
 
     /**

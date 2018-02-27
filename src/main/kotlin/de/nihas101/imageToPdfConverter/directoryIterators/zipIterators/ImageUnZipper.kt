@@ -9,6 +9,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import javax.imageio.ImageIO
 
+/* TODO: Make cancellable and change in ZipFileIterator to cancel this */
 class ImageUnZipper private constructor(private val zipInputStream: ZipInputStream) {
     fun unzip(unzipInto: File, deleteOnExit: Boolean = false) {
         unzip({ zipEntry -> createFile("${unzipInto.absolutePath}/${zipEntry.name}", deleteOnExit) })

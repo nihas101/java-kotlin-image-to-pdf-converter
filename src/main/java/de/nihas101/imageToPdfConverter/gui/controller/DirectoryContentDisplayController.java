@@ -63,14 +63,16 @@ public class DirectoryContentDisplayController extends FileListViewController {
     }
 
     private Thread createLoadImagesThread(ImageMap imageMap) {
-        return LoadImagesTask.LoadImagesThreadFactory.createLoadImagesThread(
-                directoryIterator,
+        LoadImagesTask loadImagesTask = LoadImagesTask.LoadImagesTaskFactory.createLoadImagesTask(
                 imageMap,
+                directoryIterator,
                 new TrivialProgressUpdater(),
                 () -> {
                     setupObservableList(directoryIterator, imageMap);
                     return Unit.INSTANCE;
                 });
+
+        return mainWindowController.createThread(loadImagesTask);
     }
 
     /**
