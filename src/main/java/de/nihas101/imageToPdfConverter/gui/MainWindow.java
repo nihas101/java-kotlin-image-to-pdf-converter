@@ -31,7 +31,6 @@ public final class MainWindow extends Application {
     private Scene scene;
 
     private DirectoryIterator directoryIterator;
-    /* TODO: Move these to MainWindow */
 
     /**
      * The directory from which to load more {@link File}s
@@ -47,7 +46,7 @@ public final class MainWindow extends Application {
      */
     public ImageToPdfOptions imageToPdfOptions;
 
-    public FileChooser saveFileChooser;
+    private FileChooser saveFileChooser;
 
     public TaskManager taskManager = TaskManager.TaskManagerFactory.createTaskManager();
 
@@ -127,8 +126,6 @@ public final class MainWindow extends Application {
     public void setupIterator(DirectoryIterator directoryIterator) {
         this.directoryIterator = directoryIterator;
     }
-
-    /* TODO: Add Shortcut for building: Like pressing b */
 
     public DirectoryIterator getDirectoryIterator() {
         return directoryIterator;
