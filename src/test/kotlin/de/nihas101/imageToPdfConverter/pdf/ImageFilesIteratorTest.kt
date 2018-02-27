@@ -2,6 +2,7 @@ package de.nihas101.imageToPdfConverter.pdf
 
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
 import junit.framework.TestCase.fail
 import org.junit.Test
 import java.io.File
@@ -10,7 +11,7 @@ class ImageFilesIteratorTest {
     @Test
     fun imagesLoaderDirTest() {
         val file = File("src/test/resources")
-        val imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator()
+        val imageFilesIterator: ImageFilesIterator = createImageFilesIterator()
         imageFilesIterator.setupDirectory(file)
 
         for (i in 1..imageFilesIterator.numberOfFiles()) imageFilesIterator.nextFile()
@@ -27,7 +28,7 @@ class ImageFilesIteratorTest {
     @Test
     fun imagesLoaderSingleImageTest() {
         val file = File("src/test/resources/images/3.png")
-        val imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator()
+        val imageFilesIterator: ImageFilesIterator = createImageFilesIterator()
         imageFilesIterator.setupDirectory(file)
 
         imageFilesIterator.nextFile()
