@@ -4,7 +4,10 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder;
+import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
+import de.nihas101.imageToPdfConverter.tasks.BuildPdfTask;
 import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.util.BuildProgressUpdater;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
@@ -128,18 +131,24 @@ public class DirectoryContentDisplayController extends FileListViewController {
 
         if (saveFile != null) {
             imageToPdfOptions.setSaveLocation(saveFile);
-            new Thread(() -> {
-                ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder().build(
-                        directoryIterator,
-                        imageToPdfOptions,
-                        new BuildProgressUpdater(mainWindowController)
-                );
-                runLater(() -> {
-                    mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
-                    mainWindowController.imageListView.getItems().remove(directoryIteratorIndex);
-                    directoryContentDisplayStage.close();
-                });
-            }).start();
+
+            BuildPdfTask buildPdfTask = BuildPdfTask.BuildPdfTaskFactory.createBuildPdfTask(
+                    PdfBuilder.PdfBuilderFactory.createPdfBBuilder(new IteratorOptions()),
+                    directoryIterator,
+                    imageToPdfOptions,
+                    new BuildProgressUpdater(mainWindowController),
+                    () -> Unit.INSTANCE,
+                    () -> {
+                        runLater(() -> {
+                            mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
+                            mainWindowController.imageListView.getItems().remove(directoryIteratorIndex);
+                            directoryContentDisplayStage.close();
+                        });
+                        return Unit.INSTANCE;
+                    }
+            );
+
+            mainWindowController.mainWindow.taskManager.start(buildPdfTask, true);
         }
 
         actionEvent.consume();
