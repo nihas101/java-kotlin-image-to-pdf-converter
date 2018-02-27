@@ -62,9 +62,6 @@ public class MainWindowController extends FileListViewController {
 
     private ListChangeListenerFactory listChangeListenerFactory;
 
-    /* TODO: Make it so when the window is closed all tasks are cancelled! */
-    /* TODO: Test everything like a maniac! */
-
     /**
      * Sets up the {@link MainWindowController}
      *
