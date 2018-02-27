@@ -2,7 +2,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
-import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.fail
 import org.junit.Test
@@ -92,8 +92,8 @@ class ImageDirectoriesIteratorTest {
     }
 
     private fun createTestIterator(): DirectoryIterator {
-        val directoryIterator = createImageDirectoriesIterator()
-        directoryIterator.setupDirectory(File("src/test/resources"))
-        return directoryIterator
+        return DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(
+                File("src/test/resources"), IteratorOptions(multipleDirectories = true)
+        )
     }
 }
