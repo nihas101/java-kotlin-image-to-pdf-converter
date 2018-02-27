@@ -92,7 +92,7 @@ public final class MainWindow extends Application {
         return directoryChooser.showDialog(scene.getWindow());
     }
 
-    private void setSaveLocation(File saveLocation) {
+    public void setSaveLocation(File saveLocation) {
         imageToPdfOptions.setSaveLocation(saveLocation);
     }
 

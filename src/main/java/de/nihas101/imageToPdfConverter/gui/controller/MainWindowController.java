@@ -289,7 +289,7 @@ public class MainWindowController extends FileListViewController {
         File saveFile = mainWindow.openSaveFileChooser(mainWindow.chosenDirectory.getParentFile());
 
         if (saveFile != null) {
-            setSaveLocation(saveFile);
+            mainWindow.setSaveLocation(saveFile);
             startPdfBuilderThread(ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder());
         } else notifyUser("Build cancelled by user", BLACK);
     }
@@ -325,7 +325,7 @@ public class MainWindowController extends FileListViewController {
         File saveFile = mainWindow.openDirectoryChooser(mainWindow.getDirectoryIterator().getParentDirectory());
 
         if (saveFile != null) {
-            setSaveLocation(saveFile);
+            mainWindow.setSaveLocation(saveFile);
             startPdfBuilderThread(ImageDirectoriesPdfBuilder.PdfBuilderFactory.createImageDirectoriesPdfBuilder());
         } else notifyUser("Build cancelled by user", BLACK);
     }
@@ -384,9 +384,5 @@ public class MainWindowController extends FileListViewController {
             e.printStackTrace();
         }
         actionEvent.consume();
-    }
-
-    private void setSaveLocation(File saveLocation) {
-        mainWindow.imageToPdfOptions.setSaveLocation(saveLocation);
     }
 }
