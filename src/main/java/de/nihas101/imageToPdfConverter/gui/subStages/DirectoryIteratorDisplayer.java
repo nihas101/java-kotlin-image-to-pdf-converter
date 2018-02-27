@@ -52,7 +52,9 @@ public final class DirectoryIteratorDisplayer {
      * @param index The index of the directory to display
      */
     private void displayDirectory(int index, MainWindowController mainWindowController) {
-        DirectoryIterator imageFilesIterator = DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(mainWindowController.imageToPdfOptions.getIteratorOptions());
+        DirectoryIterator imageFilesIterator = DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(
+                mainWindowController.mainWindow.imageToPdfOptions.getIteratorOptions()
+        );
         SetupIteratorTask setupIteratorTask = SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorTask(
                 imageFilesIterator,
                 directoryIterator.getFile(index),
@@ -73,28 +75,7 @@ public final class DirectoryIteratorDisplayer {
                 }
         );
 
-        Thread thread = mainWindowController.createThread(setupIteratorTask);
-        thread.start();
-
-        /*
-        Thread thread = CreateImageFilesIteratorTask.CreateImageFilesIteratorThreadFactory.createCreateImageFilesIteratorThread(
-                directoryIterator.getFile(index), (imageFilesIterator) -> {
-                    runLater(() -> {
-                        mainWindowController.disableInput(true);
-                        DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
-                                imageFilesIterator,
-                                index,
-                                mainWindowController
-                        );
-
-                        directoryContentDisplay.displayContent();
-                        mainWindowController.disableInput(false);
-                    });
-                    return Unit.INSTANCE;
-                });
-
-        thread.start();
-        */
+        mainWindowController.mainWindow.taskManager.start(setupIteratorTask, true);
     }
 
     /**

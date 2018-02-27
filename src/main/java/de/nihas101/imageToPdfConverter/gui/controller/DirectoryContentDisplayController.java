@@ -56,13 +56,12 @@ public class DirectoryContentDisplayController extends FileListViewController {
         this.directoryIteratorIndex = directoryIteratorIndex;
         this.directoryContentDisplayStage = directoryContentDisplayStage;
         this.mainWindowController = mainWindowController;
-        this.imageToPdfOptions = mainWindowController.imageToPdfOptions.copyForJava();
+        this.imageToPdfOptions = mainWindowController.mainWindow.imageToPdfOptions.copyForJava();
 
-        Thread loadImageThread = createLoadImagesThread(createImageMap());
-        loadImageThread.start();
+        startLoadImagesThread(createImageMap());
     }
 
-    private Thread createLoadImagesThread(ImageMap imageMap) {
+    private void startLoadImagesThread(ImageMap imageMap) {
         LoadImagesTask loadImagesTask = LoadImagesTask.LoadImagesTaskFactory.createLoadImagesTask(
                 imageMap,
                 directoryIterator,
@@ -72,7 +71,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
                     return Unit.INSTANCE;
                 });
 
-        return mainWindowController.createThread(loadImagesTask);
+        mainWindowController.mainWindow.taskManager.start(loadImagesTask, true);
     }
 
     /**
@@ -122,9 +121,9 @@ public class DirectoryContentDisplayController extends FileListViewController {
     }
 
     public void buildPDF(ActionEvent actionEvent) {
-        mainWindowController.saveFileChooser.setInitialFileName(directoryIterator.getParentDirectory().getName() + ".pdf");
-        mainWindowController.saveFileChooser.setInitialDirectory(directoryIterator.getParentDirectory());
-        File saveFile = mainWindowController.saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
+        mainWindowController.mainWindow.saveFileChooser.setInitialFileName(directoryIterator.getParentDirectory().getName() + ".pdf");
+        mainWindowController.mainWindow.saveFileChooser.setInitialDirectory(directoryIterator.getParentDirectory());
+        File saveFile = mainWindowController.mainWindow.saveFileChooser.showSaveDialog(buildButton.getScene().getWindow());
 
         if (saveFile != null) {
             imageToPdfOptions.setSaveLocation(saveFile);
