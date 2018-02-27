@@ -334,31 +334,6 @@ public class MainWindowController extends FileListViewController {
         return createThread(buildPdfTask);
     }
 
-    /*
-    private void build(PdfBuilder pdfBuilder) {
-        disableInput(true);
-        try {
-            buildPdf(pdfBuilder);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            notifyUser("An error occurred while trying to build the PDF(s)", RED);
-        } finally {
-            disableInput(false);
-        }
-    }
-    */
-
-    /*
-    private void buildPdf(PdfBuilder pdfBuilder) {
-        pdfBuilder.build(
-                mainWindow.getDirectoryIterator(),
-                imageToPdfOptions,
-                new BuildProgressUpdater(this)
-        );
-        notifyUser("Finished building: " + imageToPdfOptions.getPdfOptions().getSaveLocation().getAbsolutePath(), GREEN);
-    }
-    */
-
     /**
      * Builds multiple {@link de.nihas101.imageToPdfConverter.pdf.ImagePdf}s
      */
