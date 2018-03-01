@@ -38,7 +38,8 @@ class PdfBuilderCommandLineInput private constructor(private val bufferedReader:
     private fun readReader(): String {
         val readLine = bufferedReader.readLine()
 
-        if ("exit" == readLine) System.exit(0)
+        if ("exit" == readLine)
+            throw UserWantsToExitException()
         return readLine
     }
 }

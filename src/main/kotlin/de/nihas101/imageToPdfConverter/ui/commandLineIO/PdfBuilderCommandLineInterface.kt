@@ -15,8 +15,6 @@ class PdfBuilderCommandLineInterface private constructor(
 ) {
     private var pdfBuildInformation: PdfBuildInformation = PdfBuildInformation()
 
-    /* TODO: Implement zip directory usage! */
-
     fun setup(): Int {
         pdfBuilderCommandLineOutput.printInfo()
         return 1

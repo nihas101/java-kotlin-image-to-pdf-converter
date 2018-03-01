@@ -19,11 +19,15 @@ class ImageDirectoriesPdfBuilderTest {
         saveLocation.createNewFile()
         saveLocation.deleteOnExit()
         imageToOptions.setSaveLocation(saveLocation)
-        val directoryIterator = createDirectoryIterator(File("src/test/resources"), imageToOptions.getIteratorOptions())
+        val directoryIterator = createDirectoryIterator(saveLocation, imageToOptions.getIteratorOptions())
         val pdfBuilder = createPdfBBuilder(imageToOptions.getIteratorOptions())
 
         pdfBuilder.build(directoryIterator, imageToOptions, TestProgressUpdater(atomicBoolean))
 
+        val file = File("src/test/resources/images.pdf")
+        file.deleteOnExit()
+
+        assertEquals(true, file.exists())
         assertEquals(true, atomicBoolean.get())
         assertEquals(true, saveLocation.exists())
     }

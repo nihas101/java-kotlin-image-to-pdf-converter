@@ -1,17 +1,21 @@
 package de.nihas101.imageToPdfConverter.ui
 
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInterface
+import de.nihas101.imageToPdfConverter.ui.commandLineIO.UserWantsToExitException
 
 class PdfBuilderUI(private val pdfBuilderCommandLineInterface: PdfBuilderCommandLineInterface) {
     private var state: Int = 0
-    private var doContinue: Boolean = true
 
     companion object PdfBuilderUiFactory {
         fun createPdfBuilderUI(pdfBuilderCommandLineInterface: PdfBuilderCommandLineInterface) = PdfBuilderUI(pdfBuilderCommandLineInterface)
     }
 
     fun start() {
-        while (doContinue) nextState()
+        try {
+            while (true) nextState()
+        } catch (exception: UserWantsToExitException) {
+            return
+        }
     }
 
     private fun nextState() {
