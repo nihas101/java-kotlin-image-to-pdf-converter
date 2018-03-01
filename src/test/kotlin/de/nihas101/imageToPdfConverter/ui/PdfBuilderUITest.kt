@@ -72,7 +72,6 @@ class PdfBuilderUITest {
 
         override fun print(string: String) {
             lastPrinted = string
-            System.out.println(string)
         }
     }
 

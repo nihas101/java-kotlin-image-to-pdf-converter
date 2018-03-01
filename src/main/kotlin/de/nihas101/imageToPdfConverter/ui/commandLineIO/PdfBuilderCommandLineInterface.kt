@@ -93,8 +93,6 @@ class PdfBuilderCommandLineInterface private constructor(
         },
                 pdfBuildInformation.getImageToPdfOptions())
 
-        println(iteratorModification.toString())
-
         return if (iteratorModification !is IteratorBuildAction) {
             iteratorModification.execute(pdfBuildInformation.getDirectoryIterator())
             0
