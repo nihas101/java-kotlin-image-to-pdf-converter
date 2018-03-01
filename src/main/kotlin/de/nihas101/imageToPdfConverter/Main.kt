@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter
 
 import de.nihas101.imageToPdfConverter.gui.MainWindow
-import de.nihas101.imageToPdfConverter.ui.PdfBuilderUI
+import de.nihas101.imageToPdfConverter.ui.PdfBuilderUI.PdfBuilderUiFactory.createPdfBuilderUI
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInput
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInterface
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineOutput
@@ -17,7 +17,7 @@ object Main {
             val commandLineOutput = PdfBuilderCommandLineOutput.createCommandLineOutput(System.out)
             val commandLineInput = PdfBuilderCommandLineInput.createCommandLineInput(BufferedReader(InputStreamReader(System.`in`)))
             val commandLineInterface = PdfBuilderCommandLineInterface.createCommandLineInterface(commandLineInput, commandLineOutput)
-            PdfBuilderUI.createPdfBuilderUI(commandLineInterface).start()
+            createPdfBuilderUI(commandLineInterface).start()
         }
     }
 }

@@ -20,6 +20,8 @@ data class PdfBuildInformation(
         imageToPdfOptions = imageToPdfOptions.copy(iteratorOptions = imageToPdfOptions.getIteratorOptions().copy(multipleDirectories = multipleDirectories))
     }
 
+    fun setZipFiles(zipFiles: Boolean) = imageToPdfOptions.setZipFiles(zipFiles)
+
     fun setTargetFile(targetFile: File) {
         imageToPdfOptions = imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.getPdfOptions().copy(saveLocation = targetFile))
     }

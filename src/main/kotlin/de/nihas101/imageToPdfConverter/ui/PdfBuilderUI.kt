@@ -17,7 +17,7 @@ class PdfBuilderUI(private val pdfBuilderCommandLineInterface: PdfBuilderCommand
     private fun nextState() {
         when (state) {
             0 -> execute { pdfBuilderCommandLineInterface.setup() }
-            1 -> execute { pdfBuilderCommandLineInterface.readDirectory() }
+            1 -> execute { pdfBuilderCommandLineInterface.readPath() }
             2 -> execute { pdfBuilderCommandLineInterface.readBuildOptions() }
             3 -> execute { pdfBuilderCommandLineInterface.readPdfContent() }
             4 -> execute { pdfBuilderCommandLineInterface.readCustomTargetPath() }

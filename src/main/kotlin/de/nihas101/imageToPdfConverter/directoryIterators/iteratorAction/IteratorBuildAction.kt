@@ -91,8 +91,8 @@ class IteratorBuildAction private constructor(
         }
 
         fun getInstruction(): String =
-                " * (build | b) [FLAG]* - Build the PDF(s)\n" +
-                        "\tFLAG:\n" +
+                " * (build | b) [OPTIONAL FLAGS] - Build the PDF(s)\n" +
+                        "\tOPTIONAL FLAGS:\n" +
                         "\t--v:[VERSION] Define a PDF version to use (Default: 1.7)\n" +
                         "\t\t [VERSION] = (1.0 | 1.1 | 1.2 | 1.3 | 1.4 | 1.5 | 1.6 | 1.7 | 2.0)\n" +
                         "\t--c:[COMPRESSION] Set the compression level of the PDF(s)\n" +

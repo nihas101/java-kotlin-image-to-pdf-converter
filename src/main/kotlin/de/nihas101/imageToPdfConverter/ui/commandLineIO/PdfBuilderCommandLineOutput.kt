@@ -10,9 +10,16 @@ class PdfBuilderCommandLineOutput private constructor(private val printStream: P
         printStream.println("Follow the instructions to build the PDF(s). To exit the program, simply type \"exit\".\n")
     }
 
-    fun printReadDirectoryInstructions() = printMessage("Please supply a path to a source-directory from which to build the PDF(s)")
+    fun printReadPathInstructions() = printMessage("Please supply a path to a source-directory or file from which to build the PDF(s)")
 
     fun printBuildInstructions() = printQuestion("Do you want to build multiple PDFs from this source?")
+
+    fun printZipFilesInstructions(multipleDirectories: Boolean) {
+        if (multipleDirectories) printQuestion("Do you want to build the PDFs from ZIP-files?")
+        else printQuestion("Do you want to build the PDF from a ZIP-file?")
+    }
+
+    fun printSetupIteratorInformation() = printStream.println("Preparing files... (This may take a while)")
 
     fun printPdfModificationInstructions(pdfBuildInformation: PdfBuildInformation) {
         printStream.println("Instructions:")

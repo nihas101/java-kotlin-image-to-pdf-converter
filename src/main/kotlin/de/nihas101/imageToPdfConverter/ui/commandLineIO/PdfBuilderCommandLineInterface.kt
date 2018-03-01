@@ -6,6 +6,7 @@ import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfBuildInformation
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
+import java.io.FileNotFoundException
 import java.nio.file.InvalidPathException
 
 class PdfBuilderCommandLineInterface private constructor(
@@ -21,8 +22,8 @@ class PdfBuilderCommandLineInterface private constructor(
         return 1
     }
 
-    fun readDirectory(): Int {
-        pdfBuilderCommandLineOutput.printReadDirectoryInstructions()
+    fun readPath(): Int {
+        pdfBuilderCommandLineOutput.printReadPathInstructions()
         return try {
             pdfBuildInformation.sourceFile = pdfBuilderCommandLineInput.readPath().toFile()
             1
@@ -33,18 +34,40 @@ class PdfBuilderCommandLineInterface private constructor(
     }
 
     fun readBuildOptions(): Int {
+        readMultipleDirectoriesOption()
+        readZipFilesOption()
+
+        pdfBuilderCommandLineOutput.printSetupIteratorInformation()
+
+        try {
+            pdfBuildInformation.setupDirectoryIterator()
+        } catch (exception: FileNotFoundException) {
+            pdfBuilderCommandLineOutput.printEmptyDirectoryError()
+            -2
+        }
+
+        return if (pdfBuildInformation.getDirectoryIterator().numberOfFiles() == 0) {
+            pdfBuilderCommandLineOutput.printEmptyDirectoryError()
+            -2
+        } else 1
+    }
+
+    private fun readMultipleDirectoriesOption() {
         pdfBuilderCommandLineOutput.printBuildInstructions()
         pdfBuildInformation.setMultipleDirectories(
                 pdfBuilderCommandLineInput.readAnswer {
                     pdfBuilderCommandLineOutput.printBuildInstructions()
                 }
         )
-        pdfBuildInformation.setupDirectoryIterator()
+    }
 
-        return if (pdfBuildInformation.getDirectoryIterator().numberOfFiles() == 0) {
-            pdfBuilderCommandLineOutput.printEmptyDirectoryError()
-            -1
-        } else 1
+    private fun readZipFilesOption() {
+        pdfBuilderCommandLineOutput.printZipFilesInstructions(pdfBuildInformation.getMultipleDirectories())
+        pdfBuildInformation.setZipFiles(
+                pdfBuilderCommandLineInput.readAnswer {
+                    pdfBuilderCommandLineOutput.printZipFilesInstructions(pdfBuildInformation.getMultipleDirectories())
+                }
+        )
     }
 
     fun readPdfContent(): Int {
@@ -103,7 +126,7 @@ class PdfBuilderCommandLineInterface private constructor(
         if (pdfBuildInformation.customTargetFile)
             pdfBuildInformation.setTargetFile(pdfBuilderCommandLineInput.readPath().toFile())
         else
-            pdfBuildInformation.setTargetFile(File(pdfBuildInformation.sourceFile!!.absolutePath))
+            pdfBuildInformation.setTargetFile(File("${pdfBuildInformation.sourceFile!!.parent}/${pdfBuildInformation.sourceFile!!.nameWithoutExtension}"))
     }
 
     private fun build(progressUpdater: ProgressUpdater) {
