@@ -76,9 +76,9 @@ to run the program in text-only-mode.
 ### In text-only-mode
 
 1. Run the program in text-only-mode.
-2. Supply a path to the folder of images you want to convert into a PDF
+2. Supply a path to the directory of subdirectories you want to convert into PDFs
 3. Type ``yes`` when asked "Do you want to build multiple PDFs from this source?"
-4. Type ``yes`` if the file is a ZIP-file, ``no`` otherwise
+4. Type ``yes`` if the files are ZIP-files, ``no`` otherwise
 5. Reorder images and remove unwanted ones.
 6. Type ``build``
 7. Type ``no`` to build the PDF in the same folder as was supplied
