@@ -31,8 +31,6 @@ abstract class DirectoryIterator : Cancellable {
         cancelled = true
     }
 
-    /* TODO: Allow for a progressindicator to be passed? */
-
     companion object DirectoryIteratorFactory {
         fun createDirectoryIterator(file: File, iteratorOptions: IteratorOptions): DirectoryIterator {
             val directoryIterator = createDirectoryIterator(iteratorOptions)
