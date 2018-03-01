@@ -37,7 +37,7 @@ To run the program from the distribution, extract the zip or tar file, and run t
 ```
 in the command-line interface or
 ```sh
-./jaKoImagesPdf --noGUI
+./jaKoImage2Pdf --noGUI
 ```
 to run the program in text-only-mode.
 
