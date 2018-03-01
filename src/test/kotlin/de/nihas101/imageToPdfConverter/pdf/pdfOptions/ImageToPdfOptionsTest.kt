@@ -37,7 +37,7 @@ class ImageToPdfOptionsTest {
     @Test
     fun setSaveLocation() {
         val imageToPdfOptions = ImageToPdfOptions()
-        imageToPdfOptions.setSaveLocation(File("src/test/RESOURCES/images"))
+        imageToPdfOptions.setSaveLocation(File("src/test/resources/images"))
         assertEquals("images", imageToPdfOptions.getPdfOptions().saveLocation!!.name)
     }
 

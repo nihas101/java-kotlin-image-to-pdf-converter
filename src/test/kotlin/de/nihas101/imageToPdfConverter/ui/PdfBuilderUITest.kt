@@ -17,7 +17,7 @@ class PdfBuilderUITest {
         val pdfBuilderUI = createPdfBuilderUI(commandLineInterface)
         pdfBuilderUI.start()
 
-        val file = File("src/test/RESOURCES/images/pdfBuilderUITest.pdf")
+        val file = File("src/test/resources/images/pdfBuilderUITest.pdf")
         assertEquals(true, file.exists())
         file.deleteOnExit()
     }
@@ -31,12 +31,12 @@ class PdfBuilderUITest {
 
         override fun readLine(): String {
             return when (state) {
-                0 -> ret("src/test/RESOURCES/images")
+                0 -> ret("src/test/resources/images")
                 1 -> ret("no")
                 2 -> ret("no")
                 3 -> ret("b")
                 4 -> ret("yes")
-                5 -> ret("src/test/RESOURCES/images/pdfBuilderUITest.pdf")
+                5 -> ret("src/test/resources/images/pdfBuilderUITest.pdf")
                 else -> ret("exit")
             }
         }

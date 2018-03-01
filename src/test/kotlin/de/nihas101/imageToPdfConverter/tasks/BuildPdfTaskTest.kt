@@ -16,8 +16,8 @@ class BuildPdfTaskTest {
         var beforeExecuted = false
         var afterExecuted = true
         val imageToPdfOptions = createOptions()
-        val sourceFile = File("src/test/RESOURCES/images")
-        val targetFile = File("src/test/RESOURCES/images/buildTaskTest.pdf")
+        val sourceFile = File("src/test/resources/images")
+        val targetFile = File("src/test/resources/images/buildTaskTest.pdf")
         targetFile.createNewFile()
         targetFile.deleteOnExit()
         imageToPdfOptions.setSaveLocation(targetFile)

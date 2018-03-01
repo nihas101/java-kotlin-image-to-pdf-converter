@@ -10,7 +10,7 @@ import java.io.File
 class ImageFilesIteratorTest {
     @Test
     fun imagesLoaderDirTest() {
-        val file = File("src/test/RESOURCES")
+        val file = File("src/test/resources")
         val imageFilesIterator: ImageFilesIterator = createImageFilesIterator()
         imageFilesIterator.setupDirectory(file)
 
@@ -27,7 +27,7 @@ class ImageFilesIteratorTest {
 
     @Test
     fun imagesLoaderSingleImageTest() {
-        val file = File("src/test/RESOURCES/images/3.png")
+        val file = File("src/test/resources/images/3.png")
         val imageFilesIterator: ImageFilesIterator = createImageFilesIterator()
         imageFilesIterator.setupDirectory(file)
 

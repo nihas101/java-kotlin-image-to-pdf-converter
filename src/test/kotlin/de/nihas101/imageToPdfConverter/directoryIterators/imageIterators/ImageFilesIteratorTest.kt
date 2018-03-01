@@ -11,10 +11,10 @@ import java.io.File
 
 class ImageFilesIteratorTest {
     private val files = mutableListOf(
-            File("src/test/RESOURCES/images/1.jpg"),
-            File("src/test/RESOURCES/images/2.png"),
-            File("src/test/RESOURCES/images/3.png"),
-            File("src/test/RESOURCES/images/の.png")
+            File("src/test/resources/images/1.jpg"),
+            File("src/test/resources/images/2.png"),
+            File("src/test/resources/images/3.png"),
+            File("src/test/resources/images/の.png")
     )
 
     @Test
@@ -126,7 +126,7 @@ class ImageFilesIteratorTest {
 
 
     private fun createTestIterator(): DirectoryIterator {
-        return createDirectoryIterator(File("src/test/RESOURCES/images"), IteratorOptions()
+        return createDirectoryIterator(File("src/test/resources/images"), IteratorOptions()
         )
     }
 }

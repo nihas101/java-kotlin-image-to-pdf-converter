@@ -10,7 +10,7 @@ class PdfBuildInformationTest {
     @Test
     fun setupDirectoryIterator() {
         val pdfBuilderInformation = PdfBuildInformation()
-        pdfBuilderInformation.sourceFile = File("src/test/RESOURCES/images")
+        pdfBuilderInformation.sourceFile = File("src/test/resources/images")
         pdfBuilderInformation.setupDirectoryIterator()
 
         assertEquals("[1.jpg, 2.png, 3.png, の.png]", pdfBuilderInformation.getDirectoryIterator().getFiles().map { file -> file.name }.toString())
@@ -27,7 +27,7 @@ class PdfBuildInformationTest {
     @Test
     fun setTargetFile() {
         val pdfBuildInformation = PdfBuildInformation()
-        pdfBuildInformation.setTargetFile(File("src/test/RESOURCES/images"))
+        pdfBuildInformation.setTargetFile(File("src/test/resources/images"))
 
         assertEquals("images", pdfBuildInformation.getTargetFile().name)
     }

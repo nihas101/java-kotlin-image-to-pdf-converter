@@ -12,7 +12,7 @@ class IteratorMoveActionTest {
     @Test
     fun execute() {
         val directoryIterator = DirectoryIterator.createDirectoryIterator(
-                File("src/test/RESOURCES/images"), IteratorOptions()
+                File("src/test/resources/images"), IteratorOptions()
         )
         val iteratorAction = createIteratorAction(
                 listOf("m", "0", "1"),
@@ -28,7 +28,7 @@ class IteratorMoveActionTest {
     @Test
     fun executeFullName() {
         val directoryIterator = DirectoryIterator.createDirectoryIterator(
-                File("src/test/RESOURCES/images"), IteratorOptions()
+                File("src/test/resources/images"), IteratorOptions()
         )
         val iteratorAction = createIteratorAction(
                 listOf("move", "0", "1"),

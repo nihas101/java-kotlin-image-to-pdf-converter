@@ -16,7 +16,7 @@ class SetupIteratorFromDragAndDropTaskTest {
 
         val setupIteratorTask = createSetupIteratorTask(
                 directoryIterator,
-                File("src/test/RESOURCES/images"),
+                File("src/test/resources/images"),
                 { beforeExecuted = true },
                 { afterExecuted = true }
         )

@@ -11,23 +11,23 @@ class ImageUnZipperTest {
 
     @Test
     fun unzip() {
-        val unzipInto = File("src/test/RESOURCES/zip/images")
+        val unzipInto = File("src/test/resources/zip/images")
         unzipInto.mkdir()
         unzipInto.deleteOnExit()
 
-        createImageUnZipper(File("src/test/RESOURCES/zip/images.zip")).unzip(unzipInto, true)
+        createImageUnZipper(File("src/test/resources/zip/images.zip")).unzip(unzipInto, true)
 
         assertEquals(4, unzipInto.listFiles().size)
     }
 
     @Test
     fun notSupportedException() {
-        val unzipInto = File("src/test/RESOURCES/zip/images")
+        val unzipInto = File("src/test/resources/zip/images")
         unzipInto.mkdir()
         unzipInto.deleteOnExit()
 
         try {
-            createImageUnZipper(File("src/test/RESOURCES/images/1.jpg")).unzip(unzipInto, true)
+            createImageUnZipper(File("src/test/resources/images/1.jpg")).unzip(unzipInto, true)
         } catch (exception: ExtensionNotSupportedException) {
             return
         }

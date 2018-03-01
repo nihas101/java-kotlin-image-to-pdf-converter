@@ -10,7 +10,7 @@ import org.junit.Test
 import java.io.File
 
 class ImageDirectoriesIteratorTest {
-    private val files = mutableListOf(File("src/test/RESOURCES/images"))
+    private val files = mutableListOf(File("src/test/resources/images"))
 
     @Test
     fun numberOfFiles() {
@@ -102,7 +102,7 @@ class ImageDirectoriesIteratorTest {
     }
 
     private fun createTestIterator(): DirectoryIterator {
-        return createDirectoryIterator(File("src/test/RESOURCES"), IteratorOptions(multipleDirectories = true)
+        return createDirectoryIterator(File("src/test/resources"), IteratorOptions(multipleDirectories = true)
         )
     }
 }
