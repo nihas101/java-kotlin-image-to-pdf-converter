@@ -33,13 +33,13 @@ The distribution is placed under `build/distributions`.
 
 To run the program from the distribution, extract the zip or tar file, and run the launch script for your system in the bin folder by double-clicking on it or typing either:
 ```sh
-./image2Pdf
+./jaKoImage2Pdf
 ```
 in the command-line interface or
 ```sh
-./imagesPdf --noGUI
+./jaKoImagesPdf --noGUI
 ```
-to run the program in text-mode.
+to run the program in text-only-mode.
 
 ## How to build a single PDF
 
@@ -52,7 +52,14 @@ to run the program in text-mode.
 
 ### In text-only-mode
 
-_TODO_
+1. Run the program in text-only-mode.
+2. Supply a path to the folder of images you want to convert into a PDF
+3. Type ``no`` when asked "Do you want to build multiple PDFs from this source?"
+4. Type ``yes`` if the file is a ZIP-file, ``no`` otherwise
+5. Reorder images and remove unwanted ones.
+6. Type ``build``
+7. Type ``no`` to build the PDF in the same folder as was supplied
+8. Type ``exit`` to exit the program **or** go to step 2 to build more PDFs
 
 ## How to build multiple PDFs at once
 
@@ -68,4 +75,11 @@ _TODO_
 
 ### In text-only-mode
 
-_TODO_
+1. Run the program in text-only-mode.
+2. Supply a path to the folder of images you want to convert into a PDF
+3. Type ``yes`` when asked "Do you want to build multiple PDFs from this source?"
+4. Type ``yes`` if the file is a ZIP-file, ``no`` otherwise
+5. Reorder images and remove unwanted ones.
+6. Type ``build``
+7. Type ``no`` to build the PDF in the same folder as was supplied
+8. Type ``exit`` to exit the program **or** go to step 2 to build more PDFs
