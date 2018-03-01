@@ -1,5 +1,5 @@
 /*
- Image2PDF is a program for converting images to PDFs with the use of iText 7
+ JaKoImage2PDF is a program for converting images to PDFs with the use of iText 7
  Copyright (C) 2018  Nikita Hasert
 
  This program is free software: you can redistribute it and/or modify
@@ -84,7 +84,7 @@ public final class MainWindow extends Application {
         scene = new Scene(root);
         mainWindowController.setupKeyEvents(scene);
 
-        primaryStage.setTitle("Image2PDF Converter");
+        primaryStage.setTitle("JaKoImage2PDF Converter");
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);

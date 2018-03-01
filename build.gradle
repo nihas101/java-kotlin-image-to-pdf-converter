@@ -10,9 +10,9 @@ targetCompatibility = 1.8
 /* Application */
 group 'nihas101'
 version = '1.0-SNAPSHOT'
-applicationName = 'image2PdfConverter'
+applicationName = 'jaKoImage2Pdf'
 mainClassName = 'de.nihas101.imageToPdfConverter.Main'
-archivesBaseName = 'Image2PdfConverter'
+archivesBaseName = 'JaKoImage2Pdf'
 
 buildscript {
     ext.kotlin_version = '1.2.21'
@@ -50,7 +50,7 @@ compileTestKotlin {
 }
 
 jar {
-    baseName = 'Image2PdfConverter'
+    baseName = 'JaKoImage2Pdf'
 }
 
 test {

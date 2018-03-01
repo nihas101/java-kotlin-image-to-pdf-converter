@@ -1,5 +1,5 @@
 /*
- Image2PDF is a program for converting images to PDFs with the use of iText 7
+ JaKoImage2PDF is a program for converting images to PDFs with the use of iText 7
  Copyright (C) 2018  Nikita Hasert
 
  This program is free software: you can redistribute it and/or modify

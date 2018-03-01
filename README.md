@@ -1,9 +1,9 @@
-# Image2PDF Converter
+# JaKoImage2PDF
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) [![build status](https://travis-ci.org/nihas101/java-kotlin-image-to-pdf-converter.svg?branch=master)](https://travis-ci.org/nihas101/java-kotlin-image-to-pdf-converter) [![Maintainability](https://api.codeclimate.com/v1/badges/32c17125b13bb7c177bc/maintainability)](https://codeclimate.com/github/nihas101/java-kotlin-images-to-pdf-converter/maintainability) [![codecov](https://codecov.io/gh/nihas101/java-kotlin-images-to-pdf-converter/branch/master/graph/badge.svg)](https://codecov.io/gh/nihas101/java-kotlin-images-to-pdf-converter)
 
 
 
-Image2PDF Converter is a program for converting images to PDFs with the use of [iText 7](https://itextpdf.com/).
+JaKoImage2PDF is a program for converting images to PDFs with the use of [iText 7](https://itextpdf.com/).
 
 ## Features
 
@@ -33,11 +33,11 @@ The distribution is placed under `build/distributions`.
 
 To run the program from the distribution, extract the zip or tar file, and run the launch script for your system in the bin folder by double-clicking on it or typing either:
 ```sh
-./image2PdfConverter
+./image2Pdf
 ```
 in the command-line interface or
 ```sh
-./imagesPdfConverter --noGUI
+./imagesPdf --noGUI
 ```
 to run the program in text-mode.
 
@@ -50,7 +50,7 @@ to run the program in text-mode.
 3. Reorder images and remove unwanted ones.
 4. Click on ![buildbutton](https://user-images.githubusercontent.com/19901622/35849742-e93f197e-0b22-11e8-8dab-4185c43171eb.PNG). After picking a target-directory the PDF will be build and placed at that location.
 
-### In text-mode
+### In text-only-mode
 
 _TODO_
 
@@ -66,6 +66,6 @@ _TODO_
     2. Click on the build button in the second window to build the PDF and remove this directory from the main window
 5. Click on ![buildbutton](https://user-images.githubusercontent.com/19901622/35849742-e93f197e-0b22-11e8-8dab-4185c43171eb.PNG) to build multiple PDFs from the chosen directories. After picking a target-directory the PDFs will be build and placed at that location
 
-### In text-mode
+### In text-only-mode
 
 _TODO_
