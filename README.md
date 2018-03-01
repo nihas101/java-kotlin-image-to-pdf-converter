@@ -10,6 +10,7 @@ JaKoImage2PDF is a program for converting images to PDFs with the use of [iText 
 - Build multiple PDFs from multiple subdirectories of images at once [See here](https://github.com/nihas101/java-kotlin-images-to-pdf-converter/blob/master/README.md#how-to-build-multiple-pdfs-at-once)
 - Build PDFs from one or multiple ZIP files of images
 - Change the order of the images in the PDF via drag-and-drop and remove unwanted ones
+- Text-only-mode
 
 ## Requirements
 **Java 1.8** is required to run this program.
