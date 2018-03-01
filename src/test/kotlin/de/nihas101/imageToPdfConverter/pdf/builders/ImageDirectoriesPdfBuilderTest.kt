@@ -15,7 +15,7 @@ class ImageDirectoriesPdfBuilderTest {
         val atomicBoolean = AtomicBoolean(false)
         val imageToOptions = createOptions()
         imageToOptions.setMultipleDirectories(true)
-        val saveLocation = File("src/test/resources/")
+        val saveLocation = File("src/test/RESOURCES/")
         saveLocation.createNewFile()
         saveLocation.deleteOnExit()
         imageToOptions.setSaveLocation(saveLocation)
@@ -24,7 +24,7 @@ class ImageDirectoriesPdfBuilderTest {
 
         pdfBuilder.build(directoryIterator, imageToOptions, TestProgressUpdater(atomicBoolean))
 
-        val file = File("src/test/resources/images.pdf")
+        val file = File("src/test/RESOURCES/images.pdf")
         file.deleteOnExit()
 
         assertEquals(true, file.exists())

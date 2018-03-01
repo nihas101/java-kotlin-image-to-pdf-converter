@@ -20,6 +20,7 @@ package de.nihas101.imageToPdfConverter.gui;
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
+import de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
@@ -68,6 +69,8 @@ public final class MainWindow extends Application {
 
     public TaskManager taskManager = TaskManager.TaskManagerFactory.createTaskManager();
 
+    private Application openApplication;
+
     /**
      * {@inheritDoc}
      */
@@ -84,7 +87,7 @@ public final class MainWindow extends Application {
         scene = new Scene(root);
         mainWindowController.setupKeyEvents(scene);
 
-        primaryStage.setTitle("JaKoImage2PDF Converter");
+        primaryStage.setTitle("JaKoImage2PDF");
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
@@ -101,7 +104,14 @@ public final class MainWindow extends Application {
     }
 
     private void setupOnExit(Stage stage) {
-        stage.setOnCloseRequest(event -> taskManager.cancelAllTasks());
+        stage.setOnCloseRequest(event -> {
+            taskManager.cancelAllTasks();
+            try {
+                if (openApplication != null) openApplication.stop();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public File openSaveFileChooser(File initialDirectory, String initialFileName) {
@@ -127,7 +137,9 @@ public final class MainWindow extends Application {
 
     public void openOptionsMenu() {
         try {
-            imageToPdfOptions = createOptionsMenu(imageToPdfOptions).setOptions();
+            OptionsMenu optionsMenu = createOptionsMenu(imageToPdfOptions);
+            openApplication = optionsMenu;
+            imageToPdfOptions = optionsMenu.setOptions();
         } catch (Exception e) {
             e.printStackTrace();
         }

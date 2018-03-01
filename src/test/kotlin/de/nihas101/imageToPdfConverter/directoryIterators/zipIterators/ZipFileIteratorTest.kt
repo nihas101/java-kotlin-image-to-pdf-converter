@@ -33,21 +33,21 @@ class ZipFileIteratorTest {
     @Test
     fun remove() {
         val zipFileIterator = createTestIterator()
-        zipFileIterator.remove(File("src/test/resources/zip/images/の.png"))
+        zipFileIterator.remove(File("src/test/RESOURCES/zip/images/の.png"))
         assertEquals(3, zipFileIterator.numberOfFiles())
     }
 
     @Test
     fun add() {
         val zipFileIterator = createTestIterator()
-        zipFileIterator.add(File("src/test/resources/images/1.jpg"))
+        zipFileIterator.add(File("src/test/RESOURCES/images/1.jpg"))
         assertEquals("1.jpg", zipFileIterator.getFile(4).name)
     }
 
     @Test
     fun addIndex() {
         val zipFileIterator = createTestIterator()
-        zipFileIterator.add(0, File("src/test/resources/images/1.jpg"))
+        zipFileIterator.add(0, File("src/test/RESOURCES/images/1.jpg"))
         assertEquals("1.jpg", zipFileIterator.getFile(0).name)
     }
 
@@ -56,8 +56,8 @@ class ZipFileIteratorTest {
         val zipFileIterator = createTestIterator()
         zipFileIterator.addAll(
                 listOf(
-                        File("src/test/resources/images/1.jpg"),
-                        File("src/test/resources/images/2.png")
+                        File("src/test/RESOURCES/images/1.jpg"),
+                        File("src/test/RESOURCES/images/2.png")
                 )
         )
         assertEquals(6, zipFileIterator.numberOfFiles())
@@ -93,7 +93,7 @@ class ZipFileIteratorTest {
 
     private fun createTestIterator(): DirectoryIterator {
         return createDirectoryIterator(
-                File("src/test/resources/zip/images.zip"),
+                File("src/test/RESOURCES/zip/images.zip"),
                 IteratorOptions(zipFiles = true, deleteOnExit = true)
         )
     }

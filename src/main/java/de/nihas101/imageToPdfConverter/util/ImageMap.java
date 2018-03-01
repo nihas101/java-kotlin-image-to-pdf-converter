@@ -30,7 +30,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static de.nihas101.imageToPdfConverter.util.Constants.DIRECTORY_IMAGE_PATH;
 import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_MAP_MAX_SIZE;
 
 /**
@@ -104,17 +103,10 @@ public class ImageMap implements Cancellable {
     }
 
     private void putImageIntoMapIfFile(File file, ProgressUpdater progressUpdater, int progress) {
-        if (file.isDirectory() && imageMap.size() < IMAGE_MAP_MAX_SIZE)
-            putDirectoryImageIntoMap();
-        else if (imageMap.size() < IMAGE_MAP_MAX_SIZE)
+        if (!file.isDirectory() && imageMap.size() < IMAGE_MAP_MAX_SIZE)
             putImageIntoMap(file);
 
         if (progressUpdater != null) progressUpdater.updateProgress(progress, file);
-    }
-
-    private void putDirectoryImageIntoMap() {
-        File directoryImage = new File(DIRECTORY_IMAGE_PATH);
-        if (!contains(directoryImage)) putImageIntoMap(directoryImage);
     }
 
     /**

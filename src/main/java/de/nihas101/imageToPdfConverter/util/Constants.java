@@ -18,7 +18,15 @@
 
 package de.nihas101.imageToPdfConverter.util;
 
+import javafx.scene.image.Image;
+
+import java.io.IOException;
+
+import static javafx.embed.swing.SwingFXUtils.toFXImage;
+import static javax.imageio.ImageIO.read;
+
 public class Constants {
+    public final static Constants RESOURCES = new Constants();
     public final static Double CELL_SIZE = 100.0;
     public final static int LIST_CELL_MAX_STRING_LENGTH = 27;
     public final static int NOTIFICATION_MAX_STRING_LENGTH = 75;
@@ -30,7 +38,16 @@ public class Constants {
     public final static int IMAGE_MAP_MAX_SIZE = 100;
 
     /* Source: icons8.com/icon/2828/open */
-    public final static String DIRECTORY_IMAGE_PATH = "src/main/resources/icons8-open-500.png";
+    private final static String DIRECTORY_IMAGE_PATH = "/icons8-open-500.png";
     /* Source: icons8.com/icon/54151/gear */
-    public final static String GEAR_IMAGE_PATH = "src/main/resources/icons8-open-500.png";
+    public final static String GEAR_IMAGE_PATH = "/icons8-open-500.png";
+    public Image DIRECTORY_IMAGE_FILE;
+
+    private Constants() {
+        try {
+            DIRECTORY_IMAGE_FILE = toFXImage(read(getClass().getResource(DIRECTORY_IMAGE_PATH)), null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

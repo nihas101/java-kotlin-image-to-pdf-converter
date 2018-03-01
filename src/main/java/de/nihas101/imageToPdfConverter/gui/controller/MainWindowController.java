@@ -388,7 +388,9 @@ public class MainWindowController extends FileListViewController {
     }
 
     public void openOptionsMenu(ActionEvent actionEvent) {
+        disableInput(true);
         mainWindow.openOptionsMenu();
+        disableInput(false);
         actionEvent.consume();
     }
 }

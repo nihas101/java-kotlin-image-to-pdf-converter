@@ -18,11 +18,11 @@ class ImagePdfTest {
         val testOutputStream = TestOutputStream(StringBuilder())
         val options = createOptions(
                 IteratorOptions(false),
-                PdfOptions(saveLocation = File("src/test/resources/test1.pdf"))
+                PdfOptions(saveLocation = File("src/test/RESOURCES/test1.pdf"))
         )
         val imagePdf = createPdf(options, testOutputStream)
 
-        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/3.png")))
+        imagePdf.add(Image(ImageDataFactory.create("src/test/RESOURCES/images/3.png")))
         imagePdf.close()
 
         if (testOutputStream.output.isEmpty()) fail()
@@ -33,11 +33,11 @@ class ImagePdfTest {
         val testOutputStream = TestOutputStream(StringBuilder())
         val options = createOptions(
                 IteratorOptions(false),
-                PdfOptions(saveLocation = File("src/test/resources/test2.pdf"))
+                PdfOptions(saveLocation = File("src/test/RESOURCES/test2.pdf"))
         )
         val imagePdf = createPdf(options, testOutputStream)
 
-        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/2.png")))
+        imagePdf.add(Image(ImageDataFactory.create("src/test/RESOURCES/images/2.png")))
         imagePdf.close()
 
         if (testOutputStream.output.isEmpty()) fail()
@@ -48,11 +48,11 @@ class ImagePdfTest {
         val testOutputStream = TestOutputStream(StringBuilder())
         val options = createOptions(
                 IteratorOptions(false),
-                PdfOptions(saveLocation = File("src/test/resources/test3.pdf"))
+                PdfOptions(saveLocation = File("src/test/RESOURCES/test3.pdf"))
         )
         val imagePdf = createPdf(options, testOutputStream)
 
-        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/1.jpg")))
+        imagePdf.add(Image(ImageDataFactory.create("src/test/RESOURCES/images/1.jpg")))
         imagePdf.close()
 
         if (testOutputStream.output.isEmpty()) fail()
@@ -63,11 +63,11 @@ class ImagePdfTest {
         val testOutputStream = TestOutputStream(StringBuilder())
         val options = createOptions(
                 IteratorOptions(false),
-                PdfOptions(saveLocation = File("src/test/resources/の.png"))
+                PdfOptions(saveLocation = File("src/test/RESOURCES/の.png"))
         )
         val imagePdf: ImagePdf = createPdf(options, testOutputStream)
 
-        imagePdf.add(Image(ImageDataFactory.create("src/test/resources/images/1.jpg")))
+        imagePdf.add(Image(ImageDataFactory.create("src/test/RESOURCES/images/1.jpg")))
         imagePdf.close()
 
         if (testOutputStream.output.isEmpty()) fail()
