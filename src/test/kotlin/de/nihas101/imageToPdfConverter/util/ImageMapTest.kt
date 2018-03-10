@@ -62,8 +62,6 @@ internal class ImageMapTest : ApplicationTest() {
         val expectedPixelReader = expected.pixelReader
         val actualPixelReader = actual.pixelReader
 
-        println("${expected.height.toInt()} , ${expected.width.toInt()}")
-
         for (x in 0 until expected.width.toInt()) {
             for (y in 0 until expected.height.toInt()) {
                 assertEquals(expectedPixelReader.getColor(x, y), actualPixelReader.getColor(x, y))
