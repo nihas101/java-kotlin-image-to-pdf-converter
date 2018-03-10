@@ -49,6 +49,7 @@ import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
 public final class MainWindow extends Application {
     public MainWindowController mainWindowController;
     private Scene scene;
+    public GridPane root;
 
     private DirectoryIterator directoryIterator;
 
@@ -76,7 +77,7 @@ public final class MainWindow extends Application {
      * {@inheritDoc}
      */
     public void start(Stage primaryStage) throws IOException {
-        GridPane root = loadFXML();
+        loadFXML();
         setupMainWindow();
         setupOnExit(primaryStage);
         mainWindowController.setup(this);
@@ -89,11 +90,10 @@ public final class MainWindow extends Application {
         primaryStage.show();
     }
 
-    private GridPane loadFXML() throws IOException {
+    private void loadFXML() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
-        GridPane root = loader.load();
+        root = loader.load();
         mainWindowController = loader.getController();
-        return root;
     }
 
     private void setupMainWindow() {
