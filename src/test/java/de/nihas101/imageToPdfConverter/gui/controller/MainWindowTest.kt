@@ -13,6 +13,7 @@ import java.io.File
 
 
 class MainWindowTest : ApplicationTest() {
+    private val waitingPeriod = 1000L
     private var mainWindow: MainWindow? = null
     private var mainWindowController: MainWindowController? = null
 
@@ -63,7 +64,7 @@ class MainWindowTest : ApplicationTest() {
             doubleClickOn(coordinates[0], coordinates[1])
         else
             clickOn(coordinates[0], coordinates[1])
-        Thread.sleep(1000)
+        Thread.sleep(waitingPeriod)
     }
 
     @Test
@@ -92,6 +93,7 @@ class MainWindowTest : ApplicationTest() {
         clickOn("#directoryButton")
         closeCurrentWindow()
         clickOn("#buildButton")
+        Thread.sleep(waitingPeriod)
         assertEquals("Please choose a directory", mainWindowController!!.notificationText.text)
     }
 
@@ -111,6 +113,7 @@ class MainWindowTest : ApplicationTest() {
         setupDirectoryIterator("src/test/resources/images")
         clickOn("#buildButton")
         closeWindow()
+        Thread.sleep(waitingPeriod)
         assertEquals("Build cancelled by user", lookup("#notificationText").queryText().text)
     }
 
@@ -122,6 +125,7 @@ class MainWindowTest : ApplicationTest() {
         setupDirectoryIterator("src/test/resources", multipleDirectories = true)
         clickOn("#buildButton")
         closeWindow()
+        Thread.sleep(waitingPeriod)
         assertEquals("Build cancelled by user", lookup("#notificationText").queryText().text)
     }
 
@@ -132,6 +136,7 @@ class MainWindowTest : ApplicationTest() {
         closeCurrentWindow()
         setupDirectoryIterator("src/test/resources/images", multipleDirectories = true)
         clickOn("#buildButton")
+        Thread.sleep(waitingPeriod)
         assertEquals("There are no files to turn into a PDF", lookup("#notificationText").queryText().text)
     }
 
@@ -143,7 +148,8 @@ class MainWindowTest : ApplicationTest() {
         mainWindowController!!.buildPdf(file)
 
         file.deleteOnExit()
-        Thread.sleep(1000)
+        Thread.sleep(waitingPeriod)
+        assertEquals(true, file.exists())
     }
 
     @Test
@@ -160,6 +166,7 @@ class MainWindowTest : ApplicationTest() {
 
         directory.deleteOnExit()
         pdf.deleteOnExit()
-        Thread.sleep(1000)
+        Thread.sleep(waitingPeriod)
+        assertEquals(true, pdf.exists())
     }
 }

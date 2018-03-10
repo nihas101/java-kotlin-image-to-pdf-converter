@@ -14,6 +14,7 @@ import org.testfx.framework.junit.ApplicationTest
 import java.io.File
 
 class DirectoryContentDisplayTest : ApplicationTest() {
+    private var waitingPeriod = 1000L
     private var mainWindow: MainWindow? = null
     private var mainWindowController: MainWindowController? = null
 
@@ -48,7 +49,7 @@ class DirectoryContentDisplayTest : ApplicationTest() {
         setupDirectoryIterator("src/test/resources", true)
 
         clickOnFirstCell(true)
-        Thread.sleep(1000)
+        Thread.sleep(waitingPeriod)
 
         assertDirectoryIsDisplayed()
     }
@@ -58,12 +59,13 @@ class DirectoryContentDisplayTest : ApplicationTest() {
         setupDirectoryIterator("src/test/resources", true)
 
         clickOnFirstCell(true)
-        Thread.sleep(1000)
+        Thread.sleep(waitingPeriod)
 
         val itemBefore = getDirectoryContentDisplayImageListView().items[0]
 
         val coordinates = getCoordinatesOfFirstCell()
         drag(coordinates[0], coordinates[1]).dropTo(coordinates[0] + 350, coordinates[1])
+        Thread.sleep(waitingPeriod)
 
         assertItemMoved(itemBefore)
     }

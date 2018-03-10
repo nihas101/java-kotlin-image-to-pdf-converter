@@ -11,6 +11,7 @@ import org.junit.Test
 import org.testfx.framework.junit.ApplicationTest
 
 class OptionsMenuTest : ApplicationTest() {
+    private val waitingPeriod = 1000L
     private var mainWindow: MainWindow? = null
     private var mainWindowController: MainWindowController? = null
 
@@ -29,6 +30,7 @@ class OptionsMenuTest : ApplicationTest() {
     fun zipFilesCheckBox() {
         clickOn("#optionsButton")
         clickOn("#zipFilesCheckBox")
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
         assertEquals(true, mainWindow!!.imageToPdfOptions.getIteratorOptions().zipFiles)
     }
@@ -37,6 +39,7 @@ class OptionsMenuTest : ApplicationTest() {
     fun multipleDirectoriesCheckBox() {
         clickOn("#optionsButton")
         clickOn("#multipleDirectoriesCheckBox")
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
         assertEquals(true, mainWindow!!.imageToPdfOptions.getIteratorOptions().multipleDirectories)
     }
@@ -45,6 +48,7 @@ class OptionsMenuTest : ApplicationTest() {
     fun deleteOnExitCheckBox() {
         clickOn("#optionsButton")
         clickOn("#deleteOnExitCheckBox")
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
         assertEquals(false, mainWindow!!.imageToPdfOptions.getIteratorOptions().deleteOnExit)
     }
@@ -54,6 +58,7 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#optionsButton")
         clickOn("#pdfMenu")
         clickOn("#PDF_1_0_item")
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
         assertEquals(PdfVersion.PDF_1_0, mainWindow!!.imageToPdfOptions.getPdfOptions().pdfVersion)
     }
@@ -63,6 +68,7 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#optionsButton")
         clickOn("#compressionMenu")
         clickOn("#bestCompression_item")
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
         assertEquals(CompressionConstants.BEST_COMPRESSION, mainWindow!!.imageToPdfOptions.getPdfOptions().compressionLevel)
     }
@@ -72,6 +78,7 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#optionsButton")
         clickOn("#compressionMenu")
         clickOn("#bestCompression_item")
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
 
         clickOn("#optionsButton")
@@ -84,6 +91,7 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#optionsButton")
         clickOn("#compressionMenu")
         clickOn("#noCompression_item")
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
 
         clickOn("#optionsButton")
@@ -101,7 +109,9 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#PDF_2_0_item")
         clickOn("#compressionMenu")
         clickOn("#speedCompression_item")
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
+        Thread.sleep(waitingPeriod)
 
         assertEquals(PdfVersion.PDF_2_0, mainWindow!!.imageToPdfOptions.getPdfOptions().pdfVersion)
         assertEquals(CompressionConstants.BEST_SPEED, mainWindow!!.imageToPdfOptions.getPdfOptions().compressionLevel)
@@ -116,7 +126,7 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#PDF_1_0_item")
         clickOn("#compressionMenu")
         clickOn("#noCompression_item")
-
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
 
         assertEquals(PdfVersion.PDF_1_0, mainWindow!!.imageToPdfOptions.getPdfOptions().pdfVersion)
