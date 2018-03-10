@@ -60,7 +60,7 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
 
     override fun cancelTask() {
         super.cancelTask()
-        imagePdfBuilder!!.cancelTask()
+        if (imagePdfBuilder != null) imagePdfBuilder!!.cancelTask()
     }
 
     companion object PdfBuilderFactory {

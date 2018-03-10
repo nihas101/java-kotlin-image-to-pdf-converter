@@ -40,7 +40,7 @@ public final class DirectoryContentDisplay extends Application {
     private final int directoryIteratorIndex;
     private final MainWindowController mainWindowController;
     private DirectoryIterator directoryIterator;
-    private DirectoryContentDisplayController directoryContentDisplayController;
+    public DirectoryContentDisplayController directoryContentDisplayController;
 
 
     private DirectoryContentDisplay(DirectoryIterator directoryIterator, int directoryIteratorIndex, MainWindowController mainWindowController) {
@@ -55,7 +55,7 @@ public final class DirectoryContentDisplay extends Application {
      * @param imageFilesIterator The {@link DirectoryIterator} of which to display the content
      * @return The created {@link ImageFilesIterator} instance
      */
-    static DirectoryContentDisplay createDirectoryContentDisplay(DirectoryIterator imageFilesIterator, int directoryIteratorIndex, MainWindowController mainWindowController) {
+    public static DirectoryContentDisplay createDirectoryContentDisplay(DirectoryIterator imageFilesIterator, int directoryIteratorIndex, MainWindowController mainWindowController) {
         return new DirectoryContentDisplay(imageFilesIterator, directoryIteratorIndex, mainWindowController);
     }
 

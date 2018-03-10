@@ -313,7 +313,7 @@ public class MainWindowController extends FileListViewController {
         buildPdf(saveFile);
     }
 
-    private void buildPdf(File saveFile) {
+    public void buildPdf(File saveFile) {
         if (saveFile != null) {
             mainWindow.setSaveLocation(saveFile);
             startPdfBuilderThread(PdfBuilder.PdfBuilderFactory.createPdfBBuilder(mainWindow.imageToPdfOptions.getIteratorOptions()));

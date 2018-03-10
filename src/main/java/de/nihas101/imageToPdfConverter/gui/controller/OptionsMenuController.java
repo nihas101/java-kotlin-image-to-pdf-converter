@@ -22,9 +22,7 @@ import com.itextpdf.kernel.pdf.PdfVersion;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 
 import java.util.List;
 
@@ -38,6 +36,21 @@ public class OptionsMenuController {
     public ToggleGroup pdfVersionToggle;
     public CheckBox zipFilesCheckBox;
     public CheckBox deleteOnExitCheckBox;
+    public MenuButton pdfMenu;
+    public MenuButton compressionMenu;
+    public RadioMenuItem PDF_1_0_item;
+    public RadioMenuItem PDF_1_1_item;
+    public RadioMenuItem PDF_1_2_item;
+    public RadioMenuItem PDF_1_3_item;
+    public RadioMenuItem PDF_1_4_item;
+    public RadioMenuItem PDF_1_5_item;
+    public RadioMenuItem PDF_1_6_item;
+    public RadioMenuItem PDF_1_7_item;
+    public RadioMenuItem PDF_2_0_item;
+    public RadioMenuItem noCompression_item;
+    public RadioMenuItem defaultCompression_item;
+    public RadioMenuItem bestCompression_item;
+    public RadioMenuItem speedCompression_item;
     private ImageToPdfOptions imageToPdfOptions;
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {

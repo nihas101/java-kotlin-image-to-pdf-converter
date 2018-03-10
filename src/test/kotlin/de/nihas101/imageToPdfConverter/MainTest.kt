@@ -11,6 +11,8 @@ class MainTest : ApplicationTest() {
     @Test
     fun testGUI() {
         Main.main(arrayOf())
+        Thread.sleep(1000)
+        closeCurrentWindow()
     }
 
     @Test

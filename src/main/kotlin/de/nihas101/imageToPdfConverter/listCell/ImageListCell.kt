@@ -144,6 +144,7 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
 
     private fun setupImageListCellContextMenu(file: File) {
         contextMenu = ContextMenu()
+        contextMenu.id = "listCellContextMenu"
 
         val deleteItem = setupMenuItem(
                 "Remove ${file.name}",
