@@ -57,30 +57,4 @@ class OptionsMenuTest : ApplicationTest() {
         Thread.sleep(waitingPeriod)
         assertEquals(false, mainWindow!!.imageToPdfOptions.getIteratorOptions().deleteOnExit)
     }
-
-    @Test
-    fun pdfVersionToggle() {
-        clickOn("#optionsButton")
-        Thread.sleep(waitingPeriod)
-        clickOn("#pdfMenu")
-        Thread.sleep(waitingPeriod)
-        clickOn("#PDF_1_0_item")
-        Thread.sleep(waitingPeriod)
-        closeCurrentWindow()
-        Thread.sleep(waitingPeriod)
-        assertEquals(PdfVersion.PDF_1_0, mainWindow!!.imageToPdfOptions.getPdfOptions().pdfVersion)
-    }
-
-    @Test
-    fun pdfBestCompressionToggle() {
-        clickOn("#optionsButton")
-        Thread.sleep(waitingPeriod)
-        clickOn("#compressionMenu")
-        Thread.sleep(waitingPeriod)
-        clickOn("#bestCompression_item")
-        Thread.sleep(waitingPeriod)
-        closeCurrentWindow()
-        Thread.sleep(waitingPeriod)
-        assertEquals(CompressionConstants.BEST_COMPRESSION, mainWindow!!.imageToPdfOptions.getPdfOptions().compressionLevel)
-    }
 }
