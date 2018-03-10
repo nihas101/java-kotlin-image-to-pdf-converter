@@ -56,7 +56,7 @@ import static javafx.scene.paint.Color.GREEN;
  */
 public class DirectoryContentDisplayController extends FileListViewController {
     @FXML
-    public Button directoryContentDisplayBuildButton;
+    public Button buildButton;
     /**
      * The {@link DirectoryIterator} for iterating over directories
      */
