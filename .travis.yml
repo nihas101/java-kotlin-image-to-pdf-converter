@@ -7,25 +7,20 @@ before_install:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
-# Source: github.com/TestFX/TestFX/wiki/Travis-CI
-  matrix:
-    include:
-      # Headed Linux
-      - os: linux
+matrix:
+  include:
+    - os: linux
         dist: trusty
         jdk: oraclejdk8
-      # Headless Linux
       - os: linux
         dist: trusty
         jdk: oraclejdk8
         env:
           - _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500"
-      # Headless macOS
       - os: osx
         osx_image: xcode9
         env:
           - _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500"
-      # Headed macOS is not currently possible on Travis.
 
   addons:
     apt:
