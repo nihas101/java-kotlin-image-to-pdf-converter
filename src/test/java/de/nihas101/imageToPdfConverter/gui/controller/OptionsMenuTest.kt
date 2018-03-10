@@ -3,7 +3,6 @@ package de.nihas101.imageToPdfConverter.gui.controller
 import com.itextpdf.kernel.pdf.CompressionConstants
 import com.itextpdf.kernel.pdf.PdfVersion
 import de.nihas101.imageToPdfConverter.gui.MainWindow
-import javafx.scene.control.CheckBox
 import javafx.stage.Stage
 import junit.framework.TestCase.assertEquals
 import org.junit.After
@@ -11,7 +10,7 @@ import org.junit.Test
 import org.testfx.framework.junit.ApplicationTest
 
 class OptionsMenuTest : ApplicationTest() {
-    private val waitingPeriod = 1000L
+    private val waitingPeriod = 500L
     private var mainWindow: MainWindow? = null
     private var mainWindowController: MainWindowController? = null
 

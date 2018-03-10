@@ -3,18 +3,15 @@ package de.nihas101.imageToPdfConverter.gui.controller
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.gui.MainWindow
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
-import javafx.scene.control.ListView
 import javafx.scene.image.ImageView
-import javafx.scene.input.KeyCode
 import javafx.stage.Stage
-import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Test
 import org.testfx.framework.junit.ApplicationTest
 import java.io.File
 
 class DirectoryContentDisplayTest : ApplicationTest() {
-    private var waitingPeriod = 1000L
+    private var waitingPeriod = 500L
     private var mainWindow: MainWindow? = null
     private var mainWindowController: MainWindowController? = null
 

@@ -13,7 +13,7 @@ import java.io.File
 
 
 class MainWindowTest : ApplicationTest() {
-    private val waitingPeriod = 1000L
+    private val waitingPeriod = 500L
     private var mainWindow: MainWindow? = null
     private var mainWindowController: MainWindowController? = null
 
