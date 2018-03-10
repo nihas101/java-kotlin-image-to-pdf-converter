@@ -26,6 +26,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_HEIGHT;
 import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_WIDTH;
 
@@ -41,6 +43,8 @@ public final class ImageDisplay extends Application {
      * The name of the {@link Image}
      */
     private String imageName;
+
+    private ImageDisplayController imageDisplayController;
 
     private ImageDisplay(Image image, String imageName) {
         this.image = image;
@@ -70,26 +74,35 @@ public final class ImageDisplay extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /* Load root-node */
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/imageDisplay.fxml"));
-        Pane root = loader.load();
-        ImageDisplayController imageDisplayController = loader.getController();
+        Pane root = loadFXML();
         imageDisplayController.setup(image);
 
-        /* Create Scene */
         Scene scene = new Scene(root);
 
+        setupPrimaryStage(primaryStage, scene);
+        primaryStage.showAndWait();
+    }
+
+    private Pane loadFXML() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/imageDisplay.fxml"));
+        Pane root = loader.load();
+        imageDisplayController = loader.getController();
+        return root;
+    }
+
+    private void setupPrimaryStage(Stage primaryStage, Scene scene){
         primaryStage.setTitle("ImageDisplay - " + imageName);
         primaryStage.setScene(scene);
-        if (image.getHeight() > IMAGE_DISPLAY_MAX_HEIGHT || image.getWidth() > IMAGE_DISPLAY_MAX_WIDTH) {
-            double scale = calculateScale(image);
-            primaryStage.setHeight(image.getHeight() * scale);
-            primaryStage.setWidth(image.getWidth() * scale);
-        } else {
-            primaryStage.setHeight(image.getHeight());
-            primaryStage.setWidth(image.getWidth());
-        }
-        primaryStage.showAndWait();
+
+        double scale = calculateScaleOfStage(image);
+        primaryStage.setHeight(image.getHeight() * scale);
+        primaryStage.setWidth(image.getWidth() * scale);
+    }
+
+    private double calculateScaleOfStage(Image image) {
+        if (image.getHeight() > IMAGE_DISPLAY_MAX_HEIGHT || image.getWidth() > IMAGE_DISPLAY_MAX_WIDTH)
+            return calculateScale(image);
+        else return 1;
     }
 
     private double calculateScale(Image image) {
