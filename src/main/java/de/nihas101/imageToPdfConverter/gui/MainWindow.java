@@ -37,7 +37,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.RejectedExecutionException;
 
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
@@ -139,8 +138,6 @@ public final class MainWindow extends Application {
     public void openContentDisplay(int index) {
         try {
             createContentDisplayer(directoryIterator).displayContent(index, mainWindowController);
-        } catch (RejectedExecutionException exception) {
-            /* Rejected showAndWait */
         } catch (Exception exception) {
             exception.printStackTrace();
         }
