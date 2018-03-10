@@ -26,6 +26,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public final class OptionsMenu extends Application {
     private final ImageToPdfOptions imageToPdfOptions;
     private OptionsMenuController optionsMenuController;
@@ -38,19 +40,26 @@ public final class OptionsMenu extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        /* Load root-node */
+        GridPane root = loadFXML();
+        optionsMenuController.setup(imageToPdfOptions);
+
+        Scene scene = new Scene(root);
+
+        setupPrimaryStage(scene);
+        primaryStage.showAndWait();
+    }
+
+    private GridPane loadFXML() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/options.fxml"));
         GridPane root = loader.load();
         optionsMenuController = loader.getController();
-        optionsMenuController.setup(imageToPdfOptions);
+        return root;
+    }
 
-        /* Create Scene */
-        Scene scene = new Scene(root);
-
+    private void setupPrimaryStage(Scene scene){
         primaryStage.setTitle("JaKoImageToPdf Options");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        primaryStage.showAndWait();
     }
 
     @Override
