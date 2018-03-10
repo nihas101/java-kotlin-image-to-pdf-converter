@@ -37,6 +37,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.RejectedExecutionException;
 
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
@@ -46,7 +47,7 @@ import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
 
 
 public final class MainWindow extends Application {
-    private MainWindowController mainWindowController;
+    public MainWindowController mainWindowController;
     private Scene scene;
 
     private DirectoryIterator directoryIterator;
@@ -116,7 +117,7 @@ public final class MainWindow extends Application {
         });
     }
 
-    private void setupPrimaryStage(Stage primaryStage, Scene scene){
+    private void setupPrimaryStage(Stage primaryStage, Scene scene) {
         primaryStage.setTitle("JaKoImage2PDF");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
@@ -138,6 +139,8 @@ public final class MainWindow extends Application {
     public void openContentDisplay(int index) {
         try {
             createContentDisplayer(directoryIterator).displayContent(index, mainWindowController);
+        } catch (RejectedExecutionException exception) {
+            /* Rejected showAndWait */
         } catch (Exception exception) {
             exception.printStackTrace();
         }

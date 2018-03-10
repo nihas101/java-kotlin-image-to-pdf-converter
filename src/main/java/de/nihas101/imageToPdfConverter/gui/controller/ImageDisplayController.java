@@ -27,7 +27,7 @@ import javafx.scene.layout.BorderPane;
  * The Controller for the {@link ImageDisplay}
  */
 public class ImageDisplayController {
-    public ImageView imageView;
+    public ImageView imageDisplayView;
     public BorderPane borderPane;
 
     /**
@@ -36,11 +36,11 @@ public class ImageDisplayController {
      * @param image The {@link Image} to display
      */
     public void setup(Image image) {
-        imageView.setImage(image);
-        imageView.fitHeightProperty();
-        imageView.fitWidthProperty();
+        imageDisplayView.setImage(image);
+        imageDisplayView.fitHeightProperty();
+        imageDisplayView.fitWidthProperty();
 
-        imageView.fitWidthProperty().bind(borderPane.widthProperty());
-        imageView.fitHeightProperty().bind(borderPane.heightProperty());
+        imageDisplayView.fitWidthProperty().bind(borderPane.widthProperty());
+        imageDisplayView.fitHeightProperty().bind(borderPane.heightProperty());
     }
 }

@@ -212,7 +212,7 @@ public class MainWindowController extends FileListViewController {
      *
      * @param directoryIterator The {@link DirectoryIterator} for iterating over files
      */
-    private void setupListView(DirectoryIterator directoryIterator) {
+    public void setupListView(DirectoryIterator directoryIterator) {
         startLoadImagesThread(directoryIterator);
     }
 

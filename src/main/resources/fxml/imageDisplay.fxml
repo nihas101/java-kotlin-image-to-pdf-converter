@@ -7,7 +7,7 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="de.nihas101.imageToPdfConverter.gui.controller.ImageDisplayController">
     <center>
-        <ImageView fx:id="imageView" fitHeight="600.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true"
+        <ImageView fx:id="imageDisplayView" fitHeight="600.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true"
                    BorderPane.alignment="CENTER"/>
     </center>
 </BorderPane>

@@ -56,7 +56,7 @@ public final class OptionsMenu extends Application {
         return root;
     }
 
-    private void setupPrimaryStage(Scene scene){
+    private void setupPrimaryStage(Scene scene) {
         primaryStage.setTitle("JaKoImageToPdf Options");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);

@@ -89,7 +89,7 @@ public final class DirectoryContentDisplay extends Application {
         return root;
     }
 
-    private void setupPrimaryStage(Stage primaryStage, Scene scene){
+    private void setupPrimaryStage(Stage primaryStage, Scene scene) {
         primaryStage.setTitle("ContentDisplay - " + directoryIterator.getParentDirectory().getAbsolutePath());
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);

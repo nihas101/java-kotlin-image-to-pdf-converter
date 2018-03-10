@@ -90,7 +90,7 @@ public final class ImageDisplay extends Application {
         return root;
     }
 
-    private void setupPrimaryStage(Stage primaryStage, Scene scene){
+    private void setupPrimaryStage(Stage primaryStage, Scene scene) {
         primaryStage.setTitle("ImageDisplay - " + imageName);
         primaryStage.setScene(scene);
 
