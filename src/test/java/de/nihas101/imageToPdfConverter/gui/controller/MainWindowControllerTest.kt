@@ -26,6 +26,10 @@ class MainWindowTest : ApplicationTest() {
 
         clickOnFirstCell()
 
+        assertImageIsDisplayed()
+    }
+
+    private fun assertImageIsDisplayed(){
         val imageView = lookup("#imageDisplayView").query<ImageView>()
         checkNotNull(imageView.image)
     }
@@ -36,8 +40,12 @@ class MainWindowTest : ApplicationTest() {
 
         clickOnFirstCell()
 
-        val directoryContentDisplayButton = lookup("#directoryContentDisplayBuildButton").queryButton()
-        checkNotNull(directoryContentDisplayButton)
+        assertDirectoryIsDisplayed()
+    }
+
+    private fun assertDirectoryIsDisplayed(){
+        val listView = lookup("#imageListView").nth(1).queryListView<File>()
+        checkNotNull(listView)
     }
 
     private fun setupDirectoryIterator(path: String, multipleDirectories: Boolean = false) {
@@ -52,6 +60,6 @@ class MainWindowTest : ApplicationTest() {
 
     private fun clickOnFirstCell() {
         val bounds = mainWindow!!.root.localToScreen(mainWindowController!!.imageListView.boundsInLocal)
-        doubleClickOn(bounds.minX + 100, bounds.minY + 115)
+        doubleClickOn(bounds.minX + bounds.width * .05, bounds.minY + bounds.height * .5)
     }
 }
