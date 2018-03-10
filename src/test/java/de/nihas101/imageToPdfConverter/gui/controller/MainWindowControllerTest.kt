@@ -29,7 +29,7 @@ class MainWindowTest : ApplicationTest() {
         assertImageIsDisplayed()
     }
 
-    private fun assertImageIsDisplayed(){
+    private fun assertImageIsDisplayed() {
         val imageView = lookup("#imageDisplayView").query<ImageView>()
         checkNotNull(imageView.image)
     }
@@ -43,7 +43,7 @@ class MainWindowTest : ApplicationTest() {
         assertDirectoryIsDisplayed()
     }
 
-    private fun assertDirectoryIsDisplayed(){
+    private fun assertDirectoryIsDisplayed() {
         val listView = lookup("#imageListView").nth(1).queryListView<File>()
         checkNotNull(listView)
     }
@@ -60,6 +60,7 @@ class MainWindowTest : ApplicationTest() {
 
     private fun clickOnFirstCell() {
         val bounds = mainWindow!!.root.localToScreen(mainWindowController!!.imageListView.boundsInLocal)
-        doubleClickOn(bounds.minX + bounds.width * .05, bounds.minY + bounds.height * .5)
+        doubleClickOn(bounds.minX + bounds.width * .08, bounds.minY + bounds.height * .6)
+        Thread.sleep(1000)
     }
 }
