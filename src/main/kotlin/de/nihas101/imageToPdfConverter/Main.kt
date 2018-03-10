@@ -23,18 +23,31 @@ import de.nihas101.imageToPdfConverter.ui.PdfBuilderUI.PdfBuilderUiFactory.creat
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInput
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInterface
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineOutput
+import javafx.application.Platform.runLater
+import javafx.stage.Stage
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {
-        if (args.isEmpty()) MainWindow().show()
-        else if ("--nogui" == args[0].toLowerCase()) {
-            val commandLineOutput = PdfBuilderCommandLineOutput.createCommandLineOutput(System.out)
-            val commandLineInput = PdfBuilderCommandLineInput.createCommandLineInput(BufferedReader(InputStreamReader(System.`in`)))
-            val commandLineInterface = PdfBuilderCommandLineInterface.createCommandLineInterface(commandLineInput, commandLineOutput)
-            createPdfBuilderUI(commandLineInterface).start()
+        if (args.isEmpty()) startGUI()
+        else if ("--nogui" == args[0].toLowerCase()) startTextOnly()
+    }
+
+    private fun startGUI() {
+        try {
+            MainWindow.main(arrayOf())
+        } catch (exception: IllegalStateException) {
+            /*  Application launch was already called before */
+            runLater({ MainWindow().start(Stage()) })
         }
+    }
+
+    private fun startTextOnly() {
+        val commandLineOutput = PdfBuilderCommandLineOutput.createCommandLineOutput(System.out)
+        val commandLineInput = PdfBuilderCommandLineInput.createCommandLineInput(BufferedReader(InputStreamReader(System.`in`)))
+        val commandLineInterface = PdfBuilderCommandLineInterface.createCommandLineInterface(commandLineInput, commandLineOutput)
+        createPdfBuilderUI(commandLineInterface).start()
     }
 }

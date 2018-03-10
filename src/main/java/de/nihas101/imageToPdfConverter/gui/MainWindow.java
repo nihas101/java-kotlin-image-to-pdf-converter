@@ -168,8 +168,4 @@ public final class MainWindow extends Application {
     public DirectoryIterator getDirectoryIterator() {
         return directoryIterator;
     }
-
-    public void show() {
-        launch();
-    }
 }
