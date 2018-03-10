@@ -32,6 +32,7 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#zipFilesCheckBox")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
+        Thread.sleep(waitingPeriod)
         assertEquals(true, mainWindow!!.imageToPdfOptions.getIteratorOptions().zipFiles)
     }
 
@@ -42,6 +43,7 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#multipleDirectoriesCheckBox")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
+        Thread.sleep(waitingPeriod)
         assertEquals(true, mainWindow!!.imageToPdfOptions.getIteratorOptions().multipleDirectories)
     }
 
@@ -52,6 +54,7 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#deleteOnExitCheckBox")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
+        Thread.sleep(waitingPeriod)
         assertEquals(false, mainWindow!!.imageToPdfOptions.getIteratorOptions().deleteOnExit)
     }
 
@@ -64,6 +67,7 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#PDF_1_0_item")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
+        Thread.sleep(waitingPeriod)
         assertEquals(PdfVersion.PDF_1_0, mainWindow!!.imageToPdfOptions.getPdfOptions().pdfVersion)
     }
 
@@ -76,6 +80,7 @@ class OptionsMenuTest : ApplicationTest() {
         clickOn("#bestCompression_item")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
+        Thread.sleep(waitingPeriod)
         assertEquals(CompressionConstants.BEST_COMPRESSION, mainWindow!!.imageToPdfOptions.getPdfOptions().compressionLevel)
     }
 }

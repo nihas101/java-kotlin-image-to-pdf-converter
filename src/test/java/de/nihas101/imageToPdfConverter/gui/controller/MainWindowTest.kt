@@ -43,7 +43,9 @@ class MainWindowTest : ApplicationTest() {
     fun deleteImageTest() {
         val directoryIterator = setupDirectoryIterator("src/test/resources/images")
         clickOnFirstCell(false)
+        Thread.sleep(waitingPeriod)
         push(KeyCode.DELETE)
+        Thread.sleep(waitingPeriod)
 
         assertEquals(3, directoryIterator.numberOfFiles())
     }
@@ -53,7 +55,9 @@ class MainWindowTest : ApplicationTest() {
         val directoryIterator = setupDirectoryIterator("src/test/resources", true)
 
         clickOnFirstCell(false)
+        Thread.sleep(waitingPeriod)
         push(KeyCode.DELETE)
+        Thread.sleep(waitingPeriod)
 
         assertEquals(0, directoryIterator.numberOfFiles())
     }
