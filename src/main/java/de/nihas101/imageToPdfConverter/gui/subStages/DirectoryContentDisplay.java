@@ -28,6 +28,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 /**
  * An {@link Application} for displaying the content of a directory
  */
@@ -35,9 +37,10 @@ public final class DirectoryContentDisplay extends Application {
     /**
      * The {@link DirectoryIterator} of which to display the content
      */
-    private DirectoryIterator directoryIterator;
     private final int directoryIteratorIndex;
     private final MainWindowController mainWindowController;
+    private DirectoryIterator directoryIterator;
+    private DirectoryContentDisplayController directoryContentDisplayController;
 
 
     private DirectoryContentDisplay(DirectoryIterator directoryIterator, int directoryIteratorIndex, MainWindowController mainWindowController) {
@@ -69,19 +72,26 @@ public final class DirectoryContentDisplay extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /* Load root-node */
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/directoryContentDisplay.fxml"));
-        Pane root = loader.load();
-        DirectoryContentDisplayController directoryContentDisplayController = loader.getController();
+        Pane root = loadFXML();
         directoryContentDisplayController.setup(directoryIterator, directoryIteratorIndex, primaryStage, mainWindowController);
 
-        /* Create Scene */
         Scene scene = new Scene(root);
         directoryContentDisplayController.setupKeyEvents(scene);
 
+        setupPrimaryStage(primaryStage, scene);
+        primaryStage.showAndWait();
+    }
+
+    private Pane loadFXML() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/directoryContentDisplay.fxml"));
+        Pane root = loader.load();
+        directoryContentDisplayController = loader.getController();
+        return root;
+    }
+
+    private void setupPrimaryStage(Stage primaryStage, Scene scene){
         primaryStage.setTitle("ContentDisplay - " + directoryIterator.getParentDirectory().getAbsolutePath());
         primaryStage.setScene(scene);
-        primaryStage.showAndWait();
         primaryStage.setResizable(false);
     }
 }
