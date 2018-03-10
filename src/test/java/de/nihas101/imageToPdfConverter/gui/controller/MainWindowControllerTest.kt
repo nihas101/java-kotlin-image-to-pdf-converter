@@ -22,18 +22,36 @@ class MainWindowTest : ApplicationTest() {
 
     @Test
     fun displayImage() {
+        setupDirectoryIterator("src/test/resources/images")
+
+        clickOnFirstCell()
+
+        val imageView = lookup("#imageDisplayView").query<ImageView>()
+        checkNotNull(imageView.image)
+    }
+
+    @Test
+    fun displayDirectory() {
+        setupDirectoryIterator("src/test/resources", true)
+
+        clickOnFirstCell()
+
+        val directoryContentDisplayButton = lookup("#directoryContentDisplayBuildButton").queryButton()
+        checkNotNull(directoryContentDisplayButton)
+    }
+
+    private fun setupDirectoryIterator(path: String, multipleDirectories: Boolean = false) {
         val directoryIterator = DirectoryIterator.createDirectoryIterator(
-                File("src/test/resources/images"),
-                IteratorOptions()
+                File(path),
+                IteratorOptions(multipleDirectories = multipleDirectories)
         )
 
         mainWindow!!.setupIterator(directoryIterator)
         mainWindowController!!.setupListView(directoryIterator)
+    }
 
-        doubleClickOn(mainWindowController!!.imageListView)
-
-        val imageView = lookup("#imageDisplayView").query<ImageView>()
-
-        checkNotNull(imageView.image)
+    private fun clickOnFirstCell() {
+        val bounds = mainWindow!!.root.localToScreen(mainWindowController!!.imageListView.boundsInLocal)
+        doubleClickOn(bounds.minX + 100, bounds.minY + 115)
     }
 }
