@@ -40,6 +40,10 @@ dependencies {
     compile group: 'com.itextpdf', name: 'layout', version: '7.1.0'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-nop
     compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.25'
+
+    // TestFX: github.com/TestFX/TestFX
+    testCompile "org.testfx:testfx-core:4.0.12-alpha"
+    testCompile "org.testfx:testfx-junit:4.0.12-alpha"
 }
 
 compileKotlin {
