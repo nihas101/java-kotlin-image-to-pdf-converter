@@ -67,79 +67,9 @@ class MainWindowTest : ApplicationTest() {
         Thread.sleep(waitingPeriod)
     }
 
-    @Test
-    fun menuDeleteTest() {
-        val directoryIterator = setupDirectoryIterator("src/test/resources/images")
-
-        val coordinates = getCoordinatesOfFirstCell()
-        rightClickOn(coordinates[0], coordinates[1])
-        Thread.sleep(waitingPeriod)
-        clickOnDelete()
-        Thread.sleep(waitingPeriod)
-
-        assertEquals(3, directoryIterator.numberOfFiles())
-    }
-
-    private fun clickOnDelete() {
-        val coordinates = getCoordinatesOfFirstCell()
-        clickOn(coordinates[0] + 10, coordinates[1] + 120)
-    }
-
     private fun getCoordinatesOfFirstCell(): List<Double> {
         val bounds = mainWindow!!.root.localToScreen(mainWindowController!!.imageListView.boundsInLocal)
         return listOf(bounds.minX + bounds.width * .08, bounds.minY + bounds.height * .6)
-    }
-
-    @Test
-    fun chooseNoFileBuild() {
-        clickOn("#directoryButton")
-        Thread.sleep(waitingPeriod)
-        closeCurrentWindow()
-        clickOn("#buildButton")
-        Thread.sleep(waitingPeriod)
-        assertEquals("Please choose a directory", mainWindowController!!.notificationText.text)
-    }
-
-    @Test
-    fun dragTest() {
-        val directoryIterator = setupDirectoryIterator("src/test/resources/images")
-        val fileBefore = directoryIterator.getFile(0)
-
-        val coordinates = getCoordinatesOfFirstCell()
-        drag(coordinates[0], coordinates[1]).dropTo(coordinates[0] + 350, coordinates[1])
-
-        assertEquals(fileBefore, directoryIterator.getFile(1))
-    }
-
-    @Test
-    fun cancelSinglePDFBuild() {
-        setupDirectoryIterator("src/test/resources/images")
-        clickOn("#buildButton")
-        closeWindow()
-        Thread.sleep(waitingPeriod)
-        assertEquals("Build cancelled by user", lookup("#notificationText").queryText().text)
-    }
-
-    @Test
-    fun cancelMultiplePDFBuild() {
-        clickOn("#optionsButton")
-        Thread.sleep(waitingPeriod)
-        clickOn("#multipleDirectoriesCheckBox")
-        Thread.sleep(waitingPeriod)
-        closeCurrentWindow()
-        setupDirectoryIterator("src/test/resources", multipleDirectories = true)
-        clickOn("#buildButton")
-        closeWindow()
-        Thread.sleep(waitingPeriod)
-        assertEquals("Build cancelled by user", lookup("#notificationText").queryText().text)
-    }
-
-    @Test
-    fun emptyBuild() {
-        setupDirectoryIterator("src/test/resources/images", multipleDirectories = true)
-        clickOn("#buildButton")
-        Thread.sleep(waitingPeriod)
-        assertEquals("There are no files to turn into a PDF", lookup("#notificationText").queryText().text)
     }
 
     @Test

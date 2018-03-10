@@ -55,43 +55,6 @@ class DirectoryContentDisplayTest : ApplicationTest() {
     }
 
     @Test
-    fun dragTest() {
-        setupDirectoryIterator("src/test/resources", true)
-
-        clickOnFirstCell(true)
-        Thread.sleep(waitingPeriod)
-
-        val itemBefore = getDirectoryContentDisplayImageListView().items[0]
-
-        val coordinates = getCoordinatesOfFirstCell()
-        drag(coordinates[0], coordinates[1]).dropTo(coordinates[0] + 350, coordinates[1])
-        Thread.sleep(waitingPeriod)
-
-        assertItemMoved(itemBefore)
-    }
-
-    private fun getDirectoryContentDisplayImageListView(): ListView<File> {
-        return if (lookup("#imageListView").nth(0).queryListView<File>().items.size > 1)
-            lookup("#imageListView").nth(0).queryListView<File>()
-        else lookup("#imageListView").nth(1).queryListView<File>()
-    }
-
-    private fun assertItemMoved(itemBefore: File) {
-        assertEquals(true, fileMoved(itemBefore, getDirectoryContentDisplayImageListView()))
-        closeCurrentWindow()
-
-    }
-
-    private fun fileMoved(file: File, listView: ListView<File>): Boolean {
-        return try {
-            0 != listView.items.indexOf(file)
-        } catch (exception: IndexOutOfBoundsException) {
-            println("out of bounds")
-            false
-        }
-    }
-
-    @Test
     fun displayImageOfDirectory() {
         setupDirectoryIterator("src/test/resources", true)
 
@@ -102,42 +65,6 @@ class DirectoryContentDisplayTest : ApplicationTest() {
 
         assertImageIsDisplayed()
         closeCurrentWindow()
-    }
-
-    @Test
-    fun delete() {
-        setupDirectoryIterator("src/test/resources", true)
-
-        clickOnFirstCell(true)
-        Thread.sleep(waitingPeriod)
-        clickOnFirstCell(false)
-
-        push(KeyCode.DELETE)
-        Thread.sleep(waitingPeriod)
-
-        assertEquals(3, getDirectoryContentDisplayImageListView().items.size)
-        closeCurrentWindow()
-    }
-
-    @Test
-    fun menuDelete() {
-        setupDirectoryIterator("src/test/resources", true)
-
-        clickOnFirstCell(true)
-
-        val coordinates = getCoordinatesOfFirstCell()
-        rightClickOn(coordinates[0], coordinates[1])
-        Thread.sleep(waitingPeriod)
-        clickOnDelete()
-        Thread.sleep(waitingPeriod)
-
-        assertEquals(3, getDirectoryContentDisplayImageListView().items.size)
-        closeCurrentWindow()
-    }
-
-    private fun clickOnDelete() {
-        val coordinates = getCoordinatesOfFirstCell()
-        clickOn(coordinates[0] + 10, coordinates[1] + 120)
     }
 
     private fun assertDirectoryIsDisplayed() {
