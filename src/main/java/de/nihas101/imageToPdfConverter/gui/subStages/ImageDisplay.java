@@ -27,6 +27,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.concurrent.RejectedExecutionException;
 
 import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_HEIGHT;
 import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_WIDTH;
@@ -64,6 +65,8 @@ public final class ImageDisplay extends Application {
     public void displayImage() {
         try {
             start(new Stage());
+        } catch (RejectedExecutionException exception) {
+            /* Rejected showAndWait */
         } catch (Exception e) {
             e.printStackTrace();
         }
