@@ -75,10 +75,7 @@ public final class MainWindow extends Application {
      * {@inheritDoc}
      */
     public void start(Stage primaryStage) throws IOException {
-        /* Load root-node */
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
-        GridPane root = loader.load();
-        mainWindowController = loader.getController();
+        GridPane root = loadFXML();
         setupMainWindow();
         setupOnExit(primaryStage);
         mainWindowController.setup(this);
@@ -87,10 +84,15 @@ public final class MainWindow extends Application {
         scene = new Scene(root);
         mainWindowController.setupKeyEvents(scene);
 
-        primaryStage.setTitle("JaKoImage2PDF");
-        primaryStage.setScene(scene);
+        setupPrimaryStage(primaryStage, scene);
         primaryStage.show();
-        primaryStage.setResizable(false);
+    }
+
+    private GridPane loadFXML() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
+        GridPane root = loader.load();
+        mainWindowController = loader.getController();
+        return root;
     }
 
     private void setupMainWindow() {
@@ -112,6 +114,12 @@ public final class MainWindow extends Application {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void setupPrimaryStage(Stage primaryStage, Scene scene){
+        primaryStage.setTitle("JaKoImage2PDF");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
     }
 
     public File openSaveFileChooser(File initialDirectory, String initialFileName) {
