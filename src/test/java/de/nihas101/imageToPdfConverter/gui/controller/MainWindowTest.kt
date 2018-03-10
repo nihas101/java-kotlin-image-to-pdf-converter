@@ -136,9 +136,6 @@ class MainWindowTest : ApplicationTest() {
 
     @Test
     fun emptyBuild() {
-        clickOn("#optionsButton")
-        clickOn("#multipleDirectoriesCheckBox")
-        closeCurrentWindow()
         setupDirectoryIterator("src/test/resources/images", multipleDirectories = true)
         clickOn("#buildButton")
         Thread.sleep(waitingPeriod)
