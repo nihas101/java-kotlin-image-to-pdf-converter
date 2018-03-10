@@ -73,7 +73,9 @@ class MainWindowTest : ApplicationTest() {
 
         val coordinates = getCoordinatesOfFirstCell()
         rightClickOn(coordinates[0], coordinates[1])
+        Thread.sleep(waitingPeriod)
         clickOnDelete()
+        Thread.sleep(waitingPeriod)
 
         assertEquals(3, directoryIterator.numberOfFiles())
     }
@@ -91,6 +93,7 @@ class MainWindowTest : ApplicationTest() {
     @Test
     fun chooseNoFileBuild() {
         clickOn("#directoryButton")
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
         clickOn("#buildButton")
         Thread.sleep(waitingPeriod)
@@ -120,7 +123,9 @@ class MainWindowTest : ApplicationTest() {
     @Test
     fun cancelMultiplePDFBuild() {
         clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
         clickOn("#multipleDirectoriesCheckBox")
+        Thread.sleep(waitingPeriod)
         closeCurrentWindow()
         setupDirectoryIterator("src/test/resources", multipleDirectories = true)
         clickOn("#buildButton")

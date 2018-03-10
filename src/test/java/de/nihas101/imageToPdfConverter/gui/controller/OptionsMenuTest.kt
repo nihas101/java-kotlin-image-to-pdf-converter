@@ -29,6 +29,7 @@ class OptionsMenuTest : ApplicationTest() {
     @Test
     fun zipFilesCheckBox() {
         clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
         clickOn("#zipFilesCheckBox")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
@@ -38,6 +39,7 @@ class OptionsMenuTest : ApplicationTest() {
     @Test
     fun multipleDirectoriesCheckBox() {
         clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
         clickOn("#multipleDirectoriesCheckBox")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
@@ -47,6 +49,7 @@ class OptionsMenuTest : ApplicationTest() {
     @Test
     fun deleteOnExitCheckBox() {
         clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
         clickOn("#deleteOnExitCheckBox")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
@@ -56,7 +59,9 @@ class OptionsMenuTest : ApplicationTest() {
     @Test
     fun pdfVersionToggle() {
         clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
         clickOn("#pdfMenu")
+        Thread.sleep(waitingPeriod)
         clickOn("#PDF_1_0_item")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
@@ -66,7 +71,9 @@ class OptionsMenuTest : ApplicationTest() {
     @Test
     fun pdfBestCompressionToggle() {
         clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
         clickOn("#compressionMenu")
+        Thread.sleep(waitingPeriod)
         clickOn("#bestCompression_item")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
@@ -76,7 +83,9 @@ class OptionsMenuTest : ApplicationTest() {
     @Test
     fun pdfBestCompressionTogglePersistance() {
         clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
         clickOn("#compressionMenu")
+        Thread.sleep(waitingPeriod)
         clickOn("#bestCompression_item")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
@@ -89,7 +98,9 @@ class OptionsMenuTest : ApplicationTest() {
     @Test
     fun pdfNoCompressionTogglePersistance() {
         clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
         clickOn("#compressionMenu")
+        Thread.sleep(waitingPeriod)
         clickOn("#noCompression_item")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
@@ -102,12 +113,19 @@ class OptionsMenuTest : ApplicationTest() {
     @Test
     fun optionsPersistance() {
         clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
         clickOn("#zipFilesCheckBox")
+        Thread.sleep(waitingPeriod)
         clickOn("#multipleDirectoriesCheckBox")
+        Thread.sleep(waitingPeriod)
         clickOn("#deleteOnExitCheckBox")
+        Thread.sleep(waitingPeriod)
         clickOn("#pdfMenu")
+        Thread.sleep(waitingPeriod)
         clickOn("#PDF_2_0_item")
+        Thread.sleep(waitingPeriod)
         clickOn("#compressionMenu")
+        Thread.sleep(waitingPeriod)
         clickOn("#speedCompression_item")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
@@ -117,14 +135,18 @@ class OptionsMenuTest : ApplicationTest() {
         assertEquals(CompressionConstants.BEST_SPEED, mainWindow!!.imageToPdfOptions.getPdfOptions().compressionLevel)
 
         clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
 
         assertEquals(true, lookup("#zipFilesCheckBox").query<CheckBox>().isSelected)
         assertEquals(true, lookup("#multipleDirectoriesCheckBox").query<CheckBox>().isSelected)
         assertEquals(false, lookup("#deleteOnExitCheckBox").query<CheckBox>().isSelected)
 
         clickOn("#pdfMenu")
+        Thread.sleep(waitingPeriod)
         clickOn("#PDF_1_0_item")
+        Thread.sleep(waitingPeriod)
         clickOn("#compressionMenu")
+        Thread.sleep(waitingPeriod)
         clickOn("#noCompression_item")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()

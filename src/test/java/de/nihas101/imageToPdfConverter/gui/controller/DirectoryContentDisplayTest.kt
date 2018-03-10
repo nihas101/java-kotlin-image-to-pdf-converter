@@ -96,7 +96,9 @@ class DirectoryContentDisplayTest : ApplicationTest() {
         setupDirectoryIterator("src/test/resources", true)
 
         clickOnFirstCell(true)
+        Thread.sleep(waitingPeriod)
         clickOnFirstCell(true)
+        Thread.sleep(waitingPeriod)
 
         assertImageIsDisplayed()
         closeCurrentWindow()
@@ -107,9 +109,11 @@ class DirectoryContentDisplayTest : ApplicationTest() {
         setupDirectoryIterator("src/test/resources", true)
 
         clickOnFirstCell(true)
+        Thread.sleep(waitingPeriod)
         clickOnFirstCell(false)
 
         push(KeyCode.DELETE)
+        Thread.sleep(waitingPeriod)
 
         assertEquals(3, getDirectoryContentDisplayImageListView().items.size)
         closeCurrentWindow()
@@ -123,7 +127,9 @@ class DirectoryContentDisplayTest : ApplicationTest() {
 
         val coordinates = getCoordinatesOfFirstCell()
         rightClickOn(coordinates[0], coordinates[1])
+        Thread.sleep(waitingPeriod)
         clickOnDelete()
+        Thread.sleep(waitingPeriod)
 
         assertEquals(3, getDirectoryContentDisplayImageListView().items.size)
         closeCurrentWindow()
