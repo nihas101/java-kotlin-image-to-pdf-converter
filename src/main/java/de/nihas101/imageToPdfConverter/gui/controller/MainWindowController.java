@@ -293,6 +293,7 @@ public class MainWindowController extends FileListViewController {
         buildButton.setDisable(isDisabled);
         directoryButton.setDisable(isDisabled);
         optionsButton.setDisable(isDisabled);
+        clearAllButton.setDisable(isDisabled);
     }
 
     /**
