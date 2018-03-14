@@ -110,4 +110,29 @@ class MainWindowTest : ApplicationTest() {
     fun clearAllNoSetup() {
         clickOn("#clearAllButton")
     }
+
+    @Test
+    fun setupDirectory() {
+        mainWindowController!!.setupChosenDirectory(File("src/test/resources/images"))
+
+        assertEquals(true, mainWindow!!.chosenDirectory.exists())
+        assertEquals(true, mainWindow!!.chosenDirectory.isDirectory)
+    }
+
+    @Test
+    fun valuesSetFalse() {
+        assertEquals(false, mainWindowController!!.valuesSetForBuilding())
+    }
+
+    @Test
+    fun valuesSetTrue() {
+        setupDirectoryIterator("src/test/resources/images")
+        assertEquals(true, mainWindowController!!.valuesSetForBuilding())
+    }
+
+    @Test
+    fun valuesSetNoFiles() {
+        setupDirectoryIterator("src/test/resources/images/doesntExist")
+        assertEquals(false, mainWindowController!!.valuesSetForBuilding())
+    }
 }

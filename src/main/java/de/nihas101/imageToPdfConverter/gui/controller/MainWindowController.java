@@ -165,13 +165,17 @@ public class MainWindowController extends FileListViewController {
             givenDirectory = createDirectoryChooser(mainWindow.imageToPdfOptions.getIteratorOptions())
                     .showDialog(directoryButton.getScene().getWindow());
 
-        if (givenDirectory != null) {
-            buildProgressBar.setProgress(0);
-            mainWindow.chosenDirectory = givenDirectory;
-            startSetupIteratorThread();
-        }
+        setupChosenDirectory(givenDirectory);
 
         actionEvent.consume();
+    }
+
+    public void setupChosenDirectory(File directory) {
+        if (directory != null) {
+            buildProgressBar.setProgress(0);
+            mainWindow.chosenDirectory = directory;
+            startSetupIteratorThread();
+        }
     }
 
     private boolean userWantsAZipFile() {
@@ -350,7 +354,7 @@ public class MainWindowController extends FileListViewController {
     /**
      * @return True if a all necessary values for building the PDF are set, false otherwise
      */
-    private boolean valuesSetForBuilding() {
+    public boolean valuesSetForBuilding() {
         if (mainWindow.getDirectoryIterator() == null) {
             notifyUser("Please choose a directory", RED);
             return false;
