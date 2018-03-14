@@ -1,7 +1,5 @@
 package de.nihas101.imageToPdfConverter.gui.controller
 
-import com.itextpdf.kernel.pdf.CompressionConstants
-import com.itextpdf.kernel.pdf.PdfVersion
 import de.nihas101.imageToPdfConverter.gui.MainWindow
 import javafx.stage.Stage
 import junit.framework.TestCase.assertEquals

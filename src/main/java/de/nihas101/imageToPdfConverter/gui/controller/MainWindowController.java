@@ -51,6 +51,7 @@ import java.io.File;
 import java.util.List;
 
 import static de.nihas101.imageToPdfConverter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
+import static de.nihas101.imageToPdfConverter.util.Constants.PREPARING_STRING;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createZipFileChooser;
 import static javafx.application.Platform.runLater;
@@ -127,7 +128,7 @@ public class MainWindowController extends FileListViewController {
                         files.get(0),
                         () -> {
                             disableInput(true);
-                            notifyUser("Preparing files...", BLACK);
+                            notifyUser(PREPARING_STRING, BLACK);
                             return Unit.INSTANCE;
                         },
                         () -> {
@@ -136,7 +137,7 @@ public class MainWindowController extends FileListViewController {
                             if (files.size() > 1) {
                                 runLater(() -> {
                                     buildProgressBar.setProgress(0.0);
-                                    notifyUser("Preparing files...", BLACK);
+                                    notifyUser(PREPARING_STRING, BLACK);
                                     mainWindow.getDirectoryIterator().addAll(files.subList(1, files.size()));
                                     imageListView.getItems().addAll(files.subList(1, files.size()));
                                 });
@@ -187,7 +188,7 @@ public class MainWindowController extends FileListViewController {
                 mainWindow.chosenDirectory,
                 () -> {
                     disableInput(true);
-                    notifyUser("Preparing files...", BLACK);
+                    notifyUser(PREPARING_STRING, BLACK);
                     return Unit.INSTANCE;
                 },
                 () -> {
