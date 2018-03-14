@@ -60,6 +60,9 @@
                                 </ImageView>
                             </graphic>
                         </Button>
+                        <Button fx:id="clearAllButton" layoutX="146.0" layoutY="5.0" mnemonicParsing="false"
+                                onAction="#clearAll" text="Clear all" AnchorPane.bottomAnchor="5.0"
+                                AnchorPane.leftAnchor="140.0" AnchorPane.topAnchor="5.0"/>
                     </children>
                 </AnchorPane>
             </items>

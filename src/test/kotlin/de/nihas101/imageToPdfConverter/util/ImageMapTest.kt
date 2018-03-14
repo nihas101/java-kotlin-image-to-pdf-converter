@@ -1,5 +1,6 @@
 package de.nihas101.imageToPdfConverter.util
 
+import de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap
 import javafx.scene.image.Image
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -9,7 +10,7 @@ import java.io.File
 internal class ImageMapTest : ApplicationTest() {
     @Test
     fun loadImages() {
-        val imageMap = ImageMap.createImageMap()
+        val imageMap = createImageMap()
         val files = File("src/test/resources/images").listFiles().toMutableList()
 
         imageMap.loadImages(files)
@@ -22,7 +23,7 @@ internal class ImageMapTest : ApplicationTest() {
 
     @Test
     fun loadImages1() {
-        val imageMap = ImageMap.createImageMap()
+        val imageMap = createImageMap()
         val files = File("src/test/resources/images").listFiles().toMutableList()
 
         imageMap.loadImages(files, TrivialProgressUpdater())
@@ -35,7 +36,7 @@ internal class ImageMapTest : ApplicationTest() {
 
     @Test
     fun clearImages() {
-        val imageMap = ImageMap.createImageMap()
+        val imageMap = createImageMap()
         val files = File("src/test/resources/images").listFiles().toMutableList()
 
         imageMap.loadImages(files)
@@ -49,7 +50,7 @@ internal class ImageMapTest : ApplicationTest() {
 
     @Test
     fun get() {
-        val imageMap = ImageMap.createImageMap()
+        val imageMap = createImageMap()
         val files = File("src/test/resources/images").listFiles().toMutableList()
         val image = Image(files[0].toURI().toURL().toString(), 100.0, 100.0, true, false)
 
@@ -67,13 +68,5 @@ internal class ImageMapTest : ApplicationTest() {
                 assertEquals(expectedPixelReader.getColor(x, y), actualPixelReader.getColor(x, y))
             }
         }
-    }
-
-    @Test
-    fun remove() {
-    }
-
-    @Test
-    fun contains() {
     }
 }

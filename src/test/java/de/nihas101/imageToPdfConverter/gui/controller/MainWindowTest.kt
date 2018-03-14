@@ -105,4 +105,20 @@ class MainWindowTest : ApplicationTest() {
         Thread.sleep(waitingPeriod)
         assertEquals(true, pdf.exists())
     }
+
+    @Test
+    fun clearAll() {
+        setupDirectoryIterator("src/test/resources/images")
+        Thread.sleep(waitingPeriod)
+
+        clickOn("#clearAllButton")
+
+        val text = lookup("#notificationText").queryText().text
+        assertEquals("Files: 0", text)
+    }
+
+    @Test
+    fun clearAllNoSetup() {
+        clickOn("#clearAllButton")
+    }
 }

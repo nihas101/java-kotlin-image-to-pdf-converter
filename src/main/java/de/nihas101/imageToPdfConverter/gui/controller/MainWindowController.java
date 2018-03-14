@@ -76,6 +76,7 @@ public class MainWindowController extends FileListViewController {
      * The {@link MainWindow} belonging to this Controller
      */
     public MainWindow mainWindow;
+    public Button clearAllButton;
 
     private ListChangeListenerFactory listChangeListenerFactory;
 
@@ -392,6 +393,11 @@ public class MainWindowController extends FileListViewController {
         disableInput(true);
         mainWindow.openOptionsMenu();
         disableInput(false);
+        actionEvent.consume();
+    }
+
+    public void clearAll(ActionEvent actionEvent) {
+        imageListView.getItems().clear();
         actionEvent.consume();
     }
 }
