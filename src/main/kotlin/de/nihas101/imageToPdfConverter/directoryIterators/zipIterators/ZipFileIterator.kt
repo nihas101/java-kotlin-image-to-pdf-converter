@@ -43,7 +43,7 @@ class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : D
     }
 
     private fun makeUnzipDirectory(deleteOnExit: Boolean): File {
-        val unzipDirectory = File("${directory!!.parent}/${directory!!.nameWithoutExtension}")
+        val unzipDirectory = File("${directory!!.parent.trim()}/${directory!!.nameWithoutExtension.trim()}")
 
         if (deleteOnExit) unzipDirectory.deleteOnExit()
         unzipDirectory.mkdir()

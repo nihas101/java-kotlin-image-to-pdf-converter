@@ -21,11 +21,11 @@ class ImageUnZipperTest {
 
     @Test
     fun unzipWithTrailingSpace() {
-        val unzipInto = File("src/test/resources/zip/images ")
+        val unzipInto = File("src/test/resources/zip/imagesTrailing")
         unzipInto.mkdir()
         unzipInto.deleteOnExit()
 
-        createImageUnZipper(File("src/test/resources/zip/images .zip")).unzip(unzipInto, true)
+        createImageUnZipper(File("src/test/resources/zip/imagesTrailing .zip")).unzip(unzipInto, true)
 
         assertEquals(4, unzipInto.listFiles().size)
     }
