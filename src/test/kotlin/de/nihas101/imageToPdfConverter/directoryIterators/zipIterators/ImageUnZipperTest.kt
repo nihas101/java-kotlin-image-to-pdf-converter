@@ -8,7 +8,6 @@ import org.junit.Test
 import java.io.File
 
 class ImageUnZipperTest {
-
     @Test
     fun unzip() {
         val unzipInto = File("src/test/resources/zip/images")
@@ -16,6 +15,17 @@ class ImageUnZipperTest {
         unzipInto.deleteOnExit()
 
         createImageUnZipper(File("src/test/resources/zip/images.zip")).unzip(unzipInto, true)
+
+        assertEquals(4, unzipInto.listFiles().size)
+    }
+
+    @Test
+    fun unzipWithTrailingSpace() {
+        val unzipInto = File("src/test/resources/zip/images ")
+        unzipInto.mkdir()
+        unzipInto.deleteOnExit()
+
+        createImageUnZipper(File("src/test/resources/zip/images .zip")).unzip(unzipInto, true)
 
         assertEquals(4, unzipInto.listFiles().size)
     }

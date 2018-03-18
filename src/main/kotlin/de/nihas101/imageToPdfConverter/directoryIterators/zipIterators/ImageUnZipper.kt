@@ -32,7 +32,7 @@ class ImageUnZipper private constructor(private val zipInputStream: ZipInputStre
     var cancelled = false
 
     fun unzip(unzipInto: File, deleteOnExit: Boolean = false) {
-        unzip({ zipEntry -> createFile("${unzipInto.absolutePath}/${zipEntry.name}", deleteOnExit) })
+        unzip({ zipEntry -> createFile("${unzipInto.absolutePath.trim()}/${zipEntry.name.trim()}", deleteOnExit) })
         System.gc()
     }
 
