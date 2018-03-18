@@ -32,7 +32,11 @@ class ZipFilesIteratorTest {
 
         val file = zipFilesIterator.getFile(0)
 
-        assertEquals("images", file.name)
+
+        assertEquals(true,
+                "images" == file.name || // windows
+                        "imagesTrailing" == file.name   // linux
+        )
     }
 
     @Test
@@ -41,7 +45,10 @@ class ZipFilesIteratorTest {
 
         val files = zipFilesIterator.getFiles()
 
-        assertEquals("images", files[0].name)
+        assertEquals(true,
+                "images" == files[0].name || // windows
+                        "imagesTrailing" == files[0].name // linux
+        )
     }
 
     @Test
