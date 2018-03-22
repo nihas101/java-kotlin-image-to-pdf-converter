@@ -19,21 +19,29 @@
 package de.nihas101.imageToPdfConverter.tasks
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
 class SetupIteratorFromDragAndDropTask private constructor(
         directoryIterator: DirectoryIterator,
         directory: File,
+        progressUpdater: ProgressUpdater,
         before: () -> Unit,
         after: () -> Unit
-) : SetupIteratorTask(directoryIterator, directory, before, after) {
-
+) : SetupIteratorTask(directoryIterator, directory, progressUpdater, before, after) {
 
     companion object SetupIteratorFromDragAndDropTaskFactory {
-        fun createSetupIteratorTask(directoryIterator: DirectoryIterator, directory: File, before: () -> Unit, after: () -> Unit): SetupIteratorFromDragAndDropTask {
+        fun createSetupIteratorTask(
+                directoryIterator: DirectoryIterator,
+                directory: File,
+                progressUpdater: ProgressUpdater,
+                before: () -> Unit,
+                after: () -> Unit
+        ): SetupIteratorFromDragAndDropTask {
             return SetupIteratorFromDragAndDropTask(
                     directoryIterator,
                     directory,
+                    progressUpdater,
                     before,
                     after
             )

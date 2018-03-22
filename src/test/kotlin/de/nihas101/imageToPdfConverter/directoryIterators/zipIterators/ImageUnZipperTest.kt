@@ -14,7 +14,7 @@ class ImageUnZipperTest {
         unzipInto.mkdir()
         unzipInto.deleteOnExit()
 
-        createImageUnZipper(File("src/test/resources/zip/images.zip")).unzip(unzipInto, true)
+        createImageUnZipper(File("src/test/resources/zip/images.zip")).unzip(unzipInto, deleteOnExit = true)
 
         assertEquals(4, unzipInto.listFiles().size)
     }
@@ -25,7 +25,7 @@ class ImageUnZipperTest {
         unzipInto.mkdir()
         unzipInto.deleteOnExit()
 
-        createImageUnZipper(File("src/test/resources/zip/imagesTrailing .zip")).unzip(unzipInto, true)
+        createImageUnZipper(File("src/test/resources/zip/imagesTrailing .zip")).unzip(unzipInto, deleteOnExit = true)
 
         assertEquals(4, unzipInto.listFiles().size)
     }
@@ -37,7 +37,7 @@ class ImageUnZipperTest {
         unzipInto.deleteOnExit()
 
         try {
-            createImageUnZipper(File("src/test/resources/images/1.jpg")).unzip(unzipInto, true)
+            createImageUnZipper(File("src/test/resources/images/1.jpg")).unzip(unzipInto, deleteOnExit = true)
         } catch (exception: ExtensionNotSupportedException) {
             return
         }

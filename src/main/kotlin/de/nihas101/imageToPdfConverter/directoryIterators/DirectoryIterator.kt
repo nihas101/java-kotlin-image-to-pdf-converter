@@ -24,14 +24,42 @@ import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFileIt
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFilesIterator.ZipFilesIteratorFactory.createZipFilesIterator
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import de.nihas101.imageToPdfConverter.tasks.Cancellable
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater
+import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
 
 abstract class DirectoryIterator : Cancellable {
     protected var directory: File? = null
     protected var cancelled = false
 
-    open fun setupDirectory(directory: File) {
+    open fun setupDirectory(directory: File, progressUpdater: ProgressUpdater = TrivialProgressUpdater()) {
         this.directory = directory
+    }
+
+    protected fun createFileFilter(directory: File, progressUpdater: ProgressUpdater, filter: (File) -> Boolean): (Int, File) -> Boolean {
+        if (directory.listFiles() == null) {
+            return { _, file ->
+                if (cancelled) throw InterruptedException()
+                filter(file)
+            }
+        } else {
+            val directorySize = directory.listFiles().size.toDouble()
+            return { index, file ->
+                if (cancelled) throw InterruptedException()
+                progressUpdater.updateProgress(index.toDouble() / directorySize, file)
+                filter(file)
+            }
+        }
+    }
+
+    protected open fun setupFiles(fileFilter: (Int, File) -> Boolean): MutableList<File> {
+        if (directory!!.listFiles() == null) return emptyList<File>().toMutableList()
+
+        val filteredFiles = directory!!.listFiles().filterIndexed({ index, file -> fileFilter(index, file) }).toMutableList()
+
+        // TODO: Think of how to reset the progressUpdater afterwards
+
+        return filteredFiles
     }
 
     abstract fun nextFile(): File

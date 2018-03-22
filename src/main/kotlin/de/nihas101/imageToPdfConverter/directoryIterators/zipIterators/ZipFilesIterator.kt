@@ -22,29 +22,34 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.createImageUnZipper
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
 class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : DirectoryIterator() {
     private var imageDirectoriesIterator: ImageDirectoriesIterator = createImageDirectoriesIterator()
     private var imageUnZipper: ImageUnZipper? = null
 
-    override fun setupDirectory(directory: File) {
-        super.setupDirectory(directory)
+    override fun setupDirectory(directory: File, progressUpdater: ProgressUpdater) {
+        super.setupDirectory(directory, progressUpdater)
 
-        if (directory.isDirectory) unzipFilesInDirectory()
+        // TODO: Track progress on unzipping!
+        if (directory.isDirectory) unzipFilesInDirectory(progressUpdater)
 
         imageDirectoriesIterator = createImageDirectoriesIterator()
-        imageDirectoriesIterator.setupDirectory(directory)
+        imageDirectoriesIterator.setupDirectory(directory, progressUpdater)
     }
 
-    private fun unzipFilesInDirectory() {
-        directory!!.listFiles().forEach { file ->
+    private fun unzipFilesInDirectory(progressUpdater: ProgressUpdater) {
+        val numberOfFiles = directory!!.listFiles().size.toDouble()
+
+        directory!!.listFiles().forEachIndexed { index, file ->
             if (cancelled) throw InterruptedException()
             val unzipInto = makeUnzipDirectory(file, deleteOnExit)
             if (ImageUnZipper.canUnzip(file)) {
                 imageUnZipper = createImageUnZipper(file)
-                imageUnZipper!!.unzip(unzipInto, true)
+                imageUnZipper!!.unzip(unzipInto, deleteOnExit = true)
             }
+            progressUpdater.updateProgress(index.toDouble() / numberOfFiles, file)
         }
     }
 

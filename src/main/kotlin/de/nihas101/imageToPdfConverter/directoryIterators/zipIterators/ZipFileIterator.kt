@@ -22,6 +22,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.createImageUnZipper
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
 
@@ -29,17 +30,17 @@ class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : D
     private var imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator()
     private var imageUnZipper: ImageUnZipper? = null
 
-    override fun setupDirectory(directory: File) {
-        super.setupDirectory(directory)
+    override fun setupDirectory(directory: File, progressUpdater: ProgressUpdater) {
+        super.setupDirectory(directory, progressUpdater)
         val unzipInto = makeUnzipDirectory(deleteOnExit)
         try {
             imageUnZipper = createImageUnZipper(directory)
-            imageUnZipper!!.unzip(unzipInto, deleteOnExit)
+            imageUnZipper!!.unzip(unzipInto, progressUpdater, deleteOnExit)
         } catch (exception: ExtensionNotSupportedException) {
             /* Proceed with empty unzip directory */
         }
         imageFilesIterator = ImageFilesIterator.createImageFilesIterator()
-        imageFilesIterator.setupDirectory(unzipInto)
+        imageFilesIterator.setupDirectory(unzipInto, progressUpdater)
     }
 
     private fun makeUnzipDirectory(deleteOnExit: Boolean): File {

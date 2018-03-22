@@ -19,11 +19,13 @@
 package de.nihas101.imageToPdfConverter.tasks
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
 open class SetupIteratorTask protected constructor(
         protected val directoryIterator: DirectoryIterator,
         protected val directory: File,
+        protected val progressUpdater: ProgressUpdater,
         before: () -> Unit,
         after: () -> Unit
 ) : CancellableTask(before, directoryIterator, after) {
@@ -31,7 +33,7 @@ open class SetupIteratorTask protected constructor(
     override fun call() {
         before()
         try {
-            directoryIterator.setupDirectory(directory)
+            directoryIterator.setupDirectory(directory, progressUpdater)
         } catch (exception: InterruptedException) {
             /* The task was cancelled */
         }
@@ -42,12 +44,14 @@ open class SetupIteratorTask protected constructor(
         fun createSetupIteratorTask(
                 directoryIterator: DirectoryIterator,
                 file: File,
+                progressUpdater: ProgressUpdater,
                 before: () -> Unit = {},
                 after: () -> Unit = {}
         ): SetupIteratorTask {
             return SetupIteratorTask(
                     directoryIterator,
                     file,
+                    progressUpdater,
                     before,
                     after
             )

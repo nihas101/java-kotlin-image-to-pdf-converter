@@ -21,29 +21,34 @@ package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.FileIsDirectoryException
 import de.nihas101.imageToPdfConverter.tasks.Cancellable
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater
+import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
 import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
 import javax.imageio.ImageIO
 
-class ImageUnZipper private constructor(private val zipInputStream: ZipInputStream) : Cancellable {
+class ImageUnZipper private constructor(private val file: File) : Cancellable {
     var cancelled = false
+    private val zipInputStream = createZipInputStream(file)
+    private val numberOfEntries: Int = ZipFile(file).size()
 
-    fun unzip(unzipInto: File, deleteOnExit: Boolean = false) {
-        unzip({ zipEntry -> createFile("${unzipInto.absolutePath.trim()}/${zipEntry.name.trim()}", deleteOnExit) })
+    fun unzip(unzipInto: File, progressUpdater: ProgressUpdater = TrivialProgressUpdater(), deleteOnExit: Boolean = false) {
+        unzip(progressUpdater) { zipEntry -> createFile("${unzipInto.absolutePath.trim()}/${zipEntry.name.trim()}", deleteOnExit) }
         System.gc()
     }
 
-    private fun unzip(fileFactory: (ZipEntry) -> File) {
-        zipInputStream.use { _ -> unzipImages(fileFactory) }
+    private fun unzip(progressUpdater: ProgressUpdater, fileFactory: (ZipEntry) -> File) {
+        zipInputStream.use { _ -> unzipImages(progressUpdater, fileFactory) }
     }
 
-    private fun unzipImages(fileFactory: (ZipEntry) -> File) {
+    private fun unzipImages(progressUpdater: ProgressUpdater, fileFactory: (ZipEntry) -> File) {
         var zipEntry = zipInputStream.getNextEntry()
 
-        while (zipEntry != null) {
+        for (index in 0 until numberOfEntries) {
             if (cancelled) throw InterruptedException()
             try {
                 unzipImage(zipEntry, fileFactory)
@@ -51,8 +56,11 @@ class ImageUnZipper private constructor(private val zipInputStream: ZipInputStre
                 /* SKIP ENTRY */
             }
 
+            progressUpdater.updateProgress(index.toDouble() / numberOfEntries.toDouble(), file)
+            zipInputStream.closeEntry()
             zipEntry = zipInputStream.getNextEntry()
         }
+
     }
 
     override fun cancelTask() {
@@ -72,16 +80,16 @@ class ImageUnZipper private constructor(private val zipInputStream: ZipInputStre
 
     companion object ZipFileIteratorFactory {
         fun createImageUnZipper(file: File): ImageUnZipper {
-            if (canUnzip(file))
-                return ImageUnZipper(createZipInputStream(file))
-            else throw ExtensionNotSupportedException(file.extension)
+            if (canUnzip(file)) {
+                return ImageUnZipper(file)
+            } else throw ExtensionNotSupportedException(file.extension)
         }
 
         fun canUnzip(file: File): Boolean {
             return (!file.isDirectory && file.extension == "zip")
         }
 
-        private fun createZipInputStream(file: File): ZipInputStream {
+        fun createZipInputStream(file: File): ZipInputStream {
             val fileInputStream = FileInputStream(file)
             return ZipInputStream(BufferedInputStream(fileInputStream))
         }

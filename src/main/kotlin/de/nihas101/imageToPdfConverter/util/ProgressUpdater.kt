@@ -41,6 +41,13 @@ class BuildProgressUpdater(private val mainWindowController: MainWindowControlle
     }
 }
 
+class IteratorSetupProgressUpdater(private val mainWindowController: MainWindowController) : ProgressUpdater {
+    override fun updateProgress(progress: Double, file: File) {
+        mainWindowController.buildProgressBar.progress = progress
+        runLater { mainWindowController.notifyUser("Processing files: " + file.name, BLACK) }
+    }
+}
+
 class LoadProgressUpdater(private val notifyUser: (String, Paint) -> Unit, private val numberOfFiles: Int) : ProgressUpdater {
     override fun updateProgress(progress: Double, file: File) {
         runLater { notifyUser("Loading files... (${progress.toInt()}/$numberOfFiles)", BLACK) }

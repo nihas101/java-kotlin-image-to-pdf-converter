@@ -3,6 +3,7 @@ package de.nihas101.imageToPdfConverter.tasks
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorTask
+import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.File
@@ -18,6 +19,7 @@ class SetupIteratorTaskTest {
         val setupIteratorTask = createSetupIteratorTask(
                 directoryIterator,
                 File("src/test/resources/images"),
+                TrivialProgressUpdater(),
                 { beforeExecuted = true },
                 { afterExecuted = true }
         )

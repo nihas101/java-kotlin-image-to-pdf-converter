@@ -157,6 +157,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
                     () -> Unit.INSTANCE,
                     () -> {
                         runLater(() -> {
+                            mainWindowController.buildProgressBar.setProgress(0);
                             mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);
                             mainWindowController.imageListView.getItems().remove(directoryIteratorIndex);
                             directoryContentDisplayStage.close();

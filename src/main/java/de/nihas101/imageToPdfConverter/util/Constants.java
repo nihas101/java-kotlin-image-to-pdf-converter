@@ -37,8 +37,6 @@ public class Constants {
 
     public final static int IMAGE_MAP_MAX_SIZE = 100;
 
-    public final static String PREPARING_STRING = "Preparing files... (This may take a while)";
-
     /* Source: icons8.com/icon/2828/open */
     private final static String DIRECTORY_IMAGE_PATH = "/icons8-open-500.png";
     /* Source: icons8.com/icon/54151/gear */

@@ -20,6 +20,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -28,13 +29,12 @@ class ImageFilesIterator private constructor() : DirectoryIterator() {
     private var files: MutableList<File> = mutableListOf()
     private var currentIndex = 0
 
-    override fun setupDirectory(directory: File) {
-        super.setupDirectory(directory)
-        files = if (directory.isDirectory) directory.listFiles().filter { file ->
-            if (cancelled) throw InterruptedException()
-            isImage(file)
-        }.toMutableList()
-        else List(1, { _ -> directory }).filter { file -> isImage(file) }.toMutableList()
+    override fun setupDirectory(directory: File, progressUpdater: ProgressUpdater) {
+        super.setupDirectory(directory, progressUpdater)
+        files = if (directory.isDirectory)
+            setupFiles(createFileFilter(directory, progressUpdater) { file -> isImage(file) })
+        else
+            List(1, { _ -> directory }).filter { file -> isImage(file) }.toMutableList()
     }
 
     override fun getFile(index: Int): File = files[index]

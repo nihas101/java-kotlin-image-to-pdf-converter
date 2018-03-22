@@ -20,23 +20,17 @@ package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
 class ImageDirectoriesIterator private constructor() : DirectoryIterator() {
     private var directories: MutableList<File> = mutableListOf()
     private var currentIndex = 0
 
-    override fun setupDirectory(directory: File) {
-        super.setupDirectory(directory)
+    override fun setupDirectory(directory: File, progressUpdater: ProgressUpdater) {
+        super.setupDirectory(directory, progressUpdater)
         if (directory.isDirectory)
-            directories = setupDirectories(directory)
-    }
-
-    private fun setupDirectories(directory: File): MutableList<File> {
-        return directory.listFiles().filter { file ->
-            if (cancelled) throw InterruptedException()
-            isImageDirectory(file)
-        }.toMutableList()
+            directories = super.setupFiles(createFileFilter(directory, progressUpdater) { file -> isImageDirectory(file) })
     }
 
     override fun numberOfFiles(): Int = directories.size
@@ -76,14 +70,12 @@ class ImageDirectoriesIterator private constructor() : DirectoryIterator() {
 
     override fun getFile(index: Int): File = directories[index]
 
-    private fun isImageDirectory(directory: File) = directory.isDirectory && containsImage(directory)
-
-    private fun containsImage(directory: File): Boolean {
-        directory.listFiles().forEach { file -> if (ImageFilesIterator.isImage(file)) return true }
-        return false
-    }
-
     companion object ImageDirectoriesIteratorFactory {
         fun createImageDirectoriesIterator(): ImageDirectoriesIterator = ImageDirectoriesIterator()
+        fun isImageDirectory(directory: File) = directory.isDirectory && containsImage(directory)
+        private fun containsImage(directory: File): Boolean {
+            directory.listFiles().forEach { file -> if (ImageFilesIterator.isImage(file)) return true }
+            return false
+        }
     }
 }

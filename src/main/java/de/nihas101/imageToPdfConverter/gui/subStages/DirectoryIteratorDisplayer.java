@@ -22,6 +22,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorTask;
+import de.nihas101.imageToPdfConverter.util.IteratorSetupProgressUpdater;
 import javafx.scene.image.Image;
 import kotlin.Unit;
 
@@ -78,15 +79,14 @@ public final class DirectoryIteratorDisplayer {
         SetupIteratorTask setupIteratorTask = SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorTask(
                 imageFilesIterator,
                 directoryIterator.getFile(index),
+                new IteratorSetupProgressUpdater(mainWindowController),
                 () -> {
-                    runLater(() -> {
-                        mainWindowController.disableInput(true);
-                        mainWindowController.notifyUser("Preparing files...", BLACK);
-                    });
+                    runLater(() -> mainWindowController.disableInput(true));
                     return Unit.INSTANCE;
                 },
                 () -> {
                     runLater(() -> {
+                        mainWindowController.buildProgressBar.setProgress(0);
                         mainWindowController.notifyUser("Files: " + directoryIterator.numberOfFiles(), BLACK);
                         DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
                                 imageFilesIterator,
