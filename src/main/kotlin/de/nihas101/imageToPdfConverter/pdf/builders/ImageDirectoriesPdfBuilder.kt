@@ -37,8 +37,8 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
         for (i in 1..nrOfFiles) {
             if (cancelled) throw InterruptedException()
             val directory = directoryIterator.nextFile()
-            buildNextPDF(createImageFilesIterator(), directory, imageToPdfOptions)
             progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble(), directory)
+            buildNextPDF(createImageFilesIterator(), directory, imageToPdfOptions)
         }
     }
 
