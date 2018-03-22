@@ -57,8 +57,6 @@ abstract class DirectoryIterator : Cancellable {
 
         val filteredFiles = directory!!.listFiles().filterIndexed({ index, file -> fileFilter(index, file) }).toMutableList()
 
-        // TODO: Think of how to reset the progressUpdater afterwards
-
         return filteredFiles
     }
 

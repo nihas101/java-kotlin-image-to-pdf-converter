@@ -32,7 +32,6 @@ class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : 
     override fun setupDirectory(directory: File, progressUpdater: ProgressUpdater) {
         super.setupDirectory(directory, progressUpdater)
 
-        // TODO: Track progress on unzipping!
         if (directory.isDirectory) unzipFilesInDirectory(progressUpdater)
 
         imageDirectoriesIterator = createImageDirectoriesIterator()
