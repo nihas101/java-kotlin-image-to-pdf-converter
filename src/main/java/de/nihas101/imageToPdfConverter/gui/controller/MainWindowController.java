@@ -134,10 +134,12 @@ public class MainWindowController extends FileListViewController {
                         },
                         () -> {
                             mainWindow.setupIterator(directoryIterator);
-                            runLater(() -> setupListView(mainWindow.getDirectoryIterator()));
+                            runLater(() -> {
+                                buildProgressBar.setProgress(0.0);
+                                setupListView(mainWindow.getDirectoryIterator());
+                            });
                             if (files.size() > 1) {
                                 runLater(() -> {
-                                    buildProgressBar.setProgress(0.0);
                                     notifyUser(PREPARING_STRING, BLACK);
                                     mainWindow.getDirectoryIterator().addAll(files.subList(1, files.size()));
                                     imageListView.getItems().addAll(files.subList(1, files.size()));
@@ -159,7 +161,7 @@ public class MainWindowController extends FileListViewController {
     public void chooseDirectory(ActionEvent actionEvent) {
         File givenDirectory;
 
-        if (userWantsAZipFile())
+        if (userWantsAPdfFromAZipFile())
             givenDirectory = createZipFileChooser().showOpenDialog(directoryButton.getScene().getWindow());
         else
             givenDirectory = createDirectoryChooser(mainWindow.imageToPdfOptions.getIteratorOptions())
@@ -178,7 +180,7 @@ public class MainWindowController extends FileListViewController {
         }
     }
 
-    private boolean userWantsAZipFile() {
+    private boolean userWantsAPdfFromAZipFile() {
         return mainWindow.imageToPdfOptions.getIteratorOptions().getZipFiles() &&
                 !mainWindow.imageToPdfOptions.getIteratorOptions().getMultipleDirectories();
     }
@@ -334,16 +336,18 @@ public class MainWindowController extends FileListViewController {
                 mainWindow.imageToPdfOptions,
                 new BuildProgressUpdater(this),
                 () -> {
-                    disableInput(true);
+                    runLater(() -> disableInput(true));
                     return Unit.INSTANCE;
                 },
                 () -> {
-                    disableInput(false);
-                    notifyUser(
-                            "Finished building: "
-                                    + mainWindow.imageToPdfOptions.getPdfOptions().getSaveLocation().getAbsolutePath(),
-                            GREEN
-                    );
+                    runLater(() -> {
+                        disableInput(false);
+                        notifyUser(
+                                "Finished building: "
+                                        + mainWindow.imageToPdfOptions.getPdfOptions().getSaveLocation().getAbsolutePath(),
+                                GREEN
+                        );
+                    });
                     return Unit.INSTANCE;
                 }
         );
