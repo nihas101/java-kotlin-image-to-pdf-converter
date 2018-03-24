@@ -43,22 +43,13 @@ class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : 
 
         directory!!.listFiles().forEachIndexed { index, file ->
             if (cancelled) throw InterruptedException()
-            val unzipInto = makeUnzipDirectory(file, deleteOnExit)
+            val unzipInto = File("${file.parent}/${file.nameWithoutExtension}")
             if (ImageUnZipper.canUnzip(file)) {
                 imageUnZipper = createImageUnZipper(file)
-                imageUnZipper!!.unzip(unzipInto, deleteOnExit = true)
+                imageUnZipper!!.unzip(unzipInto, deleteOnExit = deleteOnExit)
             }
             progressUpdater.updateProgress(index.toDouble() / numberOfFiles, file)
         }
-    }
-
-    private fun makeUnzipDirectory(file: File, deleteOnExit: Boolean): File {
-        val unzipDirectory = File("${file.parent}/${file.nameWithoutExtension}")
-
-        if (deleteOnExit) unzipDirectory.deleteOnExit()
-        unzipDirectory.mkdir()
-
-        return unzipDirectory
     }
 
     override fun cancelTask() {

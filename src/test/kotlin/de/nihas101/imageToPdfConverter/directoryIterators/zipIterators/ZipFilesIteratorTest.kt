@@ -16,6 +16,7 @@ class ZipFilesIteratorTest {
 
         zipFilesIterator.nextFile()
         zipFilesIterator.nextFile()
+        zipFilesIterator.nextFile()
 
         try {
             zipFilesIterator.nextFile()
@@ -57,7 +58,7 @@ class ZipFilesIteratorTest {
 
         zipFilesIterator.remove(File("src/test/resources/zip/images"))
 
-        assertEquals(1, zipFilesIterator.numberOfFiles())
+        assertEquals(2, zipFilesIterator.numberOfFiles())
     }
 
     @Test
@@ -66,7 +67,7 @@ class ZipFilesIteratorTest {
 
         zipFilesIterator.add(File("src/test/resources/images"))
 
-        assertEquals(3, zipFilesIterator.numberOfFiles())
+        assertEquals(4, zipFilesIterator.numberOfFiles())
     }
 
     @Test
@@ -84,7 +85,7 @@ class ZipFilesIteratorTest {
 
         zipFilesIterator.addAll(mutableListOf(File("src/test/resources/images")))
 
-        assertEquals(3, zipFilesIterator.numberOfFiles())
+        assertEquals(4, zipFilesIterator.numberOfFiles())
     }
 
     @Test

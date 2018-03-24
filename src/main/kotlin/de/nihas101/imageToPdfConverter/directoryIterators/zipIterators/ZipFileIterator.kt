@@ -32,7 +32,7 @@ class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : D
 
     override fun setupDirectory(directory: File, progressUpdater: ProgressUpdater) {
         super.setupDirectory(directory, progressUpdater)
-        val unzipInto = makeUnzipDirectory(deleteOnExit)
+        val unzipInto = File("${directory.parent.trim()}/${directory.nameWithoutExtension.trim()}")
         try {
             imageUnZipper = createImageUnZipper(directory)
             imageUnZipper!!.unzip(unzipInto, progressUpdater, deleteOnExit)
@@ -41,15 +41,6 @@ class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : D
         }
         imageFilesIterator = ImageFilesIterator.createImageFilesIterator()
         imageFilesIterator.setupDirectory(unzipInto, progressUpdater)
-    }
-
-    private fun makeUnzipDirectory(deleteOnExit: Boolean): File {
-        val unzipDirectory = File("${directory!!.parent.trim()}/${directory!!.nameWithoutExtension.trim()}")
-
-        if (deleteOnExit) unzipDirectory.deleteOnExit()
-        unzipDirectory.mkdir()
-
-        return unzipDirectory
     }
 
     override fun cancelTask() {

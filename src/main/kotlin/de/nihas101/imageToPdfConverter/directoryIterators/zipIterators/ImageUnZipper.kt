@@ -37,8 +37,22 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
     private val numberOfEntries: Int = ZipFile(file).size()
 
     fun unzip(unzipInto: File, progressUpdater: ProgressUpdater = TrivialProgressUpdater(), deleteOnExit: Boolean = false) {
-        unzip(progressUpdater) { zipEntry -> createFile("${unzipInto.absolutePath.trim()}/${zipEntry.name.trim()}", deleteOnExit) }
+        val unzipIntoTrimmed = createDirectory(unzipInto, deleteOnExit)
+
+        unzip(progressUpdater) { zipEntry -> createFile("${unzipIntoTrimmed.absolutePath}/${zipEntry.name.trim()}", deleteOnExit) }
         System.gc()
+    }
+
+    private fun createDirectory(unzipInto: File, deleteOnExit: Boolean): File {
+        val unzipIntoTrimmed = trimDirectory(unzipInto)
+        unzipIntoTrimmed.mkdir()
+        if (deleteOnExit) unzipIntoTrimmed.deleteOnExit()
+
+        return unzipIntoTrimmed
+    }
+
+    private fun trimDirectory(file: File): File {
+        return File(file.absolutePath.trim().trim { char -> char == '.' }.trim())
     }
 
     private fun unzip(progressUpdater: ProgressUpdater, fileFactory: (ZipEntry) -> File) {

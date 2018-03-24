@@ -31,6 +31,17 @@ class ImageUnZipperTest {
     }
 
     @Test
+    fun trailingDotsWindows() {
+        val unzipInto = File("src/test/resources/zip/imagesTrailingDots...")
+
+        createImageUnZipper(File("src/test/resources/zip/imagesTrailingDots....zip")).unzip(unzipInto, deleteOnExit = true)
+
+        val unzipIntoTrimmed = File("src/test/resources/zip/imagesTrailingDots")
+
+        assertEquals(4, unzipIntoTrimmed.listFiles().size)
+    }
+
+    @Test
     fun notSupportedException() {
         val unzipInto = File("src/test/resources/zip/images")
         unzipInto.mkdir()
