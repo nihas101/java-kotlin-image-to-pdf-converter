@@ -44,7 +44,7 @@ class BuildProgressUpdater(private val mainWindowController: MainWindowControlle
 class IteratorSetupProgressUpdater(private val mainWindowController: MainWindowController) : ProgressUpdater {
     override fun updateProgress(progress: Double, file: File) {
         mainWindowController.buildProgressBar.progress = progress
-        runLater { mainWindowController.notifyUser("Processing files: " + file.name, BLACK) }
+        runLater { mainWindowController.notifyUser("Processing file(s): " + file.name, BLACK) }
     }
 }
 

@@ -26,6 +26,7 @@ import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
+import java.lang.Thread.yield
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
@@ -60,19 +61,22 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
     }
 
     private fun unzipImages(progressUpdater: ProgressUpdater, fileFactory: (ZipEntry) -> File) {
-        var zipEntry = zipInputStream.getNextEntry()
+        var zipEntry = zipInputStream.nextEntry
 
         for (index in 0 until numberOfEntries) {
             if (cancelled) throw InterruptedException()
+
+            progressUpdater.updateProgress(index.toDouble() / numberOfEntries.toDouble(), file)
+
             try {
                 unzipImage(zipEntry, fileFactory)
             } catch (exception: FileIsDirectoryException) {
                 /* SKIP ENTRY */
             }
 
-            progressUpdater.updateProgress(index.toDouble() / numberOfEntries.toDouble(), file)
             zipInputStream.closeEntry()
-            zipEntry = zipInputStream.getNextEntry()
+            zipEntry = zipInputStream.nextEntry
+            yield() // Yield so FX-Thread gets a chance to update its contents
         }
 
     }
