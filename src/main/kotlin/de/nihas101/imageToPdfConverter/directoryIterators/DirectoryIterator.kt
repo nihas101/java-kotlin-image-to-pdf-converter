@@ -46,7 +46,7 @@ abstract class DirectoryIterator : Cancellable {
             val directorySize = directory.listFiles().size.toDouble()
             return { index, file ->
                 if (cancelled) throw InterruptedException()
-                progressUpdater.updateProgress(index.toDouble() / directorySize, file)
+                progressUpdater.updateProgress((index.toDouble()+1) / directorySize, file)
                 filter(file)
             }
         }
