@@ -112,14 +112,14 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
     }
 
     private fun setGraphic(file: File?) {
-        runLater({
+        runLater {
             if (file!!.isDirectory) imageView.image = Constants.RESOURCES.DIRECTORY_IMAGE_FILE
             else imageView.image = imageMap[file]
 
             if (imageView.image != null) scaleImageView(imageView)
 
             graphic = createVBox(imageView, cropText(file.name))
-        })
+        }
     }
 
     private fun scaleImageView(imageView: ImageView) {
@@ -147,30 +147,26 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
         contextMenu.id = "listCellContextMenu"
 
         val deleteItem = setupMenuItem(
-                "Remove ${file.name}",
-                { event ->
-                    removeFromLists()
-                    imageMap.remove(file.toURI().toURL().toString())
-                    event.consume()
-                })
+                "Remove ${file.name}"
+        ) { event ->
+            removeFromLists()
+            imageMap.remove(file.toURI().toURL().toString())
+            event.consume()
+        }
 
         val moveUpItem = setupMenuItem(
-                "Move ${file.name} up",
-                { _ -> if (index > 0) moveTo(index - 1) }
-        )
+                "Move ${file.name} up"
+        ) { _ -> if (index > 0) moveTo(index - 1) }
 
-        val moveDownItem = setupMenuItem("Move ${file.name} down",
-                { _ -> if (index < files.size) moveTo(index + 1) }
-        )
+        val moveDownItem = setupMenuItem("Move ${file.name} down"
+        ) { _ -> if (index < files.size) moveTo(index + 1) }
 
         val moveToFrontItem = setupMenuItem(
-                "Move ${file.name} to the front",
-                { _ -> if (index > 0) moveTo(0) }
-        )
+                "Move ${file.name} to the front"
+        ) { _ -> if (index > 0) moveTo(0) }
 
-        val moveToBackItem = setupMenuItem("Move ${file.name} to the back",
-                { _ -> if (index < files.size) moveTo(files.size - 1) }
-        )
+        val moveToBackItem = setupMenuItem("Move ${file.name} to the back"
+        ) { _ -> if (index < files.size) moveTo(files.size - 1) }
 
         if (index == 0) moveUpItem.disableProperty().set(false)
         if (index == files.size - 1) moveDownItem.disableProperty().set(false)

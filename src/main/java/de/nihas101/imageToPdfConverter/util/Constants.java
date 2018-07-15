@@ -27,7 +27,7 @@ import static javax.imageio.ImageIO.read;
 
 public class Constants {
     public final static Constants RESOURCES = new Constants();
-    public final static Double CELL_SIZE = 100.0;
+    public final static Double CELL_SIZE = 80.0;
     public final static int LIST_CELL_MAX_STRING_LENGTH = 27;
     public final static int NOTIFICATION_MAX_STRING_LENGTH = 40;
     public final static Float NO_MARGIN = 0F;
