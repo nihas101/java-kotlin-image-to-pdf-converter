@@ -20,8 +20,9 @@ package de.nihas101.imageToPdfConverter.util
 
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController
 import javafx.application.Platform.runLater
-import javafx.scene.paint.Color.BLACK
+import javafx.scene.paint.Color.WHITE
 import javafx.scene.paint.Paint
+import org.slf4j.LoggerFactory
 import java.io.File
 
 interface ProgressUpdater {
@@ -35,21 +36,30 @@ class TrivialProgressUpdater : ProgressUpdater {
 }
 
 class BuildProgressUpdater(private val mainWindowController: MainWindowController) : ProgressUpdater {
+    private val logger = LoggerFactory.getLogger(BuildProgressUpdater::class.java)!!
+
     override fun updateProgress(progress: Double, file: File) {
         mainWindowController.buildProgressBar.progress = progress
-        runLater { mainWindowController.notifyUser("Building PDF: " + file.name, BLACK) }
+        runLater { mainWindowController.notifyUser("Building PDF:  ${file.name}", WHITE) }
+        logger.info("Building PDF:  ${file.name}")
     }
 }
 
 class IteratorSetupProgressUpdater(private val mainWindowController: MainWindowController) : ProgressUpdater {
+    private val logger = LoggerFactory.getLogger(IteratorSetupProgressUpdater::class.java)!!
+
     override fun updateProgress(progress: Double, file: File) {
         mainWindowController.buildProgressBar.progress = progress
-        runLater { mainWindowController.notifyUser("Processing file(s): " + file.name, BLACK) }
+        runLater { mainWindowController.notifyUser("Processing file(s):  ${file.name}", WHITE) }
+        logger.info("Processing file(s):  ${file.name}")
     }
 }
 
 class LoadProgressUpdater(private val notifyUser: (String, Paint) -> Unit, private val numberOfFiles: Int) : ProgressUpdater {
+    private val logger = LoggerFactory.getLogger(LoadProgressUpdater::class.java)!!
+
     override fun updateProgress(progress: Double, file: File) {
-        runLater { notifyUser("Loading files... (${progress.toInt()}/$numberOfFiles)", BLACK) }
+        runLater { notifyUser("Loading files... (${progress.toInt()}/$numberOfFiles)", WHITE) }
+        logger.info("Loading files... (${progress.toInt()}/$numberOfFiles)")
     }
 }

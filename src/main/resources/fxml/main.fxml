@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
@@ -10,76 +7,89 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
-
-<GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="300.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.nihas101.imageToPdfConverter.gui.controller.MainWindowController">
+<GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
+          minWidth="-Infinity" prefHeight="475.0" prefWidth="300.0" stylesheets="@../main.css"
+          xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.nihas101.imageToPdfConverter.gui.controller.MainWindowController">
     <columnConstraints>
-        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="200.0" />
+        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"
+                           prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="200.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="700.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="10.0" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="700.0" vgrow="NEVER"/>
+        <RowConstraints maxHeight="-Infinity" minHeight="25.0" prefHeight="10.0" vgrow="ALWAYS"/>
     </rowConstraints>
-    <children>
-        <ListView fx:id="imageListView" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" onMouseClicked="#displayListCell" prefHeight="450.0" prefWidth="200.0" stylesheets="@../main.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
-      <VBox prefHeight="185.0" prefWidth="148.0" GridPane.valignment="CENTER">
-         <children>
-                  <Button fx:id="optionsButton" mnemonicParsing="false" onAction="#openOptionsMenu" prefHeight="115.0" prefWidth="110.0" stylesheets="@../main.css" text=" Options" textAlignment="CENTER">
-                      <graphic>
-                          <ImageView fitHeight="10.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" scaleX="2.25" scaleY="2.25" scaleZ="2.25">
-                              <viewport>
-                                  <Rectangle2D />
-                              </viewport>
-                              <image>
-                                  <Image url="@../icons8-gear-96.png" />
-                              </image>
-                          </ImageView>
-                      </graphic>
-                  </Button>
-                  <Button fx:id="directoryButton" mnemonicParsing="false" onAction="#chooseDirectory" prefHeight="115.0" prefWidth="110.0" stylesheets="@../main.css" text="Choose directory" textAlignment="CENTER" wrapText="true">
-                      <tooltip>
-                          <Tooltip text="Choose a directory to load images from" />
-                      </tooltip>
-                  </Button>
-                  <Button fx:id="clearAllButton" mnemonicParsing="false" onAction="#clearAll" prefHeight="115.0" prefWidth="110.0" text="Clear all" textAlignment="CENTER" />
-                  <Button fx:id="buildButton" mnemonicParsing="false" onAction="#buildPdf" prefHeight="115.0" prefWidth="110.0" stylesheets="@../main.css" text="Build" textAlignment="CENTER">
-                      <tooltip>
-                          <Tooltip text="Build the PDF" />
-                      </tooltip>
-                  </Button>
-         </children>
-      </VBox>
-      <GridPane GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+    <ListView fx:id="imageListView" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity"
+              onMouseClicked="#displayListCell" prefHeight="450.0" prefWidth="200.0" stylesheets="@../main.css"
+              GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER"
+              GridPane.vgrow="NEVER"/>
+    <VBox id="button-box" prefHeight="185.0" prefWidth="148.0" GridPane.valignment="CENTER">
+        <Button fx:id="optionsButton" mnemonicParsing="false" onAction="#openOptionsMenu" prefHeight="115.0"
+                prefWidth="110.0" stylesheets="@../main.css" text=" Options" textAlignment="CENTER">
+            <graphic>
+                <ImageView fitHeight="10.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" scaleX="2.25"
+                           scaleY="2.25" scaleZ="2.25">
+                    <viewport>
+                        <Rectangle2D/>
+                    </viewport>
+                    <Image url="@../icons8-gear-96.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="directoryButton" mnemonicParsing="false" onAction="#chooseDirectory" prefHeight="115.0"
+                prefWidth="110.0" stylesheets="@../main.css" text="Choose directory" textAlignment="CENTER"
+                wrapText="true">
+            <tooltip>
+                <Tooltip text="Choose a directory to load images from"/>
+            </tooltip>
+        </Button>
+        <Button fx:id="clearAllButton" mnemonicParsing="false" onAction="#clearAll" prefHeight="115.0"
+                prefWidth="110.0" text="Clear all" textAlignment="CENTER"/>
+        <Button fx:id="buildButton" mnemonicParsing="false" onAction="#buildPdf" prefHeight="115.0"
+                prefWidth="110.0" stylesheets="@../main.css" text="Build" textAlignment="CENTER">
+            <tooltip>
+                <Tooltip text="Build the PDF"/>
+            </tooltip>
+        </Button>
+    </VBox>
+    <GridPane id="update-pane" fx:id="updatePane" stylesheets="@../main.css" GridPane.columnSpan="2"
+              GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER"
+              GridPane.vgrow="ALWAYS">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="2.0" prefWidth="2.0" />
-            <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="280.0" minWidth="1.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="2.0" prefWidth="2.0"/>
+            <ColumnConstraints fillWidth="false" hgrow="ALWAYS" maxWidth="280.0" minWidth="1.0"/>
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="5.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="-Infinity" minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="5.0"
+                            vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="-Infinity" minHeight="3.0" prefHeight="3.0" vgrow="SOMETIMES"/>
         </rowConstraints>
-         <children>
-                <ProgressIndicator fx:id="progressIndicator" maxHeight="15.0" maxWidth="15.0" minHeight="15.0" minWidth="15.0" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                </ProgressIndicator>
-              <ProgressBar fx:id="buildProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="2.0" minWidth="-Infinity" prefHeight="2.0" prefWidth="243.0" progress="0.0" style="-fx-background-radius: 0 0 0 0; -fx-border-radius: 0 0 0 0;" stylesheets="@../main.css" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-                <TextFlow fx:id="notificationTextFlow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="280.0" stylesheets="@../main.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-                    <children>
-                        <Text fx:id="notificationText" strokeType="OUTSIDE" strokeWidth="0.0" />
-                    </children>
-                    <opaqueInsets>
-                        <Insets top="10.0" />
-                    </opaqueInsets>
-               <GridPane.margin>
-                  <Insets bottom="2.5" top="2.5" />
-               </GridPane.margin>
-                </TextFlow>
-         </children>
-         <opaqueInsets>
-            <Insets top="5.0" />
-         </opaqueInsets>
-      </GridPane>
-    </children>
+        <opaqueInsets>
+            <Insets top="5.0"/>
+        </opaqueInsets>
+        <ProgressIndicator fx:id="progressIndicator" maxHeight="15.0" maxWidth="15.0" minHeight="15.0"
+                           minWidth="15.0" prefHeight="15.0" prefWidth="15.0" visible="false"
+                           GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+        </ProgressIndicator>
+        <ProgressBar fx:id="buildProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                     minHeight="2.0" minWidth="-Infinity" prefHeight="2.0" prefWidth="243.0" progress="0.0"
+                     style="-fx-background-radius: 0 0 0 0; -fx-border-radius: 0 0 0 0;" stylesheets="@../main.css"
+                     GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
+                     GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS"/>
+        <TextFlow fx:id="notificationTextFlow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                  prefWidth="280.0" stylesheets="@../main.css" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                  GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <opaqueInsets>
+                <Insets top="10.0"/>
+            </opaqueInsets>
+            <GridPane.margin>
+                <Insets bottom="2.5" top="2.5"/>
+            </GridPane.margin>
+            <Text fx:id="notificationText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"/>
+        </TextFlow>
+    </GridPane>
 </GridPane>

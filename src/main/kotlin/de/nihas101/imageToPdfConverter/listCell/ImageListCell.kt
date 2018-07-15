@@ -34,6 +34,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Paint
 import javafx.scene.text.Text
 import java.io.File
 
@@ -135,11 +136,14 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
         return vBox
     }
 
-    private fun cropText(text: String): Text {
-        return if (text.length > LIST_CELL_MAX_STRING_LENGTH)
-            Text(text.substring(0, LIST_CELL_MAX_STRING_LENGTH) + "...")
+    private fun cropText(textString: String): Text {
+        val text = if (textString.length > LIST_CELL_MAX_STRING_LENGTH)
+            Text(textString.substring(0, LIST_CELL_MAX_STRING_LENGTH) + "...")
         else
-            Text(text)
+            Text(textString)
+
+        text.fill = Paint.valueOf("white")
+        return text
     }
 
     private fun setupImageListCellContextMenu(file: File) {

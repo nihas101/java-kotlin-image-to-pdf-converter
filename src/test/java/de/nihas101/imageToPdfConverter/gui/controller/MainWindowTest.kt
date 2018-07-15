@@ -11,7 +11,6 @@ import org.junit.Test
 import org.testfx.framework.junit.ApplicationTest
 import java.io.File
 
-
 class MainWindowTest : ApplicationTest() {
     private val waitingPeriod = 500L
     private var mainWindow: MainWindow? = null

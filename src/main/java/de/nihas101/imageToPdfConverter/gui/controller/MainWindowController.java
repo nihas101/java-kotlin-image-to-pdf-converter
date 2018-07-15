@@ -38,6 +38,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -73,6 +74,7 @@ public class MainWindowController extends FileListViewController {
      */
     public MainWindow mainWindow;
     public Button clearAllButton;
+    public GridPane updatePane;
 
     private ListChangeListenerFactory listChangeListenerFactory;
 
@@ -252,7 +254,7 @@ public class MainWindowController extends FileListViewController {
         runLater(() -> {
             ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
             observableFiles.addListener(listChangeListenerFactory.setupListChangeListener(directoryIterator, () -> {
-                notifyUser("Files: " + observableFiles.size(), BLACK);
+                notifyUser("Files: " + observableFiles.size(), WHITE);
                 return Unit.INSTANCE;
             }));
 
@@ -261,7 +263,7 @@ public class MainWindowController extends FileListViewController {
                     mainWindow.imageMap, directoryIterator.getFiles(), observableFiles)
             );
 
-            notifyUser("Files: " + directoryIterator.numberOfFiles(), BLACK);
+            notifyUser("Files: " + directoryIterator.numberOfFiles(), WHITE);
         });
     }
 
@@ -321,7 +323,7 @@ public class MainWindowController extends FileListViewController {
         if (saveFile != null) {
             mainWindow.setSaveLocation(saveFile);
             startPdfBuilderThread(PdfBuilder.PdfBuilderFactory.createPdfBBuilder(mainWindow.imageToPdfOptions.getIteratorOptions()));
-        } else notifyUser("Build cancelled by user", BLACK);
+        } else notifyUser("Build cancelled by user", WHITE);
     }
 
     private void startPdfBuilderThread(PdfBuilder pdfBuilder) {
