@@ -98,7 +98,7 @@ public class ImageMap implements Cancellable {
     private void putImagesIntoMap(List<File> files, ProgressUpdater progressUpdater) throws InterruptedException {
         for (int index = 0; index < files.size(); index++) {
             if (cancelled) throw new InterruptedException();
-            putImageIntoMapIfFile(files.get(index), progressUpdater, index);
+            putImageIntoMapIfFile(files.get(index), progressUpdater, (index+1));
         }
     }
 
