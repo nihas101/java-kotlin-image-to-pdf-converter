@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="de.nihas101.imageToPdfConverter.gui.controller.ImageDisplayController">
+
+<BorderPane id="image-display-pane" fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.nihas101.imageToPdfConverter.gui.controller.ImageDisplayController">
     <center>
-        <ImageView fx:id="imageDisplayView" fitHeight="600.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true"
-                   BorderPane.alignment="CENTER"/>
+        <ImageView fx:id="imageDisplayView" fitHeight="600.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
     </center>
 </BorderPane>

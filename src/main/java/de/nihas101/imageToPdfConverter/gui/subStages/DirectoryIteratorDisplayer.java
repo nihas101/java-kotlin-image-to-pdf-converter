@@ -33,6 +33,7 @@ import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisp
 import static de.nihas101.imageToPdfConverter.gui.subStages.ImageDisplay.createImageDisplay;
 import static javafx.application.Platform.runLater;
 import static javafx.scene.paint.Color.BLACK;
+import static javafx.scene.paint.Color.WHITE;
 
 /**
  * A class for displaying the content of a {@link DirectoryIterator}
@@ -87,7 +88,7 @@ public final class DirectoryIteratorDisplayer {
                 () -> {
                     runLater(() -> {
                         mainWindowController.buildProgressBar.setProgress(0);
-                        mainWindowController.notifyUser("Files: " + directoryIterator.numberOfFiles(), BLACK);
+                        mainWindowController.notifyUser("Files: " + directoryIterator.numberOfFiles(), WHITE);
                         DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
                                 imageFilesIterator,
                                 index,
