@@ -32,7 +32,6 @@ import java.net.MalformedURLException;
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay.createDirectoryContentDisplay;
 import static de.nihas101.imageToPdfConverter.gui.subStages.ImageDisplay.createImageDisplay;
 import static javafx.application.Platform.runLater;
-import static javafx.scene.paint.Color.BLACK;
 import static javafx.scene.paint.Color.WHITE;
 
 /**

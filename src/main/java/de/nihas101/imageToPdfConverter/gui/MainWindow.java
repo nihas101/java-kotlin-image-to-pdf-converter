@@ -148,7 +148,7 @@ public final class MainWindow extends Application {
 
     public void openOptionsMenu() {
         try {
-            OptionsMenu optionsMenu = createOptionsMenu(imageToPdfOptions, new Point2D(primaryStage.getX() +105, primaryStage.getY() +31));
+            OptionsMenu optionsMenu = createOptionsMenu(imageToPdfOptions, new Point2D(primaryStage.getX() + 105, primaryStage.getY() + 31));
             openApplication = optionsMenu;
             imageToPdfOptions = optionsMenu.setOptions();
         } catch (Exception e) {

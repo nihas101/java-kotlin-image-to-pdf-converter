@@ -73,7 +73,7 @@ class ImageFilesIterator private constructor() : DirectoryIterator() {
         return this.files.addAll(files.filter { file -> isImage(file) })
     }
 
-    override fun remove(file: File) : Boolean {
+    override fun remove(file: File): Boolean {
         logger.info("Removed {}", file.name)
         return files.remove(file)
     }

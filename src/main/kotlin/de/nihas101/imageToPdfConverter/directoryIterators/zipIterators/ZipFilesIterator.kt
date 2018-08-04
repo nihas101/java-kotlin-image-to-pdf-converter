@@ -44,7 +44,7 @@ class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : 
         directory!!.listFiles().forEachIndexed { index, file ->
             if (cancelled) throw InterruptedException()
 
-            progressUpdater.updateProgress((index +1).toDouble() / numberOfFiles, file)
+            progressUpdater.updateProgress((index + 1).toDouble() / numberOfFiles, file)
 
             val unzipInto = File("${file.parent}/${file.nameWithoutExtension}")
             if (ImageUnZipper.canUnzip(file)) {

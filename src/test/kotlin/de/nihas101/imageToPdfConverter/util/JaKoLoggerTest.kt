@@ -43,7 +43,7 @@ class JaKoLoggerTest {
         assertLoggings(logger, ERROR)
     }
 
-    private fun assertLoggings(logger: TestLogger, level: Level){
+    private fun assertLoggings(logger: TestLogger, level: Level) {
         assertLogging(logger, level)
         assertLogging(logger, level)
         assertLogging(logger, level)
@@ -51,15 +51,15 @@ class JaKoLoggerTest {
         assertLogging(logger, level)
     }
 
-    private fun assertLogging(logger: TestLogger, level: Level){
+    private fun assertLogging(logger: TestLogger, level: Level) {
         log(logger, level)
 
-        if(logger.isEnabledFor(level)) assertEquals(level.toString(), logger.getLastMessage())
+        if (logger.isEnabledFor(level)) assertEquals(level.toString(), logger.getLastMessage())
         else assertEquals("", logger.getLastMessage())
     }
 
-    private fun log(logger: TestLogger, level: Level){
-        when(level){
+    private fun log(logger: TestLogger, level: Level) {
+        when (level) {
             TRACE -> logger.trace("{}", level.toString())
             DEBUG -> logger.debug("{}", level.toString())
             INFO -> logger.info("{}", level.toString())
@@ -68,13 +68,13 @@ class JaKoLoggerTest {
         }
     }
 
-    class TestLogger private constructor(logger: Logger) : JaKoLogger(logger){
+    class TestLogger private constructor(logger: Logger) : JaKoLogger(logger) {
 
-        fun isEnabledFor(level: Level): Boolean{
+        fun isEnabledFor(level: Level): Boolean {
             return logger.isEnabledFor(level)
         }
 
-        fun getLastMessage(): String{
+        fun getLastMessage(): String {
             val lastMessage = (logger.loggerContext.getLogger("root").getAppender("TEST") as StringAppender).lastMessage
             (logger.loggerContext.getLogger("root").getAppender("TEST") as StringAppender).lastMessage = ""
             return lastMessage

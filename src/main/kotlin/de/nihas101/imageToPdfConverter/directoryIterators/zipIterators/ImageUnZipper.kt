@@ -104,7 +104,7 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
     }
 
     companion object ZipFileIteratorFactory {
-        private val logger =  JaKoLogger.createLogger(ImageUnZipper::class.java)
+        private val logger = JaKoLogger.createLogger(ImageUnZipper::class.java)
 
         fun createImageUnZipper(file: File): ImageUnZipper {
             if (canUnzip(file)) {

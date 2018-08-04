@@ -73,7 +73,7 @@ class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : D
     override fun resetIndex() = imageFilesIterator.resetIndex()
 
     companion object ZipFileIteratorFactory {
-        private val logger =  JaKoLogger.createLogger(ZipFileIterator::class.java)
+        private val logger = JaKoLogger.createLogger(ZipFileIterator::class.java)
 
         fun createZipFileIterator(deleteOnExit: Boolean): ZipFileIterator {
             return ZipFileIterator(deleteOnExit)

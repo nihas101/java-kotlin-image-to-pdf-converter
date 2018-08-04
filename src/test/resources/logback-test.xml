@@ -3,6 +3,6 @@
     <appender name="TEST" class="de.nihas101.imageToPdfConverter.util.StringAppender">
     </appender>
     <root level="trace">
-        <appender-ref ref="TEST" />
+        <appender-ref ref="TEST"/>
     </root>
 </configuration>
