@@ -21,11 +21,13 @@ package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.FileIsDirectoryException
 import de.nihas101.imageToPdfConverter.tasks.Cancellable
+import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
+import java.io.IOException
 import java.lang.Thread.yield
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -71,7 +73,7 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
             try {
                 unzipImage(zipEntry, fileFactory)
             } catch (exception: FileIsDirectoryException) {
-                /* SKIP ENTRY */
+                logger.info("Skipping {}, as it is a directory", file.name)
             }
 
             zipInputStream.closeEntry()
@@ -87,9 +89,14 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
 
     private fun unzipImage(zipEntry: ZipEntry, fileFactory: (ZipEntry) -> File) {
         val file: File = fileFactory(zipEntry)
-        val bufferedImage = ImageIO.read(zipInputStream)
-        if (bufferedImage != null)
-            ImageIO.write(bufferedImage, extractExtension(zipEntry), file)
+        logger.info("Unzipping {}", file.name)
+        try {
+            val bufferedImage = ImageIO.read(zipInputStream)
+            if (bufferedImage != null)
+                ImageIO.write(bufferedImage, extractExtension(zipEntry), file)
+        } catch (exception: IOException) {
+            logger.error("{}", exception.message!!)
+        }
     }
 
     private fun extractExtension(zipEntry: ZipEntry): String {
@@ -97,6 +104,8 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
     }
 
     companion object ZipFileIteratorFactory {
+        private val logger =  JaKoLogger.createLogger(ImageUnZipper::class.java)
+
         fun createImageUnZipper(file: File): ImageUnZipper {
             if (canUnzip(file)) {
                 return ImageUnZipper(file)
