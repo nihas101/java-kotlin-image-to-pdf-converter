@@ -22,6 +22,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.createImageUnZipper
+import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
@@ -30,13 +31,16 @@ class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : D
     private var imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator()
     private var imageUnZipper: ImageUnZipper? = null
 
+
     override fun setupDirectory(directory: File, progressUpdater: ProgressUpdater) {
         super.setupDirectory(directory, progressUpdater)
         val unzipInto = File("${directory.parent.trim()}/${directory.nameWithoutExtension.trim()}")
+        logger.info("Unzipping {}", directory.name)
         try {
             imageUnZipper = createImageUnZipper(directory)
             imageUnZipper!!.unzip(unzipInto, progressUpdater, deleteOnExit)
         } catch (exception: ExtensionNotSupportedException) {
+            logger.error("{}. Skipping directory.", exception.message!!)
             /* Proceed with empty unzip directory */
         }
         imageFilesIterator = ImageFilesIterator.createImageFilesIterator()
@@ -69,6 +73,8 @@ class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : D
     override fun resetIndex() = imageFilesIterator.resetIndex()
 
     companion object ZipFileIteratorFactory {
+        private val logger =  JaKoLogger.createLogger(ZipFileIterator::class.java)
+
         fun createZipFileIterator(deleteOnExit: Boolean): ZipFileIterator {
             return ZipFileIterator(deleteOnExit)
         }
