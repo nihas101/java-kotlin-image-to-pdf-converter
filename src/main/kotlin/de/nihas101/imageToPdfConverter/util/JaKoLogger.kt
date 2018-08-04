@@ -18,24 +18,23 @@
 
 package de.nihas101.imageToPdfConverter.util
 
-import org.slf4j.LoggerFactory
 import ch.qos.logback.classic.Level
-import ch.qos.logback.classic.Level.*
+import ch.qos.logback.classic.Level.DEBUG
 import ch.qos.logback.classic.Logger
+import org.slf4j.LoggerFactory
 
-class JaKoLogger private constructor(private val logger: Logger) {
-    // TODO: Tests
-    // TODO: Make it so you can decide where to log
-
+open class JaKoLogger protected constructor(protected val logger: Logger) {
     fun setLoggingLevel(level: Level) {
         logger.level = level
     }
 
-    fun trace(message: String) = logger.trace(message)
+    fun trace(format: String, arg: Any) = logger.trace(format, arg)
 
     fun debug(format: String, arg: Any) = logger.debug(format, arg)
 
     fun info(format: String, arg: Any) = logger.info(format, arg)
+
+    fun warn(format: String, arg: Any) = logger.warn(format, arg)
 
     fun error(format: String, arg: Any) = logger.error(format, arg)
 

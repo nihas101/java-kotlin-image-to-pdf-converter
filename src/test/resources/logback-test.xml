@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="TEST" class="de.nihas101.imageToPdfConverter.util.StringAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    </appender>
+    <root level="trace">
+        <appender-ref ref="TEST" />
+    </root>
+</configuration>
