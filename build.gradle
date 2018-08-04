@@ -44,8 +44,16 @@ dependencies {
     // SLF4J: https://www.slf4j.org/
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+
+    // Logback
+    // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+    // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple // TODO: REMOVE!
+    //compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+
 
     // TestFX: github.com/TestFX/TestFX
     // https://mvnrepository.com/artifact/org.testfx/testfx-core
