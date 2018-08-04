@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.pdf.pdfOptions
 
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions.OptionsFactory.createOptions
-import org.junit.Assert.assertEquals
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.io.File
 

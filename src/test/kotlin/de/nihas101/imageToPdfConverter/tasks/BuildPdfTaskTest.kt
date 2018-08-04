@@ -5,7 +5,7 @@ import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder.PdfBuilderFactory
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions.OptionsFactory.createOptions
 import de.nihas101.imageToPdfConverter.tasks.BuildPdfTask.BuildPdfTaskFactory.createBuildPdfTask
 import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
-import org.junit.Assert.assertEquals
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.io.File
 
