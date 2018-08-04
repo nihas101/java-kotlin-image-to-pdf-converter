@@ -34,6 +34,11 @@
     -fx-background-color: #535454;
 }
 
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #4060FF;
+    -fx-text-fill: white;
+}
+
 .list-view {
     -fx-background-color: #494A4A;
     -fx-border-color: #484949;
