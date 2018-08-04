@@ -18,11 +18,11 @@
 
 package de.nihas101.imageToPdfConverter.directoryIterators.iteratorAction
 
-import com.itextpdf.kernel.pdf.CompressionConstants.*
 import com.itextpdf.kernel.pdf.PdfVersion.*
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.MalformedPdfActionException
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
+import java.util.zip.Deflater.*
 
 class IteratorBuildAction private constructor(
         private val modificationArguments: List<String>,
