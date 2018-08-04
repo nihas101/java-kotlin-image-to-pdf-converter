@@ -20,6 +20,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
+import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
@@ -40,24 +41,38 @@ class ImageDirectoriesIterator private constructor() : DirectoryIterator() {
     override fun getFiles(): MutableList<File> = directories
 
     override fun add(index: Int, file: File): Boolean {
+        val arguments = Array<Any>(2) {}
+        arguments[0] = file.name
+        arguments[1] = index
+
         return if (isImageDirectory(file)) {
             directories.add(index, file)
+            logger.info("Added {} at index {}", arguments)
             true
-        } else false
+        } else {
+            logger.info("Ignored addition of {} at index {} as it is no image", arguments)
+            false
+        }
     }
 
     override fun add(file: File): Boolean {
         return if (isImageDirectory(file)) {
             directories.add(file)
+            logger.info("Added {}", file.name)
             true
-        } else false
+        } else {
+            logger.info("Ignored addition of {} as it is no image", file.name)
+            false
+        }
     }
 
     override fun addAll(files: List<File>) =
             directories.addAll(files.filter { file -> isImageDirectory(file) })
 
-    override fun remove(file: File) =
-            directories.remove(file)
+    override fun remove(file: File) : Boolean {
+        logger.info("Removed {}", file.name)
+        return directories.remove(file)
+    }
 
     override fun nextFile(): File {
         if (currentIndex < directories.size) return directories[currentIndex++]
@@ -65,12 +80,15 @@ class ImageDirectoriesIterator private constructor() : DirectoryIterator() {
     }
 
     override fun resetIndex() {
+        logger.info("{}", "Index reset")
         currentIndex = 0
     }
 
     override fun getFile(index: Int): File = directories[index]
 
     companion object ImageDirectoriesIteratorFactory {
+        private val logger = JaKoLogger.createLogger(ImageDirectoriesIterator::class.java)
+
         fun createImageDirectoriesIterator(): ImageDirectoriesIterator = ImageDirectoriesIterator()
         fun isImageDirectory(directory: File) = directory.isDirectory && containsImage(directory)
         private fun containsImage(directory: File): Boolean {
