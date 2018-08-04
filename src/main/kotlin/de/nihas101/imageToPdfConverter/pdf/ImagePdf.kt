@@ -37,6 +37,7 @@ class ImagePdf internal constructor(
         private var document: Document,
         private var pdf: PdfDocument
 ) {
+    // TODO: Implement class that flushes imagePDF, when a certain size is reached
     fun add(image: Image) {
         addNewImage(image)
         document.add(image)

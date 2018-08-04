@@ -35,12 +35,18 @@ object Main {
         else if ("--nogui" == args[0].toLowerCase()) startTextOnly()
     }
 
+    // TODO: ADD LOGGING WHERE POSSIBLE
+    // TODO: Allow for debug flag, which prints all debug messages from slf4j - see video again if you don't know what this means
+    // TODO: Replace option window with drop down menu if possible
+    // TODO: [If possible] Make it so empty ImageIterators are created when the option is selected + images/directories are always added to it
+    // instead of sometimes creating one Remember: The first image/ directory added sets the directory
+
     private fun startGUI() {
         try {
             MainWindow.main(arrayOf())
         } catch (exception: IllegalStateException) {
             /*  Application launch was already called before */
-            runLater({ MainWindow().start(Stage()) })
+            runLater { MainWindow().start(Stage()) }
         }
     }
 
