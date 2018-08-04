@@ -24,6 +24,8 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -37,18 +39,16 @@ public final class OptionsMenu extends Application {
     private final ImageToPdfOptions imageToPdfOptions;
     private OptionsMenuController optionsMenuController;
     private Stage primaryStage;
+    private Point2D position;
 
-    private OptionsMenu(ImageToPdfOptions imageToPdfOptions) {
+    private OptionsMenu(ImageToPdfOptions imageToPdfOptions, Point2D position) {
         this.imageToPdfOptions = imageToPdfOptions;
+        this.position = position;
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        primaryStage.initStyle(UNDECORATED);
-        primaryStage.focusedProperty().addListener((ov, onHidden, onShown) -> {
-            if(onHidden) stop();
-        });
 
         GridPane root = loadFXML();
         optionsMenuController.setup(imageToPdfOptions);
@@ -67,9 +67,13 @@ public final class OptionsMenu extends Application {
     }
 
     private void setupPrimaryStage(Scene scene) {
+        primaryStage.setX(position.getX());
+        primaryStage.setY(position.getY());
         primaryStage.setTitle("JaKoImageToPdf Options");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+        primaryStage.initStyle(UNDECORATED);
+        primaryStage.focusedProperty().addListener((ov, onHidden, onShown) -> { if(onHidden) stop(); });
     }
 
     @Override
@@ -77,8 +81,8 @@ public final class OptionsMenu extends Application {
         primaryStage.close();
     }
 
-    public static OptionsMenu createOptionsMenu(ImageToPdfOptions imageToPdfOptions) {
-        return new OptionsMenu(imageToPdfOptions);
+    public static OptionsMenu createOptionsMenu(ImageToPdfOptions imageToPdfOptions, Point2D position) {
+        return new OptionsMenu(imageToPdfOptions, position);
     }
 
     /**

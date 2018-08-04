@@ -28,6 +28,7 @@ import de.nihas101.imageToPdfConverter.tasks.TaskManager;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -46,6 +47,7 @@ import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
 
 
 public final class MainWindow extends Application {
+    private Stage primaryStage;
     public MainWindowController mainWindowController;
     private Scene scene;
     public GridPane root;
@@ -76,6 +78,7 @@ public final class MainWindow extends Application {
      * {@inheritDoc}
      */
     public void start(Stage primaryStage) throws IOException {
+        this.primaryStage = primaryStage;
         loadFXML();
         setupMainWindow();
         setupOnExit(primaryStage);
@@ -145,7 +148,7 @@ public final class MainWindow extends Application {
 
     public void openOptionsMenu() {
         try {
-            OptionsMenu optionsMenu = createOptionsMenu(imageToPdfOptions);
+            OptionsMenu optionsMenu = createOptionsMenu(imageToPdfOptions, new Point2D(primaryStage.getX() +105, primaryStage.getY() +31));
             openApplication = optionsMenu;
             imageToPdfOptions = optionsMenu.setOptions();
         } catch (Exception e) {
