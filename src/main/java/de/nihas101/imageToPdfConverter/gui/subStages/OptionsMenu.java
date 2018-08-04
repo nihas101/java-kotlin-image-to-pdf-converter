@@ -21,12 +21,17 @@ package de.nihas101.imageToPdfConverter.gui.subStages;
 import de.nihas101.imageToPdfConverter.gui.controller.OptionsMenuController;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
+
+import static javafx.stage.StageStyle.*;
 
 public final class OptionsMenu extends Application {
     private final ImageToPdfOptions imageToPdfOptions;
@@ -40,6 +45,11 @@ public final class OptionsMenu extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+        primaryStage.initStyle(UNDECORATED);
+        primaryStage.focusedProperty().addListener((ov, onHidden, onShown) -> {
+            if(onHidden) stop();
+        });
+
         GridPane root = loadFXML();
         optionsMenuController.setup(imageToPdfOptions);
 
