@@ -38,7 +38,7 @@ open class JaKoLogger protected constructor(protected val logger: Logger) {
 
     fun error(format: String, arg: Any) = logger.error(format, arg)
 
-    companion object {
+    companion object JaKoLoggerFactory {
         fun createLogger(javaClass: Class<*>, level: Level = DEBUG): JaKoLogger {
             val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
             logger.level = level
