@@ -23,12 +23,14 @@ import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorTask;
 import de.nihas101.imageToPdfConverter.util.IteratorSetupProgressUpdater;
+import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.scene.image.Image;
 import kotlin.Unit;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
+import static ch.qos.logback.classic.Level.DEBUG;
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay.createDirectoryContentDisplay;
 import static de.nihas101.imageToPdfConverter.gui.subStages.ImageDisplay.createImageDisplay;
 import static javafx.application.Platform.runLater;
@@ -42,6 +44,8 @@ public final class DirectoryIteratorDisplayer {
      * The {@link DirectoryIterator} of which to display the content
      */
     private final DirectoryIterator directoryIterator;
+
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(DirectoryIteratorDisplayer.class, DEBUG);
 
     private DirectoryIteratorDisplayer(DirectoryIterator directoryIterator) {
         this.directoryIterator = directoryIterator;
@@ -121,7 +125,7 @@ public final class DirectoryIteratorDisplayer {
                         file.getName()
                 );
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                logger.error("{}", e.getMessage());
                 return;
             }
 

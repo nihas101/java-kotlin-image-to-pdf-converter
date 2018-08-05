@@ -20,6 +20,7 @@ package de.nihas101.imageToPdfConverter.gui.subStages;
 
 import de.nihas101.imageToPdfConverter.gui.controller.OptionsMenuController;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
+import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -29,6 +30,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static ch.qos.logback.classic.Level.DEBUG;
 import static javafx.stage.StageStyle.UNDECORATED;
 
 public final class OptionsMenu extends Application {
@@ -36,6 +38,8 @@ public final class OptionsMenu extends Application {
     private OptionsMenuController optionsMenuController;
     private Stage primaryStage;
     private Point2D position;
+
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(OptionsMenu.class, DEBUG);
 
     private OptionsMenu(ImageToPdfOptions imageToPdfOptions, Point2D position) {
         this.imageToPdfOptions = imageToPdfOptions;
@@ -94,7 +98,7 @@ public final class OptionsMenu extends Application {
         try {
             start(new Stage());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("{}", e.getMessage());
         }
         return optionsMenuController.getImageToPdfOptions();
     }

@@ -19,6 +19,7 @@
 package de.nihas101.imageToPdfConverter.gui.subStages;
 
 import de.nihas101.imageToPdfConverter.gui.controller.ImageDisplayController;
+import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -28,6 +29,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static ch.qos.logback.classic.Level.DEBUG;
 import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_HEIGHT;
 import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_WIDTH;
 
@@ -45,6 +47,8 @@ public final class ImageDisplay extends Application {
     private String imageName;
 
     private ImageDisplayController imageDisplayController;
+
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(ImageDisplay.class, DEBUG);
 
     private ImageDisplay(Image image, String imageName) {
         this.image = image;
@@ -65,7 +69,7 @@ public final class ImageDisplay extends Application {
         try {
             start(new Stage());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("{}", e.getMessage());
         }
     }
 
@@ -100,6 +104,7 @@ public final class ImageDisplay extends Application {
     }
 
     private double calculateScaleOfStage(Image image) {
+        // TODO: Limit size of Stage
         if (image.getHeight() > IMAGE_DISPLAY_MAX_HEIGHT || image.getWidth() > IMAGE_DISPLAY_MAX_WIDTH)
             return calculateScale(image);
         else return 1;

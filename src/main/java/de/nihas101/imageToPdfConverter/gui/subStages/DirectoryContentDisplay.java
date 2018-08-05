@@ -22,6 +22,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator;
 import de.nihas101.imageToPdfConverter.gui.controller.DirectoryContentDisplayController;
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
+import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,6 +30,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import static ch.qos.logback.classic.Level.DEBUG;
 
 /**
  * An {@link Application} for displaying the content of a directory
@@ -41,6 +44,8 @@ public final class DirectoryContentDisplay extends Application {
     private final MainWindowController mainWindowController;
     private DirectoryIterator directoryIterator;
     public DirectoryContentDisplayController directoryContentDisplayController;
+
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(DirectoryContentDisplay.class, DEBUG);
 
 
     private DirectoryContentDisplay(DirectoryIterator directoryIterator, int directoryIteratorIndex, MainWindowController mainWindowController) {
@@ -63,7 +68,7 @@ public final class DirectoryContentDisplay extends Application {
         try {
             start(new Stage());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("{}", e.getMessage());
         }
     }
 
