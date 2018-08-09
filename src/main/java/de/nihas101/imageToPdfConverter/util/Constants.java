@@ -37,6 +37,14 @@ public class Constants {
 
     public final static int IMAGE_MAP_MAX_SIZE = 100;
 
+    // FLAGS
+    public final static String TRACE = "--t";
+    public final static String DEBUG = "--d";
+    public final static String INFO = "--i";
+    public final static String WARN = "--w";
+    public final static String ERROR = "--e";
+    public final static String NO_GUI = "--nogui";
+
     /* Source: icons8.com/icon/2828/open */
     private final static String DIRECTORY_IMAGE_PATH = "/icons8-open-500.png";
     /* Source: icons8.com/icon/54151/gear */
