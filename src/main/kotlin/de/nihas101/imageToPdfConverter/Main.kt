@@ -18,28 +18,35 @@
 
 package de.nihas101.imageToPdfConverter
 
+import ch.qos.logback.classic.Logger
 import de.nihas101.imageToPdfConverter.gui.MainWindow
 import de.nihas101.imageToPdfConverter.ui.PdfBuilderUI.PdfBuilderUiFactory.createPdfBuilderUI
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInput
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInterface
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineOutput
+import de.nihas101.imageToPdfConverter.util.ArgumentParser.ArgumentParser.parse
+import de.nihas101.imageToPdfConverter.util.JaKoOptions
 import javafx.application.Platform.runLater
 import javafx.stage.Stage
+import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {
-        if (args.isEmpty()) startGUI()
-        else if ("--nogui" == args[0].toLowerCase()) startTextOnly()
+        val options = parse(args, JaKoOptions())
+
+        (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger).level = options.loggingLevel // TODO: Test
+        when {
+            options.isGUIEnabled -> startGUI()
+            else -> startTextOnly()
+        }
     }
 
     // TODO: ADD LOGGING WHERE POSSIBLE
-    // TODO: Allow for debug flag, which prints all debug messages from slf4j - see video again if you don't know what this means
-    // TODO: Replace option window with drop down menu if possible
     // TODO: [If possible] Make it so empty ImageIterators are created when the option is selected + images/directories are always added to it
-    // instead of sometimes creating one Remember: The first image/ directory added sets the directory
+    // [TODO cont'd] instead of sometimes creating one Remember: The first image/ directory added sets the directory
 
     private fun startGUI() {
         try {
