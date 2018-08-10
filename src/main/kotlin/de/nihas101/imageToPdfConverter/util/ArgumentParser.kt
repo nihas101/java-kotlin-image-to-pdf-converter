@@ -23,14 +23,14 @@ import de.nihas101.imageToPdfConverter.util.Constants.*
 
 class ArgumentParser {
     companion object ArgumentParser {
-        fun parse(args: Array<String>, options: JaKoOptions): JaKoOptions {
+        fun parseArguments(arguments: Array<String>, options: JaKoOptions): JaKoOptions {
             var parsedOptions = options
-            for (arg in args) parsedOptions = parse(arg, parsedOptions)
+            for (arg in arguments) parsedOptions = parseArgument(arg, parsedOptions)
             return parsedOptions
         }
 
-        private fun parse(arg: String, options: JaKoOptions): JaKoOptions {
-            return when (arg.trim().toLowerCase()) {
+        private fun parseArgument(argument: String, options: JaKoOptions): JaKoOptions {
+            return when (argument.trim().toLowerCase()) {
                 TRACE -> setLoggingLevel(options, Level.TRACE)
                 DEBUG -> setLoggingLevel(options, Level.DEBUG)
                 INFO -> setLoggingLevel(options, Level.INFO)

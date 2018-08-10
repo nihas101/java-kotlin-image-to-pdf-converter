@@ -1,7 +1,7 @@
 package de.nihas101.imageToPdfConverter.util
 
 import ch.qos.logback.classic.Level
-import de.nihas101.imageToPdfConverter.util.ArgumentParser.ArgumentParser.parse
+import de.nihas101.imageToPdfConverter.util.ArgumentParser.ArgumentParser.parseArguments
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -86,7 +86,7 @@ class ArgumentParserTest {
     private fun assertPresetLevel(args: Array<String>, setLevel: Level, expectedLevel: Level) {
         var options = JaKoOptions(loggingLevel = setLevel)
 
-        options = parse(args, options)
+        options = parseArguments(args, options)
 
         assertOptions(true, expectedLevel, options)
     }
@@ -117,7 +117,7 @@ class ArgumentParserTest {
     }
 
     private fun testArguments(args: Array<String>, options: JaKoOptions, expectedIsGuiEnabled: Boolean, expectedLevel: Level) {
-        val parsedOptions = parse(args, options)
+        val parsedOptions = parseArguments(args, options)
 
         assertOptions(expectedIsGuiEnabled, expectedLevel, parsedOptions)
     }
