@@ -28,6 +28,7 @@ import de.nihas101.imageToPdfConverter.tasks.BuildPdfTask;
 import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.util.BuildProgressUpdater;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
+import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater;
 import javafx.application.Application;
 import javafx.collections.ListChangeListener;
@@ -65,6 +66,8 @@ public class DirectoryContentDisplayController extends FileListViewController {
     private MainWindowController mainWindowController;
     private ImageToPdfOptions imageToPdfOptions;
     private int directoryIteratorIndex;
+
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(DirectoryContentDisplayController.class);
 
     /**
      * Sets up the {@link DirectoryContentDisplayController}
@@ -105,6 +108,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
         observableFiles.addListener(setupListChangeListener(directoryIterator));
         imageListView.setItems(observableFiles);
         imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
+        logger.info("{}", "Set up observable list.");
     }
 
     /**
@@ -134,6 +138,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
 
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
             int index = imageListView.getSelectionModel().getSelectedIndex();
+            logger.info("Displaying image with index {}", index);
             createContentDisplayer(directoryIterator).displayContent(index, mainWindowController);
         }
 

@@ -38,6 +38,8 @@ import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_MAP_MAX_SIZE;
 public class ImageMap implements Cancellable {
     private boolean cancelled = false;
 
+    private JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(ImageMap.class);
+
     /**
      * The {@link Map} mapping an absolute path to the corresponding {@link Image}
      */
@@ -100,6 +102,7 @@ public class ImageMap implements Cancellable {
             if (cancelled) throw new InterruptedException();
             putImageIntoMapIfFile(files.get(index), progressUpdater, (index + 1));
         }
+        logger.info("{}", "Images loaded");
     }
 
     private void putImageIntoMapIfFile(File file, ProgressUpdater progressUpdater, int progress) {

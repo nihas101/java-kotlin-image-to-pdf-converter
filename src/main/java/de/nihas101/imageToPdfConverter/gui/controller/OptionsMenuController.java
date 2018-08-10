@@ -53,6 +53,8 @@ public class OptionsMenuController {
     public RadioMenuItem speedCompression_item;
     private ImageToPdfOptions imageToPdfOptions;
 
+    // TODO (possibly not necessary): private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(OptionsMenuController.class);
+
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
         imageToPdfOptions.setMultipleDirectories(multipleDirectoriesCheckBox.isSelected());
         actionEvent.consume();

@@ -30,7 +30,6 @@ import kotlin.Unit;
 import java.io.File;
 import java.net.MalformedURLException;
 
-import static ch.qos.logback.classic.Level.DEBUG;
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay.createDirectoryContentDisplay;
 import static de.nihas101.imageToPdfConverter.gui.subStages.ImageDisplay.createImageDisplay;
 import static javafx.application.Platform.runLater;
@@ -45,7 +44,7 @@ public final class DirectoryIteratorDisplayer {
      */
     private final DirectoryIterator directoryIterator;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(DirectoryIteratorDisplayer.class, DEBUG);
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(DirectoryIteratorDisplayer.class);
 
     private DirectoryIteratorDisplayer(DirectoryIterator directoryIterator) {
         this.directoryIterator = directoryIterator;

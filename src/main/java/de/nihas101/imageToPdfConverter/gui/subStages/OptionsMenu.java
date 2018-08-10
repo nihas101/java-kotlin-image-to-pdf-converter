@@ -30,7 +30,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static ch.qos.logback.classic.Level.DEBUG;
 import static javafx.stage.StageStyle.UNDECORATED;
 
 public final class OptionsMenu extends Application {
@@ -39,7 +38,7 @@ public final class OptionsMenu extends Application {
     private Stage primaryStage;
     private Point2D position;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(OptionsMenu.class, DEBUG);
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(OptionsMenu.class);
 
     private OptionsMenu(ImageToPdfOptions imageToPdfOptions, Point2D position) {
         this.imageToPdfOptions = imageToPdfOptions;

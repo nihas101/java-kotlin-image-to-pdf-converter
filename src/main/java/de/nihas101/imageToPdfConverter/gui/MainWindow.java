@@ -26,6 +26,7 @@ import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
 import de.nihas101.imageToPdfConverter.tasks.TaskManager;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
+import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -74,10 +75,12 @@ public final class MainWindow extends Application {
 
     private Application openApplication;
 
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(MainWindow.class);
+
     /**
      * {@inheritDoc}
      */
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         loadFXML();
         setupMainWindow();
@@ -92,9 +95,15 @@ public final class MainWindow extends Application {
         primaryStage.show();
     }
 
-    private void loadFXML() throws IOException {
+    private void loadFXML() {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
-        root = loader.load();
+        try {
+            root = loader.load();
+        }catch (IOException e){
+            logger.error("{}", e.getMessage());
+            System.exit(1);
+        }
+        logger.info("{}", "FXML loaded");
         mainWindowController = loader.getController();
     }
 
@@ -126,12 +135,17 @@ public final class MainWindow extends Application {
     }
 
     public File openSaveFileChooser(File initialDirectory, String initialFileName) {
+        String[] arg = new String[]{initialDirectory.getAbsolutePath(), initialFileName};
+        logger.info("Opened SaveFileChooser at {} with the initial file name {}", arg);
+
         saveFileChooser.setInitialFileName(initialFileName);
         saveFileChooser.setInitialDirectory(initialDirectory);
         return saveFileChooser.showSaveDialog(scene.getWindow());
     }
 
     public File openDirectoryChooser(File initialDirectory) {
+        logger.info("Opened DirectoryChooser at {}", initialDirectory.getAbsolutePath());
+
         DirectoryChooser directoryChooser = createDirectoryChooser(imageToPdfOptions.getIteratorOptions());
         directoryChooser.setInitialDirectory(initialDirectory);
         directoryChooser.setTitle("Choose a folder to save the PDFs in");
@@ -157,6 +171,7 @@ public final class MainWindow extends Application {
     }
 
     public void setSaveLocation(File saveLocation) {
+        logger.info("Save location set at {}", saveLocation.getAbsolutePath());
         imageToPdfOptions.setSaveLocation(saveLocation);
     }
 

@@ -31,8 +31,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static ch.qos.logback.classic.Level.DEBUG;
-
 /**
  * An {@link Application} for displaying the content of a directory
  */
@@ -45,7 +43,7 @@ public final class DirectoryContentDisplay extends Application {
     private DirectoryIterator directoryIterator;
     public DirectoryContentDisplayController directoryContentDisplayController;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(DirectoryContentDisplay.class, DEBUG);
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(DirectoryContentDisplay.class);
 
 
     private DirectoryContentDisplay(DirectoryIterator directoryIterator, int directoryIteratorIndex, MainWindowController mainWindowController) {

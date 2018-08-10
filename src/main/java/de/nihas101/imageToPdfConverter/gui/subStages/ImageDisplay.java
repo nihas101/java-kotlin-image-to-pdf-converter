@@ -29,7 +29,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static ch.qos.logback.classic.Level.DEBUG;
 import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_HEIGHT;
 import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_WIDTH;
 
@@ -48,7 +47,7 @@ public final class ImageDisplay extends Application {
 
     private ImageDisplayController imageDisplayController;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(ImageDisplay.class, DEBUG);
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(ImageDisplay.class);
 
     private ImageDisplay(Image image, String imageName) {
         this.image = image;
