@@ -19,6 +19,7 @@
 package de.nihas101.imageToPdfConverter.pdf.pdfOptions
 
 import com.itextpdf.kernel.pdf.PdfVersion
+import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import java.io.File
 
 data class ImageToPdfOptions(
@@ -27,6 +28,8 @@ data class ImageToPdfOptions(
 ) {
 
     companion object OptionsFactory {
+        val logger = JaKoLogger.createLogger(ImageToPdfOptions::class.java)
+
         fun createOptions(
                 iteratorOptions: IteratorOptions = IteratorOptions(),
                 pdfOptions: PdfOptions = PdfOptions()
@@ -36,26 +39,32 @@ data class ImageToPdfOptions(
     }
 
     fun setMultipleDirectories(multipleDirectories: Boolean) {
+        logger.info("Set multiple directories to {}", multipleDirectories)
         iteratorOptions = iteratorOptions.copy(multipleDirectories = multipleDirectories)
     }
 
     fun setZipFiles(zipFiles: Boolean) {
+        logger.info("Set zip files to {}", zipFiles)
         iteratorOptions = iteratorOptions.copy(zipFiles = zipFiles)
     }
 
     fun setDeleteOnExit(deleteOnExit: Boolean) {
+        logger.info("Set delete on exit to {}", deleteOnExit)
         iteratorOptions = iteratorOptions.copy(deleteOnExit = deleteOnExit)
     }
 
     fun setSaveLocation(saveLocation: File) {
+        logger.info("Set save location to {}", saveLocation.absolutePath)
         pdfOptions = pdfOptions.copy(saveLocation = saveLocation)
     }
 
     fun setPdfVersion(pdfVersion: PdfVersion) {
+        logger.info("Set PDF version to {}", pdfVersion)
         pdfOptions = pdfOptions.copy(pdfVersion = pdfVersion)
     }
 
     fun setCompressionLevel(compressionLevel: Int) {
+        logger.info("Set compression level to {}", compressionLevel)
         pdfOptions = pdfOptions.copy(compressionLevel = compressionLevel)
     }
 
