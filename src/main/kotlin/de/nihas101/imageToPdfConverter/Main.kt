@@ -18,17 +18,16 @@
 
 package de.nihas101.imageToPdfConverter
 
-import ch.qos.logback.classic.Logger
 import de.nihas101.imageToPdfConverter.gui.MainWindow
 import de.nihas101.imageToPdfConverter.ui.PdfBuilderUI.PdfBuilderUiFactory.createPdfBuilderUI
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInput
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInterface
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineOutput
 import de.nihas101.imageToPdfConverter.util.ArgumentParser.ArgumentParser.parse
+import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.JaKoOptions
 import javafx.application.Platform.runLater
 import javafx.stage.Stage
-import org.slf4j.LoggerFactory
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -37,7 +36,7 @@ object Main {
     fun main(args: Array<String>) {
         val options = parse(args, JaKoOptions())
 
-        (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger).level = options.loggingLevel // TODO: Test
+        JaKoLogger.setRootLoggerLevel(options.loggingLevel)
         when {
             options.isGUIEnabled -> startGUI()
             else -> startTextOnly()
