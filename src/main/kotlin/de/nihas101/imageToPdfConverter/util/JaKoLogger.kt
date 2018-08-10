@@ -19,7 +19,6 @@
 package de.nihas101.imageToPdfConverter.util
 
 import ch.qos.logback.classic.Level
-import ch.qos.logback.classic.Level.DEBUG
 import ch.qos.logback.classic.Logger
 import org.slf4j.LoggerFactory
 
@@ -39,9 +38,8 @@ open class JaKoLogger protected constructor(protected val logger: Logger) {
     fun error(format: String, arg: Any) = logger.error(format, arg)
 
     companion object JaKoLoggerFactory {
-        fun createLogger(javaClass: Class<*>, level: Level = DEBUG): JaKoLogger {
+        fun createLogger(javaClass: Class<*>): JaKoLogger {
             val logger: Logger = LoggerFactory.getLogger(javaClass) as Logger
-            logger.level = level
 
             return JaKoLogger(logger)
         }
