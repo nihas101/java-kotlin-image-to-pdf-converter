@@ -44,7 +44,7 @@ open class JaKoLogger protected constructor(protected val logger: Logger) {
             return JaKoLogger(logger)
         }
 
-        fun setRootLoggerLevel(level: Level){
+        fun setRootLoggerLevel(level: Level) {
             (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as Logger).level = level // TODO: Test
         }
     }

@@ -27,7 +27,7 @@ import java.io.File
 import java.nio.file.Paths
 
 class ImageDirectoriesPdfBuilder : PdfBuilder() {
-    var imagePdfBuilder: ImagePdfBuilder? = null
+    private var imagePdfBuilder: ImagePdfBuilder? = null
 
     override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) {
         directoryIterator.resetIndex()

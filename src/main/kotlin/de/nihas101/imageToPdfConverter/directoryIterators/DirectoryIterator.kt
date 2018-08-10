@@ -55,7 +55,7 @@ abstract class DirectoryIterator : Cancellable {
     protected open fun setupFiles(fileFilter: (Int, File) -> Boolean): MutableList<File> {
         if (directory!!.listFiles() == null) return emptyList<File>().toMutableList()
 
-        val filteredFiles = directory!!.listFiles().filterIndexed({ index, file -> fileFilter(index, file) }).toMutableList()
+        val filteredFiles = directory!!.listFiles().filterIndexed { index, file -> fileFilter(index, file) }.toMutableList()
 
         return filteredFiles
     }
