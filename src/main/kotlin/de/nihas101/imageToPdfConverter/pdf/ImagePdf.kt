@@ -20,12 +20,10 @@ package de.nihas101.imageToPdfConverter.pdf
 
 import com.itextpdf.kernel.geom.PageSize
 import com.itextpdf.kernel.geom.Rectangle
-import com.itextpdf.kernel.pdf.PdfDocument
-import com.itextpdf.kernel.pdf.PdfOutputStream
-import com.itextpdf.kernel.pdf.PdfWriter
-import com.itextpdf.kernel.pdf.WriterProperties
+import com.itextpdf.kernel.pdf.*
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Image
+import de.nihas101.imageToPdfConverter.pdf.PdfPageFlushList.PdfPageFlushListFactory.createPdfPageFlushList
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 import de.nihas101.imageToPdfConverter.util.Constants.NO_MARGIN
 import java.io.File
@@ -35,24 +33,18 @@ import java.io.OutputStream
 class ImagePdf internal constructor(
         private val pdfWriter: PdfWriter,
         private var document: Document,
-        private var pdf: PdfDocument
+        private var pdf: PdfDocument,
+        private val pdfPageFlushList: PdfPageFlushList = createPdfPageFlushList(mutableListOf(), document, pdfWriter)
 ) {
-    // TODO: Implement class that flushes imagePDF, when a certain size is reached
     fun add(image: Image) {
-        addNewImage(image)
+        val newPage = addNewPage(image.imageWidth, image.imageHeight)
         document.add(image)
-        flush()
+        pdfPageFlushList.add(newPage)
     }
 
-    private fun addNewImage(image: Image) {
-        pdf.addNewPage(PageSize(Rectangle(0F, 0F, image.imageWidth, image.imageHeight)))
-    }
-
-    private fun flush() {
-        document.flush()
-        if (pdf.numberOfPages > 1) pdf.getPage(pdf.numberOfPages - 1).flush(true)
-        pdfWriter.flush()
-        System.gc()
+    private fun addNewPage(width: Float, height: Float): PdfPage {
+        pdf.addNewPage(PageSize(Rectangle(0F, 0F, width, height)))
+        return pdf.lastPage
     }
 
     fun close() {
