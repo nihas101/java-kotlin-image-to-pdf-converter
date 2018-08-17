@@ -23,9 +23,9 @@ import de.nihas101.imageToPdfConverter.ui.PdfBuilderUI.PdfBuilderUiFactory.creat
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInput
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineInterface
 import de.nihas101.imageToPdfConverter.ui.commandLineIO.PdfBuilderCommandLineOutput
-import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.JaKoOptions
 import de.nihas101.imageToPdfConverter.util.parseArguments
+import de.nihas101.imageToPdfConverter.util.setRootLoggerLevel
 import javafx.application.Platform.runLater
 import javafx.stage.Stage
 import java.io.BufferedReader
@@ -36,7 +36,7 @@ object Main {
     fun main(args: Array<String>) {
         val options = parseArguments(args, JaKoOptions())
 
-        JaKoLogger.setRootLoggerLevel(options.loggingLevel)
+        setRootLoggerLevel(options.loggingLevel)
         when {
             options.isGUIEnabled -> startGUI()
             else -> startTextOnly()

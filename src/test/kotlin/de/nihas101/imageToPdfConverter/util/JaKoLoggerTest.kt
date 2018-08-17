@@ -43,6 +43,13 @@ class JaKoLoggerTest {
         assertLoggings(logger, ERROR)
     }
 
+    @Test
+    fun setRootLoggerLevelTest() {
+        setRootLoggerLevel(TRACE)
+        val logger = TestLogger.createTestLogger(this.javaClass)
+        assertLogging(logger, TRACE)
+    }
+
     private fun assertLoggings(logger: TestLogger, level: Level) {
         assertLogging(logger, level)
         assertLogging(logger, level)
