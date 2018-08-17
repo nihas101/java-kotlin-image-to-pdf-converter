@@ -64,6 +64,15 @@ class ImageDirectoriesIteratorTest {
     }
 
     @Test
+    fun removeFalse() {
+        val directoriesIterator = createTestIterator()
+
+        assertEquals(false, directoriesIterator.remove(File("")))
+
+        assertEquals(1, directoriesIterator.numberOfFiles())
+    }
+
+    @Test
     fun nextFile() {
         val directoriesIterator = createTestIterator()
 
