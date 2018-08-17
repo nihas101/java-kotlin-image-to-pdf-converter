@@ -17,7 +17,7 @@ class MainTest : ApplicationTest() {
 
     @Test
     fun test() {
-        runLater({
+        runLater {
             val old = System.`in`
             try {
                 System.setIn(createTestInput())
@@ -25,7 +25,7 @@ class MainTest : ApplicationTest() {
             } finally {
                 System.setIn(old)
             }
-        })
+        }
     }
 
     private fun createTestInput(): InputStream {
