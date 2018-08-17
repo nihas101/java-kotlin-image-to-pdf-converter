@@ -123,8 +123,8 @@ public final class DirectoryIteratorDisplayer {
                         new Image(String.valueOf(file.toURI().toURL())),
                         file.getName()
                 );
-            } catch (MalformedURLException e) {
-                logger.error("{}", e.getMessage());
+            } catch (MalformedURLException exception) {
+                logger.error("{}", exception);
                 return;
             }
 

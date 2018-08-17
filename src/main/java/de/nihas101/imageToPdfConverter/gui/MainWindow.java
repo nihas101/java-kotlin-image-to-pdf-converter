@@ -99,8 +99,8 @@ public final class MainWindow extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
         try {
             root = loader.load();
-        } catch (IOException e) {
-            logger.error("{}", e.getMessage());
+        } catch (IOException exception) {
+            logger.error("{}", exception);
             System.exit(1);
         }
         logger.info("{}", "FXML loaded");

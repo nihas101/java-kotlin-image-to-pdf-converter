@@ -65,8 +65,8 @@ public final class DirectoryContentDisplay extends Application {
     public void displayContent() {
         try {
             start(new Stage());
-        } catch (Exception e) {
-            logger.error("{}", e.getMessage());
+        } catch (Exception exception) {
+            logger.error("{}", exception);
         }
     }
 

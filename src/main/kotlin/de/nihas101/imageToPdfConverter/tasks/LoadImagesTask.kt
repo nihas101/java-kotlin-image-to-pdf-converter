@@ -20,6 +20,7 @@ package de.nihas101.imageToPdfConverter.tasks
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.util.ImageMap
+import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 
 class LoadImagesTask private constructor(
@@ -36,12 +37,15 @@ class LoadImagesTask private constructor(
             imageMap.loadImages(directoryIterator.getFiles(), updater)
         } catch (exception: InterruptedException) {
             /* The task was cancelled */
+            logger.warn("{}", exception)
         }
 
         after()
     }
 
     companion object LoadImagesTaskFactory {
+        private val logger = JaKoLogger.createLogger(LoadImagesTask::class.java)
+
         fun createLoadImagesTask(
                 imageMap: ImageMap,
                 directoryIterator: DirectoryIterator,

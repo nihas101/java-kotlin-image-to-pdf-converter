@@ -67,8 +67,8 @@ public final class ImageDisplay extends Application {
     public void displayImage() {
         try {
             start(new Stage());
-        } catch (Exception e) {
-            logger.error("{}", e.getMessage());
+        } catch (Exception exception) {
+            logger.error("{}", exception);
         }
     }
 

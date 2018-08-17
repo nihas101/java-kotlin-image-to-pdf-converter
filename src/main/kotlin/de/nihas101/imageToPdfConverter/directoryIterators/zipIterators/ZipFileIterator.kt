@@ -40,7 +40,7 @@ class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : D
             imageUnZipper = createImageUnZipper(directory)
             imageUnZipper!!.unzip(unzipInto, progressUpdater, deleteOnExit)
         } catch (exception: ExtensionNotSupportedException) {
-            logger.error("{}. Skipping directory.", exception.message!!)
+            logger.error("{}. Skipping directory.", exception)
             /* Proceed with empty unzip directory */
         }
         imageFilesIterator = ImageFilesIterator.createImageFilesIterator()

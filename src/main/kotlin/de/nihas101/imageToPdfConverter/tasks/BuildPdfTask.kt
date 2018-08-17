@@ -21,6 +21,7 @@ package de.nihas101.imageToPdfConverter.tasks
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
+import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 
 class BuildPdfTask private constructor(
@@ -38,11 +39,14 @@ class BuildPdfTask private constructor(
             pdfBuilder.build(directoryIterator, imageToPdfOptions, progressUpdater)
         } catch (exception: InterruptedException) {
             /* The task was cancelled */
+            logger.warn("{}", exception)
         }
         after()
     }
 
     companion object BuildPdfTaskFactory {
+        private val logger = JaKoLogger.createLogger(BuildPdfTask::class.java)
+
         fun createBuildPdfTask(
                 pdfBuilder: PdfBuilder,
                 directoryIterator: DirectoryIterator,

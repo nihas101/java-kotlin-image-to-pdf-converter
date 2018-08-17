@@ -95,9 +95,9 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
             if (bufferedImage != null)
                 ImageIO.write(bufferedImage, extractExtension(zipEntry), file)
         } catch (exception: IOException) {
-            logger.error("{}", exception.message!!)
+            logger.error("{}", exception)
         } catch (exception: IllegalArgumentException) {
-            logger.error("{}", exception.message!!)
+            logger.error("{}", exception)
         }
     }
 
