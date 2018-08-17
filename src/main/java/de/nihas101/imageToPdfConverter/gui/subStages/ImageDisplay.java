@@ -29,8 +29,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_HEIGHT;
-import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_DISPLAY_MAX_WIDTH;
+import static de.nihas101.imageToPdfConverter.util.ImageToStageScaler.calculateScaleOfStage;
 
 /**
  * An Application for displaying {@link Image}s
@@ -100,17 +99,5 @@ public final class ImageDisplay extends Application {
         double scale = calculateScaleOfStage(image);
         primaryStage.setHeight(image.getHeight() * scale);
         primaryStage.setWidth(image.getWidth() * scale);
-    }
-
-    private double calculateScaleOfStage(Image image) {
-        // TODO: Limit size of Stage
-        if (image.getHeight() > IMAGE_DISPLAY_MAX_HEIGHT || image.getWidth() > IMAGE_DISPLAY_MAX_WIDTH)
-            return calculateScale(image);
-        else return 1;
-    }
-
-    private double calculateScale(Image image) {
-        if (image.getWidth() > image.getHeight()) return IMAGE_DISPLAY_MAX_WIDTH / image.getWidth();
-        else return IMAGE_DISPLAY_MAX_HEIGHT / image.getHeight();
     }
 }
