@@ -37,6 +37,8 @@ public class Constants {
 
     public final static int IMAGE_MAP_MAX_SIZE = 100;
 
+    public final static double FREE_HEAP_MEMORY_THRESHOLD = 0.2;
+
     // FLAGS
     public final static String TRACE = "--t";
     public final static String DEBUG = "--d";
