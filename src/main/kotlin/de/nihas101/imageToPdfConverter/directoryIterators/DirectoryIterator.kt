@@ -24,6 +24,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFileIt
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFilesIterator.ZipFilesIteratorFactory.createZipFilesIterator
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import de.nihas101.imageToPdfConverter.tasks.Cancellable
+import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
@@ -32,30 +33,8 @@ abstract class DirectoryIterator : Cancellable {
     protected var directory: File? = null
     protected var cancelled = false
 
-    open fun setupDirectory(directory: File, progressUpdater: ProgressUpdater = TrivialProgressUpdater()) {
+    protected open fun setupDirectory(directory: File, progressUpdater: ProgressUpdater = TrivialProgressUpdater()) {
         this.directory = directory
-    }
-
-    protected fun createFileFilter(directory: File, progressUpdater: ProgressUpdater, filter: (File) -> Boolean): (Int, File) -> Boolean {
-        if (directory.listFiles() == null) {
-            return { _, file ->
-                if (cancelled) throw InterruptedException()
-                filter(file)
-            }
-        } else {
-            val directorySize = directory.listFiles().size.toDouble()
-            return { index, file ->
-                if (cancelled) throw InterruptedException()
-                progressUpdater.updateProgress((index.toDouble() + 1) / directorySize, file)
-                filter(file)
-            }
-        }
-    }
-
-    protected open fun setupFiles(fileFilter: (Int, File) -> Boolean): MutableList<File> {
-        if (directory!!.listFiles() == null) return emptyList<File>().toMutableList()
-
-        return directory!!.listFiles().filterIndexed { index, file -> fileFilter(index, file) }.toMutableList()
     }
 
     abstract fun nextFile(): File
@@ -64,7 +43,9 @@ abstract class DirectoryIterator : Cancellable {
     abstract fun remove(file: File): Boolean
     abstract fun add(index: Int, file: File): Boolean
     abstract fun add(file: File): Boolean
-    abstract fun addAll(files: List<File>): Boolean
+    abstract fun addAll(files: List<File>, progressUpdater: ProgressUpdater = TrivialProgressUpdater()): Boolean
+    abstract fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean
+    abstract fun clear()
     abstract fun numberOfFiles(): Int
     abstract fun getParentDirectory(): File
     abstract fun resetIndex()
@@ -74,9 +55,11 @@ abstract class DirectoryIterator : Cancellable {
     }
 
     companion object DirectoryIteratorFactory {
+        private val logger = JaKoLogger.createLogger(DirectoryIterator::class.java)
+
         fun createDirectoryIterator(file: File, iteratorOptions: IteratorOptions): DirectoryIterator {
             val directoryIterator = createDirectoryIterator(iteratorOptions)
-            directoryIterator.setupDirectory(file)
+            directoryIterator.addDirectory(file, TrivialProgressUpdater())
             return directoryIterator
         }
 
@@ -89,15 +72,27 @@ abstract class DirectoryIterator : Cancellable {
 
         private fun createSingleDirectoryIterator(iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.zipFiles) {
-                false -> createImageFilesIterator()
-                true -> createZipFileIterator(iteratorOptions.deleteOnExit)
+                false -> {
+                    logger.info("{}", "Created ImageFilesIterator")
+                    createImageFilesIterator()
+                }
+                true -> {
+                    logger.info("{}", "Created ZipFileIterator")
+                    createZipFileIterator(iteratorOptions.deleteOnExit)
+                }
             }
         }
 
         private fun createMultipleDirectoriesIterator(iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.zipFiles) {
-                false -> createImageDirectoriesIterator()
-                true -> createZipFilesIterator(iteratorOptions.deleteOnExit)
+                false -> {
+                    logger.info("{}", "Created ImageDirectoriesIterator")
+                    createImageDirectoriesIterator()
+                }
+                true -> {
+                    logger.info("{}", "Created ZipFilesIterator")
+                    createZipFilesIterator(iteratorOptions.deleteOnExit)
+                }
             }
         }
     }

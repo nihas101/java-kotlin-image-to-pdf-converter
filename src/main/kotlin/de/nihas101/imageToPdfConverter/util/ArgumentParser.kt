@@ -42,7 +42,7 @@ private fun parseArgument(argument: String, options: JaKoOptions): JaKoOptions {
 private fun setLoggingLevel(options: JaKoOptions, level: Level): JaKoOptions {
     return when {
         options.loggingLevel == Level.OFF -> options.copy(loggingLevel = level)
-        level.isGreaterOrEqual(options.loggingLevel) -> options.copy(loggingLevel = level)
+        !level.isGreaterOrEqual(options.loggingLevel) -> options.copy(loggingLevel = level)
         else -> options
     }
 }

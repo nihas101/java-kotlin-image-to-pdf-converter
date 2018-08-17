@@ -23,6 +23,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFi
 import de.nihas101.imageToPdfConverter.pdf.builders.ImagePdfBuilder.ImagePdfBuilderFactory.createImagePdfBuilder
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
+import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
 import java.nio.file.Paths
 
@@ -43,7 +44,7 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
     }
 
     private fun buildNextPDF(directoryIterator: DirectoryIterator, directory: File, imageToPdfOptions: ImageToPdfOptions) {
-        directoryIterator.setupDirectory(directory)
+        directoryIterator.addDirectory(directory, TrivialProgressUpdater())
 
         if (directoryIterator.numberOfFiles() != 0) {
             val file = Paths.get(

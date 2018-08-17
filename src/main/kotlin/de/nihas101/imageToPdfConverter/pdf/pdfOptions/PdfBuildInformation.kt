@@ -20,6 +20,7 @@ package de.nihas101.imageToPdfConverter.pdf.pdfOptions
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions.OptionsFactory.createOptions
+import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
 
 data class PdfBuildInformation(
@@ -31,7 +32,7 @@ data class PdfBuildInformation(
 
     fun setupDirectoryIterator() {
         directoryIterator = DirectoryIterator.createDirectoryIterator(imageToPdfOptions.getIteratorOptions())
-        directoryIterator!!.setupDirectory(sourceFile!!)
+        directoryIterator!!.addDirectory(sourceFile!!, TrivialProgressUpdater())
     }
 
     fun setMultipleDirectories(multipleDirectories: Boolean) {

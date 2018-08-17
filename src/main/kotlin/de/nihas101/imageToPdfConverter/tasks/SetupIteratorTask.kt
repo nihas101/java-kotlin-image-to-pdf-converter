@@ -34,7 +34,7 @@ open class SetupIteratorTask protected constructor(
     override fun call() {
         before()
         try {
-            directoryIterator.setupDirectory(directory, progressUpdater)
+            directoryIterator.addDirectory(directory, progressUpdater)
         } catch (exception: InterruptedException) {
             /* The task was cancelled */
             logger.warn("{}", exception)

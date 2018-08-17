@@ -18,7 +18,7 @@ class ArgumentParserTest {
 
     @Test
     fun noGUI() {
-        testArgumentCases(Constants.NO_GUI, false, Level.OFF)
+        testArgumentCases(Constants.NO_GUI, false, Level.ERROR)
     }
 
     @Test
@@ -78,7 +78,7 @@ class ArgumentParserTest {
 
     private fun assertPresetLevels(arg: String, level: Level) {
         levels.forEach { presetLevel ->
-            if (level.isGreaterOrEqual(presetLevel)) assertPresetLevel(Array(1) { arg }, presetLevel, level)
+            if (!level.isGreaterOrEqual(presetLevel)) assertPresetLevel(Array(1) { arg }, presetLevel, level)
             else assertPresetLevel(Array(1) { arg }, presetLevel, presetLevel)
         }
     }
@@ -101,7 +101,7 @@ class ArgumentParserTest {
             }
         }
 
-        testArguments(args, JaKoOptions(), true, Level.WARN)
+        testArguments(args, JaKoOptions(), true, Level.TRACE)
     }
 
     @Test

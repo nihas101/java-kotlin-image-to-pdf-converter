@@ -33,7 +33,7 @@ class MainWindowTest : ApplicationTest() {
                 IteratorOptions(multipleDirectories = multipleDirectories)
         )
 
-        mainWindow!!.setupIterator(directoryIterator)
+        mainWindow!!.directoryIterator = directoryIterator
         mainWindowController!!.setupListView(directoryIterator)
         return directoryIterator
     }
@@ -72,7 +72,7 @@ class MainWindowTest : ApplicationTest() {
 
     private fun getCoordinatesOfFirstCell(): List<Double> {
         val bounds = mainWindow!!.root.localToScreen(mainWindowController!!.imageListView.boundsInLocal)
-        return listOf(bounds.minX + bounds.width * .08, bounds.minY + bounds.height * .6)
+        return listOf(bounds.minX + 200, bounds.minY + 50)
     }
 
     @Test

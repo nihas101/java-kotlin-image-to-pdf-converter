@@ -4,6 +4,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
+import junit.framework.TestCase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
@@ -56,8 +57,9 @@ class ZipFilesIteratorTest {
     fun remove() {
         val zipFilesIterator = createTestIterator()
 
-        zipFilesIterator.remove(File("src/test/resources/zip/images"))
+        val removed = zipFilesIterator.remove(File("src/test/resources/zip/images"))
 
+        assertEquals(true, removed)
         assertEquals(2, zipFilesIterator.numberOfFiles())
     }
 

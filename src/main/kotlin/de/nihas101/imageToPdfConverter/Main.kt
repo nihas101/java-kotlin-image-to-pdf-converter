@@ -43,9 +43,6 @@ object Main {
         }
     }
 
-    // TODO: [If possible] Make it so empty ImageIterators are created when the option is selected + images/directories are always added to it
-    // [TODO cont'd] instead of sometimes creating one Remember: The first image/ directory added sets the directory
-
     private fun startGUI() {
         try {
             MainWindow.main(arrayOf())

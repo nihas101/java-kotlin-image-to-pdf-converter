@@ -22,17 +22,12 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
 import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
+import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
 
 class ImageDirectoriesIterator private constructor() : DirectoryIterator() {
     private var directories: MutableList<File> = mutableListOf()
     private var currentIndex = 0
-
-    override fun setupDirectory(directory: File, progressUpdater: ProgressUpdater) {
-        super.setupDirectory(directory, progressUpdater)
-        if (directory.isDirectory)
-            directories = super.setupFiles(createFileFilter(directory, progressUpdater) { file -> isImageDirectory(file) })
-    }
 
     override fun numberOfFiles(): Int = directories.size
 
@@ -55,14 +50,47 @@ class ImageDirectoriesIterator private constructor() : DirectoryIterator() {
         }
     }
 
-    override fun add(file: File): Boolean = add(directories.size, file)
+    override fun add(file: File): Boolean {
+        if (directories.isEmpty()) super.setupDirectory(file.parentFile, TrivialProgressUpdater())
+        return add(directories.size, file)
+    }
 
-    override fun addAll(files: List<File>) =
-            directories.addAll(files.filter { file -> isImageDirectory(file) })
+    override fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
+        return if (file.isDirectory) {
+            val files = file.listFiles().toList()
+            if (files.isEmpty()) return true
+            addAll(files, progressUpdater)
+        } else {
+            progressUpdater.updateProgress(1.0, file)
+            add(file)
+        }
+    }
+
+    override fun addAll(files: List<File>, progressUpdater: ProgressUpdater): Boolean {
+        if (files.isEmpty()) return true
+        if (directories.isEmpty()) super.setupDirectory(files[0].parentFile, progressUpdater)
+        val outOf = files.size
+
+        return directories.addAll(files.filterIndexed { index, file ->
+            progressUpdater.updateProgress((index + 1).toDouble() / outOf.toDouble(), file)
+            isImageDirectory(file)
+        })
+    }
+
+    override fun clear() = directories.clear()
 
     override fun remove(file: File): Boolean {
-        logger.info("Removed {}", file.name)
-        return directories.remove(file)
+        val absolutePath = file.absolutePath
+
+        directories.forEachIndexed { index, dirFile ->
+            if (dirFile.absolutePath == absolutePath) {
+                directories.removeAt(index)
+                logger.info("Removed {}", file.name)
+                return true
+            }
+        }
+
+        return false
     }
 
     override fun nextFile(): File {
