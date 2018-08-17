@@ -28,6 +28,7 @@ import de.nihas101.imageToPdfConverter.tasks.TaskManager;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -156,17 +157,22 @@ public final class MainWindow extends Application {
         try {
             createContentDisplayer(directoryIterator).displayContent(index, mainWindowController);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            logger.error("{}", exception);
         }
     }
 
     public void openOptionsMenu() {
+        IteratorOptions iteratorOptionsBefore = imageToPdfOptions.getIteratorOptions();
         try {
             OptionsMenu optionsMenu = createOptionsMenu(imageToPdfOptions, new Point2D(primaryStage.getX() + 105, primaryStage.getY() + 31));
             openApplication = optionsMenu;
             imageToPdfOptions = optionsMenu.setOptions();
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (imageToPdfOptions.getIteratorOptions().changed(iteratorOptionsBefore)) {
+                mainWindowController.clearAll(new ActionEvent());
+                directoryIterator = DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(imageToPdfOptions.getIteratorOptions());
+            }
+        } catch (Exception exception) {
+            logger.error("{}", exception);
         }
     }
 
@@ -179,7 +185,8 @@ public final class MainWindow extends Application {
         launch(args);
     }
 
-    public void setupIterator(DirectoryIterator directoryIterator) {
+
+    public void setDirectoryIterator(DirectoryIterator directoryIterator) {
         this.directoryIterator = directoryIterator;
     }
 

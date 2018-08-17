@@ -22,6 +22,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.MainWindow;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.tasks.BuildPdfTask;
 import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorFromDragAndDropTask;
@@ -78,6 +79,8 @@ public class MainWindowController extends FileListViewController {
 
     private ListChangeListenerFactory listChangeListenerFactory;
 
+    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(MainWindowController.class);
+
     /**
      * Sets up the {@link MainWindowController}
      *
@@ -88,6 +91,8 @@ public class MainWindowController extends FileListViewController {
 
         listChangeListenerFactory = ListChangeListenerFactory.ListChangeListenerFactoryFactory
                 .createListChangeListenerFactory(imageListView, mainWindow.imageMap);
+
+        mainWindow.setDirectoryIterator(DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(new IteratorOptions()));
 
         setOnDrag();
     }
@@ -117,13 +122,9 @@ public class MainWindowController extends FileListViewController {
     }
 
     private void startSetupIteratorFromDragAndDropThread(List<File> files) {
-        DirectoryIterator directoryIterator = DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(
-                mainWindow.imageToPdfOptions.getIteratorOptions()
-        );
-
         SetupIteratorFromDragAndDropTask setupIteratorFromDragAndDropTask =
                 SetupIteratorFromDragAndDropTask.SetupIteratorFromDragAndDropTaskFactory.createSetupIteratorTask(
-                        directoryIterator,
+                        mainWindow.getDirectoryIterator(),
                         files.get(0),
                         new IteratorSetupProgressUpdater(this),
                         () -> {
@@ -131,23 +132,22 @@ public class MainWindowController extends FileListViewController {
                             return Unit.INSTANCE;
                         },
                         () -> {
-                            mainWindow.setupIterator(directoryIterator);
                             runLater(() -> {
-                                buildProgressBar.setProgress(0.0);
-                                setupListView(mainWindow.getDirectoryIterator());
+                                addRemainingFiles(files);
+                                disableInput(false);
                             });
-                            if (files.size() > 1) {
-                                runLater(() -> {
-                                    mainWindow.getDirectoryIterator().addAll(files.subList(1, files.size()));
-                                    imageListView.getItems().addAll(files.subList(1, files.size()));
-                                });
-                            }
-                            disableInput(false);
                             return Unit.INSTANCE;
                         }
                 );
 
         mainWindow.taskManager.start(setupIteratorFromDragAndDropTask, true);
+    }
+
+    private void addRemainingFiles(List<File> files) {
+        buildProgressBar.setProgress(0.0);
+        setupListView(mainWindow.getDirectoryIterator());
+        mainWindow.getDirectoryIterator().addAll(files.subList(1, files.size()), new TrivialProgressUpdater());
+        imageListView.getItems().addAll(files.subList(1, files.size()));
     }
 
     /**
@@ -183,12 +183,8 @@ public class MainWindowController extends FileListViewController {
     }
 
     private void startSetupIteratorThread() {
-        DirectoryIterator directoryIterator = DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(
-                mainWindow.imageToPdfOptions.getIteratorOptions()
-        );
-
         SetupIteratorTask setupIteratorTask = SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorTask(
-                directoryIterator,
+                mainWindow.getDirectoryIterator(),
                 mainWindow.chosenDirectory,
                 new IteratorSetupProgressUpdater(this),
                 () -> {
@@ -196,20 +192,23 @@ public class MainWindowController extends FileListViewController {
                     return Unit.INSTANCE;
                 },
                 () -> {
-                    try {
-                        mainWindow.setupIterator(directoryIterator);
-                        runLater(() -> setupListView(mainWindow.getDirectoryIterator()));
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                        notifyUser("An error occurred while trying to prepare the files", RED);
-                    } finally {
-                        disableInput(false);
-                    }
+                    runLater(this::tryToSetupListView);
                     return Unit.INSTANCE;
                 }
         );
 
         mainWindow.taskManager.start(setupIteratorTask, true);
+    }
+
+    private void tryToSetupListView() {
+        try {
+            setupListView(mainWindow.getDirectoryIterator());
+        } catch (Exception exception) {
+            logger.error("{}", exception);
+            notifyUser("An error occurred while trying to prepare the files", RED);
+        } finally {
+            disableInput(false);
+        }
     }
 
     /**
@@ -359,7 +358,7 @@ public class MainWindowController extends FileListViewController {
         if (mainWindow.getDirectoryIterator() == null) {
             notifyUser("Please choose a directory", RED);
             return false;
-        } else if (mainWindow.getDirectoryIterator().numberOfFiles() == 0) {
+        } else if (mainWindow.getDirectoryIterator().numberOfFiles() < 1) {
             notifyUser("There are no files to turn into a PDF", RED);
             return false;
         }
@@ -405,6 +404,7 @@ public class MainWindowController extends FileListViewController {
     public void clearAll(ActionEvent actionEvent) {
         buildProgressBar.setProgress(0);
         imageListView.getItems().clear();
+        mainWindow.getDirectoryIterator().clear();
         actionEvent.consume();
     }
 }

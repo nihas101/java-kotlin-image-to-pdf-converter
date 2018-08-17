@@ -22,4 +22,10 @@ data class IteratorOptions(
         val multipleDirectories: Boolean = false,
         val zipFiles: Boolean = false,
         val deleteOnExit: Boolean = true
-)
+) {
+    fun changed(other: IteratorOptions): Boolean {
+        return !(multipleDirectories == other.multipleDirectories &&
+                zipFiles == other.zipFiles &&
+                deleteOnExit == other.deleteOnExit)
+    }
+}
