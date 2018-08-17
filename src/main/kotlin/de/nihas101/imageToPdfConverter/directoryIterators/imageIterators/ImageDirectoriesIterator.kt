@@ -55,16 +55,7 @@ class ImageDirectoriesIterator private constructor() : DirectoryIterator() {
         }
     }
 
-    override fun add(file: File): Boolean {
-        return if (isImageDirectory(file)) {
-            directories.add(file)
-            logger.info("Added {}", file.name)
-            true
-        } else {
-            logger.info("Ignored addition of {} as it is no image", file.name)
-            false
-        }
-    }
+    override fun add(file: File): Boolean = add(directories.size, file)
 
     override fun addAll(files: List<File>) =
             directories.addAll(files.filter { file -> isImageDirectory(file) })
