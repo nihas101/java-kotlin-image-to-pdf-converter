@@ -1,11 +1,11 @@
 package de.nihas101.imageToPdfConverter.util
 
 import ch.qos.logback.classic.Level
-import de.nihas101.imageToPdfConverter.util.ArgumentParser.ArgumentParser.parseArguments
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class ArgumentParserTest {
+
     private val levels = Array<Level>(4) { index ->
         when (index) {
             0 -> Level.TRACE
