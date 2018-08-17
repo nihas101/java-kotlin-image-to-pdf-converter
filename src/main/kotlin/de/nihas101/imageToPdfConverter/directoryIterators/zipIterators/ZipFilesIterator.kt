@@ -18,15 +18,12 @@
 
 package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
-import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.createImageUnZipper
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
-class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : DirectoryIterator() {
-    private var imageDirectoriesIterator: ImageDirectoriesIterator = createImageDirectoriesIterator()
+class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : ImageDirectoriesIterator() {
     private var imageUnZipper: ImageUnZipper? = null
 
     override fun cancelTask() {
@@ -34,29 +31,14 @@ class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : 
         if (imageUnZipper != null) imageUnZipper!!.cancelTask()
     }
 
-    override fun nextFile() = imageDirectoriesIterator.nextFile()
-
-    override fun getFile(index: Int) = imageDirectoriesIterator.getFile(index)
-
-    override fun getFiles() = imageDirectoriesIterator.getFiles()
-
-    override fun remove(file: File) = imageDirectoriesIterator.remove(file)
-
-    override fun add(index: Int, file: File) = imageDirectoriesIterator.add(index, file)
-
-    override fun add(file: File) = imageDirectoriesIterator.add(file)
 
     override fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
         super.setupDirectory(file, progressUpdater)
 
         val unzippedFiles = if (file.isDirectory) unzipFilesInDirectory(progressUpdater)
         else listOf()
-
-        imageDirectoriesIterator = createImageDirectoriesIterator()
-        return imageDirectoriesIterator.addAll(unzippedFiles, progressUpdater)
+        return super.addAll(unzippedFiles, progressUpdater)
     }
-
-    override fun clear() = imageDirectoriesIterator.clear()
 
     private fun unzipFilesInDirectory(progressUpdater: ProgressUpdater): List<File> {
         val unzippedFiles = mutableListOf<File>()
@@ -76,14 +58,6 @@ class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : 
         }
         return unzippedFiles
     }
-
-    override fun addAll(files: List<File>, progressUpdater: ProgressUpdater) = imageDirectoriesIterator.addAll(files, progressUpdater)
-
-    override fun numberOfFiles() = imageDirectoriesIterator.numberOfFiles()
-
-    override fun getParentDirectory() = imageDirectoriesIterator.getParentDirectory()
-
-    override fun resetIndex() = imageDirectoriesIterator.resetIndex()
 
     companion object ZipFilesIteratorFactory {
         fun createZipFilesIterator(deleteOnExit: Boolean): ZipFilesIterator {

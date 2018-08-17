@@ -251,7 +251,7 @@ public class MainWindowController extends FileListViewController {
      */
     private void setupObservableList(DirectoryIterator directoryIterator) {
         runLater(() -> {
-            ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
+            ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFileList());
             observableFiles.addListener(listChangeListenerFactory.setupListChangeListener(directoryIterator, () -> {
                 notifyUser("Files: " + observableFiles.size(), WHITE);
                 return Unit.INSTANCE;
@@ -259,7 +259,7 @@ public class MainWindowController extends FileListViewController {
 
             imageListView.setItems(observableFiles);
             imageListView.setCellFactory(param -> new ImageListCell(
-                    mainWindow.imageMap, directoryIterator.getFiles(), observableFiles)
+                    mainWindow.imageMap, directoryIterator.getFileList(), observableFiles)
             );
 
             notifyUser("Files: " + directoryIterator.numberOfFiles(), WHITE);

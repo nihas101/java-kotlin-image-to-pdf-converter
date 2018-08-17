@@ -2,7 +2,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreFilesException
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.fail
@@ -27,7 +27,7 @@ class ZipFileIteratorTest {
     fun getFiles() {
         val zipFileIterator = createTestIterator()
         assertEquals("[1.jpg, 2.png, 3.png, の.png]",
-                zipFileIterator.getFiles().map { file -> file.name }.toString())
+                zipFileIterator.getFileList().map { file -> file.name }.toString())
     }
 
     @Test
@@ -86,7 +86,7 @@ class ZipFileIteratorTest {
 
         try {
             zipFileIterator.nextFile()
-        } catch (exception: NoMoreImagesException) {
+        } catch (exception: NoMoreFilesException) {
             fail("NoMoreImagesException was thrown")
         }
     }

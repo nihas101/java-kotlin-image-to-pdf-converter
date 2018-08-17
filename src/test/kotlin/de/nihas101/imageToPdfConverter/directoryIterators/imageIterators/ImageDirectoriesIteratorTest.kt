@@ -2,7 +2,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreFilesException
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.fail
@@ -24,7 +24,7 @@ class ImageDirectoriesIteratorTest {
 
     @Test
     fun getFiles() {
-        assertEquals(files, createTestIterator().getFiles())
+        assertEquals(files, createTestIterator().getFileList())
     }
 
     @Test
@@ -73,11 +73,11 @@ class ImageDirectoriesIteratorTest {
 
         try {
             directoriesIterator.nextFile()
-        } catch (exception: NoMoreDirectoriesException) {
+        } catch (exception: NoMoreFilesException) {
             return
         }
 
-        fail("NoMoreDirectoriesException was not thrown")
+        fail("NoMoreFilesException was not thrown")
     }
 
     @Test
@@ -89,8 +89,8 @@ class ImageDirectoriesIteratorTest {
 
         try {
             directoriesIterator.nextFile()
-        } catch (exception: NoMoreDirectoriesException) {
-            fail("NoMoreDirectoriesException was thrown")
+        } catch (exception: NoMoreFilesException) {
+            fail("NoMoreFilesException was thrown")
         }
     }
 

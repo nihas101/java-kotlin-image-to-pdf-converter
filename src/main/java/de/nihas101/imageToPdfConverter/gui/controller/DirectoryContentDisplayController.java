@@ -104,10 +104,10 @@ public class DirectoryContentDisplayController extends FileListViewController {
      * @param imageMap          The {@link Map} holding the images to be drawn in the list
      */
     private void setupObservableList(DirectoryIterator directoryIterator, ImageMap imageMap) {
-        ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFiles());
+        ObservableList<File> observableFiles = observableArrayList(directoryIterator.getFileList());
         observableFiles.addListener(setupListChangeListener(directoryIterator));
         imageListView.setItems(observableFiles);
-        imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFiles(), observableFiles));
+        imageListView.setCellFactory(param -> new ImageListCell(imageMap, directoryIterator.getFileList(), observableFiles));
         logger.info("{}", "Set up observable list.");
     }
 
@@ -124,8 +124,8 @@ public class DirectoryContentDisplayController extends FileListViewController {
     }
 
     private void handleChange(DirectoryIterator directoryIterator, ListChangeListener.Change<? extends File> change) {
-        if (change.wasRemoved()) directoryIterator.getFiles().remove(change.getRemoved().get(0));
-        if (change.wasAdded()) directoryIterator.getFiles().add(change.getFrom(), change.getAddedSubList().get(0));
+        if (change.wasRemoved()) directoryIterator.getFileList().remove(change.getRemoved().get(0));
+        if (change.wasAdded()) directoryIterator.getFileList().add(change.getFrom(), change.getAddedSubList().get(0));
     }
 
     /**

@@ -2,7 +2,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreFilesException
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import junit.framework.TestCase
 import org.junit.Assert.assertEquals
@@ -21,11 +21,11 @@ class ZipFilesIteratorTest {
 
         try {
             zipFilesIterator.nextFile()
-        } catch (exception: NoMoreDirectoriesException) {
+        } catch (exception: NoMoreFilesException) {
             return
         }
 
-        fail("NoMoreDirectoriesException was not thrown")
+        fail("NoMoreFilesException was not thrown")
     }
 
     @Test
@@ -45,7 +45,7 @@ class ZipFilesIteratorTest {
     fun getFiles() {
         val zipFilesIterator = createTestIterator()
 
-        val files = zipFilesIterator.getFiles()
+        val files = zipFilesIterator.getFileList()
 
         assertEquals(true,
                 "images" == files[0].name || // windows
@@ -107,8 +107,8 @@ class ZipFilesIteratorTest {
 
         try {
             zipFilesIterator.nextFile()
-        } catch (exception: NoMoreDirectoriesException) {
-            fail("NoMoreDirectoriesException was not thrown")
+        } catch (exception: NoMoreFilesException) {
+            fail("NoMoreFilesException was not thrown")
         }
     }
 

@@ -1,6 +1,6 @@
 package de.nihas101.imageToPdfConverter.pdf
 
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreFilesException
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
 import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
@@ -19,7 +19,7 @@ class ImageFilesIteratorTest {
 
         try {
             imageFilesIterator.nextFile()
-        } catch (exception: NoMoreImagesException) {
+        } catch (exception: NoMoreFilesException) {
             return
         }
 
@@ -36,7 +36,7 @@ class ImageFilesIteratorTest {
 
         try {
             imageFilesIterator.nextFile()
-        } catch (exception: NoMoreImagesException) {
+        } catch (exception: NoMoreFilesException) {
             return
         }
 

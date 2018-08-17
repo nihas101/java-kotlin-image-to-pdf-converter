@@ -18,7 +18,6 @@
 
 package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 
-import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.createImageUnZipper
@@ -27,26 +26,13 @@ import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
 
-class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : DirectoryIterator() {
-    private var imageFilesIterator: ImageFilesIterator = ImageFilesIterator.createImageFilesIterator()
+class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : ImageFilesIterator() {
     private var imageUnZipper: ImageUnZipper? = null
 
     override fun cancelTask() {
         super.cancelTask()
         if (imageUnZipper != null) imageUnZipper!!.cancelTask()
     }
-
-    override fun nextFile() = imageFilesIterator.nextFile()
-
-    override fun getFile(index: Int) = imageFilesIterator.getFile(index)
-
-    override fun getFiles() = imageFilesIterator.getFiles()
-
-    override fun remove(file: File) = imageFilesIterator.remove(file)
-
-    override fun add(index: Int, file: File) = imageFilesIterator.add(index, file)
-
-    override fun add(file: File) = imageFilesIterator.add(file)
 
     override fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
         super.setupDirectory(file, progressUpdater)
@@ -59,19 +45,9 @@ class ZipFileIterator private constructor(private val deleteOnExit: Boolean) : D
             logger.error("{}. Skipping directory.", exception)
             /* Proceed with empty unzip directory */
         }
-        imageFilesIterator = ImageFilesIterator.createImageFilesIterator()
-        return imageFilesIterator.addDirectory(unzipInto, progressUpdater)
+
+        return super.addDirectory(unzipInto, progressUpdater)
     }
-
-    override fun addAll(files: List<File>, progressUpdater: ProgressUpdater) = imageFilesIterator.addAll(files, progressUpdater)
-
-    override fun clear() = imageFilesIterator.clear()
-
-    override fun numberOfFiles() = imageFilesIterator.numberOfFiles()
-
-    override fun getParentDirectory() = imageFilesIterator.getParentDirectory()
-
-    override fun resetIndex() = imageFilesIterator.resetIndex()
 
     companion object ZipFileIteratorFactory {
         private val logger = JaKoLogger.createLogger(ZipFileIterator::class.java)

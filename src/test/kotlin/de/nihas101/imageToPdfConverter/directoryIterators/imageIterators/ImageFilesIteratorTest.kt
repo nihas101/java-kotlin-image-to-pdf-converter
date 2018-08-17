@@ -2,7 +2,7 @@ package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreImagesException
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreFilesException
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.fail
@@ -31,7 +31,7 @@ class ImageFilesIteratorTest {
     fun getFiles() {
         val imageFilesIterator = createTestIterator()
 
-        assertEquals(files, imageFilesIterator.getFiles())
+        assertEquals(files, imageFilesIterator.getFileList())
     }
 
     @Test
@@ -58,7 +58,7 @@ class ImageFilesIteratorTest {
 
         imageFilesIterator.addAll(files)
 
-        assertEquals(files, imageFilesIterator.getFiles().subList(4, 8))
+        assertEquals(files, imageFilesIterator.getFileList().subList(4, 8))
     }
 
     @Test
@@ -67,7 +67,7 @@ class ImageFilesIteratorTest {
 
         imageFilesIterator.remove(files[0])
 
-        assertEquals(files.subList(1, 4), imageFilesIterator.getFiles())
+        assertEquals(files.subList(1, 4), imageFilesIterator.getFileList())
     }
 
     @Test
@@ -85,7 +85,7 @@ class ImageFilesIteratorTest {
 
         try {
             imageFilesIterator.nextFile()
-        } catch (exception: NoMoreImagesException) {
+        } catch (exception: NoMoreFilesException) {
             return
         }
 
@@ -109,7 +109,7 @@ class ImageFilesIteratorTest {
 
         try {
             imageFilesIterator.nextFile()
-        } catch (exception: NoMoreImagesException) {
+        } catch (exception: NoMoreFilesException) {
             fail("NoMoreImagesException was thrown")
         }
     }

@@ -35,22 +35,27 @@ class TrivialProgressUpdater : ProgressUpdater {
     }
 }
 
-class BuildProgressUpdater(private val mainWindowController: MainWindowController) : ProgressUpdater {
+abstract class FileProgressUpdater(private val mainWindowController: MainWindowController) : ProgressUpdater {
+    protected fun updateProgress(progress: Double, message: String) {
+        mainWindowController.buildProgressBar.progress = progress
+        runLater { mainWindowController.notifyUser(message, WHITE) }
+    }
+}
+
+class BuildProgressUpdater(mainWindowController: MainWindowController) : FileProgressUpdater(mainWindowController) {
     private val logger = LoggerFactory.getLogger(BuildProgressUpdater::class.java)!!
 
     override fun updateProgress(progress: Double, file: File) {
-        mainWindowController.buildProgressBar.progress = progress
-        runLater { mainWindowController.notifyUser("Building PDF:  ${file.name}", WHITE) }
+        super.updateProgress(progress, "Building PDF:  ${file.name}")
         logger.info("Building PDF:  ${file.name}")
     }
 }
 
-class IteratorSetupProgressUpdater(private val mainWindowController: MainWindowController) : ProgressUpdater {
+class IteratorSetupProgressUpdater(mainWindowController: MainWindowController) : FileProgressUpdater(mainWindowController) {
     private val logger = LoggerFactory.getLogger(IteratorSetupProgressUpdater::class.java)!!
 
     override fun updateProgress(progress: Double, file: File) {
-        mainWindowController.buildProgressBar.progress = progress
-        runLater { mainWindowController.notifyUser("Processing file(s):  ${file.name}", WHITE) }
+        super.updateProgress(progress, "Processing file(s):  ${file.name}")
         logger.info("Processing file(s):  ${file.name}")
     }
 }

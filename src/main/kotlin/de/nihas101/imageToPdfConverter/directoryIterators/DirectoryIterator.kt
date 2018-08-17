@@ -18,6 +18,7 @@
 
 package de.nihas101.imageToPdfConverter.directoryIterators
 
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreFilesException
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFileIterator.ZipFileIteratorFactory.createZipFileIterator
@@ -30,6 +31,8 @@ import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
 
 abstract class DirectoryIterator : Cancellable {
+    private var currentIndex = 0
+    protected val files = mutableListOf<File>()
     protected var directory: File? = null
     protected var cancelled = false
 
@@ -37,18 +40,83 @@ abstract class DirectoryIterator : Cancellable {
         this.directory = directory
     }
 
-    abstract fun nextFile(): File
-    abstract fun getFile(index: Int): File
-    abstract fun getFiles(): MutableList<File>
-    abstract fun remove(file: File): Boolean
+    open fun nextFile(): File {
+        if (currentIndex < files.size) return files[currentIndex++]
+        throw NoMoreFilesException(directory!!)
+    }
+
+    fun getFile(index: Int): File = files[index]
+    fun getFileList(): MutableList<File> = files
+
+    fun remove(file: File): Boolean {
+        val absolutePath = file.absolutePath
+
+        files.forEachIndexed { index, dirFile ->
+            if (dirFile.absolutePath == absolutePath) {
+                files.removeAt(index)
+                logger.info("Removed {}", file.name)
+                return true
+            }
+        }
+
+        return false
+    }
+
     abstract fun add(index: Int, file: File): Boolean
-    abstract fun add(file: File): Boolean
-    abstract fun addAll(files: List<File>, progressUpdater: ProgressUpdater = TrivialProgressUpdater()): Boolean
-    abstract fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean
-    abstract fun clear()
-    abstract fun numberOfFiles(): Int
+
+    protected open fun add(index: Int, file: File, canBeAdded: (File) -> Boolean): Boolean {
+        val arguments = Array<Any>(2) {}
+        arguments[0] = file.name
+        arguments[1] = index
+
+        return if (canBeAdded(file)) {
+            files.add(index, file)
+            logger.info("Added {} at index {}", arguments)
+            true
+        } else {
+            logger.info("Ignored addition of {} at index {} as it is no image", arguments)
+            false
+        }
+    }
+
+    fun add(file: File): Boolean {
+        if (files.isEmpty()) setupDirectory(file.parentFile, TrivialProgressUpdater())
+        return add(files.size, file)
+    }
+
+    abstract fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater = TrivialProgressUpdater()): Boolean
+
+    fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater = TrivialProgressUpdater(), canBeAdded: (File) -> Boolean): Boolean {
+        if (filesToAdd.isEmpty()) return true
+        if (files.isEmpty()) setupDirectory(filesToAdd[0].parentFile, progressUpdater)
+        val outOf = filesToAdd.size
+
+        return files.addAll(filesToAdd.filterIndexed { index, file ->
+            progressUpdater.updateProgress((index + 1).toDouble() / outOf.toDouble(), file)
+            canBeAdded(file)
+        })
+    }
+
+    open fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
+        return if (file.isDirectory) {
+            val files = file.listFiles().toList()
+            if (files.isEmpty()) return true
+            addAll(files, progressUpdater)
+        } else {
+            progressUpdater.updateProgress(1.0, file)
+            add(file)
+        }
+    }
+
+
+    fun clear() = files.clear()
+    fun numberOfFiles(): Int = files.size
     abstract fun getParentDirectory(): File
-    abstract fun resetIndex()
+
+    fun resetIndex() {
+        logger.info("{}", "Index reset")
+        currentIndex = 0
+    }
 
     override fun cancelTask() {
         cancelled = true

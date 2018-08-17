@@ -34,7 +34,7 @@ class LoadImagesTask private constructor(
     override fun call() {
         before()
         try {
-            imageMap.loadImages(directoryIterator.getFiles(), updater)
+            imageMap.loadImages(directoryIterator.getFileList(), updater)
         } catch (exception: InterruptedException) {
             /* The task was cancelled */
             logger.warn("{}", exception)

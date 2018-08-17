@@ -19,95 +19,20 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreDirectoriesException
-import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
-import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
 
-class ImageDirectoriesIterator private constructor() : DirectoryIterator() {
-    private var directories: MutableList<File> = mutableListOf()
-    private var currentIndex = 0
-
-    override fun numberOfFiles(): Int = directories.size
-
+open class ImageDirectoriesIterator protected constructor() : DirectoryIterator() {
     override fun getParentDirectory(): File = directory!!
 
-    override fun getFiles(): MutableList<File> = directories
+    override fun add(index: Int, file: File): Boolean =
+            super.add(index, file) { fileToAdd -> isImageDirectory(fileToAdd) }
 
-    override fun add(index: Int, file: File): Boolean {
-        val arguments = Array<Any>(2) {}
-        arguments[0] = file.name
-        arguments[1] = index
-
-        return if (isImageDirectory(file)) {
-            directories.add(index, file)
-            logger.info("Added {} at index {}", arguments)
-            true
-        } else {
-            logger.info("Ignored addition of {} at index {} as it is no image", arguments)
-            false
-        }
+    override fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater): Boolean {
+        return super.addAll(filesToAdd, progressUpdater) { directory -> isImageDirectory(directory) }
     }
-
-    override fun add(file: File): Boolean {
-        if (directories.isEmpty()) super.setupDirectory(file.parentFile, TrivialProgressUpdater())
-        return add(directories.size, file)
-    }
-
-    override fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
-        return if (file.isDirectory) {
-            val files = file.listFiles().toList()
-            if (files.isEmpty()) return true
-            addAll(files, progressUpdater)
-        } else {
-            progressUpdater.updateProgress(1.0, file)
-            add(file)
-        }
-    }
-
-    override fun addAll(files: List<File>, progressUpdater: ProgressUpdater): Boolean {
-        if (files.isEmpty()) return true
-        if (directories.isEmpty()) super.setupDirectory(files[0].parentFile, progressUpdater)
-        val outOf = files.size
-
-        return directories.addAll(files.filterIndexed { index, file ->
-            progressUpdater.updateProgress((index + 1).toDouble() / outOf.toDouble(), file)
-            isImageDirectory(file)
-        })
-    }
-
-    override fun clear() = directories.clear()
-
-    override fun remove(file: File): Boolean {
-        val absolutePath = file.absolutePath
-
-        directories.forEachIndexed { index, dirFile ->
-            if (dirFile.absolutePath == absolutePath) {
-                directories.removeAt(index)
-                logger.info("Removed {}", file.name)
-                return true
-            }
-        }
-
-        return false
-    }
-
-    override fun nextFile(): File {
-        if (currentIndex < directories.size) return directories[currentIndex++]
-        throw NoMoreDirectoriesException(directory!!)
-    }
-
-    override fun resetIndex() {
-        logger.info("{}", "Index reset")
-        currentIndex = 0
-    }
-
-    override fun getFile(index: Int): File = directories[index]
 
     companion object ImageDirectoriesIteratorFactory {
-        private val logger = JaKoLogger.createLogger(ImageDirectoriesIterator::class.java)
-
         fun createImageDirectoriesIterator(): ImageDirectoriesIterator = ImageDirectoriesIterator()
         fun isImageDirectory(directory: File) = directory.isDirectory && containsImage(directory)
         private fun containsImage(directory: File): Boolean {
