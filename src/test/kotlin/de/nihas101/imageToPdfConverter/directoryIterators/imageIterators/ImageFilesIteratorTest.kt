@@ -124,6 +124,13 @@ class ImageFilesIteratorTest {
         assertEquals(files[0].parentFile, createTestIterator().getParentDirectory())
     }
 
+    @Test
+    fun noImageFile() {
+        val imageFilesIterator = createTestIterator()
+
+        assertEquals(false, imageFilesIterator.add(File("src/test/kotlin/de/nihas101/imageToPdfConverter/directoryIterators/imageIterators")))
+    }
+
 
     private fun createTestIterator(): DirectoryIterator {
         return createDirectoryIterator(File("src/test/resources/images"), IteratorOptions()
