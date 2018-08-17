@@ -35,11 +35,12 @@ class PdfPageFlushListTest {
 
     @Test
     fun flush() {
-        val heapAnalytic: HeapAnalytic = HeapAnalytic.createHeapAnalytic(0.65)
+        var heapAnalytic: HeapAnalytic = HeapAnalytic.createHeapAnalytic(0.1)
+        heapAnalytic = HeapAnalytic.createHeapAnalytic(heapAnalytic.getFreeMemoryPercentage() - 0.1)
         val pdfPageFlushList = createPdfPageFlushList(flushList, document, pdfWriter, heapAnalytic)
 
         var lastPercentage = heapAnalytic.getFreeMemoryPercentage()
-        var maxIterations = 100
+        var maxIterations = 1000
 
         while (maxIterations > 0) {
             maxIterations--
