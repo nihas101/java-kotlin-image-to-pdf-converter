@@ -62,9 +62,7 @@ abstract class DirectoryIterator : Cancellable {
         return false
     }
 
-    abstract fun add(index: Int, file: File): Boolean
-
-    protected open fun add(index: Int, file: File, canBeAdded: (File) -> Boolean): Boolean {
+    fun add(index: Int, file: File): Boolean {
         val arguments = Array<Any>(2) {}
         arguments[0] = file.name
         arguments[1] = index
@@ -84,9 +82,7 @@ abstract class DirectoryIterator : Cancellable {
         return add(files.size, file)
     }
 
-    abstract fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater = TrivialProgressUpdater()): Boolean
-
-    fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater = TrivialProgressUpdater(), canBeAdded: (File) -> Boolean): Boolean {
+    fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater = TrivialProgressUpdater()): Boolean {
         if (filesToAdd.isEmpty()) return true
         if (files.isEmpty()) setupDirectory(filesToAdd[0].parentFile, progressUpdater)
         val outOf = filesToAdd.size
@@ -96,6 +92,8 @@ abstract class DirectoryIterator : Cancellable {
             canBeAdded(file)
         })
     }
+
+    abstract fun canBeAdded(file: File): Boolean
 
     open fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
         return if (file.isDirectory) {
