@@ -112,6 +112,15 @@ class ZipFilesIteratorTest {
         }
     }
 
+    @Test
+    fun clearTest() {
+        val directoriesIterator = createTestIterator()
+
+        directoriesIterator.clear()
+
+        TestCase.assertEquals(0, directoriesIterator.numberOfFiles())
+    }
+
     private fun createTestIterator(): DirectoryIterator {
         return createDirectoryIterator(
                 File("src/test/resources/zip"),
