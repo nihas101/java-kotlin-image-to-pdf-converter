@@ -125,6 +125,15 @@ class ImageFilesIteratorTest {
     }
 
     @Test
+    fun clearTest() {
+        val directoriesIterator = createTestIterator()
+
+        directoriesIterator.clear()
+
+        assertEquals(0, directoriesIterator.numberOfFiles())
+    }
+
+    @Test
     fun noImageFile() {
         val imageFilesIterator = createTestIterator()
 
