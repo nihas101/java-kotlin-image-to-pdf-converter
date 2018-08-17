@@ -15,7 +15,7 @@ import java.io.OutputStream
 class ImagePdfTest {
     @Test
     fun imagePdfTest1() {
-        val testOutputStream = TestOutputStream(StringBuilder())
+        val testOutputStream = TestOutputStream(StringBuilder(), false)
         val options = createOptions(
                 IteratorOptions(false),
                 PdfOptions(saveLocation = File("src/test/resources/test1.pdf"))
@@ -30,7 +30,7 @@ class ImagePdfTest {
 
     @Test
     fun imagePdfTest2() {
-        val testOutputStream = TestOutputStream(StringBuilder())
+        val testOutputStream = TestOutputStream(StringBuilder(), false)
         val options = createOptions(
                 IteratorOptions(false),
                 PdfOptions(saveLocation = File("src/test/resources/test2.pdf"))
@@ -45,7 +45,7 @@ class ImagePdfTest {
 
     @Test
     fun imagePdfTest3() {
-        val testOutputStream = TestOutputStream(StringBuilder())
+        val testOutputStream = TestOutputStream(StringBuilder(), false)
         val options = createOptions(
                 IteratorOptions(false),
                 PdfOptions(saveLocation = File("src/test/resources/test3.pdf"))
@@ -60,7 +60,7 @@ class ImagePdfTest {
 
     @Test
     fun unicodeTest() {
-        val testOutputStream = TestOutputStream(StringBuilder())
+        val testOutputStream = TestOutputStream(StringBuilder(), false)
         val options = createOptions(
                 IteratorOptions(false),
                 PdfOptions(saveLocation = File("src/test/resources/の.png"))
@@ -73,9 +73,13 @@ class ImagePdfTest {
         if (testOutputStream.output.isEmpty()) fail()
     }
 
-    class TestOutputStream(var output: StringBuilder) : OutputStream() {
+    class TestOutputStream(var output: StringBuilder, private val flushable: Boolean = true) : OutputStream() {
         override fun write(b: Int) {
             output.append(b.toChar())
+        }
+
+        override fun flush() {
+            if (flushable) output = StringBuilder()
         }
     }
 }
