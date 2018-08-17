@@ -78,8 +78,6 @@ public class MainWindowController extends FileListViewController {
 
     private ListChangeListenerFactory listChangeListenerFactory;
 
-    // TODO: private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(MainWindowController.class);
-
     /**
      * Sets up the {@link MainWindowController}
      *
