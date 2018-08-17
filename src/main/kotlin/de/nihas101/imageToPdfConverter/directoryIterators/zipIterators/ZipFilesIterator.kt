@@ -29,31 +29,6 @@ class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : 
     private var imageDirectoriesIterator: ImageDirectoriesIterator = createImageDirectoriesIterator()
     private var imageUnZipper: ImageUnZipper? = null
 
-    override fun setupDirectory(directory: File, progressUpdater: ProgressUpdater) {
-        super.setupDirectory(directory, progressUpdater)
-
-        if (directory.isDirectory) unzipFilesInDirectory(progressUpdater)
-
-        imageDirectoriesIterator = createImageDirectoriesIterator()
-        imageDirectoriesIterator.setupDirectory(directory, progressUpdater)
-    }
-
-    private fun unzipFilesInDirectory(progressUpdater: ProgressUpdater) {
-        val numberOfFiles = directory!!.listFiles().size.toDouble()
-
-        directory!!.listFiles().forEachIndexed { index, file ->
-            if (cancelled) throw InterruptedException()
-
-            progressUpdater.updateProgress((index + 1).toDouble() / numberOfFiles, file)
-
-            val unzipInto = File("${file.parent}/${file.nameWithoutExtension}")
-            if (ImageUnZipper.canUnzip(file)) {
-                imageUnZipper = createImageUnZipper(file)
-                imageUnZipper!!.unzip(unzipInto, deleteOnExit = deleteOnExit)
-            }
-        }
-    }
-
     override fun cancelTask() {
         super.cancelTask()
         if (imageUnZipper != null) imageUnZipper!!.cancelTask()
@@ -71,7 +46,38 @@ class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : 
 
     override fun add(file: File) = imageDirectoriesIterator.add(file)
 
-    override fun addAll(files: List<File>) = imageDirectoriesIterator.addAll(files)
+    override fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
+        super.setupDirectory(file, progressUpdater)
+
+        val unzippedFiles = if (file.isDirectory) unzipFilesInDirectory(progressUpdater)
+        else listOf()
+
+        imageDirectoriesIterator = createImageDirectoriesIterator()
+        return imageDirectoriesIterator.addAll(unzippedFiles, progressUpdater)
+    }
+
+    override fun clear() = imageDirectoriesIterator.clear()
+
+    private fun unzipFilesInDirectory(progressUpdater: ProgressUpdater): List<File> {
+        val unzippedFiles = mutableListOf<File>()
+        val numberOfFiles = directory!!.listFiles().size.toDouble()
+
+        directory!!.listFiles().forEachIndexed { index, file ->
+            if (cancelled) throw InterruptedException()
+
+            progressUpdater.updateProgress((index + 1).toDouble() / numberOfFiles, file)
+
+            val unzipIntoUntrimmed = File("${file.parent}/${file.nameWithoutExtension}")
+            if (ImageUnZipper.canUnzip(file)) {
+                imageUnZipper = createImageUnZipper(file)
+                val unzipIntoTrimmed = imageUnZipper!!.unzip(unzipIntoUntrimmed, deleteOnExit = deleteOnExit)
+                unzippedFiles.add(unzipIntoTrimmed)
+            }
+        }
+        return unzippedFiles
+    }
+
+    override fun addAll(files: List<File>, progressUpdater: ProgressUpdater) = imageDirectoriesIterator.addAll(files, progressUpdater)
 
     override fun numberOfFiles() = imageDirectoriesIterator.numberOfFiles()
 
