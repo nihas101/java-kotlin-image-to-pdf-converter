@@ -81,7 +81,7 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
         }
     }
 
-    private fun setOpacityOnDrag(event: DragEvent, newOpacity: Double){
+    private fun setOpacityOnDrag(event: DragEvent, newOpacity: Double) {
         if (event.gestureSource !== this && event.dragboard.hasString()) opacity = newOpacity
     }
 

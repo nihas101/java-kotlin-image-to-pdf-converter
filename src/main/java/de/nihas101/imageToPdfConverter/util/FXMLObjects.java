@@ -10,10 +10,10 @@ public class FXMLObjects {
     private JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(FXMLObjects.class);
     private Object controller;
 
-    private FXMLObjects(){
+    private FXMLObjects() {
     }
 
-    public static FXMLObjects loadFXMLObjects(String resourceName){
+    public static FXMLObjects loadFXMLObjects(String resourceName) {
         FXMLObjects fxmlObjects = new FXMLObjects();
         fxmlObjects.loadFXML(resourceName);
         return fxmlObjects;

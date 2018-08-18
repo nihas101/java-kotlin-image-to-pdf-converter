@@ -23,13 +23,10 @@ import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.util.FXMLObjects;
 import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 import static javafx.stage.StageStyle.UNDECORATED;
 

@@ -22,13 +22,10 @@ import de.nihas101.imageToPdfConverter.gui.controller.ImageDisplayController;
 import de.nihas101.imageToPdfConverter.util.FXMLObjects;
 import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 import static de.nihas101.imageToPdfConverter.util.ImageToStageScaler.calculateScaleOfStage;
 

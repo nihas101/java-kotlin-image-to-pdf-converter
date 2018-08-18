@@ -25,12 +25,9 @@ import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
 import de.nihas101.imageToPdfConverter.util.FXMLObjects;
 import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 /**
  * An {@link Application} for displaying the content of a directory
