@@ -32,6 +32,7 @@ import javafx.scene.control.ListCell
 import javafx.scene.control.MenuItem
 import javafx.scene.image.ImageView
 import javafx.scene.input.ClipboardContent
+import javafx.scene.input.DragEvent
 import javafx.scene.input.TransferMode
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Paint
@@ -58,8 +59,8 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
         /* Source: stackoverflow.com/questions/20412445/how-to-create-a-reorder-able-tableview-in-javafx */
         setupOnDrag()
         setOnDragOver()
-        setOnDragEntered()
-        setOnDragExited()
+        setOnDragEntered { event -> setOpacityOnDrag(event, 0.3) }
+        setOnDragExited { event -> setOpacityOnDrag(event, 1.0) }
         setOnDragDone()
     }
 
@@ -80,18 +81,14 @@ class ImageListCell(private val imageMap: ImageMap, private val files: MutableLi
         }
     }
 
+    private fun setOpacityOnDrag(event: DragEvent, newOpacity: Double){
+        if (event.gestureSource !== this && event.dragboard.hasString()) opacity = newOpacity
+    }
+
     private fun setOnDragOver() = setOnDragOver { event ->
         if (event.gestureSource !== this && (event.dragboard.hasString() || event.dragboard.hasFiles()))
             event.acceptTransferModes(TransferMode.MOVE)
         event.consume()
-    }
-
-    private fun setOnDragEntered() = setOnDragEntered { event ->
-        if (event.gestureSource !== this && event.dragboard.hasString()) opacity = 0.3
-    }
-
-    private fun setOnDragExited() = setOnDragExited { event ->
-        if (event.gestureSource !== this && event.dragboard.hasString()) opacity = 1.0
     }
 
     private fun setOnDragDone() {
