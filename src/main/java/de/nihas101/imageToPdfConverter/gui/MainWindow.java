@@ -25,6 +25,7 @@ import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
 import de.nihas101.imageToPdfConverter.tasks.TaskManager;
+import de.nihas101.imageToPdfConverter.util.FXMLObjects;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
@@ -83,7 +84,11 @@ public final class MainWindow extends Application {
      */
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        loadFXML();
+
+        FXMLObjects fxmlObjects = FXMLObjects.loadFXMLObjects("fxml/main.fxml");
+        root = (GridPane) fxmlObjects.getRoot();
+        mainWindowController = (MainWindowController) fxmlObjects.getController();
+
         setupMainWindow();
         setupOnExit(primaryStage);
         mainWindowController.setup(this);
@@ -94,18 +99,6 @@ public final class MainWindow extends Application {
 
         setupPrimaryStage(primaryStage, scene);
         primaryStage.show();
-    }
-
-    private void loadFXML() {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"));
-        try {
-            root = loader.load();
-        } catch (IOException exception) {
-            logger.error("{}", exception);
-            System.exit(1);
-        }
-        logger.info("{}", "FXML loaded");
-        mainWindowController = loader.getController();
     }
 
     private void setupMainWindow() {

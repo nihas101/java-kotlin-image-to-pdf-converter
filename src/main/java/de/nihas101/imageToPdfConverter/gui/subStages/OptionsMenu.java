@@ -20,6 +20,7 @@ package de.nihas101.imageToPdfConverter.gui.subStages;
 
 import de.nihas101.imageToPdfConverter.gui.controller.OptionsMenuController;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
+import de.nihas101.imageToPdfConverter.util.FXMLObjects;
 import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -46,23 +47,19 @@ public final class OptionsMenu extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
-        GridPane root = loadFXML();
+        FXMLObjects fxmlObjects = FXMLObjects.loadFXMLObjects("fxml/options.fxml");
+        GridPane root = (GridPane) fxmlObjects.getRoot();
+        optionsMenuController = (OptionsMenuController) fxmlObjects.getController();
+
         optionsMenuController.setup(imageToPdfOptions);
 
         Scene scene = new Scene(root);
 
         setupPrimaryStage(scene);
         primaryStage.showAndWait();
-    }
-
-    private GridPane loadFXML() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/options.fxml"));
-        GridPane root = loader.load();
-        optionsMenuController = loader.getController();
-        return root;
     }
 
     private void setupPrimaryStage(Scene scene) {

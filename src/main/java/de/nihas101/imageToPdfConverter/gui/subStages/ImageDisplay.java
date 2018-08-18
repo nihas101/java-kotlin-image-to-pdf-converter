@@ -19,6 +19,7 @@
 package de.nihas101.imageToPdfConverter.gui.subStages;
 
 import de.nihas101.imageToPdfConverter.gui.controller.ImageDisplayController;
+import de.nihas101.imageToPdfConverter.util.FXMLObjects;
 import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -75,21 +76,17 @@ public final class ImageDisplay extends Application {
      * {@inheritDoc}
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Pane root = loadFXML();
+    public void start(Stage primaryStage) {
+        FXMLObjects fxmlObjects = FXMLObjects.loadFXMLObjects("fxml/imageDisplay.fxml");
+        Pane root = fxmlObjects.getRoot();
+        imageDisplayController = (ImageDisplayController) fxmlObjects.getController();
+
         imageDisplayController.setup(image);
 
         Scene scene = new Scene(root);
 
         setupPrimaryStage(primaryStage, scene);
         primaryStage.showAndWait();
-    }
-
-    private Pane loadFXML() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/imageDisplay.fxml"));
-        Pane root = loader.load();
-        imageDisplayController = loader.getController();
-        return root;
     }
 
     private void setupPrimaryStage(Stage primaryStage, Scene scene) {

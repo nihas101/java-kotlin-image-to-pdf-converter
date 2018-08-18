@@ -22,6 +22,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator;
 import de.nihas101.imageToPdfConverter.gui.controller.DirectoryContentDisplayController;
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
+import de.nihas101.imageToPdfConverter.util.FXMLObjects;
 import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -74,8 +75,11 @@ public final class DirectoryContentDisplay extends Application {
      * {@inheritDoc}
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Pane root = loadFXML();
+    public void start(Stage primaryStage) {
+        FXMLObjects fxmlObjects = FXMLObjects.loadFXMLObjects("fxml/directoryContentDisplay.fxml");
+        Pane root = fxmlObjects.getRoot();
+        directoryContentDisplayController = (DirectoryContentDisplayController) fxmlObjects.getController();
+
         directoryContentDisplayController.setup(directoryIterator, directoryIteratorIndex, primaryStage, mainWindowController);
 
         Scene scene = new Scene(root);
@@ -83,13 +87,6 @@ public final class DirectoryContentDisplay extends Application {
 
         setupPrimaryStage(primaryStage, scene);
         primaryStage.showAndWait();
-    }
-
-    private Pane loadFXML() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/directoryContentDisplay.fxml"));
-        Pane root = loader.load();
-        directoryContentDisplayController = loader.getController();
-        return root;
     }
 
     private void setupPrimaryStage(Stage primaryStage, Scene scene) {
