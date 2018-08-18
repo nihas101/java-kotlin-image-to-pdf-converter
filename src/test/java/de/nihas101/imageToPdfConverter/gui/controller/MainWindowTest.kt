@@ -134,4 +134,12 @@ class MainWindowTest : ApplicationTest() {
         setupDirectoryIterator("src/test/resources/images/doesntExist")
         assertEquals(false, mainWindowController!!.valuesSetForBuilding())
     }
+
+    @Test
+    fun displayDirectory() {
+        setupDirectoryIterator("src/test/resources", true)
+
+        clickOnFirstCell(true)
+        closeCurrentWindow()
+    }
 }
