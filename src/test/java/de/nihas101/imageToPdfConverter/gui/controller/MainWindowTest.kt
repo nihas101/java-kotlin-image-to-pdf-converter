@@ -87,6 +87,7 @@ class MainWindowTest : ApplicationTest() {
         assertEquals(true, file.exists())
     }
 
+    /*
     @Test
     fun buildMultiplePdf() {
         clickOn("#optionsButton")
@@ -108,6 +109,7 @@ class MainWindowTest : ApplicationTest() {
         Thread.sleep(waitingPeriod)
         assertEquals(true, pdf.exists())
     }
+    */
 
     @Test
     fun clearAllNoSetup() {
