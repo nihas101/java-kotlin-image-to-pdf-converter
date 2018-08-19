@@ -57,7 +57,7 @@ class OptionsMenuTest : ApplicationTest() {
     }
 
     @Test
-    fun setSaveLocation(){
+    fun setSaveLocation() {
         clickOn("#optionsButton")
         Thread.sleep(waitingPeriod)
         clickOn("#saveToCustomLocationCheckBox")
