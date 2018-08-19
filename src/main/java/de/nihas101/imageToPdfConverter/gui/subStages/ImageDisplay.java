@@ -28,6 +28,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import static de.nihas101.imageToPdfConverter.util.ImageToStageScaler.calculateScaleOfStage;
+import static de.nihas101.imageToPdfConverter.util.JaKoLogger.createLogger;
 
 /**
  * An Application for displaying {@link Image}s
@@ -44,7 +45,7 @@ public final class ImageDisplay extends Application {
 
     private ImageDisplayController imageDisplayController;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(ImageDisplay.class);
+    private static JaKoLogger logger = createLogger(ImageDisplay.class);
 
     private ImageDisplay(Image image, String imageName) {
         this.image = image;

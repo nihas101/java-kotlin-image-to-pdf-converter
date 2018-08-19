@@ -28,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import static de.nihas101.imageToPdfConverter.util.JaKoLogger.createLogger;
 import static javafx.stage.StageStyle.UNDECORATED;
 
 public final class OptionsMenu extends Application {
@@ -36,7 +37,7 @@ public final class OptionsMenu extends Application {
     private Stage primaryStage;
     private Point2D position;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(OptionsMenu.class);
+    private static JaKoLogger logger = createLogger(OptionsMenu.class);
 
     private OptionsMenu(ImageToPdfOptions imageToPdfOptions, Point2D position) {
         this.imageToPdfOptions = imageToPdfOptions;

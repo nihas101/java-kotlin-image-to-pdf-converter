@@ -29,6 +29,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import static de.nihas101.imageToPdfConverter.util.JaKoLogger.createLogger;
+
 /**
  * An {@link Application} for displaying the content of a directory
  */
@@ -41,7 +43,7 @@ public final class DirectoryContentDisplay extends Application {
     private DirectoryIterator directoryIterator;
     public DirectoryContentDisplayController directoryContentDisplayController;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(DirectoryContentDisplay.class);
+    private static JaKoLogger logger = createLogger(DirectoryContentDisplay.class);
 
 
     private DirectoryContentDisplay(DirectoryIterator directoryIterator, int directoryIteratorIndex, MainWindowController mainWindowController) {

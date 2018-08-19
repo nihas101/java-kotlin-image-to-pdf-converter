@@ -52,6 +52,7 @@ import java.util.List;
 import static de.nihas101.imageToPdfConverter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createZipFileChooser;
+import static de.nihas101.imageToPdfConverter.util.JaKoLogger.createLogger;
 import static javafx.application.Platform.runLater;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.*;
@@ -79,7 +80,7 @@ public class MainWindowController extends FileListViewController {
 
     private ListChangeListenerFactory listChangeListenerFactory;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(MainWindowController.class);
+    private static JaKoLogger logger = createLogger(MainWindowController.class);
 
     /**
      * Sets up the {@link MainWindowController}

@@ -96,10 +96,21 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
             if (bufferedImage != null)
                 ImageIO.write(bufferedImage, extractExtension(zipEntry), file)
         } catch (exception: IOException) {
-            logger.error("{}", exception)
+            logException(file, exception)
         } catch (exception: IllegalArgumentException) {
-            logger.error("{}", exception)
+            logException(file, exception)
         }
+    }
+
+    private fun logException(file: File, exception: Exception) {
+        val args = Array(2) {
+            when (it) {
+                0 -> file.absolutePath
+                else -> exception
+            }
+        }
+
+        logger.error("{}\n{}", args)
     }
 
     private fun extractExtension(zipEntry: ZipEntry): String {

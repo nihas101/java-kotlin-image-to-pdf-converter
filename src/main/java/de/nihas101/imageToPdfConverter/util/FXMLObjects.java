@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class FXMLObjects {
     private Pane root;
-    private JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(FXMLObjects.class);
+    private static JaKoLogger logger = JaKoLogger.createLogger(FXMLObjects.class);
     private Object controller;
 
     private FXMLObjects() {

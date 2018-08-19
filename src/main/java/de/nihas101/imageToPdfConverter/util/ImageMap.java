@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_MAP_MAX_SIZE;
+import static de.nihas101.imageToPdfConverter.util.JaKoLogger.createLogger;
 
 /**
  * A class for holding {@link Image}s
@@ -38,7 +39,7 @@ import static de.nihas101.imageToPdfConverter.util.Constants.IMAGE_MAP_MAX_SIZE;
 public class ImageMap implements Cancellable {
     private boolean cancelled = false;
 
-    private JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(ImageMap.class);
+    private static JaKoLogger logger = createLogger(ImageMap.class);
 
     /**
      * The {@link Map} mapping an absolute path to the corresponding {@link Image}

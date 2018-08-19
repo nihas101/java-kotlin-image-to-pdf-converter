@@ -45,6 +45,7 @@ import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOp
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createSaveFileChooser;
 import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
+import static de.nihas101.imageToPdfConverter.util.JaKoLogger.createLogger;
 
 
 public final class MainWindow extends Application {
@@ -75,7 +76,7 @@ public final class MainWindow extends Application {
 
     private Application openApplication;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(MainWindow.class);
+    private static JaKoLogger logger = createLogger(MainWindow.class);
 
     /**
      * {@inheritDoc}

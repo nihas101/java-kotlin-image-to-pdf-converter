@@ -32,6 +32,7 @@ import java.net.MalformedURLException;
 
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryContentDisplay.createDirectoryContentDisplay;
 import static de.nihas101.imageToPdfConverter.gui.subStages.ImageDisplay.createImageDisplay;
+import static de.nihas101.imageToPdfConverter.util.JaKoLogger.createLogger;
 import static javafx.application.Platform.runLater;
 import static javafx.scene.paint.Color.WHITE;
 
@@ -44,7 +45,7 @@ public final class DirectoryIteratorDisplayer {
      */
     private final DirectoryIterator directoryIterator;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(DirectoryIteratorDisplayer.class);
+    private static JaKoLogger logger = createLogger(DirectoryIteratorDisplayer.class);
 
     private DirectoryIteratorDisplayer(DirectoryIterator directoryIterator) {
         this.directoryIterator = directoryIterator;

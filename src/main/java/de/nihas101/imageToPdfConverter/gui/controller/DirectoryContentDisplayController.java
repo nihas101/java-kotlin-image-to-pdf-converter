@@ -48,6 +48,7 @@ import java.util.Map;
 
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
+import static de.nihas101.imageToPdfConverter.util.JaKoLogger.createLogger;
 import static javafx.application.Platform.runLater;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.scene.paint.Color.GREEN;
@@ -67,7 +68,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
     private ImageToPdfOptions imageToPdfOptions;
     private int directoryIteratorIndex;
 
-    private static JaKoLogger logger = JaKoLogger.JaKoLoggerFactory.createLogger(DirectoryContentDisplayController.class);
+    private static JaKoLogger logger = createLogger(DirectoryContentDisplayController.class);
 
     /**
      * Sets up the {@link DirectoryContentDisplayController}
