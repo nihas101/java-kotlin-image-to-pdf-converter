@@ -34,7 +34,13 @@ class ImagePdfBuilder : PdfBuilder() {
 
     override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) {
         directoryIterator.resetIndex()
-        val imagePdf = createPdf(imageToPdfOptions)
+
+        val imagePdf = if (imageToPdfOptions.getPdfOptions().useCustomLocation) createPdf(imageToPdfOptions)
+        else createPdf(
+                imageToPdfOptions,
+                ImagePdf.createFileOutputStream(createFileAtSameLocation(directoryIterator))
+        )
+
         val nrOfFiles = directoryIterator.numberOfFiles()
 
         try {
@@ -49,6 +55,10 @@ class ImagePdfBuilder : PdfBuilder() {
         } finally {
             imagePdf.close()
         }
+    }
+
+    private fun createFileAtSameLocation(directoryIterator: DirectoryIterator): File {
+        return File("${directoryIterator.getParentDirectory().parent}/${directoryIterator.getParentDirectory().name}.pdf")
     }
 
     private fun addNextFileToPDF(file: File, imagePdf: ImagePdf) {

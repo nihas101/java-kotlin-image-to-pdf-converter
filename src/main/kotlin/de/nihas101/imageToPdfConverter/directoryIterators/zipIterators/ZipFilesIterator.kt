@@ -21,9 +21,10 @@ package de.nihas101.imageToPdfConverter.directoryIterators.zipIterators
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.createImageUnZipper
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
+import de.nihas101.imageToPdfConverter.util.RecursiveFileSearcher.RecursiveFileSearcherFactory.createRecursiveFileSearcher
 import java.io.File
 
-class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : ImageDirectoriesIterator() {
+class ZipFilesIterator private constructor(private val deleteOnExit: Boolean, maximalSearchDepth: Int) : ImageDirectoriesIterator(maximalSearchDepth) {
     private var imageUnZipper: ImageUnZipper? = null
 
     override fun cancelTask() {
@@ -32,7 +33,7 @@ class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : 
     }
 
 
-    override fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
+    override fun addDirectory(file: File, progressUpdater: ProgressUpdater, maximalSearchDepth: Int): Boolean {
         super.setupDirectory(file, progressUpdater)
 
         val unzippedFiles = if (file.isDirectory) unzipFilesInDirectory(progressUpdater)
@@ -42,9 +43,12 @@ class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : 
 
     private fun unzipFilesInDirectory(progressUpdater: ProgressUpdater): List<File> {
         val unzippedFiles = mutableListOf<File>()
-        val numberOfFiles = directory!!.listFiles().size.toDouble()
+        val recursiveFileSearcher = createRecursiveFileSearcher(directory!!)
 
-        directory!!.listFiles().forEachIndexed { index, file ->
+        val zipFiles = recursiveFileSearcher.searchRecursively({ file -> file.extension == "zip" }, maximalSearchDepth)
+        val numberOfFiles = zipFiles.size.toDouble()
+
+        zipFiles.forEachIndexed { index, file ->
             if (cancelled) throw InterruptedException()
 
             progressUpdater.updateProgress((index + 1).toDouble() / numberOfFiles, file)
@@ -60,8 +64,8 @@ class ZipFilesIterator private constructor(private val deleteOnExit: Boolean) : 
     }
 
     companion object ZipFilesIteratorFactory {
-        fun createZipFilesIterator(deleteOnExit: Boolean): ZipFilesIterator {
-            return ZipFilesIterator(deleteOnExit)
+        fun createZipFilesIterator(deleteOnExit: Boolean, maximalSearchDepth: Int = 1): ZipFilesIterator {
+            return ZipFilesIterator(deleteOnExit, maximalSearchDepth)
         }
     }
 }

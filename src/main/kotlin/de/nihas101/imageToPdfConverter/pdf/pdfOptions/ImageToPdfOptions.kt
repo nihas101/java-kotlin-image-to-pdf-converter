@@ -68,6 +68,14 @@ data class ImageToPdfOptions(
         pdfOptions = pdfOptions.copy(compressionLevel = compressionLevel)
     }
 
+    fun setMaximalSearchDepth(maximalSearchDepth: Int) {
+        iteratorOptions = iteratorOptions.copy(maximalSearchDepth = maximalSearchDepth)
+    }
+
+    fun setCustomLocation(useCustomLocation: Boolean) {
+        pdfOptions = pdfOptions.copy(useCustomLocation = useCustomLocation)
+    }
+
     fun getIteratorOptions() = iteratorOptions
 
     fun getPdfOptions() = pdfOptions

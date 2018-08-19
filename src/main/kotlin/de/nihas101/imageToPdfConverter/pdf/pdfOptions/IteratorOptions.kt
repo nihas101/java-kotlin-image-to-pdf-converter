@@ -21,11 +21,13 @@ package de.nihas101.imageToPdfConverter.pdf.pdfOptions
 data class IteratorOptions(
         val multipleDirectories: Boolean = false,
         val zipFiles: Boolean = false,
-        val deleteOnExit: Boolean = true
+        val deleteOnExit: Boolean = true,
+        val maximalSearchDepth: Int = 1
 ) {
     fun changed(other: IteratorOptions): Boolean {
         return !(multipleDirectories == other.multipleDirectories &&
                 zipFiles == other.zipFiles &&
-                deleteOnExit == other.deleteOnExit)
+                deleteOnExit == other.deleteOnExit &&
+                maximalSearchDepth == other.maximalSearchDepth)
     }
 }

@@ -71,7 +71,7 @@ class ImagePdf internal constructor(
             return ImagePdf(pdfWriter, document, pdf)
         }
 
-        private fun createFileOutputStream(file: File): OutputStream {
+        fun createFileOutputStream(file: File): OutputStream {
             return PdfOutputStream(FileOutputStream(file))
         }
     }

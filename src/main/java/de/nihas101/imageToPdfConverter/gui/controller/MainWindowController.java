@@ -275,8 +275,12 @@ public class MainWindowController extends FileListViewController {
     public void buildPdf(ActionEvent actionEvent) {
         if (!valuesSetForBuilding()) return;
 
-        if (userWantsMultiplePDFs()) buildMultiplePdf();
-        else buildSinglePdf();
+        if (mainWindow.imageToPdfOptions.getPdfOptions().getUseCustomLocation()) {
+            if (userWantsMultiplePDFs()) buildMultiplePdf();
+            else buildSinglePdf();
+        } else {
+            buildPdf(new File("."));
+        }
 
         actionEvent.consume();
     }

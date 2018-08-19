@@ -91,6 +91,7 @@ class MainWindowTest : ApplicationTest() {
     fun buildMultiplePdf() {
         clickOn("#optionsButton")
         clickOn("#multipleDirectoriesCheckBox")
+        clickOn("#saveToCustomLocationCheckBox")
         closeCurrentWindow()
         val directory = File("src/test/resources/test")
         val pdf = File("src/test/resources/test/images.pdf")

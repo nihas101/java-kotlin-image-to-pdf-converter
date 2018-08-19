@@ -56,4 +56,12 @@ class ImageToPdfOptionsTest {
         imageToPdfOptions.setCompressionLevel(BEST_COMPRESSION)
         assertEquals(BEST_COMPRESSION, imageToPdfOptions.getPdfOptions().compressionLevel)
     }
+
+    @Test
+    fun setMaximalSearchDepth() {
+        val imageToPdfOptions = ImageToPdfOptions()
+        imageToPdfOptions.setMaximalSearchDepth(10)
+
+        assertEquals(10, imageToPdfOptions.getIteratorOptions().maximalSearchDepth)
+    }
 }

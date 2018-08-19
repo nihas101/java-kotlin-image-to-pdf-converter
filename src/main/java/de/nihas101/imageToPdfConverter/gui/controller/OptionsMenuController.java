@@ -28,6 +28,7 @@ import java.util.List;
 
 import static com.itextpdf.kernel.pdf.CompressionConstants.*;
 import static com.itextpdf.kernel.pdf.PdfVersion.*;
+import static javafx.geometry.Pos.CENTER;
 
 public class OptionsMenuController {
     @FXML
@@ -51,10 +52,13 @@ public class OptionsMenuController {
     public RadioMenuItem defaultCompression_item;
     public RadioMenuItem bestCompression_item;
     public RadioMenuItem speedCompression_item;
+    public Spinner maximalDepthSearchSpinner;
+    public CheckBox saveToCustomLocationCheckBox;
     private ImageToPdfOptions imageToPdfOptions;
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
         imageToPdfOptions.setMultipleDirectories(multipleDirectoriesCheckBox.isSelected());
+        maximalDepthSearchSpinner.setDisable(!multipleDirectoriesCheckBox.isSelected());
         actionEvent.consume();
     }
 
@@ -62,6 +66,8 @@ public class OptionsMenuController {
         this.imageToPdfOptions = imageToPdfOptions;
 
         multipleDirectoriesCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getMultipleDirectories());
+        maximalDepthSearchSpinner.setDisable(!multipleDirectoriesCheckBox.isSelected());
+        maximalDepthSearchSpinner.getEditor().setAlignment(CENTER);
         zipFilesCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getZipFiles());
         deleteOnExitCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getDeleteOnExit());
 
@@ -131,6 +137,7 @@ public class OptionsMenuController {
     }
 
     public ImageToPdfOptions getImageToPdfOptions() {
+        imageToPdfOptions.setMaximalSearchDepth((Integer) maximalDepthSearchSpinner.getValue());
         return imageToPdfOptions;
     }
 
@@ -151,6 +158,11 @@ public class OptionsMenuController {
 
     public void setDeleteOnExitOption(ActionEvent actionEvent) {
         imageToPdfOptions.setDeleteOnExit(deleteOnExitCheckBox.isSelected());
+        actionEvent.consume();
+    }
+    
+    public void setSaveToCustomLocation(ActionEvent actionEvent) {
+        imageToPdfOptions.setCustomLocation(saveToCustomLocationCheckBox.isSelected());
         actionEvent.consume();
     }
 }

@@ -20,12 +20,17 @@ package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.isImage
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.io.File
 
-open class ImageDirectoriesIterator protected constructor() : DirectoryIterator() {
+open class ImageDirectoriesIterator protected constructor(protected val maximalSearchDepth: Int) : DirectoryIterator() {
     override fun getParentDirectory(): File = directory!!
 
     override fun canBeAdded(file: File) = file.isDirectory && containsImage(file)
+
+    override fun addDirectory(file: File, progressUpdater: ProgressUpdater, maximalSearchDepth: Int): Boolean {
+        return super.addDirectory(file, progressUpdater, this.maximalSearchDepth)
+    }
 
     private fun containsImage(directory: File): Boolean {
         directory.listFiles().forEach { file -> if (isImage(file)) return true }
@@ -33,6 +38,6 @@ open class ImageDirectoriesIterator protected constructor() : DirectoryIterator(
     }
 
     companion object ImageDirectoriesIteratorFactory {
-        fun createImageDirectoriesIterator(): ImageDirectoriesIterator = ImageDirectoriesIterator()
+        fun createImageDirectoriesIterator(maximalSearchDepth: Int = 1): ImageDirectoriesIterator = ImageDirectoriesIterator(maximalSearchDepth)
     }
 }

@@ -25,5 +25,6 @@ import java.io.File
 data class PdfOptions(
         val compressionLevel: Int = CompressionConstants.DEFAULT_COMPRESSION,
         val pdfVersion: PdfVersion = PdfVersion.PDF_1_7,
+        val useCustomLocation: Boolean = false,
         val saveLocation: File? = null
 )

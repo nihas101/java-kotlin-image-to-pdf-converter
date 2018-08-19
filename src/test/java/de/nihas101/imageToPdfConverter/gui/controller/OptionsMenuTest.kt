@@ -55,4 +55,15 @@ class OptionsMenuTest : ApplicationTest() {
         Thread.sleep(waitingPeriod)
         assertEquals(false, mainWindow!!.imageToPdfOptions.getIteratorOptions().deleteOnExit)
     }
+
+    @Test
+    fun setSaveLocation(){
+        clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
+        clickOn("#saveToCustomLocationCheckBox")
+        Thread.sleep(waitingPeriod)
+        closeCurrentWindow()
+        Thread.sleep(waitingPeriod)
+        assertEquals(true, mainWindow!!.imageToPdfOptions.getPdfOptions().useCustomLocation)
+    }
 }

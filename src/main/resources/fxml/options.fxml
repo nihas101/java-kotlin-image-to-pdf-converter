@@ -3,14 +3,17 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import java.lang.String?>
 <GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-          prefHeight="130.0" prefWidth="220.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8.0.121"
+          prefHeight="150.0" prefWidth="220.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8.0.121"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="de.nihas101.imageToPdfConverter.gui.controller.OptionsMenuController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
     </columnConstraints>
     <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
@@ -32,10 +35,47 @@
             <Insets left="5.0"/>
         </padding>
     </CheckBox>
+    <Spinner fx:id="maximalDepthSearchSpinner" max="10" maxHeight="1.7976931348623157E308"
+             maxWidth="1.7976931348623157E308" min="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"
+             GridPane.vgrow="ALWAYS">
+        <styleClass>
+            <String fx:value="split-arrows-horizontal"/>
+        </styleClass>
+        <tooltip>
+            <Tooltip
+                    text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories"/>
+        </tooltip>
+    </Spinner>
+    <CheckBox fx:id="saveToCustomLocationCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              mnemonicParsing="false" onAction="#setSaveToCustomLocation" stylesheets="@../main.css"
+              text="Save to a custom directory" textAlignment="CENTER" GridPane.rowIndex="2">
+        <tooltip>
+            <Tooltip
+                    text="Save to a custom target location (otherwise the PDF(s) will be saved in their respective parent directory)"/>
+        </tooltip>
+        <padding>
+            <Insets left="5.0"/>
+        </padding>
+    </CheckBox>
     <CheckBox fx:id="zipFilesCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
               mnemonicParsing="false" onAction="#setZipFilesOption" stylesheets="@../main.css" text="From ZIP file(s)"
-              textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"
+              textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3"
               GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+        <tooltip>
+            <Tooltip
+                    text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories"/>
+        </tooltip>
+        <padding>
+            <Insets left="5.0"/>
+        </padding>
+        <GridPane.margin>
+            <Insets/>
+        </GridPane.margin>
+    </CheckBox>
+    <CheckBox fx:id="deleteOnExitCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              mnemonicParsing="false" onAction="#setDeleteOnExitOption" stylesheets="@../main.css"
+              text="Delete unzipped files on exit" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
+              GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
         <tooltip>
             <Tooltip
                     text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories"/>
@@ -49,7 +89,7 @@
     </CheckBox>
     <MenuButton fx:id="pdfMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                 mnemonicParsing="false" stylesheets="@../main.css" text="PDF version" textAlignment="CENTER"
-                GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+                GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS">
         <items>
             <RadioMenuItem fx:id="PDF_1_0_item" mnemonicParsing="false" onAction="#setPdfVersion" text="1.0">
                 <toggleGroup>
@@ -76,7 +116,7 @@
     </MenuButton>
     <MenuButton fx:id="compressionMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                 mnemonicParsing="false" stylesheets="@../main.css" text="Compression" textAlignment="CENTER"
-                GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
+                GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.vgrow="ALWAYS">
         <items>
             <RadioMenuItem fx:id="noCompression_item" mnemonicParsing="false" onAction="#setCompression"
                            text="No compression">
@@ -92,19 +132,4 @@
                            text="Best speed" toggleGroup="$pdfCompressionToggle"/>
         </items>
     </MenuButton>
-    <CheckBox fx:id="deleteOnExitCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-              mnemonicParsing="false" onAction="#setDeleteOnExitOption" stylesheets="@../main.css"
-              text="Delete unzipped files on exit" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
-              GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-        <tooltip>
-            <Tooltip
-                    text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories"/>
-        </tooltip>
-        <padding>
-            <Insets left="5.0"/>
-        </padding>
-        <GridPane.margin>
-            <Insets/>
-        </GridPane.margin>
-    </CheckBox>
 </GridPane>

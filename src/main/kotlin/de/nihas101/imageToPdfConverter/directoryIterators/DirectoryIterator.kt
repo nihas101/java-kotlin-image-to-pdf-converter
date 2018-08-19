@@ -27,6 +27,7 @@ import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import de.nihas101.imageToPdfConverter.tasks.Cancellable
 import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
+import de.nihas101.imageToPdfConverter.util.RecursiveFileSearcher.RecursiveFileSearcherFactory.createRecursiveFileSearcher
 import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
 
@@ -95,11 +96,15 @@ abstract class DirectoryIterator : Cancellable {
 
     abstract fun canBeAdded(file: File): Boolean
 
-    open fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
+    open fun addDirectory(file: File, progressUpdater: ProgressUpdater, maximalSearchDepth: Int = 1): Boolean {
         return if (file.isDirectory) {
-            val files = file.listFiles().toList()
-            if (files.isEmpty()) return true
-            addAll(files, progressUpdater)
+            val recursiveFileSearcher = createRecursiveFileSearcher(file)
+            val files = recursiveFileSearcher.searchRecursively({ fileToAdd -> canBeAdded(fileToAdd) }, maximalSearchDepth)
+
+            if (files.isEmpty()) {
+                setupDirectory(file)
+                return true
+            } else addAll(files, progressUpdater)
         } else {
             progressUpdater.updateProgress(1.0, file)
             add(file)
@@ -153,11 +158,11 @@ abstract class DirectoryIterator : Cancellable {
             return when (iteratorOptions.zipFiles) {
                 false -> {
                     logger.info("{}", "Created ImageDirectoriesIterator")
-                    createImageDirectoriesIterator()
+                    createImageDirectoriesIterator(iteratorOptions.maximalSearchDepth)
                 }
                 true -> {
                     logger.info("{}", "Created ZipFilesIterator")
-                    createZipFilesIterator(iteratorOptions.deleteOnExit)
+                    createZipFilesIterator(iteratorOptions.deleteOnExit, iteratorOptions.maximalSearchDepth)
                 }
             }
         }

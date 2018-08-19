@@ -43,6 +43,7 @@ data class PdfBuildInformation(
 
     fun setTargetFile(targetFile: File) {
         imageToPdfOptions = imageToPdfOptions.copy(pdfOptions = imageToPdfOptions.getPdfOptions().copy(saveLocation = targetFile))
+        imageToPdfOptions.setCustomLocation(true)
     }
 
     fun getMultipleDirectories() = imageToPdfOptions.getIteratorOptions().multipleDirectories
