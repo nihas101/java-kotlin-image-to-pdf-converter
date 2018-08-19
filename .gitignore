@@ -6,4 +6,4 @@ gradle.properties
 sonar-project.properties
 .scannerwork/
 *.pdf
-log.txt
+*.log
