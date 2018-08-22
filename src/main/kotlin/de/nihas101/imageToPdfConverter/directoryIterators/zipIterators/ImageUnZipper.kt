@@ -34,6 +34,7 @@ import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
 import javax.imageio.ImageIO
 
+
 class ImageUnZipper private constructor(private val file: File) : Cancellable {
     var cancelled = false
     private val zipInputStream = createZipInputStream(file)
@@ -103,12 +104,9 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
     }
 
     private fun logException(file: File, exception: Exception) {
-        val args = Array(2) {
-            when (it) {
-                0 -> file.absolutePath
-                else -> exception
-            }
-        }
+        val args = Array<Any>(2) {}
+        args[0] = file.absolutePath
+        args[1] = exception
 
         logger.error("{}\n{}", args)
     }
