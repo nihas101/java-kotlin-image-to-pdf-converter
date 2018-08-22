@@ -41,6 +41,9 @@ dependencies {
     // https://mvnrepository.com/artifact/com.itextpdf/layout
     compile group: 'com.itextpdf', name: 'layout', version: '7.1.0'
 
+    // https://mvnrepository.com/artifact/com.twelvemonkeys.imageio/imageio-jpeg
+    compile group: 'com.twelvemonkeys.imageio', name: 'imageio-jpeg', version: '3.4'
+
     // SLF4J: https://www.slf4j.org/
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
