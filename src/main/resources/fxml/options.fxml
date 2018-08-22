@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-          prefHeight="150.0" prefWidth="220.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8.0.121"
+          prefHeight="150.0" prefWidth="205.0" stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8.0.121"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="de.nihas101.imageToPdfConverter.gui.controller.OptionsMenuController">
     <columnConstraints>
