@@ -53,7 +53,7 @@ public class OptionsMenuController {
     public RadioMenuItem bestCompression_item;
     public RadioMenuItem speedCompression_item;
     public Spinner maximalDepthSearchSpinner;
-    public CheckBox saveToCustomLocationCheckBox;
+    public CheckBox saveToParticularLocationCheckBox;
     private ImageToPdfOptions imageToPdfOptions;
 
     public void setMultipleDirectoriesOption(ActionEvent actionEvent) {
@@ -160,9 +160,9 @@ public class OptionsMenuController {
         imageToPdfOptions.setDeleteOnExit(deleteOnExitCheckBox.isSelected());
         actionEvent.consume();
     }
-    
+
     public void setSaveToCustomLocation(ActionEvent actionEvent) {
-        imageToPdfOptions.setCustomLocation(saveToCustomLocationCheckBox.isSelected());
+        imageToPdfOptions.setCustomLocation(saveToParticularLocationCheckBox.isSelected());
         actionEvent.consume();
     }
 }

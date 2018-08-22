@@ -46,9 +46,9 @@
                     text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories"/>
         </tooltip>
     </Spinner>
-    <CheckBox fx:id="saveToCustomLocationCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+    <CheckBox fx:id="saveToParticularLocationCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
               mnemonicParsing="false" onAction="#setSaveToCustomLocation" stylesheets="@../main.css"
-              text="Save to a custom directory" textAlignment="CENTER" GridPane.rowIndex="2">
+              text="Save to a particular directory" textAlignment="CENTER" GridPane.rowIndex="2">
         <tooltip>
             <Tooltip
                     text="Save to a custom target location (otherwise the PDF(s) will be saved in their respective parent directory)"/>
