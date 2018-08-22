@@ -22,7 +22,7 @@
     </rowConstraints>
     <CheckBox fx:id="multipleDirectoriesCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
               mnemonicParsing="false" onAction="#setMultipleDirectoriesOption" stylesheets="@../main.css"
-              text="Multiple PDFs from multiple dir." textAlignment="CENTER" GridPane.halignment="CENTER"
+              text="PDFs from multiple dir." textAlignment="CENTER" GridPane.halignment="CENTER"
               GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
         <tooltip>
             <Tooltip
