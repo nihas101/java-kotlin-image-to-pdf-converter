@@ -130,6 +130,10 @@ class PdfBuilderCommandLineInterface private constructor(
     private fun setupProgressUpdater(): ProgressUpdater {
         return object : ProgressUpdater {
             override fun updateProgress(progress: Double, file: File) {
+                updateProgress(progress, "")
+            }
+
+            override fun updateProgress(progress: Double, message: String) {
                 if (progress == 1.toDouble()) pdfBuilderCommandLineOutput.printFinishedBuilding()
                 else pdfBuilderCommandLineOutput.printProgress()
             }

@@ -86,20 +86,20 @@ abstract class DirectoryIterator(protected val iteratorOptions: IteratorOptions)
 
     abstract fun canBeAdded(file: File): Boolean
 
-    abstract fun addDirectory(file: File, progressUpdater: ProgressUpdater, maximalSearchDepth: Int = 1): Boolean
+    abstract fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean
 
     fun unzip(file: File, progressUpdater: ProgressUpdater): File {
         val unzipInto = File("${file.parent.trim()}/${file.nameWithoutExtension.trim()}")
         logger.info("Unzipping {}", file.name)
-        try {
+
+        return try {
             val imageUnZipper = ImageUnZipper.createImageUnZipper(file)
             imageUnZipper.unzip(unzipInto, progressUpdater, iteratorOptions.deleteOnExit)
         } catch (exception: ExtensionNotSupportedException) {
             logger.error("{}. Skipping directory.", exception)
             /* Proceed with empty unzip directory */
+            throw exception
         }
-
-        return unzipInto
     }
 
 
@@ -117,7 +117,7 @@ abstract class DirectoryIterator(protected val iteratorOptions: IteratorOptions)
     }
 
     companion object DirectoryIteratorFactory {
-        private val logger = JaKoLogger.createLogger(DirectoryIterator::class.java)!!
+        private val logger = JaKoLogger.createLogger(this::class.java)!!
 
         fun createDirectoryIterator(file: File, iteratorOptions: IteratorOptions): DirectoryIterator {
             val directoryIterator = createDirectoryIterator(iteratorOptions)

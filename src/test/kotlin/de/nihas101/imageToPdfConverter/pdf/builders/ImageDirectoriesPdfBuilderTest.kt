@@ -58,8 +58,13 @@ class ImageDirectoriesPdfBuilderTest {
 }
 
 class TestProgressUpdater(private val buildSuccess: AtomicBoolean) : ProgressUpdater {
-    override fun updateProgress(progress: Double, file: File) {
+    override fun updateProgress(progress: Double, message: String) {
         if (progress == 1.0) buildSuccess.set(true)
+
+    }
+
+    override fun updateProgress(progress: Double, file: File) {
+        updateProgress(progress, "")
     }
 
 }

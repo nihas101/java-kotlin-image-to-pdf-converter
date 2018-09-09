@@ -19,8 +19,10 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.canUnzip
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
+import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.awt.image.BufferedImage
 import java.io.File
@@ -32,7 +34,7 @@ open class ImageFilesIterator protected constructor(iteratorOptions: IteratorOpt
 
     override fun canBeAdded(file: File): Boolean = isImage(file) || canUnzip(file)
 
-    override fun addDirectory(file: File, progressUpdater: ProgressUpdater, maximalSearchDepth: Int): Boolean {
+    override fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
         super.setupDirectory(file, progressUpdater)
 
         return when {
@@ -51,8 +53,13 @@ open class ImageFilesIterator protected constructor(iteratorOptions: IteratorOpt
         val outOf = filesToAdd.size
 
         filesToAdd.forEachIndexed { index, file ->
-            if (canUnzip(file)) processedFiles.add(unzip(file, progressUpdater))
-            else processedFiles.add(file)
+            if (canUnzip(file)) {
+                try {
+                    processedFiles.add(unzip(file, progressUpdater))
+                } catch (exception: ExtensionNotSupportedException) {
+                    logger.info("Skipping {}, as it cannot be unzipped", file)
+                }
+            } else processedFiles.add(file)
             progressUpdater.updateProgress((index + 1).toDouble() / outOf.toDouble(), file)
         }
 
@@ -60,6 +67,8 @@ open class ImageFilesIterator protected constructor(iteratorOptions: IteratorOpt
     }
 
     companion object ImageFilesIteratorFactory {
+        private val logger = JaKoLogger.createLogger(this::class.java)
+
         fun createImageFilesIterator(iteratorOptions: IteratorOptions): ImageFilesIterator = ImageFilesIterator(iteratorOptions)
 
         fun isImage(file: File): Boolean {

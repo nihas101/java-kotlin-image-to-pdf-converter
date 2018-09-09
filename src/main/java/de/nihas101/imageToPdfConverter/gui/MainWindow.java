@@ -136,7 +136,7 @@ public final class MainWindow extends Application {
         FileChooserFactoryKt.addExtensionFilters(saveFileChooser, imageToPdfOptions.getIteratorOptions());
         saveFileChooser.setInitialFileName(initialFileName);
         saveFileChooser.setInitialDirectory(initialDirectory);
-        
+
         return saveFileChooser.showSaveDialog(scene.getWindow());
     }
 

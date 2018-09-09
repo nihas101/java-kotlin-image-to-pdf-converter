@@ -70,7 +70,7 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
         for (index in 0 until numberOfEntries) {
             if (cancelled) throw InterruptedException()
 
-            progressUpdater.updateProgress(index.toDouble() / numberOfEntries.toDouble(), file)
+            progressUpdater.updateProgress((index + 1).toDouble() / numberOfEntries.toDouble(), file)
 
             try {
                 unzipImage(zipEntry, fileFactory)
@@ -83,6 +83,7 @@ class ImageUnZipper private constructor(private val file: File) : Cancellable {
             yield() // Yield so FX-Thread gets a chance to update its contents
         }
 
+        logger.trace("Finished unzipping {}", file.name)
     }
 
     override fun cancelTask() {

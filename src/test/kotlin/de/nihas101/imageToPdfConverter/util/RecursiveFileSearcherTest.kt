@@ -18,7 +18,7 @@ class RecursiveFileSearcherTest {
     fun searchRecursivelyDirectories() {
         val recursiveFileSearcher = createRecursiveFileSearcher(File("src/test"))
 
-        val foundDirectories = recursiveFileSearcher.searchRecursively({ file -> file.isDirectory }, 1).toTypedArray()
+        val foundDirectories = recursiveFileSearcher.searchRecursively(1, TrivialProgressUpdater()) { file -> file.isDirectory }.toTypedArray()
         val expectedDirectories = File("src/test").listFiles().filter { file -> file.isDirectory }.toTypedArray()
 
         assertArrayEquals(expectedDirectories, foundDirectories)
@@ -28,7 +28,7 @@ class RecursiveFileSearcherTest {
     fun searchRecursivelyKt() {
         val recursiveFileSearcher = createRecursiveFileSearcher(File("src/test/java/de/nihas101/imageToPdfConverter/gui/controller"))
 
-        val foundDirectories = recursiveFileSearcher.searchRecursively({ file -> file.extension == "Kt" }, 1).toTypedArray()
+        val foundDirectories = recursiveFileSearcher.searchRecursively(1, TrivialProgressUpdater()) { file -> file.extension == "Kt" }.toTypedArray()
         val expectedDirectories = File("src/test/java/de/nihas101/imageToPdfConverter/gui/controller").listFiles().filter { file -> file.extension == "png" }.toTypedArray()
 
         assertArrayEquals(expectedDirectories, foundDirectories)
@@ -38,7 +38,7 @@ class RecursiveFileSearcherTest {
     fun searchRecursivelyDepth() {
         val recursiveFileSearcher = createRecursiveFileSearcher(File("src/test/java"))
 
-        val foundDirectories = recursiveFileSearcher.searchRecursively({ file -> file.name == "gui" }, 10).toTypedArray()
+        val foundDirectories = recursiveFileSearcher.searchRecursively(10, TrivialProgressUpdater()) { file -> file.name == "gui" }.toTypedArray()
 
         assertEquals(1, foundDirectories.size)
     }
@@ -47,7 +47,7 @@ class RecursiveFileSearcherTest {
     fun searchRecursivelyPNGNotEnoughDepth() {
         val recursiveFileSearcher = createRecursiveFileSearcher(File("src/test"))
 
-        val foundDirectories = recursiveFileSearcher.searchRecursively({ file -> file.extension == "png" }, 1).toTypedArray()
+        val foundDirectories = recursiveFileSearcher.searchRecursively(1, TrivialProgressUpdater()) { file -> file.extension == "png" }.toTypedArray()
 
         assertEquals(0, foundDirectories.size)
     }
@@ -57,7 +57,7 @@ class RecursiveFileSearcherTest {
         val recursiveFileSearcher = createRecursiveFileSearcher(File("src/test"))
 
         try {
-            recursiveFileSearcher.searchRecursively({ file -> file.extension == "png" }, -100)
+            recursiveFileSearcher.searchRecursively(-100, TrivialProgressUpdater()) { file -> file.extension == "png" }
         } catch (exception: NonPositiveMaxSearchDepth) {
             return
         }

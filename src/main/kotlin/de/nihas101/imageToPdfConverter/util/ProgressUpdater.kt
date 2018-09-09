@@ -27,16 +27,21 @@ import java.io.File
 
 interface ProgressUpdater {
     fun updateProgress(progress: Double, file: File)
+    fun updateProgress(progress: Double, message: String)
 }
 
 class TrivialProgressUpdater : ProgressUpdater {
+    override fun updateProgress(progress: Double, message: String) {
+        /* DO NOTHING */
+    }
+
     override fun updateProgress(progress: Double, file: File) {
         /* DO NOTHING */
     }
 }
 
 abstract class FileProgressUpdater(private val mainWindowController: MainWindowController) : ProgressUpdater {
-    protected fun updateProgress(progress: Double, message: String) {
+    override fun updateProgress(progress: Double, message: String) {
         mainWindowController.buildProgressBar.progress = progress
         runLater { mainWindowController.notifyUser(message, WHITE) }
     }
@@ -66,5 +71,10 @@ class LoadProgressUpdater(private val notifyUser: (String, Paint) -> Unit, priva
     override fun updateProgress(progress: Double, file: File) {
         runLater { notifyUser("Loading files... (${progress.toInt()}/$numberOfFiles)", WHITE) }
         logger.info("Loading files... (${progress.toInt()}/$numberOfFiles)")
+    }
+
+    override fun updateProgress(progress: Double, message: String) {
+        runLater { notifyUser(message, WHITE) }
+        logger.info(message)
     }
 }

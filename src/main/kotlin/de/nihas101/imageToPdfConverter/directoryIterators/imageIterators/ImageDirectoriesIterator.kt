@@ -19,11 +19,14 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.isImage
 import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.canUnzip
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
+import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
-import de.nihas101.imageToPdfConverter.util.RecursiveFileSearcher
+import de.nihas101.imageToPdfConverter.util.RecursiveFileSearcher.RecursiveFileSearcherFactory.createRecursiveFileSearcher
+import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
 
 open class ImageDirectoriesIterator protected constructor(iteratorOptions: IteratorOptions) : DirectoryIterator(iteratorOptions) {
@@ -31,11 +34,12 @@ open class ImageDirectoriesIterator protected constructor(iteratorOptions: Itera
 
     override fun canBeAdded(file: File) = isImageDirectory(file) || canUnzip(file)
 
-    override fun addDirectory(file: File, progressUpdater: ProgressUpdater, maximalSearchDepth: Int): Boolean {
+    override fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
         super.setupDirectory(file, progressUpdater)
 
-        val recursiveFileSearcher = RecursiveFileSearcher.createRecursiveFileSearcher(file)
-        val files = recursiveFileSearcher.searchRecursively({ fileToAdd -> canBeAdded(fileToAdd) }, maximalSearchDepth)
+        val recursiveFileSearcher = createRecursiveFileSearcher(file)
+        val files = recursiveFileSearcher.searchRecursively(iteratorOptions.maximalSearchDepth, progressUpdater)
+        { fileToAdd -> canBeAdded(fileToAdd) }
 
         return if (files.isEmpty()) {
             setupDirectory(file)
@@ -53,8 +57,14 @@ open class ImageDirectoriesIterator protected constructor(iteratorOptions: Itera
         val outOf = filesToAdd.size
 
         filesToAdd.forEachIndexed { index, file ->
-            if (canUnzip(file)) processedFiles.add(unzip(file, progressUpdater))
-            else processedFiles.add(file)
+            if (canUnzip(file)) {
+                try {
+                    processedFiles.add(unzip(file, TrivialProgressUpdater()))
+                } catch (exception: ExtensionNotSupportedException) {
+                    logger.info("Skipping {} as it cannot be unzipped.", file)
+                }
+
+            } else processedFiles.add(file)
             progressUpdater.updateProgress((index + 1).toDouble() / outOf.toDouble(), file)
         }
 
@@ -69,6 +79,8 @@ open class ImageDirectoriesIterator protected constructor(iteratorOptions: Itera
     }
 
     companion object ImageDirectoriesIteratorFactory {
+        private val logger = JaKoLogger.createLogger(this::class.java)!!
+
         fun createImageDirectoriesIterator(iteratorOptions: IteratorOptions): ImageDirectoriesIterator = ImageDirectoriesIterator(iteratorOptions)
     }
 }
