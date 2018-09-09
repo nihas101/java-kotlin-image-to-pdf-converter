@@ -16,12 +16,13 @@ class SetupIteratorTaskTest {
         var afterExecuted = false
         val directoryIterator = createDirectoryIterator(IteratorOptions())
 
+        val callClosure = CallClosure({ beforeExecuted = true }, { afterExecuted = true })
+
         val setupIteratorTask = createSetupIteratorTask(
                 directoryIterator,
                 File("src/test/resources/images"),
                 TrivialProgressUpdater(),
-                { beforeExecuted = true },
-                { afterExecuted = true }
+                callClosure
         )
 
         setupIteratorTask.executeTask()

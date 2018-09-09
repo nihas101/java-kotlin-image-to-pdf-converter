@@ -27,19 +27,18 @@ open class SetupIteratorTask protected constructor(
         protected val directoryIterator: DirectoryIterator,
         protected val directory: File,
         protected val progressUpdater: ProgressUpdater,
-        before: () -> Unit,
-        after: () -> Unit
-) : CancellableTask(before, directoryIterator, after) {
+        callClosure: CallClosure
+) : CancellableTask(directoryIterator, callClosure) {
 
     override fun call() {
-        before()
+        callClosure.before()
         try {
             directoryIterator.addDirectory(directory, progressUpdater)
         } catch (exception: InterruptedException) {
             /* The task was cancelled */
             logger.warn("{}", exception)
         }
-        after()
+        callClosure.after()
     }
 
     companion object SetupIteratorTaskFactory {
@@ -49,15 +48,13 @@ open class SetupIteratorTask protected constructor(
                 directoryIterator: DirectoryIterator,
                 file: File,
                 progressUpdater: ProgressUpdater,
-                before: () -> Unit = {},
-                after: () -> Unit = {}
+                callClosure: CallClosure
         ): SetupIteratorTask {
             return SetupIteratorTask(
                     directoryIterator,
                     file,
                     progressUpdater,
-                    before,
-                    after
+                    callClosure
             )
         }
     }

@@ -21,6 +21,7 @@ package de.nihas101.imageToPdfConverter.gui.subStages;
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator;
 import de.nihas101.imageToPdfConverter.gui.controller.MainWindowController;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
+import de.nihas101.imageToPdfConverter.tasks.CallClosure;
 import de.nihas101.imageToPdfConverter.tasks.SetupIteratorTask;
 import de.nihas101.imageToPdfConverter.util.IteratorSetupProgressUpdater;
 import de.nihas101.imageToPdfConverter.util.JaKoLogger;
@@ -80,29 +81,31 @@ public final class DirectoryIteratorDisplayer {
         DirectoryIterator imageFilesIterator = DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator(
                 new IteratorOptions()
         );
+
+        CallClosure callClosure = new CallClosure(() -> {
+            runLater(() -> mainWindowController.disableInput(true));
+            return Unit.INSTANCE;
+        }, () -> {
+            runLater(() -> {
+                mainWindowController.buildProgressBar.setProgress(0);
+                mainWindowController.notifyUser("Files: " + directoryIterator.numberOfFiles(), WHITE);
+                DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
+                        imageFilesIterator,
+                        index,
+                        mainWindowController
+                );
+
+                directoryContentDisplay.displayContent();
+                mainWindowController.disableInput(false);
+            });
+            return Unit.INSTANCE;
+        });
+
         SetupIteratorTask setupIteratorTask = SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorTask(
                 imageFilesIterator,
                 directoryIterator.getFile(index),
                 new IteratorSetupProgressUpdater(mainWindowController),
-                () -> {
-                    runLater(() -> mainWindowController.disableInput(true));
-                    return Unit.INSTANCE;
-                },
-                () -> {
-                    runLater(() -> {
-                        mainWindowController.buildProgressBar.setProgress(0);
-                        mainWindowController.notifyUser("Files: " + directoryIterator.numberOfFiles(), WHITE);
-                        DirectoryContentDisplay directoryContentDisplay = createDirectoryContentDisplay(
-                                imageFilesIterator,
-                                index,
-                                mainWindowController
-                        );
-
-                        directoryContentDisplay.displayContent();
-                        mainWindowController.disableInput(false);
-                    });
-                    return Unit.INSTANCE;
-                }
+                callClosure
         );
 
         mainWindowController.mainWindow.taskManager.start(setupIteratorTask, true);

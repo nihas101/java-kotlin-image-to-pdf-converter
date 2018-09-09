@@ -25,6 +25,7 @@ import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.ImageToPdfOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.tasks.BuildPdfTask;
+import de.nihas101.imageToPdfConverter.tasks.CallClosure;
 import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
 import de.nihas101.imageToPdfConverter.util.BuildProgressUpdater;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
@@ -155,11 +156,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
         if (saveFile != null) {
             imageToPdfOptions.setSaveLocation(saveFile);
 
-            BuildPdfTask buildPdfTask = BuildPdfTask.BuildPdfTaskFactory.createBuildPdfTask(
-                    PdfBuilder.PdfBuilderFactory.createPdfBBuilder(new IteratorOptions()),
-                    directoryIterator,
-                    imageToPdfOptions,
-                    new BuildProgressUpdater(mainWindowController),
+            CallClosure callClosure = new CallClosure(
                     () -> Unit.INSTANCE,
                     () -> {
                         runLater(() -> {
@@ -169,7 +166,14 @@ public class DirectoryContentDisplayController extends FileListViewController {
                             directoryContentDisplayStage.close();
                         });
                         return Unit.INSTANCE;
-                    }
+                    });
+
+            BuildPdfTask buildPdfTask = BuildPdfTask.BuildPdfTaskFactory.createBuildPdfTask(
+                    PdfBuilder.PdfBuilderFactory.createPdfBBuilder(new IteratorOptions()),
+                    directoryIterator,
+                    imageToPdfOptions,
+                    new BuildProgressUpdater(mainWindowController),
+                    callClosure
             );
 
             mainWindowController.mainWindow.taskManager.start(buildPdfTask, true);

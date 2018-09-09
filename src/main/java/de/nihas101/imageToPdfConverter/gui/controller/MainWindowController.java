@@ -23,10 +23,7 @@ import de.nihas101.imageToPdfConverter.gui.MainWindow;
 import de.nihas101.imageToPdfConverter.listCell.ImageListCell;
 import de.nihas101.imageToPdfConverter.pdf.builders.PdfBuilder;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
-import de.nihas101.imageToPdfConverter.tasks.BuildPdfTask;
-import de.nihas101.imageToPdfConverter.tasks.LoadImagesTask;
-import de.nihas101.imageToPdfConverter.tasks.SetupIteratorFromDragAndDropTask;
-import de.nihas101.imageToPdfConverter.tasks.SetupIteratorTask;
+import de.nihas101.imageToPdfConverter.tasks.*;
 import de.nihas101.imageToPdfConverter.util.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -123,22 +120,25 @@ public class MainWindowController extends FileListViewController {
     }
 
     private void startSetupIteratorFromDragAndDropThread(List<File> files) {
+        CallClosure callClosure = new CallClosure(
+                () -> {
+                    disableInput(true);
+                    return Unit.INSTANCE;
+                },
+                () -> {
+                    runLater(() -> {
+                        addRemainingFiles(files);
+                        disableInput(false);
+                    });
+                    return Unit.INSTANCE;
+                });
+
         SetupIteratorFromDragAndDropTask setupIteratorFromDragAndDropTask =
                 SetupIteratorFromDragAndDropTask.SetupIteratorFromDragAndDropTaskFactory.createSetupIteratorTask(
                         mainWindow.getDirectoryIterator(),
                         files.get(0),
                         new IteratorSetupProgressUpdater(this),
-                        () -> {
-                            disableInput(true);
-                            return Unit.INSTANCE;
-                        },
-                        () -> {
-                            runLater(() -> {
-                                addRemainingFiles(files);
-                                disableInput(false);
-                            });
-                            return Unit.INSTANCE;
-                        }
+                        callClosure
                 );
 
         mainWindow.taskManager.start(setupIteratorFromDragAndDropTask, true);
@@ -184,10 +184,7 @@ public class MainWindowController extends FileListViewController {
     }
 
     private void startSetupIteratorThread() {
-        SetupIteratorTask setupIteratorTask = SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorTask(
-                mainWindow.getDirectoryIterator(),
-                mainWindow.chosenDirectory,
-                new IteratorSetupProgressUpdater(this),
+        CallClosure callClosure = new CallClosure(
                 () -> {
                     disableInput(true);
                     return Unit.INSTANCE;
@@ -195,7 +192,13 @@ public class MainWindowController extends FileListViewController {
                 () -> {
                     runLater(this::tryToSetupListView);
                     return Unit.INSTANCE;
-                }
+                });
+
+        SetupIteratorTask setupIteratorTask = SetupIteratorTask.SetupIteratorTaskFactory.createSetupIteratorTask(
+                mainWindow.getDirectoryIterator(),
+                mainWindow.chosenDirectory,
+                new IteratorSetupProgressUpdater(this),
+                callClosure
         );
 
         mainWindow.taskManager.start(setupIteratorTask, true);
@@ -331,11 +334,7 @@ public class MainWindowController extends FileListViewController {
     }
 
     private void startPdfBuilderThread(PdfBuilder pdfBuilder) {
-        BuildPdfTask buildPdfTask = BuildPdfTask.BuildPdfTaskFactory.createBuildPdfTask(
-                pdfBuilder,
-                mainWindow.getDirectoryIterator(),
-                mainWindow.imageToPdfOptions,
-                new BuildProgressUpdater(this),
+        CallClosure callClosure = new CallClosure(
                 () -> {
                     runLater(() -> disableInput(true));
                     return Unit.INSTANCE;
@@ -350,7 +349,14 @@ public class MainWindowController extends FileListViewController {
                         );
                     });
                     return Unit.INSTANCE;
-                }
+                });
+
+        BuildPdfTask buildPdfTask = BuildPdfTask.BuildPdfTaskFactory.createBuildPdfTask(
+                pdfBuilder,
+                mainWindow.getDirectoryIterator(),
+                mainWindow.imageToPdfOptions,
+                new BuildProgressUpdater(this),
+                callClosure
         );
 
         mainWindow.taskManager.start(buildPdfTask, true);

@@ -26,24 +26,21 @@ class SetupIteratorFromDragAndDropTask private constructor(
         directoryIterator: DirectoryIterator,
         directory: File,
         progressUpdater: ProgressUpdater,
-        before: () -> Unit,
-        after: () -> Unit
-) : SetupIteratorTask(directoryIterator, directory, progressUpdater, before, after) {
+        callClosure: CallClosure
+) : SetupIteratorTask(directoryIterator, directory, progressUpdater, callClosure) {
 
     companion object SetupIteratorFromDragAndDropTaskFactory {
         fun createSetupIteratorTask(
                 directoryIterator: DirectoryIterator,
                 directory: File,
                 progressUpdater: ProgressUpdater,
-                before: () -> Unit,
-                after: () -> Unit
+                callClosure: CallClosure
         ): SetupIteratorFromDragAndDropTask {
             return SetupIteratorFromDragAndDropTask(
                     directoryIterator,
                     directory,
                     progressUpdater,
-                    before,
-                    after
+                    callClosure
             )
         }
     }

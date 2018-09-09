@@ -27,20 +27,18 @@ class LoadImagesTask private constructor(
         private val imageMap: ImageMap,
         private val directoryIterator: DirectoryIterator,
         private val updater: ProgressUpdater,
-        before: () -> Unit,
-        after: () -> Unit
-) : CancellableTask(before, imageMap, after) {
+        callClosure: CallClosure
+) : CancellableTask(imageMap, callClosure) {
 
     override fun call() {
-        before()
+        callClosure.before()
         try {
             imageMap.loadImages(directoryIterator.getFileList(), updater)
         } catch (exception: InterruptedException) {
             /* The task was cancelled */
             logger.warn("{}", exception)
         }
-
-        after()
+        callClosure.after()
     }
 
     companion object LoadImagesTaskFactory {
@@ -52,7 +50,8 @@ class LoadImagesTask private constructor(
                 progressUpdater: ProgressUpdater,
                 after: () -> Unit
         ): LoadImagesTask {
-            return LoadImagesTask(imageMap, directoryIterator, progressUpdater, {}, after)
+            val callClosure = CallClosure(after = after)
+            return LoadImagesTask(imageMap, directoryIterator, progressUpdater, callClosure)
         }
     }
 }

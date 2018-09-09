@@ -22,14 +22,14 @@ class BuildPdfTaskTest {
         targetFile.deleteOnExit()
         imageToPdfOptions.setSaveLocation(targetFile)
 
+        val callClosure = CallClosure({ beforeExecuted = true }, { afterExecuted = true })
 
         val buildPdfTask = createBuildPdfTask(
                 createPdfBBuilder(imageToPdfOptions.getIteratorOptions()),
                 createDirectoryIterator(sourceFile, imageToPdfOptions.getIteratorOptions()),
                 imageToPdfOptions,
                 TrivialProgressUpdater(),
-                { beforeExecuted = true },
-                { afterExecuted = true }
+                callClosure
         )
 
         buildPdfTask.executeTask()

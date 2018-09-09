@@ -29,19 +29,18 @@ class BuildPdfTask private constructor(
         private val directoryIterator: DirectoryIterator,
         private val imageToPdfOptions: ImageToPdfOptions,
         private val progressUpdater: ProgressUpdater,
-        before: () -> Unit,
-        after: () -> Unit
-) : CancellableTask(before, pdfBuilder, after) {
+        callClosure: CallClosure
+) : CancellableTask(pdfBuilder, callClosure) {
 
     override fun call() {
-        before()
+        callClosure.before()
         try {
             pdfBuilder.build(directoryIterator, imageToPdfOptions, progressUpdater)
         } catch (exception: InterruptedException) {
             /* The task was cancelled */
             logger.warn("{}", exception)
         }
-        after()
+        callClosure.after()
     }
 
     companion object BuildPdfTaskFactory {
@@ -52,10 +51,9 @@ class BuildPdfTask private constructor(
                 directoryIterator: DirectoryIterator,
                 imageToPdfOptions: ImageToPdfOptions,
                 progressUpdater: ProgressUpdater,
-                before: () -> Unit,
-                after: () -> Unit
+                callClosure: CallClosure
         ): BuildPdfTask {
-            return BuildPdfTask(pdfBuilder, directoryIterator, imageToPdfOptions, progressUpdater, before, after)
+            return BuildPdfTask(pdfBuilder, directoryIterator, imageToPdfOptions, progressUpdater, callClosure)
         }
     }
 }
