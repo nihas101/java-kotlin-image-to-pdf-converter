@@ -5,7 +5,7 @@ import de.nihas101.imageToPdfConverter.gui.MainWindow
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import javafx.scene.input.KeyCode
 import javafx.stage.Stage
-import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.*
 import org.junit.After
 import org.junit.Test
 import org.testfx.framework.junit.ApplicationTest
@@ -87,29 +87,55 @@ class MainWindowTest : ApplicationTest() {
         assertEquals(true, file.exists())
     }
 
-    /*
     @Test
     fun buildMultiplePdf() {
         clickOn("#optionsButton")
         Thread.sleep(waitingPeriod)
         clickOn("#multipleDirectoriesCheckBox")
         Thread.sleep(waitingPeriod)
-        clickOn("#saveToCustomLocationCheckBox")
+        clickOn("#saveToParticularLocationCheckBox")
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
-        val directory = File("src/test/resources/test")
-        val pdf = File("src/test/resources/test/images.pdf")
-        directory.mkdir()
-        setupDirectoryIterator("src/test/resources", true)
 
-        mainWindowController!!.buildPdf(directory)
-
-        directory.deleteOnExit()
-        pdf.deleteOnExit()
-        Thread.sleep(waitingPeriod)
-        assertEquals(true, pdf.exists())
+        assertTrue(mainWindow!!.imageToPdfOptions.getIteratorOptions().multipleDirectories)
+        assertTrue(mainWindow!!.imageToPdfOptions.getPdfOptions().useCustomLocation)
     }
-    */
+
+    @Test
+    fun saveToCustomLocationPermanenceTest() {
+        clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
+        clickOn("#saveToParticularLocationCheckBox")
+        Thread.sleep(waitingPeriod)
+        closeCurrentWindow()
+
+        assertTrue(mainWindow!!.imageToPdfOptions.getPdfOptions().useCustomLocation)
+
+        clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
+        closeCurrentWindow()
+
+        assertTrue(mainWindow!!.imageToPdfOptions.getPdfOptions().useCustomLocation)
+    }
+
+    @Test
+    fun saveToCustomLocationChangeTest() {
+        clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
+        clickOn("#saveToParticularLocationCheckBox")
+        Thread.sleep(waitingPeriod)
+        closeCurrentWindow()
+
+        assertTrue(mainWindow!!.imageToPdfOptions.getPdfOptions().useCustomLocation)
+
+        clickOn("#optionsButton")
+        Thread.sleep(waitingPeriod)
+        clickOn("#saveToParticularLocationCheckBox")
+        Thread.sleep(waitingPeriod)
+        closeCurrentWindow()
+
+        assertFalse(mainWindow!!.imageToPdfOptions.getPdfOptions().useCustomLocation)
+    }
 
     @Test
     fun clearAllNoSetup() {

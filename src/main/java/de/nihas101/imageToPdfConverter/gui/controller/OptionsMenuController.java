@@ -52,7 +52,7 @@ public class OptionsMenuController {
     public RadioMenuItem defaultCompression_item;
     public RadioMenuItem bestCompression_item;
     public RadioMenuItem speedCompression_item;
-    public Spinner maximalDepthSearchSpinner;
+    public Spinner<Integer> maximalDepthSearchSpinner;
     public CheckBox saveToParticularLocationCheckBox;
     private ImageToPdfOptions imageToPdfOptions;
 
@@ -75,6 +75,8 @@ public class OptionsMenuController {
         setSelectedPdfVersion(pdfVersionToggle);
         setupCompressionUserData(pdfCompressionToggle);
         setSelectedCompression(pdfCompressionToggle);
+        maximalDepthSearchSpinner.getValueFactory().setValue(imageToPdfOptions.getIteratorOptions().getMaximalSearchDepth());
+        saveToParticularLocationCheckBox.setSelected(imageToPdfOptions.getPdfOptions().getUseCustomLocation());
     }
 
     private void setupPdfVersionUserData(ToggleGroup pdfVersionToggle) {
