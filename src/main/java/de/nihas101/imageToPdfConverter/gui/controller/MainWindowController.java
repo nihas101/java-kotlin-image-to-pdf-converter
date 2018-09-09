@@ -179,7 +179,7 @@ public class MainWindowController extends FileListViewController {
     }
 
     private boolean userWantsAPdfFromAZipFile() {
-        return mainWindow.imageToPdfOptions.getIteratorOptions().getZipFiles() &&
+        return mainWindow.imageToPdfOptions.getIteratorOptions().getIncludeZipFiles() &&
                 !mainWindow.imageToPdfOptions.getIteratorOptions().getMultipleDirectories();
     }
 

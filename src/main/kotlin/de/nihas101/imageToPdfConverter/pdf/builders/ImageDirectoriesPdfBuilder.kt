@@ -39,7 +39,7 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
             if (cancelled) throw InterruptedException()
             val directory = directoryIterator.nextFile()
             progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble(), directory)
-            buildNextPDF(createImageFilesIterator(), directory, imageToPdfOptions)
+            buildNextPDF(createImageFilesIterator(imageToPdfOptions.getIteratorOptions()), directory, imageToPdfOptions)
         }
     }
 

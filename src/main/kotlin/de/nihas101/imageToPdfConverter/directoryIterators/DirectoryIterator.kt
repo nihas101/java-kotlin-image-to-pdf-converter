@@ -18,20 +18,19 @@
 
 package de.nihas101.imageToPdfConverter.directoryIterators
 
+import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.ExtensionNotSupportedException
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreFilesException
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageDirectoriesIterator.ImageDirectoriesIteratorFactory.createImageDirectoriesIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.imageIterators.ImageFilesIterator.ImageFilesIteratorFactory.createImageFilesIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFileIterator.ZipFileIteratorFactory.createZipFileIterator
-import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ZipFilesIterator.ZipFilesIteratorFactory.createZipFilesIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import de.nihas101.imageToPdfConverter.tasks.Cancellable
 import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
-import de.nihas101.imageToPdfConverter.util.RecursiveFileSearcher.RecursiveFileSearcherFactory.createRecursiveFileSearcher
 import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
 
-abstract class DirectoryIterator : Cancellable {
+abstract class DirectoryIterator(protected val iteratorOptions: IteratorOptions) : Cancellable {
     private var currentIndex = 0
     protected val files = mutableListOf<File>()
     protected var directory: File? = null
@@ -83,32 +82,24 @@ abstract class DirectoryIterator : Cancellable {
         return add(files.size, file)
     }
 
-    fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater = TrivialProgressUpdater()): Boolean {
-        if (filesToAdd.isEmpty()) return true
-        if (files.isEmpty()) setupDirectory(filesToAdd[0].parentFile, progressUpdater)
-        val outOf = filesToAdd.size
-
-        return files.addAll(filesToAdd.filterIndexed { index, file ->
-            progressUpdater.updateProgress((index + 1).toDouble() / outOf.toDouble(), file)
-            canBeAdded(file)
-        })
-    }
+    abstract fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater = TrivialProgressUpdater()): Boolean
 
     abstract fun canBeAdded(file: File): Boolean
 
-    open fun addDirectory(file: File, progressUpdater: ProgressUpdater, maximalSearchDepth: Int = 1): Boolean {
-        return if (file.isDirectory) {
-            val recursiveFileSearcher = createRecursiveFileSearcher(file)
-            val files = recursiveFileSearcher.searchRecursively({ fileToAdd -> canBeAdded(fileToAdd) }, maximalSearchDepth)
+    abstract fun addDirectory(file: File, progressUpdater: ProgressUpdater, maximalSearchDepth: Int = 1): Boolean
 
-            if (files.isEmpty()) {
-                setupDirectory(file)
-                return true
-            } else addAll(files, progressUpdater)
-        } else {
-            progressUpdater.updateProgress(1.0, file)
-            add(file)
+    fun unzip(file: File, progressUpdater: ProgressUpdater): File {
+        val unzipInto = File("${file.parent.trim()}/${file.nameWithoutExtension.trim()}")
+        logger.info("Unzipping {}", file.name)
+        try {
+            val imageUnZipper = ImageUnZipper.createImageUnZipper(file)
+            imageUnZipper.unzip(unzipInto, progressUpdater, iteratorOptions.deleteOnExit)
+        } catch (exception: ExtensionNotSupportedException) {
+            logger.error("{}. Skipping directory.", exception)
+            /* Proceed with empty unzip directory */
         }
+
+        return unzipInto
     }
 
 
@@ -126,7 +117,7 @@ abstract class DirectoryIterator : Cancellable {
     }
 
     companion object DirectoryIteratorFactory {
-        private val logger = JaKoLogger.createLogger(DirectoryIterator::class.java)
+        private val logger = JaKoLogger.createLogger(DirectoryIterator::class.java)!!
 
         fun createDirectoryIterator(file: File, iteratorOptions: IteratorOptions): DirectoryIterator {
             val directoryIterator = createDirectoryIterator(iteratorOptions)
@@ -136,34 +127,8 @@ abstract class DirectoryIterator : Cancellable {
 
         fun createDirectoryIterator(iteratorOptions: IteratorOptions): DirectoryIterator {
             return when (iteratorOptions.multipleDirectories) {
-                false -> createSingleDirectoryIterator(iteratorOptions)
-                true -> createMultipleDirectoriesIterator(iteratorOptions)
-            }
-        }
-
-        private fun createSingleDirectoryIterator(iteratorOptions: IteratorOptions): DirectoryIterator {
-            return when (iteratorOptions.zipFiles) {
-                false -> {
-                    logger.info("{}", "Created ImageFilesIterator")
-                    createImageFilesIterator()
-                }
-                true -> {
-                    logger.info("{}", "Created ZipFileIterator")
-                    createZipFileIterator(iteratorOptions.deleteOnExit)
-                }
-            }
-        }
-
-        private fun createMultipleDirectoriesIterator(iteratorOptions: IteratorOptions): DirectoryIterator {
-            return when (iteratorOptions.zipFiles) {
-                false -> {
-                    logger.info("{}", "Created ImageDirectoriesIterator")
-                    createImageDirectoriesIterator(iteratorOptions.maximalSearchDepth)
-                }
-                true -> {
-                    logger.info("{}", "Created ZipFilesIterator")
-                    createZipFilesIterator(iteratorOptions.deleteOnExit, iteratorOptions.maximalSearchDepth)
-                }
+                false -> createImageFilesIterator(iteratorOptions)
+                true -> createImageDirectoriesIterator(iteratorOptions)
             }
         }
     }

@@ -45,7 +45,7 @@ data class ImageToPdfOptions(
 
     fun setZipFiles(zipFiles: Boolean) {
         logger.info("Set zip files to {}", zipFiles)
-        iteratorOptions = iteratorOptions.copy(zipFiles = zipFiles)
+        iteratorOptions = iteratorOptions.copy(includeZipFiles = zipFiles)
     }
 
     fun setDeleteOnExit(deleteOnExit: Boolean) {

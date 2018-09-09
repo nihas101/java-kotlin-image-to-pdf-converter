@@ -19,18 +19,48 @@
 package de.nihas101.imageToPdfConverter.directoryIterators.imageIterators
 
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
+import de.nihas101.imageToPdfConverter.directoryIterators.zipIterators.ImageUnZipper.ZipFileIteratorFactory.canUnzip
+import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
+import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
 
-open class ImageFilesIterator protected constructor() : DirectoryIterator() {
+open class ImageFilesIterator protected constructor(iteratorOptions: IteratorOptions) : DirectoryIterator(iteratorOptions) {
     override fun getParentDirectory(): File = directory!!
 
-    override fun canBeAdded(file: File): Boolean = isImage(file)
+    override fun canBeAdded(file: File): Boolean = isImage(file) || canUnzip(file)
+
+    override fun addDirectory(file: File, progressUpdater: ProgressUpdater, maximalSearchDepth: Int): Boolean {
+        super.setupDirectory(file, progressUpdater)
+
+        return when {
+            file.isDirectory -> addAll(file.listFiles().filter(this@ImageFilesIterator::canBeAdded), progressUpdater)
+            canUnzip(file) -> addAll(unzip(file, progressUpdater).listFiles().toList(), progressUpdater)
+            isImage(file) -> addAll(listOf(file), progressUpdater)
+            else -> false
+        }
+    }
+
+    override fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater): Boolean {
+        val processedFiles = mutableListOf<File>()
+
+        if (filesToAdd.isEmpty()) return true
+        if (files.isEmpty()) setupDirectory(filesToAdd[0].parentFile, progressUpdater)
+        val outOf = filesToAdd.size
+
+        filesToAdd.forEachIndexed { index, file ->
+            if (canUnzip(file)) processedFiles.add(unzip(file, progressUpdater))
+            else processedFiles.add(file)
+            progressUpdater.updateProgress((index + 1).toDouble() / outOf.toDouble(), file)
+        }
+
+        return files.addAll(processedFiles)
+    }
 
     companion object ImageFilesIteratorFactory {
-        fun createImageFilesIterator(): ImageFilesIterator = ImageFilesIterator()
+        fun createImageFilesIterator(iteratorOptions: IteratorOptions): ImageFilesIterator = ImageFilesIterator(iteratorOptions)
 
         fun isImage(file: File): Boolean {
             val image: BufferedImage?

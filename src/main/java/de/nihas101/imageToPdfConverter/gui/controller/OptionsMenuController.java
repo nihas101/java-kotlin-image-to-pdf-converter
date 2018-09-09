@@ -68,7 +68,7 @@ public class OptionsMenuController {
         multipleDirectoriesCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getMultipleDirectories());
         maximalDepthSearchSpinner.setDisable(!multipleDirectoriesCheckBox.isSelected());
         maximalDepthSearchSpinner.getEditor().setAlignment(CENTER);
-        zipFilesCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getZipFiles());
+        zipFilesCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getIncludeZipFiles());
         deleteOnExitCheckBox.setSelected(imageToPdfOptions.getIteratorOptions().getDeleteOnExit());
 
         setupPdfVersionUserData(pdfVersionToggle);

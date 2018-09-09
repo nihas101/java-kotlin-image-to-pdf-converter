@@ -31,7 +31,7 @@ class OptionsMenuTest : ApplicationTest() {
         Thread.sleep(waitingPeriod)
         closeCurrentWindow()
         Thread.sleep(waitingPeriod)
-        assertEquals(true, mainWindow!!.imageToPdfOptions.getIteratorOptions().zipFiles)
+        assertEquals(true, mainWindow!!.imageToPdfOptions.getIteratorOptions().includeZipFiles)
     }
 
     @Test

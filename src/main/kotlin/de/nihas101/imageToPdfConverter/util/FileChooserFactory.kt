@@ -22,6 +22,10 @@ package de.nihas101.imageToPdfConverter.util
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import javafx.stage.DirectoryChooser
 import javafx.stage.FileChooser
+import javafx.stage.FileChooser.ExtensionFilter
+
+val pdfZipFilter = ExtensionFilter("PDF files (*.pdf), ZIP files (*.zip)", "*.pdf", "*.zip")
+val pdfFilter = ExtensionFilter("PDF files (*.pdf)", "*pdf")
 
 /**
  * Sets up the [DirectoryChooser] instance
@@ -51,8 +55,14 @@ fun createZipFileChooser(): FileChooser {
 fun createSaveFileChooser(): FileChooser {
     val saveFileChooser = FileChooser()
     saveFileChooser.title = "Choose a save location for the PDF"
-    val extFilter = FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf")
-    saveFileChooser.extensionFilters.add(extFilter)
 
     return saveFileChooser
+}
+
+fun addExtensionFilters(fileChooser: FileChooser, iteratorOptions: IteratorOptions) {
+    fileChooser.extensionFilters.clear()
+
+    val extensionFilter: ExtensionFilter = if (iteratorOptions.includeZipFiles) pdfZipFilter else pdfFilter
+
+    fileChooser.extensionFilters.add(extensionFilter)
 }

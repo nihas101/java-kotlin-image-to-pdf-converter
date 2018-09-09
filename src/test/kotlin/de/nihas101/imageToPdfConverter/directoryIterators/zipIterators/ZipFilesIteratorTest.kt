@@ -13,16 +13,14 @@ import java.io.File
 class ZipFilesIteratorTest {
     @Test
     fun nextFile() {
-        val zipFilesIterator = createTestIterator()
+        val zipFilesIterator = createTestIterator(true)
 
-        zipFilesIterator.nextFile()
-        zipFilesIterator.nextFile()
-        zipFilesIterator.nextFile()
-
-        try {
-            zipFilesIterator.nextFile()
-        } catch (exception: NoMoreFilesException) {
-            return
+        for (tries in 0 until 10) {
+            try {
+                zipFilesIterator.nextFile()
+            } catch (exception: NoMoreFilesException) {
+                return
+            }
         }
 
         fail("NoMoreFilesException was not thrown")
@@ -30,10 +28,9 @@ class ZipFilesIteratorTest {
 
     @Test
     fun getFile() {
-        val zipFilesIterator = createTestIterator()
+        val zipFilesIterator = createTestIterator(true)
 
         val file = zipFilesIterator.getFile(0)
-
 
         assertEquals(true,
                 "images" == file.name || // windows
@@ -43,38 +40,40 @@ class ZipFilesIteratorTest {
 
     @Test
     fun getFiles() {
-        val zipFilesIterator = createTestIterator()
+        val zipFilesIterator = createTestIterator(true)
 
-        val files = zipFilesIterator.getFileList()
+        val file = zipFilesIterator.getFile(0)
 
         assertEquals(true,
-                "images" == files[0].name || // windows
-                        "imagesTrailing" == files[0].name // linux
+                "images" == file.name || // windows
+                        "imagesTrailing" == file.name // linux
         )
     }
 
     @Test
     fun remove() {
-        val zipFilesIterator = createTestIterator()
+        val zipFilesIterator = createTestIterator(true)
+        val before = zipFilesIterator.numberOfFiles()
 
         val removed = zipFilesIterator.remove(File("src/test/resources/zip/images"))
 
         assertEquals(true, removed)
-        assertEquals(2, zipFilesIterator.numberOfFiles())
+        assertEquals(before - 1, zipFilesIterator.numberOfFiles())
     }
 
     @Test
     fun add() {
-        val zipFilesIterator = createTestIterator()
+        val zipFilesIterator = createTestIterator(true)
+        val before = zipFilesIterator.numberOfFiles()
 
         zipFilesIterator.add(File("src/test/resources/images"))
 
-        assertEquals(4, zipFilesIterator.numberOfFiles())
+        assertEquals(before + 1, zipFilesIterator.numberOfFiles())
     }
 
     @Test
     fun addIndex() {
-        val zipFilesIterator = createTestIterator()
+        val zipFilesIterator = createTestIterator(true)
 
         zipFilesIterator.add(0, File("src/test/resources/images"))
 
@@ -83,23 +82,24 @@ class ZipFilesIteratorTest {
 
     @Test
     fun addAll() {
-        val zipFilesIterator = createTestIterator()
+        val zipFilesIterator = createTestIterator(true)
+        val before = zipFilesIterator.numberOfFiles()
 
         zipFilesIterator.addAll(mutableListOf(File("src/test/resources/images")))
 
-        assertEquals(4, zipFilesIterator.numberOfFiles())
+        assertEquals(before + 1, zipFilesIterator.numberOfFiles())
     }
 
     @Test
     fun getParentDirectory() {
-        val zipFilesIterator = createTestIterator()
+        val zipFilesIterator = createTestIterator(true)
 
         assertEquals("zip", zipFilesIterator.getParentDirectory().name)
     }
 
     @Test
     fun resetIndex() {
-        val zipFilesIterator = createTestIterator()
+        val zipFilesIterator = createTestIterator(true)
 
         zipFilesIterator.nextFile()
 
@@ -114,17 +114,17 @@ class ZipFilesIteratorTest {
 
     @Test
     fun clearTest() {
-        val directoriesIterator = createTestIterator()
+        val directoriesIterator = createTestIterator(true)
 
         directoriesIterator.clear()
 
         TestCase.assertEquals(0, directoriesIterator.numberOfFiles())
     }
 
-    private fun createTestIterator(): DirectoryIterator {
+    private fun createTestIterator(includeZipFiles: Boolean = false): DirectoryIterator {
         return createDirectoryIterator(
                 File("src/test/resources/zip"),
-                IteratorOptions(true, true, true)
+                IteratorOptions(true, includeZipFiles, true)
         )
     }
 }

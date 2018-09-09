@@ -21,9 +21,9 @@ class ImageToPdfOptionsTest {
     @Test
     fun setZipFiles() {
         val imageToPdfOptions = ImageToPdfOptions()
-        assertEquals(false, imageToPdfOptions.getIteratorOptions().zipFiles)
+        assertEquals(false, imageToPdfOptions.getIteratorOptions().includeZipFiles)
         imageToPdfOptions.setZipFiles(true)
-        assertEquals(true, imageToPdfOptions.getIteratorOptions().zipFiles)
+        assertEquals(true, imageToPdfOptions.getIteratorOptions().includeZipFiles)
     }
 
     @Test

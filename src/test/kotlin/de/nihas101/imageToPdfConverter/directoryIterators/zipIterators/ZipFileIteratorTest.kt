@@ -103,7 +103,7 @@ class ZipFileIteratorTest {
     private fun createTestIterator(): DirectoryIterator {
         return createDirectoryIterator(
                 File("src/test/resources/zip/images.zip"),
-                IteratorOptions(zipFiles = true, deleteOnExit = true)
+                IteratorOptions(includeZipFiles = true, deleteOnExit = true)
         )
     }
 }

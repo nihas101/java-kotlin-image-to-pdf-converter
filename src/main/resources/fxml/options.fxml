@@ -46,7 +46,8 @@
                     text="Instead of building a PDF from a single directory, build multiple PDFs from multiple directories"/>
         </tooltip>
     </Spinner>
-    <CheckBox fx:id="saveToParticularLocationCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+    <CheckBox fx:id="saveToParticularLocationCheckBox" maxHeight="1.7976931348623157E308"
+              maxWidth="1.7976931348623157E308"
               mnemonicParsing="false" onAction="#setSaveToCustomLocation" stylesheets="@../main.css"
               text="Save to a particular directory" textAlignment="CENTER" GridPane.rowIndex="2">
         <tooltip>
@@ -58,7 +59,8 @@
         </padding>
     </CheckBox>
     <CheckBox fx:id="zipFilesCheckBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-              mnemonicParsing="false" onAction="#setZipFilesOption" stylesheets="@../main.css" text="From ZIP file(s)"
+              mnemonicParsing="false" onAction="#setZipFilesOption" stylesheets="@../main.css"
+              text="Include ZIP file(s)"
               textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3"
               GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
         <tooltip>

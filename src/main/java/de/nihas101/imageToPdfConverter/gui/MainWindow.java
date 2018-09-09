@@ -26,6 +26,7 @@ import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions;
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.PdfOptions;
 import de.nihas101.imageToPdfConverter.tasks.TaskManager;
 import de.nihas101.imageToPdfConverter.util.FXMLObjects;
+import de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt;
 import de.nihas101.imageToPdfConverter.util.ImageMap;
 import de.nihas101.imageToPdfConverter.util.JaKoLogger;
 import javafx.application.Application;
@@ -101,13 +102,14 @@ public final class MainWindow extends Application {
     }
 
     private void setupMainWindow() {
-        saveFileChooser = createSaveFileChooser();
         imageMap = createImageMap();
 
         imageToPdfOptions = ImageToPdfOptions.OptionsFactory.createOptions(
                 new IteratorOptions(),
                 new PdfOptions()
         );
+
+        saveFileChooser = createSaveFileChooser();
     }
 
     private void setupOnExit(Stage stage) {
@@ -131,8 +133,10 @@ public final class MainWindow extends Application {
         String[] arg = new String[]{initialDirectory.getAbsolutePath(), initialFileName};
         logger.info("Opened SaveFileChooser at {} with the initial file name {}", arg);
 
+        FileChooserFactoryKt.addExtensionFilters(saveFileChooser, imageToPdfOptions.getIteratorOptions());
         saveFileChooser.setInitialFileName(initialFileName);
         saveFileChooser.setInitialDirectory(initialDirectory);
+        
         return saveFileChooser.showSaveDialog(scene.getWindow());
     }
 
