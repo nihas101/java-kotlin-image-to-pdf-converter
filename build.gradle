@@ -9,7 +9,7 @@ targetCompatibility = 1.8
 
 /* Application */
 group 'nihas101'
-version = '3.0.2-SNAPSHOT'
+version = '3.0.3-SNAPSHOT'
 applicationName = 'jaKoImage2Pdf'
 mainClassName = 'de.nihas101.imageToPdfConverter.Main'
 archivesBaseName = 'JaKoImage2Pdf'
