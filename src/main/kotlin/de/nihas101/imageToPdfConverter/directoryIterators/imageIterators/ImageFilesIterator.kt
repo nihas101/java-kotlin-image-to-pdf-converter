@@ -45,6 +45,26 @@ open class ImageFilesIterator protected constructor(iteratorOptions: IteratorOpt
         }
     }
 
+    override fun add(index: Int, file: File): Boolean {
+        val arguments = Array<Any>(2) {}
+        arguments[0] = file.name
+        arguments[1] = index
+
+        return when {
+            isImage(file) -> {
+                files.add(index, file)
+                logger.info("Added {} at index {}", arguments)
+                true
+            }
+            canUnzip(file) -> add(unzip(file))
+            file.isDirectory -> addAll(file.listFiles().toList())
+            else -> {
+                logger.info("Ignored addition of {} at index {} as it cannot be added", arguments)
+                false
+            }
+        }
+    }
+
     override fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater): Boolean {
         val processedFiles = mutableListOf<File>()
 
@@ -53,17 +73,33 @@ open class ImageFilesIterator protected constructor(iteratorOptions: IteratorOpt
         val outOf = filesToAdd.size
 
         filesToAdd.forEachIndexed { index, file ->
-            if (canUnzip(file)) {
-                try {
-                    processedFiles.add(unzip(file, progressUpdater))
-                } catch (exception: ExtensionNotSupportedException) {
-                    logger.info("Skipping {}, as it cannot be unzipped", file)
-                }
-            } else processedFiles.add(file)
+            processedFiles.addAll(processFile(file))
             progressUpdater.updateProgress((index + 1).toDouble() / outOf.toDouble(), file)
         }
 
-        return files.addAll(processedFiles)
+        files.addAll(processedFiles)
+        return !processedFiles.isEmpty()
+    }
+
+    private fun processFile(file: File): List<File> {
+        val processedFiles = mutableListOf<File>()
+
+        if (canUnzip(file)) processedFiles.addAll(tryToUnzip(file))
+        else if (isImage(file)) processedFiles.add(file)
+
+        return processedFiles
+    }
+
+    private fun tryToUnzip(file: File): List<File> {
+        val unzippedFiles = mutableListOf<File>()
+
+        try {
+            unzippedFiles.addAll(unzip(file).listFiles().filter { image -> isImage(image) })
+        } catch (exception: ExtensionNotSupportedException) {
+            logger.info("Skipping {}, as it cannot be unzipped", file)
+        }
+
+        return unzippedFiles
     }
 
     companion object ImageFilesIteratorFactory {

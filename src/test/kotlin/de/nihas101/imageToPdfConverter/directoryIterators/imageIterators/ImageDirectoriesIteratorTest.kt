@@ -4,8 +4,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreFilesException
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.fail
+import junit.framework.TestCase.*
 import org.junit.Test
 import java.io.File
 
@@ -28,12 +27,30 @@ class ImageDirectoriesIteratorTest {
     }
 
     @Test
-    fun add() {
+    fun addImage() {
+        val directoriesIterator = createTestIterator()
+        val image = File("src/test/resources/images/1.jpg")
+
+        assertFalse(directoriesIterator.add(image))
+    }
+
+    @Test
+    fun addDirectory() {
         val directoriesIterator = createTestIterator()
 
-        directoriesIterator.add(files[0])
-
+        assertTrue(directoriesIterator.add(files[0]))
         assertEquals(files[0], directoriesIterator.getFile(1))
+    }
+
+    @Test
+    fun addZipFile() {
+        val directoriesIterator = createTestIterator()
+        val before = directoriesIterator.numberOfFiles()
+
+        val zip = File("src/test/resources/zip/images.zip")
+
+        assertTrue(directoriesIterator.add(zip))
+        assertEquals(before + 1, directoriesIterator.numberOfFiles())
     }
 
     @Test

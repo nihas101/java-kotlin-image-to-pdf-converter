@@ -4,8 +4,7 @@ import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.DirectoryIterator.DirectoryIteratorFactory.createDirectoryIterator
 import de.nihas101.imageToPdfConverter.directoryIterators.exceptions.NoMoreFilesException
 import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.fail
+import junit.framework.TestCase.*
 import org.junit.Test
 import java.io.File
 
@@ -35,12 +34,41 @@ class ImageFilesIteratorTest {
     }
 
     @Test
-    fun add() {
+    fun addImage() {
         val imageFilesIterator = createTestIterator()
 
-        imageFilesIterator.add(files[0])
-
+        assertTrue(imageFilesIterator.add(files[0]))
         assertEquals(files[0], imageFilesIterator.getFile(4))
+    }
+
+    @Test
+    fun addDirectory() {
+        val imageFilesIterator = createTestIterator()
+        val before = imageFilesIterator.numberOfFiles()
+        val directory = File("src/test/resources/images")
+
+        assertTrue(imageFilesIterator.add(directory))
+        assertEquals(before + 4, imageFilesIterator.numberOfFiles())
+    }
+
+    @Test
+    fun addZip() {
+        val imageFilesIterator = createTestIterator()
+        val before = imageFilesIterator.numberOfFiles()
+
+        val zip = File("src/test/resources/zip/images.zip")
+
+        assertTrue(imageFilesIterator.add(zip))
+        assertEquals(before + 4, imageFilesIterator.numberOfFiles())
+    }
+
+    @Test
+    fun addTheUnaddable() {
+        val imageFilesIterator = createTestIterator()
+
+        val zip = File("src/test/kotlin/de/nihas101/imageToPdfConverter/directoryIterators/imageIterators/ImageFilesIteratorTest.kt")
+
+        assertFalse(imageFilesIterator.add(zip))
     }
 
     @Test
@@ -59,6 +87,17 @@ class ImageFilesIteratorTest {
         imageFilesIterator.addAll(files)
 
         assertEquals(files, imageFilesIterator.getFileList().subList(4, 8))
+    }
+
+    @Test
+    fun addAllZip() {
+        val imageFilesIterator = createTestIterator()
+        val zipFiles = File("src/test/resources/zip").listFiles().toList()
+        val before = imageFilesIterator.numberOfFiles()
+
+        imageFilesIterator.addAll(zipFiles)
+
+        assertEquals(before + 12, imageFilesIterator.numberOfFiles())
     }
 
     @Test

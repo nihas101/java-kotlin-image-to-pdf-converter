@@ -26,13 +26,31 @@ import de.nihas101.imageToPdfConverter.pdf.pdfOptions.IteratorOptions
 import de.nihas101.imageToPdfConverter.util.JaKoLogger
 import de.nihas101.imageToPdfConverter.util.ProgressUpdater
 import de.nihas101.imageToPdfConverter.util.RecursiveFileSearcher.RecursiveFileSearcherFactory.createRecursiveFileSearcher
-import de.nihas101.imageToPdfConverter.util.TrivialProgressUpdater
 import java.io.File
 
 open class ImageDirectoriesIterator protected constructor(iteratorOptions: IteratorOptions) : DirectoryIterator(iteratorOptions) {
     override fun getParentDirectory(): File = directory!!
 
     override fun canBeAdded(file: File) = isImageDirectory(file) || canUnzip(file)
+
+    override fun add(index: Int, file: File): Boolean {
+        val arguments = Array<Any>(2) {}
+        arguments[0] = file.name
+        arguments[1] = index
+
+        return when {
+            isImageDirectory(file) -> {
+                files.add(index, file)
+                logger.info("Added {} at index {}", arguments)
+                true
+            }
+            canUnzip(file) -> add(unzip(file))
+            else -> {
+                logger.info("Ignored addition of {} at index {} as it cannot be added", arguments)
+                false
+            }
+        }
+    }
 
     override fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean {
         super.setupDirectory(file, progressUpdater)
@@ -57,18 +75,32 @@ open class ImageDirectoriesIterator protected constructor(iteratorOptions: Itera
         val outOf = filesToAdd.size
 
         filesToAdd.forEachIndexed { index, file ->
-            if (canUnzip(file)) {
-                try {
-                    processedFiles.add(unzip(file, TrivialProgressUpdater()))
-                } catch (exception: ExtensionNotSupportedException) {
-                    logger.info("Skipping {} as it cannot be unzipped.", file)
-                }
-
-            } else processedFiles.add(file)
+            processedFiles.addAll(processFile(file))
             progressUpdater.updateProgress((index + 1).toDouble() / outOf.toDouble(), file)
         }
 
         return files.addAll(processedFiles)
+    }
+
+    private fun processFile(file: File): MutableList<File> {
+        val processedFiles = mutableListOf<File>()
+
+        if (canUnzip(file)) processedFiles.addAll(tryToUnzip(file))
+        else if (isImageDirectory(file)) processedFiles.add(file)
+
+        return processedFiles
+    }
+
+    private fun tryToUnzip(file: File): List<File> {
+        val unzippedFiles = mutableListOf<File>()
+
+        try {
+            unzippedFiles.add(unzip(file))
+        } catch (exception: ExtensionNotSupportedException) {
+            logger.info("Skipping {} as it cannot be unzipped.", file)
+        }
+
+        return unzippedFiles
     }
 
     private fun isImageDirectory(directory: File): Boolean {

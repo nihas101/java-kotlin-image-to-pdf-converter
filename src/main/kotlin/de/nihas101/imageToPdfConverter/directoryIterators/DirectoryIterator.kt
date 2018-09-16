@@ -62,25 +62,12 @@ abstract class DirectoryIterator(protected val iteratorOptions: IteratorOptions)
         return false
     }
 
-    fun add(index: Int, file: File): Boolean {
-        val arguments = Array<Any>(2) {}
-        arguments[0] = file.name
-        arguments[1] = index
-
-        return if (canBeAdded(file)) {
-            files.add(index, file)
-            logger.info("Added {} at index {}", arguments)
-            true
-        } else {
-            logger.info("Ignored addition of {} at index {} as it is no image", arguments)
-            false
-        }
-    }
-
     fun add(file: File): Boolean {
         if (files.isEmpty()) setupDirectory(file.parentFile, TrivialProgressUpdater())
         return add(files.size, file)
     }
+
+    abstract fun add(index: Int, file: File): Boolean
 
     abstract fun addAll(filesToAdd: List<File>, progressUpdater: ProgressUpdater = TrivialProgressUpdater()): Boolean
 
@@ -88,7 +75,7 @@ abstract class DirectoryIterator(protected val iteratorOptions: IteratorOptions)
 
     abstract fun addDirectory(file: File, progressUpdater: ProgressUpdater): Boolean
 
-    fun unzip(file: File, progressUpdater: ProgressUpdater): File {
+    fun unzip(file: File, progressUpdater: ProgressUpdater = TrivialProgressUpdater()): File {
         val unzipInto = File("${file.parent.trim()}/${file.nameWithoutExtension.trim()}")
         logger.info("Unzipping {}", file.name)
 
