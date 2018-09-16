@@ -48,9 +48,9 @@ public class Constants {
     public final static String NO_GUI = "--nogui";
 
     /* Source: icons8.com/icon/2828/open */
-    private final static String DIRECTORY_IMAGE_PATH = "/icons8-open-500.png";
+    private final static String DIRECTORY_IMAGE_PATH = "/icons/icons8-open-500.png";
     /* Source: icons8.com/icon/54151/gear */
-    public final static String GEAR_IMAGE_PATH = "/icons8-open-500.png";
+    public final static String GEAR_IMAGE_PATH = "/icons/icons8-open-500.png";
     public Image DIRECTORY_IMAGE_FILE;
 
     private Constants() {

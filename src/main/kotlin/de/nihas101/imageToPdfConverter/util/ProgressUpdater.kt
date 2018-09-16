@@ -25,6 +25,7 @@ import javafx.scene.paint.Paint
 import org.slf4j.LoggerFactory
 import java.io.File
 
+
 interface ProgressUpdater {
     fun updateProgress(progress: Double, file: File)
     fun updateProgress(progress: Double, message: String)
@@ -42,8 +43,10 @@ class TrivialProgressUpdater : ProgressUpdater {
 
 abstract class FileProgressUpdater(private val mainWindowController: MainWindowController) : ProgressUpdater {
     override fun updateProgress(progress: Double, message: String) {
-        mainWindowController.buildProgressBar.progress = progress
-        runLater { mainWindowController.notifyUser(message, WHITE) }
+        runLater {
+            mainWindowController.buildProgressBar.progress = progress
+            mainWindowController.notifyUser(message, WHITE)
+        }
     }
 }
 

@@ -40,9 +40,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
+import static de.nihas101.imageToPdfConverter.util.FXMLObjects.loadFXMLObjects;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createSaveFileChooser;
 import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;

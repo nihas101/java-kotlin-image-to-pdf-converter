@@ -33,7 +33,7 @@
                     <viewport>
                         <Rectangle2D/>
                     </viewport>
-                    <Image url="@../icons8-gear-96.png"/>
+                    <Image url="@../icons/icons8-gear-96.png"/>
                 </ImageView>
             </graphic>
         </Button>
