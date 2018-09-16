@@ -51,6 +51,8 @@ public class Constants {
     private final static String DIRECTORY_IMAGE_PATH = "/icons/icons8-open-500.png";
     /* Source: icons8.com/icon/54151/gear */
     public final static String GEAR_IMAGE_PATH = "/icons/icons8-open-500.png";
+    public final static String PDF_ICON_IMAGE_PARTIAL_PATH = "/icons/pdf_icon";
+
     public Image DIRECTORY_IMAGE_FILE;
 
     private Constants() {

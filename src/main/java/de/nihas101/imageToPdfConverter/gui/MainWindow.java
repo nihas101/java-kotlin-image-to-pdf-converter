@@ -40,17 +40,20 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static de.nihas101.imageToPdfConverter.gui.subStages.DirectoryIteratorDisplayer.createContentDisplayer;
 import static de.nihas101.imageToPdfConverter.gui.subStages.OptionsMenu.createOptionsMenu;
+import static de.nihas101.imageToPdfConverter.util.Constants.PDF_ICON_IMAGE_PARTIAL_PATH;
 import static de.nihas101.imageToPdfConverter.util.FXMLObjects.loadFXMLObjects;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createDirectoryChooser;
 import static de.nihas101.imageToPdfConverter.util.FileChooserFactoryKt.createSaveFileChooser;
 import static de.nihas101.imageToPdfConverter.util.ImageMap.createImageMap;
 import static de.nihas101.imageToPdfConverter.util.JaKoLogger.createLogger;
+import static javafx.embed.swing.SwingFXUtils.toFXImage;
+import static javax.imageio.ImageIO.read;
 
 
 public final class MainWindow extends Application {
@@ -111,20 +114,20 @@ public final class MainWindow extends Application {
         for (int ofSize = 16; ofSize < 512; ofSize += ofSize) {
             try {
                 icons.add(loadIcon(ofSize));
-            } catch (MalformedURLException e) {
-                /* Skip this icon */
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
         primaryStage.getIcons().addAll(icons);
     }
 
-    private Image loadIcon(int size) throws MalformedURLException {
+    private Image loadIcon(int size) throws IOException {
         try {
-            String iconPath = "src/main/resources/icons/pdf_icon" + size + ".png";
+            String iconPath = PDF_ICON_IMAGE_PARTIAL_PATH + size + ".png";
             logger.info("Loading icon at {}", iconPath);
-            return new Image(new File(iconPath).toURI().toURL().toString());
-        } catch (MalformedURLException e) {
+            return toFXImage(read(getClass().getResource(iconPath)), null);
+        } catch (IOException e) {
             logger.error("Failed to load Icon.\n{}", e);
             throw e;
         }
