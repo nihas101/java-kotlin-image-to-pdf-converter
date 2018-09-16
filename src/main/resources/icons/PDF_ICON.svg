@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="PDF_ICON.svg"
+   inkscape:export-filename="D:\Nikita\IdeaProjects\kotlin-image-to-pdf-converter\src\main\resources\pdf_icon256.png"
+   inkscape:export-xdpi="325.12"
+   inkscape:export-ydpi="325.12">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="7.9195959"
+     inkscape:cx="21.36374"
+     inkscape:cy="35.67229"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1851"
+     inkscape:window-height="1057"
+     inkscape:window-x="61"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Ebene 4">
+    <circle
+       style="fill:#800000;stroke-width:0.88788283"
+       id="path3715"
+       cy="287.09451"
+       cx="10"
+       r="10" />
+  </g>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       id="rect3713"
+       width="10"
+       height="12.5"
+       x="5"
+       y="281"
+       style="fill:#ffffff;stroke-width:0.141019" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Ebene 2">
+    <rect
+       style="fill:#b3b3b3;stroke-width:0.22019508"
+       id="rect3724-6"
+       width="5.6544304"
+       height="3.9260492"
+       x="-3.3998747"
+       y="280.78622"
+       transform="rotate(-3)" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Ebene 5">
+    <rect
+       style="fill:#e6e6e6;stroke-width:0.22019507"
+       id="rect3724"
+       width="5.6544299"
+       height="3.9260492"
+       x="11.3"
+       y="280.3988" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Ebene 3">
+    <rect
+       style="fill:#800000;stroke-width:0.31980425"
+       id="rect3720"
+       width="8.6507225"
+       height="2.6638365"
+       x="216.96494"
+       y="199.89534"
+       transform="matrix(0.74368931,0.6685254,-0.74368931,0.6685254,0,0)" />
+    <rect
+       style="fill:#800000;stroke-width:0.30994996"
+       id="rect3727"
+       width="3"
+       height="2.6169305"
+       x="14.090755"
+       y="280.20923" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="5.9133382"
+       y="290.38507"
+       id="text3731"><tspan
+         sodipodi:role="line"
+         id="tspan3729"
+         x="5.9133382"
+         y="290.38507"
+         style="font-size:4.23333311px;stroke-width:0.26458332px;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal">PDF</tspan></text>
+    <rect
+       style="fill:#800000;stroke-width:0.30294621"
+       id="rect3727-9"
+       width="3"
+       height="2.5"
+       x="14.989211"
+       y="283.15869" />
+  </g>
+</svg>
