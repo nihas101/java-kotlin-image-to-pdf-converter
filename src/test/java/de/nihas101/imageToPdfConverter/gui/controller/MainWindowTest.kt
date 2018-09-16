@@ -172,6 +172,7 @@ class MainWindowTest : ApplicationTest() {
         setupDirectoryIterator("src/test/resources", true)
 
         clickOnFirstCell(true)
+        sleep(waitingPeriod)
         closeCurrentWindow()
     }
 }
