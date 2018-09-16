@@ -88,8 +88,9 @@ public final class MainWindow extends Application {
      */
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        setIcon();
 
-        FXMLObjects fxmlObjects = FXMLObjects.loadFXMLObjects("fxml/main.fxml");
+        FXMLObjects fxmlObjects = loadFXMLObjects("fxml/main.fxml");
         root = (GridPane) fxmlObjects.getRoot();
         mainWindowController = (MainWindowController) fxmlObjects.getController();
 
@@ -103,6 +104,30 @@ public final class MainWindow extends Application {
 
         setupPrimaryStage(primaryStage, scene);
         primaryStage.show();
+    }
+
+    private void setIcon() {
+        List<Image> icons = new ArrayList<>();
+        for (int ofSize = 16; ofSize < 512; ofSize += ofSize) {
+            try {
+                icons.add(loadIcon(ofSize));
+            } catch (MalformedURLException e) {
+                /* Skip this icon */
+            }
+        }
+
+        primaryStage.getIcons().addAll(icons);
+    }
+
+    private Image loadIcon(int size) throws MalformedURLException {
+        try {
+            String iconPath = "src/main/resources/icons/pdf_icon" + size + ".png";
+            logger.info("Loading icon at {}", iconPath);
+            return new Image(new File(iconPath).toURI().toURL().toString());
+        } catch (MalformedURLException e) {
+            logger.error("Failed to load Icon.\n{}", e);
+            throw e;
+        }
     }
 
     private void setupMainWindow() {
