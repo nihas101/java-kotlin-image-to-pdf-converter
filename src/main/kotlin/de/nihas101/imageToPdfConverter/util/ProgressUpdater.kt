@@ -41,7 +41,11 @@ class TrivialProgressUpdater : ProgressUpdater {
     }
 }
 
-abstract class FileProgressUpdater(private val mainWindowController: MainWindowController) : ProgressUpdater {
+abstract class FileProgressUpdater(protected val mainWindowController: MainWindowController) : ProgressUpdater {
+    init {
+        runLater { mainWindowController.buildProgressBar.progress = -1.0 }
+    }
+
     override fun updateProgress(progress: Double, message: String) {
         runLater {
             mainWindowController.buildProgressBar.progress = progress
