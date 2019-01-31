@@ -16,6 +16,7 @@ class IteratorRemoveActionTest {
         val directoryIterator = DirectoryIterator.createDirectoryIterator(
                 File("src/test/resources/images"), IteratorOptions()
         )
+        directoryIterator.getFileList().sort()
         val iteratorAction = IteratorAction.createIteratorAction(listOf("r", "0", "3"), ImageToPdfOptions.createOptions())
 
         iteratorAction.execute(directoryIterator)
@@ -37,6 +38,7 @@ class IteratorRemoveActionTest {
         val directoryIterator = DirectoryIterator.createDirectoryIterator(
                 File("src/test/resources/images"), IteratorOptions()
         )
+        directoryIterator.getFileList().sort()
         val iteratorAction = IteratorAction.createIteratorAction(listOf("remove", "0", "3"), ImageToPdfOptions.createOptions())
 
         iteratorAction.execute(directoryIterator)

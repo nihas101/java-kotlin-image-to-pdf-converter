@@ -13,7 +13,10 @@ class PdfBuildInformationTest {
         pdfBuilderInformation.sourceFile = File("src/test/resources/images")
         pdfBuilderInformation.setupDirectoryIterator()
 
-        assertEquals("[1.jpg, 2.png, 3.png, の.png]", pdfBuilderInformation.getDirectoryIterator().getFileList().map { file -> file.name }.toString())
+        val fileList = pdfBuilderInformation.getDirectoryIterator().getFileList()
+        fileList.sort()
+
+        assertEquals("[1.jpg, 2.png, 3.png, の.png]", fileList.map { file -> file.name }.toString())
     }
 
     @Test

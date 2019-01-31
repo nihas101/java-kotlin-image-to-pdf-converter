@@ -5,16 +5,24 @@ import de.nihas101.image_to_pdf_converter.directory_iterators.DirectoryIterator.
 import de.nihas101.image_to_pdf_converter.directory_iterators.exceptions.NoMoreFilesException
 import de.nihas101.image_to_pdf_converter.pdf.pdf_options.IteratorOptions
 import junit.framework.TestCase.*
+import org.junit.BeforeClass
 import org.junit.Test
 import java.io.File
 
 class ImageFilesIteratorTest {
-    private val files = mutableListOf(
-            File("src/test/resources/images/1.jpg"),
-            File("src/test/resources/images/2.png"),
-            File("src/test/resources/images/3.png"),
-            File("src/test/resources/images/の.png")
-    )
+    companion object {
+        val files = mutableListOf(
+                File("src/test/resources/images/1.jpg"),
+                File("src/test/resources/images/2.png"),
+                File("src/test/resources/images/3.png"),
+                File("src/test/resources/images/の.png")
+        )
+
+        @BeforeClass @JvmStatic
+        fun sortFiles(){
+            files.sort()
+        }
+    }
 
     @Test
     fun getFile() {
@@ -190,7 +198,8 @@ class ImageFilesIteratorTest {
 
 
     private fun createTestIterator(): DirectoryIterator {
-        return createDirectoryIterator(File("src/test/resources/images"), IteratorOptions()
-        )
+        val testIterator = createDirectoryIterator(File("src/test/resources/images"), IteratorOptions())
+        testIterator.getFileList().sort()
+        return testIterator
     }
 }

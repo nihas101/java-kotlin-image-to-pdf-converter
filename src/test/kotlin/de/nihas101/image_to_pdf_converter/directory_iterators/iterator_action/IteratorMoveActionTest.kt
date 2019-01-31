@@ -14,6 +14,8 @@ class IteratorMoveActionTest {
         val directoryIterator = DirectoryIterator.createDirectoryIterator(
                 File("src/test/resources/images"), IteratorOptions()
         )
+        directoryIterator.getFileList().sort()
+
         val iteratorAction = createIteratorAction(
                 listOf("m", "0", "1"),
                 imageToPdfOptions = ImageToPdfOptions.createOptions()
@@ -30,6 +32,7 @@ class IteratorMoveActionTest {
         val directoryIterator = DirectoryIterator.createDirectoryIterator(
                 File("src/test/resources/images"), IteratorOptions()
         )
+        directoryIterator.getFileList().sort()
         val iteratorAction = createIteratorAction(
                 listOf("move", "0", "1"),
                 imageToPdfOptions = ImageToPdfOptions.createOptions()
