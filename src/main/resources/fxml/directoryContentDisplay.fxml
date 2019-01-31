@@ -4,7 +4,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.*?>
 <HBox stylesheets="@../main.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="de.nihas101.imageToPdfConverter.gui.controller.DirectoryContentDisplayController">
+      fx:controller="de.nihas101.image_to_pdf_converter.gui.controller.DirectoryContentDisplayController">
     <children>
         <ListView fx:id="imageListView" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
                   onMouseClicked="#displayListCell" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="700.0"

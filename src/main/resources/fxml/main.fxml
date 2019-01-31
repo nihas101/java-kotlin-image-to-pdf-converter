@@ -10,7 +10,7 @@
 <GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
           minWidth="-Infinity" prefHeight="475.0" prefWidth="300.0" stylesheets="@../main.css"
           xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.nihas101.imageToPdfConverter.gui.controller.MainWindowController">
+          fx:controller="de.nihas101.image_to_pdf_converter.gui.controller.MainWindowController">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0"
                            prefWidth="100.0"/>

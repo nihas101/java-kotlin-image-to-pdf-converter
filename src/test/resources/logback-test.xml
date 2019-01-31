@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <appender name="TEST" class="de.nihas101.imageToPdfConverter.util.StringAppender">
+    <appender name="TEST" class="de.nihas101.image_to_pdf_converter.util.StringAppender">
     </appender>
     <root level="trace">
         <appender-ref ref="TEST"/>
