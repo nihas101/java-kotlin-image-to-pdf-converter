@@ -18,8 +18,9 @@ class ImageFilesIteratorTest {
                 File("src/test/resources/images/の.png")
         )
 
-        @BeforeClass @JvmStatic
-        fun sortFiles(){
+        @BeforeClass
+        @JvmStatic
+        fun sortFiles() {
             files.sort()
         }
     }

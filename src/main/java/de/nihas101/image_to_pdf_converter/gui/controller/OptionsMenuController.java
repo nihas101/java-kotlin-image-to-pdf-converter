@@ -139,7 +139,7 @@ public class OptionsMenuController {
     }
 
     public ImageToPdfOptions getImageToPdfOptions() {
-        imageToPdfOptions.setMaximalSearchDepth((Integer) maximalDepthSearchSpinner.getValue());
+        imageToPdfOptions.setMaximalSearchDepth(maximalDepthSearchSpinner.getValue());
         return imageToPdfOptions;
     }
 

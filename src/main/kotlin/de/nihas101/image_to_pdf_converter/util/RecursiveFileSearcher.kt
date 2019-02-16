@@ -2,7 +2,7 @@ package de.nihas101.image_to_pdf_converter.util
 
 import java.io.File
 
-public class RecursiveFileSearcher private constructor(
+class RecursiveFileSearcher private constructor(
         private val filesInCurrentDepth: MutableList<File> = mutableListOf()
 ) {
     fun searchRecursively(maximalSearchDepth: Int, progressUpdater: ProgressUpdater, matches: (File) -> Boolean): List<File> {

@@ -102,8 +102,8 @@ class ZipFileIteratorTest {
 
     private fun createTestIterator(): DirectoryIterator {
         val testIterator = createDirectoryIterator(
-                                            File("src/test/resources/zip/images.zip"),
-                                            IteratorOptions(includeZipFiles = true, deleteOnExit = true))
+                File("src/test/resources/zip/images.zip"),
+                IteratorOptions(includeZipFiles = true, deleteOnExit = true))
         testIterator.getFileList().sort()
         return testIterator
     }
