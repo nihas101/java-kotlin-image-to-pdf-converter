@@ -9,13 +9,13 @@ targetCompatibility = 1.8
 
 /* Application */
 group 'nihas101'
-version = '3.0.3-SNAPSHOT'
+version = '3.0.4-SNAPSHOT'
 applicationName = 'jaKoImage2Pdf'
 mainClassName = 'de.nihas101.image_to_pdf_converter.Main'
 archivesBaseName = 'JaKoImage2Pdf'
 
 buildscript {
-    ext.kotlin_version = '1.3.10'
+    ext.kotlin_version = '1.3.21'
 
     repositories {
         mavenCentral()
