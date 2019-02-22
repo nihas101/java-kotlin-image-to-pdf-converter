@@ -30,20 +30,23 @@ import java.nio.file.Paths
 class ImageDirectoriesPdfBuilder : PdfBuilder() {
     private var imagePdfBuilder: ImagePdfBuilder? = null
 
-    override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) {
+    override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) : Boolean {
         directoryIterator.resetIndex()
         val nrOfFiles = directoryIterator.numberOfFiles()
-        if (nrOfFiles == 0) return
+        if (nrOfFiles == 0) return true
 
         for (i in 1..nrOfFiles) {
             if (cancelled) throw InterruptedException()
             val directory = directoryIterator.nextFile()
             progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble(), directory)
-            buildNextPDF(createImageFilesIterator(imageToPdfOptions.getIteratorOptions()), directory, imageToPdfOptions)
+            val wasSuccess = buildNextPDF(createImageFilesIterator(imageToPdfOptions.getIteratorOptions()), directory, imageToPdfOptions)
+            if(!wasSuccess) return false
         }
+
+        return true
     }
 
-    private fun buildNextPDF(directoryIterator: DirectoryIterator, directory: File, imageToPdfOptions: ImageToPdfOptions) {
+    private fun buildNextPDF(directoryIterator: DirectoryIterator, directory: File, imageToPdfOptions: ImageToPdfOptions) : Boolean {
         directoryIterator.addDirectory(directory, TrivialProgressUpdater())
 
         if (directoryIterator.numberOfFiles() != 0) {
@@ -55,8 +58,9 @@ class ImageDirectoriesPdfBuilder : PdfBuilder() {
             nextImageToPdfOptions.setSaveLocation(file)
 
             imagePdfBuilder = createImagePdfBuilder()
-            imagePdfBuilder!!.build(directoryIterator, nextImageToPdfOptions)
+            return imagePdfBuilder!!.build(directoryIterator, nextImageToPdfOptions)
         }
+        return false
     }
 
     override fun cancelTask() {

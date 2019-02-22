@@ -32,7 +32,7 @@ abstract class PdfBuilder : Cancellable {
             directoryIterator: DirectoryIterator,
             imageToPdfOptions: ImageToPdfOptions,
             progressUpdater: ProgressUpdater = TrivialProgressUpdater()
-    )
+    ): Boolean
 
     override fun cancelTask() {
         cancelled = true
