@@ -45,6 +45,7 @@ import kotlin.Unit;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 import static de.nihas101.image_to_pdf_converter.util.Constants.NOTIFICATION_MAX_STRING_LENGTH;
 import static de.nihas101.image_to_pdf_converter.util.FileChooserFactoryKt.createDirectoryChooser;
@@ -344,7 +345,7 @@ public class MainWindowController extends FileListViewController {
                         disableInput(false);
                         notifyUser(
                                 "Finished building: "
-                                        + mainWindow.imageToPdfOptions.getPdfOptions().getSaveLocation().getAbsolutePath(),
+                                        + Objects.requireNonNull(mainWindow.imageToPdfOptions.getPdfOptions().getSaveLocation()).getAbsolutePath(),
                                 GREEN
                         );
                     });
