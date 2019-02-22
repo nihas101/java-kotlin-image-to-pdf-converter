@@ -24,15 +24,17 @@ import de.nihas101.image_to_pdf_converter.directory_iterators.DirectoryIterator
 import de.nihas101.image_to_pdf_converter.pdf.ImagePdf
 import de.nihas101.image_to_pdf_converter.pdf.ImagePdf.ImagePdfFactory.createPdf
 import de.nihas101.image_to_pdf_converter.pdf.pdf_options.ImageToPdfOptions
+import de.nihas101.image_to_pdf_converter.util.JaKoLogger.createLogger
 import de.nihas101.image_to_pdf_converter.util.ProgressUpdater
 import java.io.File
 
 class ImagePdfBuilder : PdfBuilder() {
     companion object ImagePdfBuilderFactory {
+        private val logger = createLogger(ImagePdfBuilder::class.java)
         fun createImagePdfBuilder() = ImagePdfBuilder()
     }
 
-    override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) {
+    override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) : Boolean {
         directoryIterator.resetIndex()
 
         val imagePdf = if (imageToPdfOptions.getPdfOptions().useCustomLocation) createPdf(imageToPdfOptions)
@@ -42,19 +44,31 @@ class ImagePdfBuilder : PdfBuilder() {
         )
 
         val nrOfFiles = directoryIterator.numberOfFiles()
+        var wasSuccess = true
 
+        var file = directoryIterator.nextFile()
         try {
             for (i in 1..nrOfFiles) {
                 if (cancelled) throw InterruptedException()
-                val file = directoryIterator.nextFile()
                 progressUpdater.updateProgress(i.toDouble() / nrOfFiles.toDouble(), file)
                 addNextFileToPDF(file, imagePdf)
+                file = directoryIterator.nextFile()
             }
         } catch (exception: Exception) {
-            exception.printStackTrace()
+            logException(file, exception)
+            wasSuccess = false
         } finally {
             imagePdf.close()
+            return wasSuccess
         }
+    }
+
+    private fun logException(file: File, exception: Exception) {
+        val args = Array<Any>(2) {}
+        args[0] = file.absolutePath
+        args[1] = exception
+
+        logger.error("Exception caused by: {}\n{}", args)
     }
 
     private fun createFileAtSameLocation(directoryIterator: DirectoryIterator): File {
