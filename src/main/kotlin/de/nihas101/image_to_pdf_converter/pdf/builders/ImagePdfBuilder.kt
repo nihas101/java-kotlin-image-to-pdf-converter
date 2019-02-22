@@ -34,7 +34,7 @@ class ImagePdfBuilder : PdfBuilder() {
         fun createImagePdfBuilder() = ImagePdfBuilder()
     }
 
-    override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater) : Boolean {
+    override fun build(directoryIterator: DirectoryIterator, imageToPdfOptions: ImageToPdfOptions, progressUpdater: ProgressUpdater): Boolean {
         directoryIterator.resetIndex()
 
         val imagePdf = if (imageToPdfOptions.getPdfOptions().useCustomLocation) createPdf(imageToPdfOptions)
