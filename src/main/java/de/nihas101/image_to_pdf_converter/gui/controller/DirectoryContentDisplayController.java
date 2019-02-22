@@ -91,7 +91,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
                 imageMap,
                 directoryIterator,
                 new TrivialProgressUpdater(),
-                () -> {
+                (success) -> {
                     setupObservableList(directoryIterator, imageMap);
                     return Unit.INSTANCE;
                 });
@@ -158,7 +158,7 @@ public class DirectoryContentDisplayController extends FileListViewController {
 
             CallClosure callClosure = new CallClosure(
                     () -> Unit.INSTANCE,
-                    () -> {
+                    (success) -> {
                         runLater(() -> {
                             mainWindowController.buildProgressBar.setProgress(0);
                             mainWindowController.notifyUser("Finished building: " + saveFile.getAbsolutePath(), GREEN);

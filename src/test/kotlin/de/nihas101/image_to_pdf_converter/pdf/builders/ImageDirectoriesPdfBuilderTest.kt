@@ -67,4 +67,7 @@ class TestProgressUpdater(private val buildSuccess: AtomicBoolean) : ProgressUpd
         updateProgress(progress, "")
     }
 
+    override fun reportError(message: String) {
+        /* DO NOTHING */
+    }
 }

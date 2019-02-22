@@ -137,6 +137,10 @@ class PdfBuilderCommandLineInterface private constructor(
                 if (progress == 1.toDouble()) pdfBuilderCommandLineOutput.printFinishedBuilding()
                 else pdfBuilderCommandLineOutput.printProgress()
             }
+
+            override fun reportError(message: String) {
+                /* DO NOTHING */
+            }
         }
     }
 

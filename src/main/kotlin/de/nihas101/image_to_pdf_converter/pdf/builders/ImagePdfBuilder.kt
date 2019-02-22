@@ -21,12 +21,14 @@ package de.nihas101.image_to_pdf_converter.pdf.builders
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.layout.element.Image
 import de.nihas101.image_to_pdf_converter.directory_iterators.DirectoryIterator
+import de.nihas101.image_to_pdf_converter.directory_iterators.exceptions.NoMoreFilesException
 import de.nihas101.image_to_pdf_converter.pdf.ImagePdf
 import de.nihas101.image_to_pdf_converter.pdf.ImagePdf.ImagePdfFactory.createPdf
 import de.nihas101.image_to_pdf_converter.pdf.pdf_options.ImageToPdfOptions
 import de.nihas101.image_to_pdf_converter.util.JaKoLogger.createLogger
 import de.nihas101.image_to_pdf_converter.util.ProgressUpdater
 import java.io.File
+import java.io.IOException
 
 class ImagePdfBuilder : PdfBuilder() {
     companion object ImagePdfBuilderFactory {
@@ -54,9 +56,12 @@ class ImagePdfBuilder : PdfBuilder() {
                 addNextFileToPDF(file, imagePdf)
                 file = directoryIterator.nextFile()
             }
-        } catch (exception: Exception) {
+        } catch (exception: IOException) {
+            progressUpdater.reportError("An error occurred building: ${file.name}")
             logException(file, exception)
             wasSuccess = false
+        } catch (exception: NoMoreFilesException) {
+            // END WAS REACHED
         } finally {
             imagePdf.close()
             return wasSuccess
@@ -68,7 +73,7 @@ class ImagePdfBuilder : PdfBuilder() {
         args[0] = file.absolutePath
         args[1] = exception
 
-        logger.error("Exception caused by: {}\n{}", args)
+        logger.error("Exception caused by: {}", args)
     }
 
     private fun createFileAtSameLocation(directoryIterator: DirectoryIterator): File {

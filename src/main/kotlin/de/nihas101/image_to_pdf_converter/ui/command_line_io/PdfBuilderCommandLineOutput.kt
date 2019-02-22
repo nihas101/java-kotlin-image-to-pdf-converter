@@ -41,7 +41,7 @@ class PdfBuilderCommandLineOutput private constructor(private val printStream: P
 
     fun printPdfModificationInstructions(pdfBuildInformation: PdfBuildInformation) {
         printStream.println("Instructions:")
-        IteratorAction.getInstructions().forEach({ instruction -> printStream.println(instruction) })
+        IteratorAction.getInstructions().forEach { instruction -> printStream.println(instruction) }
         printStream.println()
         printPdfContent(pdfBuildInformation)
         printMessage("")

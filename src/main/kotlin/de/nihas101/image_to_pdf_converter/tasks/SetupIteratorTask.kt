@@ -32,13 +32,15 @@ open class SetupIteratorTask protected constructor(
 
     override fun call() {
         callClosure.before()
+        var wasSuccess = true
         try {
             directoryIterator.addDirectory(directory, progressUpdater)
         } catch (exception: InterruptedException) {
             /* The task was cancelled */
+            wasSuccess = false
             logger.warn("{}", exception)
         }
-        callClosure.after()
+        callClosure.after(wasSuccess)
     }
 
     companion object SetupIteratorTaskFactory {

@@ -34,13 +34,14 @@ class BuildPdfTask private constructor(
 
     override fun call() {
         callClosure.before()
+        var wasSuccessful = false
         try {
-            pdfBuilder.build(directoryIterator, imageToPdfOptions, progressUpdater)
+            wasSuccessful = pdfBuilder.build(directoryIterator, imageToPdfOptions, progressUpdater)
         } catch (exception: InterruptedException) {
             /* The task was cancelled */
             logger.warn("{}", exception)
         }
-        callClosure.after()
+        callClosure.after(wasSuccessful)
     }
 
     companion object BuildPdfTaskFactory {

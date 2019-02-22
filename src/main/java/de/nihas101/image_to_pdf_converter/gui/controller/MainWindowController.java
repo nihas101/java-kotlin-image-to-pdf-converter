@@ -126,7 +126,7 @@ public class MainWindowController extends FileListViewController {
                     disableInput(true);
                     return Unit.INSTANCE;
                 },
-                () -> {
+                (success) -> {
                     runLater(() -> {
                         addRemainingFiles(files);
                         disableInput(false);
@@ -190,7 +190,7 @@ public class MainWindowController extends FileListViewController {
                     disableInput(true);
                     return Unit.INSTANCE;
                 },
-                () -> {
+                (success) -> {
                     runLater(this::tryToSetupListView);
                     return Unit.INSTANCE;
                 });
@@ -230,7 +230,7 @@ public class MainWindowController extends FileListViewController {
                 mainWindow.imageMap,
                 directoryIterator,
                 createLoadProgressUpdater(directoryIterator),
-                () -> {
+                (success) -> {
                     setupObservableList(directoryIterator);
                     return Unit.INSTANCE;
                 }
@@ -340,14 +340,16 @@ public class MainWindowController extends FileListViewController {
                     runLater(() -> disableInput(true));
                     return Unit.INSTANCE;
                 },
-                () -> {
+                (success) -> {
                     runLater(() -> {
                         disableInput(false);
-                        notifyUser(
-                                "Finished building: "
-                                        + Objects.requireNonNull(mainWindow.imageToPdfOptions.getPdfOptions().getSaveLocation()).getAbsolutePath(),
-                                GREEN
-                        );
+                        if (success) {
+                            notifyUser(
+                                    "Finished building: "
+                                            + Objects.requireNonNull(mainWindow.imageToPdfOptions.getPdfOptions().getSaveLocation()).getAbsolutePath(),
+                                    GREEN
+                            );
+                        }
                     });
                     return Unit.INSTANCE;
                 });

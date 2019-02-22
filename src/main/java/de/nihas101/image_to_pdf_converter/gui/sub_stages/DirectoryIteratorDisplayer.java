@@ -85,7 +85,7 @@ public final class DirectoryIteratorDisplayer {
         CallClosure callClosure = new CallClosure(() -> {
             runLater(() -> mainWindowController.disableInput(true));
             return Unit.INSTANCE;
-        }, () -> {
+        }, (success) -> {
             runLater(() -> {
                 mainWindowController.buildProgressBar.setProgress(0);
                 mainWindowController.notifyUser("Files: " + directoryIterator.numberOfFiles(), WHITE);

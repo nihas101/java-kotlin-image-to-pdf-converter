@@ -38,7 +38,7 @@ class LoadImagesTask private constructor(
             /* The task was cancelled */
             logger.warn("{}", exception)
         }
-        callClosure.after()
+        callClosure.after(true)
     }
 
     companion object LoadImagesTaskFactory {
@@ -48,7 +48,7 @@ class LoadImagesTask private constructor(
                 imageMap: ImageMap,
                 directoryIterator: DirectoryIterator,
                 progressUpdater: ProgressUpdater,
-                after: () -> Unit
+                after: (Boolean) -> Unit
         ): LoadImagesTask {
             val callClosure = CallClosure(after = after)
             return LoadImagesTask(imageMap, directoryIterator, progressUpdater, callClosure)

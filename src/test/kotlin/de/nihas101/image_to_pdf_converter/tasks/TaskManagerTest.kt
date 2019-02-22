@@ -19,10 +19,10 @@ class TaskManagerTest {
     }
 }
 
-class SetTrueTask(private val booleanSetter: BooleanSetter, assertEquals: () -> Unit) : CancellableTask(booleanSetter, CallClosure({}, assertEquals)) {
+class SetTrueTask(private val booleanSetter: BooleanSetter, assertEquals: (Boolean) -> Unit) : CancellableTask(booleanSetter, CallClosure({}, assertEquals)) {
     override fun call() {
         booleanSetter.setBoolean(true)
-        callClosure.after()
+        callClosure.after(true)
     }
 }
 

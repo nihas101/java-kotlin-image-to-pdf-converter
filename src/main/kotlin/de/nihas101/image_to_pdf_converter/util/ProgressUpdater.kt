@@ -20,15 +20,17 @@ package de.nihas101.image_to_pdf_converter.util
 
 import de.nihas101.image_to_pdf_converter.gui.controller.MainWindowController
 import javafx.application.Platform.runLater
+import javafx.scene.paint.Color.RED
 import javafx.scene.paint.Color.WHITE
 import javafx.scene.paint.Paint
 import org.slf4j.LoggerFactory
 import java.io.File
 
-
+// TODO: Implement reportError in at least ImagePDFBuilder, ImageDirectoriesPDFBuilder and ImageUnzipper
 interface ProgressUpdater {
     fun updateProgress(progress: Double, file: File)
     fun updateProgress(progress: Double, message: String)
+    fun reportError(message: String)
 }
 
 class TrivialProgressUpdater : ProgressUpdater {
@@ -37,6 +39,10 @@ class TrivialProgressUpdater : ProgressUpdater {
     }
 
     override fun updateProgress(progress: Double, file: File) {
+        /* DO NOTHING */
+    }
+
+    override fun reportError(message: String) {
         /* DO NOTHING */
     }
 }
@@ -50,6 +56,13 @@ abstract class FileProgressUpdater(protected val mainWindowController: MainWindo
         runLater {
             mainWindowController.buildProgressBar.progress = progress
             mainWindowController.notifyUser(message, WHITE)
+        }
+    }
+
+    override fun reportError(message: String) {
+        runLater {
+            mainWindowController.buildProgressBar.progress = -1.0
+            mainWindowController.notifyUser(message, RED)
         }
     }
 }
@@ -83,5 +96,9 @@ class LoadProgressUpdater(private val notifyUser: (String, Paint) -> Unit, priva
     override fun updateProgress(progress: Double, message: String) {
         runLater { notifyUser(message, WHITE) }
         logger.info(message)
+    }
+
+    override fun reportError(message: String) {
+        /* DO NOTHING */
     }
 }
